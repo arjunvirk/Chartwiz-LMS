@@ -1,0 +1,89 @@
+import { configureStore } from "@reduxjs/toolkit";
+
+import {
+  userLoginReducer,
+  userRegisterReducer,
+  userVerifyReducer,
+  userUpdateProfileReducer,
+} from "./reducers/userReducers";
+
+import {
+  courseListReducer,
+  courseDetailsReducer,
+  myCoursesReducer,
+  teacherCoursesReducer,
+  createCourseReducer,
+  deleteCourseReducer,
+} from "./reducers/courseReducers";
+
+import {
+  adminUsersReducer,
+  adminDeleteUserReducer,
+  adminUpdateRoleReducer,
+  adminStatsReducer,
+  adminAnalyticsReducer,
+} from "./reducers/adminReducers";
+
+import {
+  liveCourseListReducer,
+  liveCourseCreateReducer,
+  myLiveCoursesReducer,
+  teacherLiveCoursesReducer,
+  liveCourseEnrollReducer,
+  liveCourseDeleteReducer,
+} from "./reducers/liveCourseReducers";
+
+import { supportCreateReducer } from "./reducers/supportReducers";
+
+// USER INFO FROM LOCAL STORAGE
+
+const userInfoFromStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
+  : null;
+
+// INITIAL STATE
+
+const initialState = {
+  userLogin: {
+    userInfo: userInfoFromStorage,
+  },
+};
+
+// STORE
+
+const store = configureStore({
+  reducer: {
+    // Authentication
+    userLogin: userLoginReducer,
+    userRegister: userRegisterReducer,
+    userVerify: userVerifyReducer,
+    userUpdateProfile: userUpdateProfileReducer,
+
+    // Course
+    courseList: courseListReducer,
+    courseDetails: courseDetailsReducer,
+    myCourses: myCoursesReducer,
+    teacherCourses: teacherCoursesReducer,
+    createCourse: createCourseReducer,
+    deleteCourse: deleteCourseReducer,
+
+    adminUsers: adminUsersReducer,
+    adminDeleteUser: adminDeleteUserReducer,
+    adminUpdateRole: adminUpdateRoleReducer,
+    adminStats: adminStatsReducer,
+    adminAnalytics: adminAnalyticsReducer,
+
+    liveCourseList: liveCourseListReducer,
+    liveCourseCreate: liveCourseCreateReducer,
+    myLiveCourses: myLiveCoursesReducer,
+    teacherLiveCourses: teacherLiveCoursesReducer,
+    liveCourseEnroll: liveCourseEnrollReducer,
+    liveCourseDelete: liveCourseDeleteReducer,
+
+    supportCreate: supportCreateReducer,
+  },
+
+  preloadedState: initialState,
+});
+
+export default store;
