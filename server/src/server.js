@@ -48,11 +48,6 @@ app.use("/api/live-courses", liveCourseRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/support", supportRoutes);
 
-// Custom Error Middlewares
-
-app.use(notFound);
-app.use(errorHandler);
-
 // ---------------- TEST ROUTE ----------------
 
 app.get("/", (req, res) => {
@@ -69,6 +64,11 @@ app.get("/health", (req, res) => {
     message: "Server is healthy",
   });
 });
+
+// Custom Error Middlewares
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
