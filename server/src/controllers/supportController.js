@@ -1,4 +1,4 @@
-import Support from "../models/supportModel.js";
+import Support from "../models/SupportModel.js";
 import sendEmail from "../utils/sendEmail.js";
 
 export const createSupportRequest = async (req, res) => {
