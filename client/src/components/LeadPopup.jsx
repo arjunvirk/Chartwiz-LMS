@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import toast from "react-hot-toast";
 
+import { API_URL } from "../config/api";
+
 const LeadPopup = () => {
   const [open, setOpen] = useState(false);
 
@@ -45,7 +47,7 @@ const LeadPopup = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/leads", {
+      const response = await fetch(`${API_URL}/api/leads`, {
         method: "POST",
 
         headers: {
