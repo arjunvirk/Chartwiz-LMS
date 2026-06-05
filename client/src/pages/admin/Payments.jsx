@@ -112,6 +112,43 @@ const Payments = () => {
     }
   };
 
+  const downloadInvoice = async (paymentId, invoiceNumber) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/api/payments/${paymentId}/invoice`,
+        {
+          credentials: "include",
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to download invoice");
+      }
+
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+
+      link.href = url;
+
+      link.download = `${invoiceNumber}.pdf`;
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Invoice downloaded");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   // ================= UI =================
 
   return (
@@ -201,13 +238,14 @@ const Payments = () => {
                 <th className="p-4 text-left">Method</th>
                 <th className="p-4 text-left">Status</th>
                 <th className="p-4 text-left">Date</th>
+                <th className="p-4 text-left">Invoice PDF</th>
               </tr>
             </thead>
 
             <tbody>
               {payments.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="p-8 text-center text-gray-500">
+                  <td colSpan="8" className="p-8 text-center text-gray-500">
                     No payments found
                   </td>
                 </tr>
@@ -240,6 +278,16 @@ const Payments = () => {
 
                     <td className="p-4">
                       {new Date(payment.paidAt).toLocaleDateString()}
+                    </td>
+                    <td className="p-4">
+                      <button
+                        onClick={() =>
+                          downloadInvoice(payment._id, payment.invoiceNumber)
+                        }
+                        className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                      >
+                        Download
+                      </button>
                     </td>
                   </tr>
                 ))

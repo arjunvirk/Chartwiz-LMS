@@ -13,15 +13,11 @@ const sendEmail = async (options) => {
 
   const mailOptions = {
     from: `ChartWiz Academy <${process.env.EMAIL_USER}>`,
-
     to: options.email,
-
     subject: options.subject,
-
     html: options.message,
+    attachments: options.attachments || [],
   };
-
-  console.log("MAIL OPTIONS:", mailOptions);
 
   await transporter.sendMail(mailOptions);
 };

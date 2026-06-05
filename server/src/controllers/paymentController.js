@@ -1,6 +1,8 @@
 import Payment from "../models/Payment.js";
 import User from "../models/User.js";
 import generateInvoiceNumber from "../utils/generateInvoiceNumber.js";
+import generateInvoicePDF from "../utils/generateInvoicePDF.js";
+import sendEmail from "../utils/sendEmail.js";
 
 export const createOfflinePayment = async (req, res) => {
   try {
@@ -42,19 +44,39 @@ export const createOfflinePayment = async (req, res) => {
       studentId: student._id,
       studentName: student.name,
       email: student.email,
-
       amount,
-
       paymentMethod: "offline",
-
       paymentStatus: "paid",
-
       invoiceNumber: generateInvoiceNumber(),
-
       referenceNumber,
-
       remarks,
     });
+
+    // Send invoice email (don't fail payment if email fails)
+
+    try {
+      const pdfBuffer = await generateInvoicePDF(payment);
+
+      await sendEmail({
+        email: payment.email,
+        subject: "ChartWiz Academy - Payment Invoice",
+        message: `
+      <h2>Payment Successful</h2>
+      <p>Dear ${payment.studentName},</p>
+      <p>Thank you for your payment.</p>
+      <p>Your invoice is attached to this email.</p>
+      <p>Invoice Number: <strong>${payment.invoiceNumber}</strong></p>
+    `,
+        attachments: [
+          {
+            filename: `${payment.invoiceNumber}.pdf`,
+            content: pdfBuffer,
+          },
+        ],
+      });
+    } catch (emailError) {
+      console.error("Invoice email failed:", emailError.message);
+    }
 
     res.status(201).json({
       success: true,
@@ -78,6 +100,35 @@ export const getAllPayments = async (req, res) => {
       count: payments.length,
       payments,
     });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const downloadInvoice = async (req, res) => {
+  try {
+    const payment = await Payment.findById(req.params.id);
+
+    if (!payment) {
+      return res.status(404).json({
+        success: false,
+        message: "Payment not found",
+      });
+    }
+
+    const pdfBuffer = await generateInvoicePDF(payment);
+
+    res.setHeader("Content-Type", "application/pdf");
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=${payment.invoiceNumber}.pdf`,
+    );
+
+    res.send(pdfBuffer);
   } catch (error) {
     res.status(500).json({
       success: false,
