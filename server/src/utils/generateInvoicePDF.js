@@ -79,7 +79,7 @@ const generateInvoicePDF = (payment) => {
 
       doc.fontSize(12);
 
-      doc.text(`Amount: ₹${payment.amount}`);
+      doc.text(`Amount: Rs .${Number(payment.amount).toLocaleString("en-IN")}`);
 
       doc.text(`Payment Method: ${payment.paymentMethod}`);
 
@@ -94,7 +94,7 @@ const generateInvoicePDF = (payment) => {
       doc
         .fontSize(18)
         .fillColor("#111827")
-        .text(`Total Paid: ₹${payment.amount}`, {
+        .text(`Total Paid: ${payment.amount}`, {
           align: "right",
         });
 
