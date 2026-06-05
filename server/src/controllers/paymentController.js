@@ -110,16 +110,15 @@ export const getAllPayments = async (req, res) => {
 
 export const downloadInvoice = async (req, res) => {
   try {
+    console.log("Starting invoice download");
+
     const payment = await Payment.findById(req.params.id);
 
-    if (!payment) {
-      return res.status(404).json({
-        success: false,
-        message: "Payment not found",
-      });
-    }
+    console.log("Payment found");
 
     const pdfBuffer = await generateInvoicePDF(payment);
+
+    console.log("PDF generated successfully");
 
     res.setHeader("Content-Type", "application/pdf");
 
@@ -130,6 +129,9 @@ export const downloadInvoice = async (req, res) => {
 
     res.send(pdfBuffer);
   } catch (error) {
+    console.error("DOWNLOAD INVOICE ERROR:");
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: error.message,
