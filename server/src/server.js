@@ -11,6 +11,8 @@ import leadRoutes from "./routes/leadRoutes.js";
 import liveCourseRoutes from "./routes/liveCourseRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import supportRoutes from "./routes/supportRoutes.js";
+import googleMeetRoutes from "./routes/googleMeetRoutes.js"
+
 import connectDB from "./config/db.js";
 
 import { notFound, errorHandler } from "./middlewares/customErrorMiddleware.js";
@@ -47,6 +49,8 @@ app.use("/api/leads", leadRoutes);
 app.use("/api/live-courses", liveCourseRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/support", supportRoutes);
+
+app.use("/api/google", googleMeetRoutes);
 
 // ---------------- TEST ROUTE ----------------
 
