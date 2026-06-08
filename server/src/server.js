@@ -1,5 +1,7 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -18,7 +20,6 @@ import connectDB from "./config/db.js";
 
 import { notFound, errorHandler } from "./middlewares/customErrorMiddleware.js";
 
-dotenv.config();
 
 const app = express();
 

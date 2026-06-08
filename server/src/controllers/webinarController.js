@@ -9,6 +9,25 @@ export const createWebinar = async (req, res) => {
   try {
     const { title, description, startTime, duration } = req.body;
 
+    console.log("BODY:", req.body);
+    console.log("startTime:", startTime);
+    console.log("duration:", duration);
+
+    const startDate = new Date(startTime);
+
+    console.log("parsedDate:", startDate);
+
+    if (isNaN(startDate.getTime())) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid webinar start time",
+      });
+    }
+
+    const endDate = new Date(
+      startDate.getTime() + Number(duration) * 60 * 1000,
+    );
+
     const tokenDoc = await GoogleToken.findOne();
 
     if (!tokenDoc) {
@@ -17,7 +36,11 @@ export const createWebinar = async (req, res) => {
         message: "Google account not connected",
       });
     }
+    console.log("MEET_CLIENT_ID:", process.env.GOOGLE_MEET_CLIENT_ID);
 
+    console.log("MEET_CLIENT_SECRET:", process.env.GOOGLE_MEET_CLIENT_SECRET);
+
+    console.log("MEET_REDIRECT_URI:", process.env.GOOGLE_MEET_REDIRECT_URI);
     googleMeetOAuth.setCredentials({
       refresh_token: tokenDoc.refreshToken,
     });
@@ -33,13 +56,11 @@ export const createWebinar = async (req, res) => {
       description,
 
       start: {
-        dateTime: startTime,
+        dateTime: startDate.toISOString(),
       },
 
       end: {
-        dateTime: new Date(
-          new Date(startTime).getTime() + duration * 60 * 1000,
-        ).toISOString(),
+        dateTime: endDate.toISOString(),
       },
 
       conferenceData: {
@@ -60,7 +81,7 @@ export const createWebinar = async (req, res) => {
     const webinar = await Webinar.create({
       title,
       description,
-      startTime,
+      startTime: startDate,
       duration,
       meetLink,
       eventId: response.data.id,
