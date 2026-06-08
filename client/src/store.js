@@ -35,6 +35,11 @@ import {
 
 import { supportCreateReducer } from "./reducers/supportReducers";
 
+import {
+  webinarListReducer,
+  webinarCreateReducer,
+} from "./reducers/webinarReducers";
+
 // USER INFO FROM LOCAL STORAGE
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
@@ -81,6 +86,9 @@ const store = configureStore({
     liveCourseDelete: liveCourseDeleteReducer,
 
     supportCreate: supportCreateReducer,
+
+    webinarList: webinarListReducer,
+    webinarCreate: webinarCreateReducer,
   },
 
   preloadedState: initialState,

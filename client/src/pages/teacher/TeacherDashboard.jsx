@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import { BookOpen, Users, IndianRupee, Plus } from "lucide-react";
 
 import { getTeacherCourses } from "../../actions/courseActions";
+
+import { Video } from "lucide-react";
+import { listWebinars } from "../../actions/webinarActions";
+
 const TeacherDashboard = () => {
   // ---------------- STATS ----------------
 
@@ -13,8 +17,13 @@ const TeacherDashboard = () => {
 
   const { loading, error, courses = [] } = teacherCourses;
 
+  const webinarList = useSelector((state) => state.webinarList);
+
+  const { webinars = [] } = webinarList;
+
   useEffect(() => {
     dispatch(getTeacherCourses());
+    dispatch(listWebinars());
   }, [dispatch]);
 
   const totalCourses = courses.length;
@@ -238,6 +247,48 @@ const TeacherDashboard = () => {
             <p className="mt-4 text-sm text-gray-500">
               No recent activity available.
             </p>
+          </div>
+
+          {/* UPCOMING WEBINARS */}
+
+          <div className="rounded-4xl border border-gray-200 bg-white p-6 shadow-sm">
+            <div className="flex items-center gap-3">
+              <Video size={22} />
+
+              <h2 className="text-2xl font-bold text-black">
+                Upcoming Webinars
+              </h2>
+            </div>
+
+            {webinars.length === 0 ? (
+              <p className="mt-4 text-sm text-gray-500">
+                No webinars scheduled.
+              </p>
+            ) : (
+              <div className="mt-5 space-y-4">
+                {webinars.slice(0, 3).map((webinar) => (
+                  <div
+                    key={webinar._id}
+                    className="rounded-2xl border border-gray-200 p-4"
+                  >
+                    <h3 className="font-bold">{webinar.title}</h3>
+
+                    <p className="mt-2 text-xs text-gray-500">
+                      {new Date(webinar.startTime).toLocaleString()}
+                    </p>
+
+                    <a
+                      href={webinar.meetLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-3 inline-block rounded-xl bg-black px-4 py-2 text-sm font-semibold text-white"
+                    >
+                      Open Webinar
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

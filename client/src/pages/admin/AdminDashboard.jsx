@@ -32,6 +32,10 @@ import {
 
 import { getAdminAnalytics } from "../../actions/adminActions";
 
+import { CalendarDays, Video } from "lucide-react";
+
+import { createWebinar, listWebinars } from "../../actions/webinarActions";
+
 import { API_URL } from "../../config/api";
 
 import toast from "react-hot-toast";
@@ -51,6 +55,14 @@ const AdminDashboard = () => {
 
   const { analytics = [] } = adminAnalytics;
 
+  const webinarList = useSelector((state) => state.webinarList);
+
+  const { webinars = [] } = webinarList;
+
+  const webinarCreate = useSelector((state) => state.webinarCreate);
+
+  const { success: webinarCreated } = webinarCreate;
+
   // ================= CREATE USER FORM =================
 
   const [name, setName] = useState("");
@@ -61,6 +73,14 @@ const AdminDashboard = () => {
 
   const [role, setRole] = useState("student");
 
+  const [webinarTitle, setWebinarTitle] = useState("");
+
+  const [webinarDescription, setWebinarDescription] = useState("");
+
+  const [startTime, setStartTime] = useState("");
+
+  const [duration, setDuration] = useState(60);
+
   // ---------------- FETCH STATS ----------------
 
   useEffect(() => {
@@ -69,7 +89,17 @@ const AdminDashboard = () => {
     dispatch(getAllUsers());
 
     dispatch(getAdminAnalytics());
+
+    dispatch(listWebinars());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (webinarCreated) {
+      dispatch(listWebinars());
+
+      toast.success("Webinar created successfully");
+    }
+  }, [webinarCreated, dispatch]);
 
   // ---------------- ERROR ----------------
 
@@ -78,6 +108,27 @@ const AdminDashboard = () => {
       toast.error(error);
     }
   }, [error]);
+
+  const webinarSubmitHandler = (e) => {
+    e.preventDefault();
+
+    dispatch(
+      createWebinar({
+        title: webinarTitle,
+        description: webinarDescription,
+        startTime,
+        duration,
+      }),
+    );
+
+    setWebinarTitle("");
+
+    setWebinarDescription("");
+
+    setStartTime("");
+
+    setDuration(60);
+  };
 
   // ================= DELETE USER =================
 
@@ -627,6 +678,98 @@ const AdminDashboard = () => {
                         </>
                       )}
                     </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-10 grid gap-8 xl:grid-cols-[420px_1fr]">
+            {/* CREATE WEBINAR */}
+
+            <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-black text-white">
+                  <Video size={26} />
+                </div>
+
+                <div>
+                  <h2 className="text-2xl font-extrabold text-black">
+                    Create Webinar
+                  </h2>
+
+                  <p className="text-sm text-gray-500">
+                    Schedule a Google Meet session
+                  </p>
+                </div>
+              </div>
+
+              <form onSubmit={webinarSubmitHandler} className="mt-8 space-y-5">
+                <input
+                  type="text"
+                  placeholder="Webinar Title"
+                  value={webinarTitle}
+                  onChange={(e) => setWebinarTitle(e.target.value)}
+                  className="w-full rounded-2xl border border-gray-300 px-5 py-4"
+                />
+
+                <textarea
+                  placeholder="Description"
+                  value={webinarDescription}
+                  onChange={(e) => setWebinarDescription(e.target.value)}
+                  className="w-full rounded-2xl border border-gray-300 px-5 py-4"
+                />
+
+                <input
+                  type="datetime-local"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                  className="w-full rounded-2xl border border-gray-300 px-5 py-4"
+                />
+
+                <input
+                  type="number"
+                  value={duration}
+                  onChange={(e) => setDuration(e.target.value)}
+                  className="w-full rounded-2xl border border-gray-300 px-5 py-4"
+                />
+
+                <button
+                  type="submit"
+                  className="w-full rounded-2xl bg-black py-4 font-semibold text-white"
+                >
+                  Create Webinar
+                </button>
+              </form>
+            </div>
+
+            {/* WEBINAR LIST */}
+
+            <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
+              <h2 className="text-2xl font-extrabold">Scheduled Webinars</h2>
+
+              <div className="mt-8 space-y-4">
+                {webinars.map((webinar) => (
+                  <div
+                    key={webinar._id}
+                    className="rounded-2xl border border-gray-200 p-5"
+                  >
+                    <h3 className="text-lg font-bold">{webinar.title}</h3>
+
+                    <p className="mt-2 text-gray-500">{webinar.description}</p>
+
+                    <p className="mt-3 text-sm text-gray-500">
+                      {new Date(webinar.startTime).toLocaleString()}
+                    </p>
+
+                    <a
+                      href={webinar.meetLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-4 inline-block rounded-xl bg-black px-5 py-3 text-white"
+                    >
+                      Open Meet Link
+                    </a>
                   </div>
                 ))}
               </div>

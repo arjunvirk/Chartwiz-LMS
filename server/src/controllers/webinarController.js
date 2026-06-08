@@ -79,3 +79,50 @@ export const createWebinar = async (req, res) => {
     });
   }
 };
+
+export const getWebinars = async (req, res) => {
+  try {
+    const now = new Date();
+
+    const webinars = await Webinar.find({
+      startTime: {
+        $gte: new Date(now.getTime() - 24 * 60 * 60 * 1000),
+      },
+    }).sort({
+      startTime: 1,
+    });
+
+    res.json({
+      success: true,
+      webinars,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getWebinar = async (req, res) => {
+  try {
+    const webinar = await Webinar.findById(req.params.id);
+
+    if (!webinar) {
+      return res.status(404).json({
+        success: false,
+        message: "Webinar not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      webinar,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

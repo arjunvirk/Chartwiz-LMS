@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getMyCourses } from "../../actions/courseActions";
 import { getMyLiveCourses } from "../../actions/liveCourseActions";
+import { listWebinars } from "../../actions/webinarActions";
 
 const StudentDashboard = () => {
   const dispatch = useDispatch();
@@ -14,9 +15,85 @@ const StudentDashboard = () => {
 
   const { liveCourses = [] } = useSelector((state) => state.myLiveCourses);
 
+  const webinarList = useSelector((state) => state.webinarList);
+
+  const { webinars = [] } = webinarList;
+
+  const getWebinarStatus = (webinar) => {
+    const now = new Date();
+
+    const startTime = new Date(webinar.startTime);
+
+    const endTime = new Date(
+      startTime.getTime() + webinar.duration * 60 * 1000,
+    );
+
+    const fifteenMinutesBefore = new Date(startTime.getTime() - 15 * 60 * 1000);
+
+    // Webinar completed
+    if (now > endTime) {
+      return {
+        label: "Completed",
+        canJoin: false,
+        color: "bg-gray-200 text-gray-700",
+      };
+    }
+
+    // Join enabled 15 mins before
+    if (now >= fifteenMinutesBefore) {
+      return {
+        label: "Join Webinar",
+        canJoin: true,
+        color: "bg-black text-white",
+      };
+    }
+
+    // Upcoming
+    const diffMs = startTime - now;
+
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+
+    if (diffMinutes < 60) {
+      return {
+        label: `Starts in ${diffMinutes}m`,
+        canJoin: false,
+        color: "bg-yellow-100 text-yellow-700",
+      };
+    }
+
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+    if (diffHours < 24) {
+      return {
+        label: `Starts in ${diffHours}h`,
+        canJoin: false,
+        color: "bg-yellow-100 text-yellow-700",
+      };
+    }
+
+    if (diffHours < 24) {
+      return {
+        label: `Starts in ${diffHours}h`,
+        canJoin: false,
+        color: "bg-yellow-100 text-yellow-700",
+      };
+    }
+
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+    return {
+      label: `Starts in ${diffDays} day${diffDays > 1 ? "s" : ""}`,
+      canJoin: false,
+      color: "bg-yellow-100 text-yellow-700",
+    };
+  };
+
   useEffect(() => {
     dispatch(getMyCourses());
+
     dispatch(getMyLiveCourses());
+
+    dispatch(listWebinars());
   }, [dispatch]);
 
   return (
@@ -145,6 +222,66 @@ const StudentDashboard = () => {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+      </div>
+
+      {/* UPCOMING WEBINARS */}
+
+      <div className="rounded-3xl bg-white p-6 shadow-sm">
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-gray-800">
+            Upcoming Webinars
+          </h2>
+        </div>
+
+        {webinars.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-gray-300 py-12 text-center">
+            <p className="text-gray-500">No upcoming webinars available.</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {webinars.slice(0, 5).map((webinar) => {
+              const status = getWebinarStatus(webinar);
+
+              return (
+                <div
+                  key={webinar._id}
+                  className="flex flex-col justify-between rounded-2xl border p-5 md:flex-row md:items-center"
+                >
+                  <div>
+                    <h3 className="font-bold">{webinar.title}</h3>
+
+                    <p className="mt-2 text-sm text-gray-500">
+                      {webinar.description}
+                    </p>
+
+                    <p className="mt-2 text-xs text-gray-400">
+                      {new Date(webinar.startTime).toLocaleString()}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 md:mt-0">
+                    {status.canJoin ? (
+                      <a
+                        href={webinar.meetLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white"
+                      >
+                        Join Webinar
+                      </a>
+                    ) : (
+                      <span
+                        className={`rounded-xl px-5 py-3 text-sm font-semibold ${status.color}`}
+                      >
+                        {status.label}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
