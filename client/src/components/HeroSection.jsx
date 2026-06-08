@@ -30,7 +30,7 @@ const HeroSection = () => {
           Master The
           <span className="bg-linear-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
             {" "}
-            Stock Market{" "}
+            Trading{" "}
           </span>
           With Professional Mentorship
         </h1>
