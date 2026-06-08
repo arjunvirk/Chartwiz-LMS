@@ -38,6 +38,7 @@ import { supportCreateReducer } from "./reducers/supportReducers";
 import {
   webinarListReducer,
   webinarCreateReducer,
+  webinarDeleteReducer,
 } from "./reducers/webinarReducers";
 
 // USER INFO FROM LOCAL STORAGE
@@ -89,6 +90,7 @@ const store = configureStore({
 
     webinarList: webinarListReducer,
     webinarCreate: webinarCreateReducer,
+    webinarDelete: webinarDeleteReducer,
   },
 
   preloadedState: initialState,

@@ -11,7 +11,7 @@ import leadRoutes from "./routes/leadRoutes.js";
 import liveCourseRoutes from "./routes/liveCourseRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import supportRoutes from "./routes/supportRoutes.js";
-import googleMeetRoutes from "./routes/googleMeetRoutes.js"
+import googleMeetRoutes from "./routes/googleMeetRoutes.js";
 import webinarRoutes from "./routes/webinarRoutes.js";
 
 import connectDB from "./config/db.js";

@@ -5,6 +5,9 @@ import {
   WEBINAR_CREATE_REQUEST,
   WEBINAR_CREATE_SUCCESS,
   WEBINAR_CREATE_FAIL,
+  WEBINAR_DELETE_REQUEST,
+  WEBINAR_DELETE_SUCCESS,
+  WEBINAR_DELETE_FAIL,
 } from "../constants/webinarConstants";
 
 export const webinarListReducer = (state = { webinars: [] }, action) => {
@@ -45,6 +48,30 @@ export const webinarCreateReducer = (state = {}, action) => {
       };
 
     case WEBINAR_CREATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const webinarDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case WEBINAR_DELETE_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case WEBINAR_DELETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+
+    case WEBINAR_DELETE_FAIL:
       return {
         loading: false,
         error: action.payload,

@@ -34,7 +34,11 @@ import { getAdminAnalytics } from "../../actions/adminActions";
 
 import { CalendarDays, Video } from "lucide-react";
 
-import { createWebinar, listWebinars } from "../../actions/webinarActions";
+import {
+  createWebinar,
+  listWebinars,
+  deleteWebinar,
+} from "../../actions/webinarActions";
 
 import { API_URL } from "../../config/api";
 
@@ -165,6 +169,21 @@ const AdminDashboard = () => {
     }
   };
 
+  const deleteWebinarHandler = async (id) => {
+    if (!window.confirm("Delete this webinar?")) {
+      return;
+    }
+
+    try {
+      await dispatch(deleteWebinar(id));
+
+      dispatch(listWebinars());
+
+      toast.success("Webinar deleted");
+    } catch (error) {
+      toast.error("Failed to delete webinar");
+    }
+  };
   // ================= CHANGE ROLE =================
 
   const roleHandler = async (id, newRole) => {
@@ -770,6 +789,13 @@ const AdminDashboard = () => {
                     >
                       Open Meet Link
                     </a>
+
+                    <button
+                      onClick={() => deleteWebinarHandler(webinar._id)}
+                      className="rounded-xl border border-red-300 px-5 py-3 mx-4 text-red-500 transition hover:bg-red-500 hover:text-white"
+                    >
+                      Delete
+                    </button>
                   </div>
                 ))}
               </div>

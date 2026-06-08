@@ -126,3 +126,52 @@ export const getWebinar = async (req, res) => {
     });
   }
 };
+
+export const deleteWebinar = async (req, res) => {
+  try {
+    const webinar = await Webinar.findById(req.params.id);
+
+    if (!webinar) {
+      return res.status(404).json({
+        success: false,
+        message: "Webinar not found",
+      });
+    }
+
+    // Delete Google Calendar Event
+
+    const tokenDoc = await GoogleToken.findOne();
+
+    if (tokenDoc) {
+      googleMeetOAuth.setCredentials({
+        refresh_token: tokenDoc.refreshToken,
+      });
+
+      const calendar = google.calendar({
+        version: "v3",
+        auth: googleMeetOAuth,
+      });
+
+      try {
+        await calendar.events.delete({
+          calendarId: "primary",
+          eventId: webinar.eventId,
+        });
+      } catch (error) {
+        console.log("Google Calendar delete failed");
+      }
+    }
+
+    await webinar.deleteOne();
+
+    res.json({
+      success: true,
+      message: "Webinar deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
