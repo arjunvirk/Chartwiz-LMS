@@ -17,7 +17,8 @@ export const protect = async (req, res, next) => {
 
     // SAVE USER ID
     req.user = decoded;
-
+    console.log("COOKIE:", req.cookies);
+    console.log("TOKEN:", req.cookies.jwt);
     next();
   } catch (error) {
     res.status(401).json({
