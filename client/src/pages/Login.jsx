@@ -117,7 +117,7 @@ const Login = () => {
 
         {/* FORM */}
 
-        <form onSubmit={submitHandler} className="space-y-5">
+        <form onSubmit={submitHandler} autoComplete="off" className="space-y-5">
           {/* EMAIL */}
 
           <div>
@@ -129,6 +129,7 @@ const Login = () => {
               type="email"
               placeholder="Enter email"
               value={email}
+              autoComplete="email"
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-black"
             />
@@ -146,6 +147,7 @@ const Login = () => {
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter password"
                 value={password}
+                autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 pr-20 outline-none focus:border-black"
               />
