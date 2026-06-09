@@ -15,7 +15,6 @@ const HomeScreen = () => {
       <HeroSection />
       <TrustSection />
       <ChooseUs />
-      {/* <CoursesShowcase /> */}
       <TradingFeatures />
       <Testimonials />
       <FAQ />
