@@ -6,15 +6,17 @@ import {
   getWebinars,
   deleteWebinar,
 } from "../controllers/webinarController.js";
+import { protect } from "../middlewares/authMiddleware.js";
+import { adminOnly } from "../middlewares/adminMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", createWebinar);
+router.post("/", protect, adminOnly, createWebinar);
 
-router.get("/", getWebinars);
+router.get("/", protect, adminOnly, getWebinars);
 
-router.get("/:id", getWebinar);
+router.get("/:id", protect, adminOnly, getWebinar);
 
-router.delete("/:id", deleteWebinar);
+router.delete("/:id", protect, adminOnly, deleteWebinar);
 
 export default router;

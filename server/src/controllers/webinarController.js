@@ -16,7 +16,7 @@ export const createWebinar = async (req, res) => {
     const startDate = new Date(startTime);
 
     console.log("parsedDate:", startDate);
-
+    console.log("isNaN check:", isNaN(startDate.getTime()));
     if (isNaN(startDate.getTime())) {
       return res.status(400).json({
         success: false,
