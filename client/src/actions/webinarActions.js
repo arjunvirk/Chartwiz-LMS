@@ -18,7 +18,9 @@ export const listWebinars = () => async (dispatch) => {
       type: WEBINAR_LIST_REQUEST,
     });
 
-    const response = await fetch(`${API_URL}/api/webinars`);
+    const response = await fetch(`${API_URL}/api/webinars`, {
+      credentials: "include",
+    });
 
     const data = await response.json();
 
@@ -80,7 +82,6 @@ export const deleteWebinar = (id) => async (dispatch) => {
 
     const response = await fetch(`${API_URL}/api/webinars/${id}`, {
       method: "DELETE",
-
       credentials: "include",
     });
 

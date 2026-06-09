@@ -13,9 +13,9 @@ const router = express.Router();
 
 router.post("/", protect, adminOnly, createWebinar);
 
-router.get("/", protect, adminOnly, getWebinars);
+router.get("/", protect, getWebinars);
 
-router.get("/:id", protect, adminOnly, getWebinar);
+router.get("/:id", protect, getWebinar);
 
 router.delete("/:id", protect, adminOnly, deleteWebinar);
 
