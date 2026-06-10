@@ -17,7 +17,7 @@ export const createWebinar = async (req, res) => {
     console.log("START TIME:", startTime);
     console.log("PARSED:", new Date(startTime));
 
-    const startDate = new Date(startTime);
+    const startDate = new Date(`${startTime}:00+05:30`);
 
     console.log("parsedDate:", startDate);
     console.log("isNaN check:", isNaN(startDate.getTime()));
