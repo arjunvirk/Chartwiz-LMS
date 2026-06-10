@@ -75,6 +75,13 @@ const Navbar = () => {
             </Link>
 
             <Link
+              to="/about"
+              className="text-sm font-semibold text-gray-700 transition hover:text-black"
+            >
+              About
+            </Link>
+
+            <Link
               to="/live-courses"
               className="text-sm font-semibold text-gray-700 transition hover:text-black"
             >
@@ -188,6 +195,14 @@ const Navbar = () => {
               className="rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
             >
               Courses
+            </Link>
+
+            <Link
+              to="/about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+            >
+              About
             </Link>
 
             <Link

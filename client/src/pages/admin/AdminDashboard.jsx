@@ -86,7 +86,7 @@ const AdminDashboard = () => {
   const [duration, setDuration] = useState(60);
 
   // ---------------- FETCH STATS ----------------
-
+  console.log(startTime);
   useEffect(() => {
     dispatch(getAdminStats());
 

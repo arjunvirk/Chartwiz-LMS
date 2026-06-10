@@ -13,6 +13,10 @@ export const createWebinar = async (req, res) => {
     console.log("startTime:", startTime);
     console.log("duration:", duration);
 
+    console.log("SERVER TZ:", Intl.DateTimeFormat().resolvedOptions().timeZone);
+    console.log("START TIME:", startTime);
+    console.log("PARSED:", new Date(startTime));
+
     const startDate = new Date(startTime);
 
     console.log("parsedDate:", startDate);

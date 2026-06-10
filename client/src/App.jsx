@@ -20,6 +20,8 @@ import HomeScreen from "./pages/HomeScreen";
 
 import CoursesPage from "./pages/CoursesPage";
 
+import About from "./pages/About";
+
 // STUDENT PAGES
 
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -78,6 +80,8 @@ const App = () => {
         <Route path="/courses" element={<CoursesPage />} />
 
         <Route path="/live-courses" element={<LiveCoursesPage />} />
+
+        <Route path="/about" element={<About />} />
 
         {/* LIVE CHARTS */}
 
