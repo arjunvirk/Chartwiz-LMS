@@ -53,7 +53,7 @@ const About = () => {
                 <img
                   src={founderImg}
                   alt="Founder"
-                  className="relative h-125 w-162.5 rounded-3xl border border-white/10 object-cover shadow-2xl"
+                  className="relative w-full h-auto max-w-sm md:max-w-md lg:max-w-2xl xl:max-w-2xl rounded-3xl border border-white/10 shadow-2xl"
                 />
               </div>
             </div>
