@@ -41,6 +41,20 @@ import {
   webinarDeleteReducer,
 } from "./reducers/webinarReducers";
 
+import {
+  analysisListReducer,
+  analysisCreateReducer,
+  analysisDeleteReducer,
+  analysisUpdateReducer,
+} from "./reducers/marketAnalysisReducers";
+
+import {
+  forexNewsReducer,
+  forexNewsDetailsReducer,
+} from "./reducers/forexNewsReducers";
+
+import { economicEventsReducer } from "./reducers/economicCalendarReducers";
+
 // USER INFO FROM LOCAL STORAGE
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
@@ -91,6 +105,16 @@ const store = configureStore({
     webinarList: webinarListReducer,
     webinarCreate: webinarCreateReducer,
     webinarDelete: webinarDeleteReducer,
+
+    analysisList: analysisListReducer,
+    analysisCreate: analysisCreateReducer,
+    analysisDelete: analysisDeleteReducer,
+    analysisUpdate: analysisUpdateReducer,
+
+    forexNews: forexNewsReducer,
+    forexNewsDetails: forexNewsDetailsReducer,
+
+    economicEvents: economicEventsReducer,
   },
 
   preloadedState: initialState,

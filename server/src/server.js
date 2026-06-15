@@ -15,11 +15,16 @@ import paymentRoutes from "./routes/paymentRoutes.js";
 import supportRoutes from "./routes/supportRoutes.js";
 import googleMeetRoutes from "./routes/googleMeetRoutes.js";
 import webinarRoutes from "./routes/webinarRoutes.js";
+import marketAnalysisRoutes from "./routes/marketAnalysisRoutes.js";
+import forexNewsRoutes from "./routes/forexNewsRoutes.js";
+import economicCalendarRoutes from "./routes/economicCalendarRoutes.js";
+
+import fetchForexNews from "./utils/fetchForexNews.js";
+import startNewsCron from "./cron/newsCron.js";
 
 import connectDB from "./config/db.js";
 
 import { notFound, errorHandler } from "./middlewares/customErrorMiddleware.js";
-
 
 const app = express();
 
@@ -42,6 +47,10 @@ app.use(
 
 connectDB();
 
+fetchForexNews(); // Fetch immediately on startup
+
+startNewsCron(); // Then every 30 minutes
+
 // ---------------- ROUTES ----------------
 
 app.use("/api/users", userRoutes);
@@ -53,6 +62,9 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/support", supportRoutes);
 app.use("/api/google", googleMeetRoutes);
 app.use("/api/webinars", webinarRoutes);
+app.use("/api/analysis", marketAnalysisRoutes);
+app.use("/api/forex-news", forexNewsRoutes);
+app.use("/api/economic-events", economicCalendarRoutes);
 
 // ---------------- TEST ROUTE ----------------
 

@@ -12,6 +12,10 @@ import Register from "./pages/Register";
 
 import DashboardLayout from "./layouts/DashboardLayout";
 
+import ForexNews from "./pages/ForexNews";
+
+import ForexNewsDetails from "./pages/ForexNewsDetails";
+
 // HOME PAGE
 
 import HomeScreen from "./pages/HomeScreen";
@@ -38,6 +42,8 @@ import TeacherProfile from "./pages/teacher/TeacherProfile";
 
 import TeacherCourses from "./pages/teacher/TeacherCourses";
 
+import AnalysisList from "./pages/teacher/AnalysisList";
+
 // ADMIN PAGES
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -55,6 +61,10 @@ import Support from "./pages/Support";
 import LiveCoursesPage from "./pages/LiveCoursesPage";
 import CreateLiveCourse from "./pages/teacher/CreateLiveCourse";
 import TeacherLiveCourses from "./pages/teacher/TeacherLiveCourses";
+
+import CreateAnalysis from "./pages/teacher/CreateAnalysis";
+import EditAnalysis from "./pages/teacher/EditAnalysis";
+
 import MyLiveCourses from "./pages/student/MyLiveCourses";
 import Payments from "./pages/admin/Payments";
 import Invoices from "./pages/admin/Invoices";
@@ -86,6 +96,12 @@ const App = () => {
         {/* LIVE CHARTS */}
 
         <Route path="/live" element={<LiveMarkets />} />
+
+        {/* FOREX NEWS */}
+
+        <Route path="/forex-news" element={<ForexNews />} />
+
+        <Route path="/forex-news/:id" element={<ForexNewsDetails />} />
 
         {/* LOGIN */}
 
@@ -145,6 +161,13 @@ const App = () => {
           <Route path="live-courses" element={<TeacherLiveCourses />} />
 
           <Route path="create-live-course" element={<CreateLiveCourse />} />
+
+          {/* CREATE ANALYSIS */}
+          <Route path="analysis/create" element={<CreateAnalysis />} />
+
+          <Route path="analysis" element={<AnalysisList />} />
+
+          <Route path="analysis/:id/edit" element={<EditAnalysis />} />
         </Route>
 
         {/* ================= ADMIN DASHBOARD ================= */}

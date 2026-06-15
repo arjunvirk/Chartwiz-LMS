@@ -1,12 +1,24 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { BookOpen, Users, IndianRupee, Plus } from "lucide-react";
+import {
+  BookOpen,
+  Users,
+  IndianRupee,
+  Plus,
+  TrendingUp,
+  Newspaper,
+  CalendarDays,
+  Video,
+} from "lucide-react";
 
 import { getTeacherCourses } from "../../actions/courseActions";
 
-import { Video } from "lucide-react";
 import { listWebinars } from "../../actions/webinarActions";
+
+import { getAnalyses } from "../../actions/marketAnalysisActions";
+import { getForexNews } from "../../actions/forexNewsActions";
+import { getEvents } from "../../actions/economicCalendarActions";
 
 const TeacherDashboard = () => {
   // ---------------- STATS ----------------
@@ -21,9 +33,21 @@ const TeacherDashboard = () => {
 
   const { webinars = [] } = webinarList;
 
+  const analysisList = useSelector((state) => state.analysisList);
+  const { analyses = [] } = analysisList;
+
+  const forexNews = useSelector((state) => state.forexNews);
+  const { news = [] } = forexNews;
+
+  const economicEvents = useSelector((state) => state.economicEvents);
+  const { events = [] } = economicEvents;
+
   useEffect(() => {
     dispatch(getTeacherCourses());
     dispatch(listWebinars());
+    dispatch(getAnalyses());
+    dispatch(getForexNews());
+    dispatch(getEvents());
   }, [dispatch]);
 
   const totalCourses = courses.length;
@@ -61,6 +85,29 @@ const TeacherDashboard = () => {
       bg: "bg-purple-100",
       text: "text-purple-600",
     },
+    {
+      title: "Market Analysis",
+      value: analyses.length,
+      icon: <TrendingUp size={28} />,
+      bg: "bg-orange-100",
+      text: "text-orange-600",
+    },
+
+    {
+      title: "Live News",
+      value: news.length,
+      icon: <Newspaper size={28} />,
+      bg: "bg-red-100",
+      text: "text-red-600",
+    },
+
+    {
+      title: "Economic Events",
+      value: events.length,
+      icon: <CalendarDays size={28} />,
+      bg: "bg-indigo-100",
+      text: "text-indigo-600",
+    },
   ];
 
   if (loading) {
@@ -91,21 +138,20 @@ const TeacherDashboard = () => {
             analytics from one professional dashboard.
           </p>
         </div>
+      </div>
 
-        {/* BUTTON */}
+      <div className="mt-8 rounded-4xl bg-black p-8 text-white">
+        <h2 className="text-3xl font-bold">Market Content Center</h2>
 
-        <Link
-          to="/teacher/courses"
-          className="flex items-center justify-center gap-2 rounded-2xl bg-black px-6 py-4 text-sm font-semibold text-white transition hover:bg-gray-800"
-        >
-          <Plus size={20} />
-          Create New Course
-        </Link>
+        <p className="mt-3 text-gray-300">
+          Publish market analysis, monitor economic events, and keep students
+          updated with live forex news.
+        </p>
       </div>
 
       {/* STATS */}
 
-      <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {stats.map((item) => (
           <div
             key={item.title}
@@ -231,22 +277,111 @@ const TeacherDashboard = () => {
           {/* ANALYTICS */}
 
           <div className="rounded-4xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h2 className="text-2xl font-bold text-black">Analytics</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-black">Market Analysis</h2>
+              <Link
+                to="/teacher/dashboard/analysis/create"
+                className="mt-4 inline-block rounded-xl bg-black px-4 py-2 text-sm font-semibold text-white"
+              >
+                New Analysis
+              </Link>
+              <Link
+                to="/teacher/dashboard/analysis"
+                className="text-sm font-semibold text-black"
+              >
+                View All
+              </Link>
+            </div>
 
-            <p className="mt-4 text-sm text-gray-500">
-              Analytics will be available after student enrollments and Razorpay
-              integration.
-            </p>
+            {analyses.length === 0 ? (
+              <p className="mt-4 text-sm text-gray-500">
+                No market analysis published yet.
+              </p>
+            ) : (
+              <div className="mt-5 space-y-3">
+                {analyses.slice(0, 3).map((analysis) => (
+                  <div
+                    key={analysis._id}
+                    className="rounded-2xl border border-gray-200 p-4"
+                  >
+                    <h3 className="font-bold">{analysis.title}</h3>
+
+                    <p className="mt-2 text-xs text-gray-500">
+                      {analysis.market}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* ACTIVITY */}
 
           <div className="rounded-4xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h2 className="text-2xl font-bold text-black">Recent Activity</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-black">Live Forex News</h2>
 
-            <p className="mt-4 text-sm text-gray-500">
-              No recent activity available.
-            </p>
+              <Link
+                to="/teacher/news"
+                className="text-sm font-semibold text-black"
+              >
+                View All
+              </Link>
+            </div>
+
+            {news.length === 0 ? (
+              <p className="mt-4 text-sm text-gray-500">
+                No forex news available.
+              </p>
+            ) : (
+              <div className="mt-5 space-y-3">
+                {news.slice(0, 5).map((item) => (
+                  <div
+                    key={item._id}
+                    className="rounded-2xl border border-gray-200 p-4"
+                  >
+                    <h3 className="font-medium">{item.title}</h3>
+
+                    <p className="mt-2 text-xs text-gray-500">
+                      {new Date(item.publishedAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-4xl border border-gray-200 bg-white p-6 shadow-sm">
+            <h2 className="text-2xl font-bold text-black">Economic Events</h2>
+
+            {events.length === 0 ? (
+              <p className="mt-4 text-sm text-gray-500">No upcoming events.</p>
+            ) : (
+              <div className="mt-5 space-y-3">
+                {events.slice(0, 5).map((event) => (
+                  <div
+                    key={event._id}
+                    className="rounded-2xl border border-gray-200 p-4"
+                  >
+                    <h3 className="font-medium">{event.title}</h3>
+
+                    <div className="mt-2 flex items-center gap-2">
+                      <span
+                        className={`rounded-full px-2 py-1 text-xs font-bold ${
+                          event.impact === "High"
+                            ? "bg-red-100 text-red-600"
+                            : event.impact === "Medium"
+                              ? "bg-yellow-100 text-yellow-600"
+                              : "bg-green-100 text-green-600"
+                        }`}
+                      >
+                        {event.impact}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* UPCOMING WEBINARS */}
