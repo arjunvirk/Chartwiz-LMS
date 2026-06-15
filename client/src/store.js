@@ -48,11 +48,6 @@ import {
   analysisUpdateReducer,
 } from "./reducers/marketAnalysisReducers";
 
-import {
-  forexNewsReducer,
-  forexNewsDetailsReducer,
-} from "./reducers/forexNewsReducers";
-
 import { economicEventsReducer } from "./reducers/economicCalendarReducers";
 
 // USER INFO FROM LOCAL STORAGE
@@ -110,9 +105,6 @@ const store = configureStore({
     analysisCreate: analysisCreateReducer,
     analysisDelete: analysisDeleteReducer,
     analysisUpdate: analysisUpdateReducer,
-
-    forexNews: forexNewsReducer,
-    forexNewsDetails: forexNewsDetailsReducer,
 
     economicEvents: economicEventsReducer,
   },

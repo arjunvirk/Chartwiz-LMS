@@ -82,13 +82,6 @@ const Navbar = () => {
             </Link>
 
             <Link
-              to="/forex-news"
-              className="text-sm font-semibold text-gray-700 transition hover:text-black"
-            >
-              Forex News
-            </Link>
-
-            <Link
               to="/live-courses"
               className="text-sm font-semibold text-gray-700 transition hover:text-black"
             >
@@ -218,14 +211,6 @@ const Navbar = () => {
               className="rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
             >
               Live Classes
-            </Link>
-
-            <Link
-              to="/forex-news"
-              onClick={() => setMobileMenuOpen(false)}
-              className="rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
-            >
-              Forex News
             </Link>
 
             {/* LIVE */}

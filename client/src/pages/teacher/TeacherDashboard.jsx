@@ -17,7 +17,6 @@ import { getTeacherCourses } from "../../actions/courseActions";
 import { listWebinars } from "../../actions/webinarActions";
 
 import { getAnalyses } from "../../actions/marketAnalysisActions";
-import { getForexNews } from "../../actions/forexNewsActions";
 import { getEvents } from "../../actions/economicCalendarActions";
 
 const TeacherDashboard = () => {

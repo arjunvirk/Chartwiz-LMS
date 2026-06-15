@@ -12,10 +12,6 @@ import Register from "./pages/Register";
 
 import DashboardLayout from "./layouts/DashboardLayout";
 
-import ForexNews from "./pages/ForexNews";
-
-import ForexNewsDetails from "./pages/ForexNewsDetails";
-
 // HOME PAGE
 
 import HomeScreen from "./pages/HomeScreen";
@@ -96,12 +92,6 @@ const App = () => {
         {/* LIVE CHARTS */}
 
         <Route path="/live" element={<LiveMarkets />} />
-
-        {/* FOREX NEWS */}
-
-        <Route path="/forex-news" element={<ForexNews />} />
-
-        <Route path="/forex-news/:id" element={<ForexNewsDetails />} />
 
         {/* LOGIN */}
 
