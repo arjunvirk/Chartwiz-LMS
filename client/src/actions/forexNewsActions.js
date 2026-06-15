@@ -7,6 +7,8 @@ import {
   FOREX_NEWS_DETAILS_FAIL,
 } from "../constants/forexNewsConstants";
 
+import { API_URL } from "../config/api";
+
 // GET ALL NEWS
 
 export const getForexNews = () => async (dispatch) => {
@@ -15,7 +17,7 @@ export const getForexNews = () => async (dispatch) => {
       type: FOREX_NEWS_LIST_REQUEST,
     });
 
-    const response = await fetch("http://localhost:5000/api/forex-news");
+    const response = await fetch(`${API_URL}/api/forex-news`);
 
     const data = await response.json();
 
@@ -39,7 +41,7 @@ export const getForexNewsDetails = (id) => async (dispatch) => {
       type: FOREX_NEWS_DETAILS_REQUEST,
     });
 
-    const response = await fetch(`http://localhost:5000/api/forex-news/${id}`);
+    const response = await fetch(`${API_URL}/api/forex-news/${id}`);
 
     const data = await response.json();
 
