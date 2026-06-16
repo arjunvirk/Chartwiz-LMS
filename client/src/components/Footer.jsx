@@ -172,7 +172,7 @@ const Footer = () => {
                   </p>
 
                   <p className="mt-3 text-sm text-gray-500">
-                    Mon - Sat | 10:00 AM - 6:00 PM
+                    Mon - Fri | 11:00 AM - 6:00 PM
                   </p>
                 </div>
               </div>

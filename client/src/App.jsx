@@ -101,6 +101,10 @@ const App = () => {
 
         <Route path="/register" element={<Register />} />
 
+        {/* ECONOMIC CALENDAR  */}
+
+        
+
         {/* ================= STUDENT DASHBOARD ================= */}
 
         <Route

@@ -16,7 +16,6 @@ import supportRoutes from "./routes/supportRoutes.js";
 import googleMeetRoutes from "./routes/googleMeetRoutes.js";
 import webinarRoutes from "./routes/webinarRoutes.js";
 import marketAnalysisRoutes from "./routes/marketAnalysisRoutes.js";
-import economicCalendarRoutes from "./routes/economicCalendarRoutes.js";
 
 import connectDB from "./config/db.js";
 
@@ -55,7 +54,6 @@ app.use("/api/support", supportRoutes);
 app.use("/api/google", googleMeetRoutes);
 app.use("/api/webinars", webinarRoutes);
 app.use("/api/analysis", marketAnalysisRoutes);
-app.use("/api/economic-events", economicCalendarRoutes);
 
 // ---------------- TEST ROUTE ----------------
 

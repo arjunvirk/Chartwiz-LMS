@@ -5,7 +5,7 @@ const Testimonials = () => {
     {
       id: 1,
 
-      name: "Rahul Sharma",
+      name: "Anand Malhotra",
 
       role: "Options Trader",
 
@@ -18,7 +18,7 @@ const Testimonials = () => {
     {
       id: 2,
 
-      name: "Priya Verma",
+      name: "Rajender Kumar",
 
       role: "Swing Trader",
 
@@ -31,7 +31,7 @@ const Testimonials = () => {
     {
       id: 3,
 
-      name: "Aman Gupta",
+      name: "Kajal Kushwaha",
 
       role: "Full-Time Trader",
 

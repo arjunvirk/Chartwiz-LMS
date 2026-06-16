@@ -4,13 +4,15 @@ import {
   EVENTS_FAIL,
 } from "../constants/economicCalendarConstants";
 
+import { API_URL } from "../config/api";
+
 export const getEvents = () => async (dispatch) => {
   try {
     dispatch({
       type: EVENTS_REQUEST,
     });
 
-    const response = await fetch("/api/economic-events/upcoming");
+    const response = await fetch(`${API_URL}/api/economic-events/upcoming`);
 
     const data = await response.json();
 
