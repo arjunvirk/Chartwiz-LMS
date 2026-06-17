@@ -107,34 +107,6 @@ const CoursesPage = () => {
               focused on practical strategies, risk management, psychology and
               disciplined execution.
             </p>
-
-            {/* STATS */}
-
-            <div className="mt-10 flex flex-wrap gap-8">
-              <div>
-                <h3 className="text-4xl font-extrabold text-green-400">
-                  {totalLessons}
-                </h3>
-
-                <p className="mt-2 text-sm text-gray-400">Video Lessons</p>
-              </div>
-
-              <div>
-                <h3 className="text-4xl font-extrabold text-green-400">
-                  {totalStudents}
-                </h3>
-
-                <p className="mt-2 text-sm text-gray-400">Students Enrolled</p>
-              </div>
-
-              <div>
-                <h3 className="text-4xl font-extrabold text-green-400">
-                  {totalCourses}
-                </h3>
-
-                <p className="mt-2 text-sm text-gray-400">Trading Strategies</p>
-              </div>
-            </div>
           </div>
         </div>
 
