@@ -45,6 +45,8 @@ const DashboardLayout = () => {
 
   const adminInvoicesPath = "/admin/dashboard/invoices";
 
+  const paymentPath = "/dashboard/payment";
+
   return (
     <div className="flex min-h-screen bg-[#f5f7fb]">
       {/* MOBILE SIDEBAR OVERLAY */}
@@ -168,6 +170,14 @@ const DashboardLayout = () => {
                   className="rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-black hover:text-white"
                 >
                   My Live Classes
+                </Link>
+
+                <Link
+                  to={paymentPath}
+                  onClick={() => setSidebarOpen(false)}
+                  className="rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-black hover:text-white"
+                >
+                  Pay Fee
                 </Link>
               </>
             )}
@@ -342,6 +352,15 @@ const DashboardLayout = () => {
                 }`}
               >
                 {desktopSidebarOpen ? "My Live Classes" : "L"}
+              </Link>
+
+              <Link
+                to={paymentPath}
+                className={`rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-black hover:text-white ${
+                  desktopSidebarOpen ? "text-left" : "text-center"
+                }`}
+              >
+                {desktopSidebarOpen ? "Pay Fee" : "₹"}
               </Link>
             </>
           )}

@@ -30,6 +30,8 @@ import MyCourses from "./pages/student/MyCourses";
 
 import StudentProfile from "./pages/student/StudentProfile";
 
+import PaymentScreen from "./pages/student/PaymentScreen";
+
 // TEACHER PAGES
 
 import TeacherDashboard from "./pages/teacher/TeacherDashboard";
@@ -103,8 +105,6 @@ const App = () => {
 
         {/* ECONOMIC CALENDAR  */}
 
-        
-
         {/* ================= STUDENT DASHBOARD ================= */}
 
         <Route
@@ -128,6 +128,8 @@ const App = () => {
           <Route path="profile" element={<StudentProfile />} />
 
           <Route path="live-courses" element={<MyLiveCourses />} />
+
+          <Route path="payment" element={<PaymentScreen />} />
         </Route>
 
         {/* ================= TEACHER DASHBOARD ================= */}

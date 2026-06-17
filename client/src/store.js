@@ -48,7 +48,7 @@ import {
   analysisUpdateReducer,
 } from "./reducers/marketAnalysisReducers";
 
-import { economicEventsReducer } from "./reducers/economicCalendarReducers";
+import { razorpayOrderReducer } from "./reducers/razorpayReducers";
 
 // USER INFO FROM LOCAL STORAGE
 
@@ -106,7 +106,9 @@ const store = configureStore({
     analysisDelete: analysisDeleteReducer,
     analysisUpdate: analysisUpdateReducer,
 
-    economicEvents: economicEventsReducer,
+    
+
+    razorpayOrder: razorpayOrderReducer,
   },
 
   preloadedState: initialState,
