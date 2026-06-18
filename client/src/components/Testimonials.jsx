@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import kajalPhoto from "../assets/kajal_kushwaha.jpeg";
 
 const Testimonials = () => {
   const testimonials = [
@@ -35,7 +36,7 @@ const Testimonials = () => {
 
       role: "Full-Time Trader",
 
-      image: "https://randomuser.me/api/portraits/men/75.jpg",
+      image: kajalPhoto,
 
       review:
         "Unlike random YouTube content, ChartWiz provides a complete roadmap. The lessons are premium quality and easy to follow.",
