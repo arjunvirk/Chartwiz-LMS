@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import kajalPhoto from "../assets/kajal_kushwaha.jpeg";
+import anandMalhotra from "../assets/anand_malhotra.jpeg";
 
 const Testimonials = () => {
   const testimonials = [
@@ -10,7 +11,7 @@ const Testimonials = () => {
 
       role: "Options Trader",
 
-      image: "https://randomuser.me/api/portraits/men/32.jpg",
+      image: anandMalhotra,
 
       review:
         "ChartWiz completely changed the way I understand the market. The structured mentorship and psychology lessons helped me become far more disciplined in trading.",
@@ -19,7 +20,7 @@ const Testimonials = () => {
     {
       id: 2,
 
-      name: "Rajender Kumar",
+      name: "Lalit Kumar",
 
       role: "Swing Trader",
 
