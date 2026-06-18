@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import kajalPhoto from "../assets/kajal_kushwaha.jpeg";
 import anandMalhotra from "../assets/anand_malhotra.jpeg";
+import varunMalhotra from "../assets/varun_malhotra.jpeg";
 
 const Testimonials = () => {
   const testimonials = [
@@ -20,11 +21,11 @@ const Testimonials = () => {
     {
       id: 2,
 
-      name: "Lalit Kumar",
+      name: "Varun Malhotra",
 
       role: "Swing Trader",
 
-      image: "https://randomuser.me/api/portraits/women/44.jpg",
+      image: varunMalhotra,
 
       review:
         "The price action course is extremely practical and beginner friendly. I finally understand market structure and risk management properly.",
