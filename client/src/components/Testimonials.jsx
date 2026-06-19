@@ -3,6 +3,7 @@ import kajalPhoto from "../assets/kajal_kushwaha.jpeg";
 import anandMalhotra from "../assets/anand_malhotra.jpeg";
 import varunMalhotra from "../assets/varun_malhotra.jpeg";
 import lalitKumar from "../assets/lalit_kumar.jpeg";
+import sohail from "../assets/sohel.jpeg";
 
 const Testimonials = () => {
   const testimonials = [
@@ -56,6 +57,19 @@ const Testimonials = () => {
 
       review:
         "ChartWiz Academy is one of the best Institute for anyone looking to learn stock market trading and investing from scratch. The courses are structured in a simple and practical way, making complex concepts easy to understand.",
+    },
+
+    {
+      id: 5,
+
+      name: "Sohail",
+
+      role: "Options Trader",
+
+      image: sohail,
+
+      review:
+        "ChartWiz Academy explains complex market concepts in a very simple and practical way. The live sessions, market analysis, and structured lessons.I highly recommend ChartWiz Academy to anyone serious about learning Forex.",
     },
   ];
 
