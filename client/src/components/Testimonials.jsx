@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import kajalPhoto from "../assets/kajal_kushwaha.jpeg";
 import anandMalhotra from "../assets/anand_malhotra.jpeg";
 import varunMalhotra from "../assets/varun_malhotra.jpeg";
+import lalitKumar from "../assets/lalit_kumar.jpeg";
 
 const Testimonials = () => {
   const testimonials = [
@@ -42,6 +43,19 @@ const Testimonials = () => {
 
       review:
         "Unlike random YouTube content, ChartWiz provides a complete roadmap. The lessons are premium quality and easy to follow.",
+    },
+
+    {
+      id: 4,
+
+      name: "Lalit Kumar",
+
+      role: "Swing Trader",
+
+      image: lalitKumar,
+
+      review:
+        "ChartWiz Academy is one of the best Institute for anyone looking to learn stock market trading and investing from scratch. The courses are structured in a simple and practical way, making complex concepts easy to understand.",
     },
   ];
 
