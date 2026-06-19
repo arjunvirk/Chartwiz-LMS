@@ -48,6 +48,13 @@ import {
   analysisUpdateReducer,
 } from "./reducers/marketAnalysisReducers";
 
+import {
+  leadListReducer,
+  leadDetailsReducer,
+  leadUpdateReducer,
+  leadDeleteReducer,
+} from "./reducers/leadReducers";
+
 import { razorpayOrderReducer } from "./reducers/razorpayReducers";
 
 // USER INFO FROM LOCAL STORAGE
@@ -106,7 +113,10 @@ const store = configureStore({
     analysisDelete: analysisDeleteReducer,
     analysisUpdate: analysisUpdateReducer,
 
-    
+    leadList: leadListReducer,
+    leadDetails: leadDetailsReducer,
+    leadUpdate: leadUpdateReducer,
+    leadDelete: leadDeleteReducer,
 
     razorpayOrder: razorpayOrderReducer,
   },

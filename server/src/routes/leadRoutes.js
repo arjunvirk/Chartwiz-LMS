@@ -1,9 +1,17 @@
 import express from "express";
 
-import { createLead } from "../controllers/leadController.js";
+import {
+  createLead,
+  getLeads,
+  getLeadById,
+  updateLead,
+  deleteLead,
+} from "../controllers/leadController.js";
 
 const router = express.Router();
 
-router.post("/", createLead);
+router.route("/").post(createLead).get(getLeads);
+
+router.route("/:id").get(getLeadById).put(updateLead).delete(deleteLead);
 
 export default router;

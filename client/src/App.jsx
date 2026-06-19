@@ -48,6 +48,8 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 
 import AdminProfile from "./pages/admin/AdminProfile";
 
+import LeadManagementScreen from "./pages/admin/LeadManagementScreen";
+
 // LIVE CHARTS
 
 import LiveMarkets from "./pages/LiveMarkets";
@@ -183,6 +185,8 @@ const App = () => {
           <Route path="payments" element={<Payments />} />
 
           <Route path="invoices" element={<Invoices />} />
+
+          <Route path="leads" element={<LeadManagementScreen />} />
         </Route>
 
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />

@@ -136,7 +136,6 @@ const DashboardLayout = () => {
             </Link>
 
             {/* STUDENT */}
-            {/* STUDENT */}
 
             {!isTeacher && !isAdmin && (
               <>
@@ -222,6 +221,14 @@ const DashboardLayout = () => {
                   className="rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-black hover:text-white"
                 >
                   Invoices
+                </Link>
+
+                <Link
+                  to="/admin/dashboard/leads"
+                  onClick={() => setSidebarOpen(false)}
+                  className="rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-black hover:text-white"
+                >
+                  Leads
                 </Link>
               </>
             )}
@@ -400,6 +407,15 @@ const DashboardLayout = () => {
                 }`}
               >
                 {desktopSidebarOpen ? "Payments" : "P"}
+              </Link>
+
+              <Link
+                to="/admin/dashboard/leads"
+                className={`rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-black hover:text-white ${
+                  desktopSidebarOpen ? "text-left" : "text-center"
+                }`}
+              >
+                {desktopSidebarOpen ? "Leads" : "L"}
               </Link>
 
               <Link
