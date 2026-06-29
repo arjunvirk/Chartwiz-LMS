@@ -9,18 +9,22 @@ const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/users/me`, {
-          credentials: "include",
-        });
+    console.log("ProtectedRoute mounted");
 
-        if (response.ok) {
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
-      } catch (error) {
+    const checkAuth = async () => {
+      console.log("Checking auth...");
+
+      const response = await fetch(`${API_URL}/api/users/me`, {
+        credentials: "include",
+      });
+
+      console.log("Status:", response.status);
+
+      if (response.ok) {
+        console.log("Authenticated");
+        setIsAuthenticated(true);
+      } else {
+        console.log("Not authenticated");
         setIsAuthenticated(false);
       }
 

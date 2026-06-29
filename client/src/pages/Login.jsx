@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
@@ -40,26 +40,27 @@ const Login = () => {
 
   const { loading, error, userInfo } = userLogin;
 
+  const hasRedirected = useRef(false);
+
   useEffect(() => {
     console.log("Login effect fired");
-    console.log(userInfo); 
+    console.log(userInfo);
   }, [userInfo]);
 
   // ---------------- REDIRECT AFTER LOGIN ----------------
-
   useEffect(() => {
-    if (userInfo) {
-      toast.success("Welcome back");
+    if (!userInfo || hasRedirected.current) return;
 
-      // TEACHER
+    hasRedirected.current = true;
 
-      if (userInfo?.user?.role === "admin") {
-        navigate("/admin/dashboard");
-      } else if (userInfo?.user?.role === "teacher") {
-        navigate("/teacher/dashboard");
-      } else {
-        navigate("/dashboard");
-      }
+    toast.success("Welcome back");
+
+    if (userInfo.user.role === "admin") {
+      navigate("/admin/dashboard", { replace: true });
+    } else if (userInfo.user.role === "teacher") {
+      navigate("/teacher/dashboard", { replace: true });
+    } else {
+      navigate("/dashboard", { replace: true });
     }
   }, [userInfo, navigate]);
 
@@ -112,6 +113,14 @@ const Login = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    console.log("Login Mounted");
+
+    return () => {
+      console.log("Login Unmounted");
+    };
+  }, []);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
