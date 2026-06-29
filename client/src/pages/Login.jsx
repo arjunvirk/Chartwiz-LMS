@@ -40,6 +40,11 @@ const Login = () => {
 
   const { loading, error, userInfo } = userLogin;
 
+  useEffect(() => {
+    console.log("Login effect fired");
+    console.log(userInfo); 
+  }, [userInfo]);
+
   // ---------------- REDIRECT AFTER LOGIN ----------------
 
   useEffect(() => {
