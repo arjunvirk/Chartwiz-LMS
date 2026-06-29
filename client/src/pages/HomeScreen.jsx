@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import HeroSection from "../components/HeroSection";
 import TrustSection from "../components/TrustSection";
@@ -15,18 +15,18 @@ import Footer from "../components/Footer";
 const HomeScreen = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
 
-  if (userInfo) {
-    if (userInfo.role === "admin") {
-      return <Navigate to="/admin/dashboard" replace />;
-    }
+  const role = userInfo?.user?.role;
 
-    if (userInfo.role === "teacher") {
-      return <Navigate to="/teacher/dashboard" replace />;
-    }
+  if (role === "admin") {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
 
-    if (userInfo.role === "student") {
-      return <Navigate to="/student/dashboard" replace />;
-    }
+  if (role === "teacher") {
+    return <Navigate to="/teacher/dashboard" replace />;
+  }
+
+  if (role === "student") {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (
@@ -34,6 +34,7 @@ const HomeScreen = () => {
       <HeroSection />
       <TrustSection />
       <ChooseUs />
+      <CoursesShowcase />
       <TradingFeatures />
       <Testimonials />
       <FAQ />

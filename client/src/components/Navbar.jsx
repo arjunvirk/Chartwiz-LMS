@@ -58,7 +58,15 @@ const Navbar = () => {
           {/* LOGO */}
 
           <Link
-            to="/"
+            to={
+              userInfo
+                ? userInfo?.user?.role === "admin"
+                  ? "/admin/dashboard"
+                  : userInfo?.user?.role === "teacher"
+                    ? "/teacher/dashboard"
+                    : "/dashboard"
+                : "/"
+            }
             className="text-2xl font-extrabold tracking-tight text-black sm:text-3xl"
           >
             ChartWiz
