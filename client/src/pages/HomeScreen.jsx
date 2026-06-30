@@ -34,7 +34,7 @@ const HomeScreen = () => {
       <HeroSection />
       <TrustSection />
       <ChooseUs />
-      <CoursesShowcase />
+      {/* <CoursesShowcase /> */}
       <TradingFeatures />
       <Testimonials />
       <FAQ />
