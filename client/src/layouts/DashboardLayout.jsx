@@ -253,7 +253,7 @@ const DashboardLayout = () => {
           desktopSidebarOpen ? "w-72" : "w-24"
         }`}
       >
-        {/* LOGO */}
+        {/* LOGO
 
         <div
           className={`flex items-center ${
@@ -263,7 +263,7 @@ const DashboardLayout = () => {
           {desktopSidebarOpen && (
             <h1 className="text-3xl font-extrabold text-black">C</h1>
           )}
-        </div>
+        </div> */}
 
         {/* USER CARD */}
 
