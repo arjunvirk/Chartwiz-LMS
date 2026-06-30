@@ -31,6 +31,8 @@ import {
   createUser,
 } from "../../actions/adminActions";
 
+import { API_URL } from "../../config/api";
+
 import { getAdminAnalytics } from "../../actions/adminActions";
 
 import { CalendarDays, Video } from "lucide-react";
