@@ -28,6 +28,7 @@ import {
   getAllUsers,
   deleteUser,
   updateUserRole,
+  createUser,
 } from "../../actions/adminActions";
 
 import { getAdminAnalytics } from "../../actions/adminActions";
@@ -39,8 +40,6 @@ import {
   listWebinars,
   deleteWebinar,
 } from "../../actions/webinarActions";
-
-import { API_URL } from "../../config/api";
 
 import toast from "react-hot-toast";
 
@@ -86,16 +85,16 @@ const AdminDashboard = () => {
   const [duration, setDuration] = useState(60);
 
   // ---------------- FETCH STATS ----------------
-  console.log(startTime);
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   useEffect(() => {
+    if (!userInfo) return;
+
     dispatch(getAdminStats());
-
     dispatch(getAllUsers());
-
     dispatch(getAdminAnalytics());
-
     dispatch(listWebinars());
-  }, [dispatch]);
+  }, [dispatch, userInfo]);
 
   useEffect(() => {
     if (webinarCreated) {
@@ -204,46 +203,23 @@ const AdminDashboard = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch(`${API_URL}/api/admin/create-user`, {
-        method: "POST",
+    await dispatch(
+      createUser({
+        name,
+        email,
+        password,
+        role,
+      }),
+    );
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+    dispatch(getAllUsers());
 
-        credentials: "include",
+    dispatch(getAdminStats());
 
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          role,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
-
-      toast.success("User created successfully");
-
-      setName("");
-
-      setEmail("");
-
-      setPassword("");
-
-      setRole("student");
-
-      dispatch(getAllUsers());
-
-      dispatch(getAdminStats());
-    } catch (error) {
-      toast.error(error.message);
-    }
+    setName("");
+    setEmail("");
+    setPassword("");
+    setRole("student");
   };
 
   const chartData = [

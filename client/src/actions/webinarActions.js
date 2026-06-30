@@ -12,21 +12,17 @@ import {
 
 import { API_URL } from "../config/api";
 
+import fetchWithAuth from "../utils/fetchWithAuth";
+
+// ================= GET WEBINARS =================
+
 export const listWebinars = () => async (dispatch) => {
   try {
     dispatch({
       type: WEBINAR_LIST_REQUEST,
     });
 
-    const response = await fetch(`${API_URL}/api/webinars`, {
-      credentials: "include",
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || "Failed to fetch webinars");
-    }
+    const data = await fetchWithAuth(dispatch, `${API_URL}/api/webinars`);
 
     dispatch({
       type: WEBINAR_LIST_SUCCESS,
@@ -40,15 +36,17 @@ export const listWebinars = () => async (dispatch) => {
   }
 };
 
+// ================= CREATE WEBINAR =================
+
 export const createWebinar = (webinar) => async (dispatch) => {
   try {
     dispatch({
       type: WEBINAR_CREATE_REQUEST,
     });
 
-    const response = await fetch(`${API_URL}/api/webinars`, {
+    const data = await fetchWithAuth(dispatch, `${API_URL}/api/webinars`, {
       method: "POST",
-      credentials: "include",
+
       headers: {
         "Content-Type": "application/json",
       },
@@ -56,23 +54,23 @@ export const createWebinar = (webinar) => async (dispatch) => {
       body: JSON.stringify(webinar),
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || "Failed to create webinar");
-    }
-
     dispatch({
       type: WEBINAR_CREATE_SUCCESS,
       payload: data.webinar,
     });
+
+    return data;
   } catch (error) {
     dispatch({
       type: WEBINAR_CREATE_FAIL,
       payload: error.message,
     });
+
+    throw error;
   }
 };
+
+// ================= DELETE WEBINAR =================
 
 export const deleteWebinar = (id) => async (dispatch) => {
   try {
@@ -80,16 +78,9 @@ export const deleteWebinar = (id) => async (dispatch) => {
       type: WEBINAR_DELETE_REQUEST,
     });
 
-    const response = await fetch(`${API_URL}/api/webinars/${id}`, {
+    await fetchWithAuth(dispatch, `${API_URL}/api/webinars/${id}`, {
       method: "DELETE",
-      credentials: "include",
     });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || "Failed to delete webinar");
-    }
 
     dispatch({
       type: WEBINAR_DELETE_SUCCESS,
@@ -99,5 +90,7 @@ export const deleteWebinar = (id) => async (dispatch) => {
       type: WEBINAR_DELETE_FAIL,
       payload: error.message,
     });
+
+    throw error;
   }
 };

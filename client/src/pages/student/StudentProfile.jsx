@@ -32,6 +32,12 @@ const StudentProfile = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
+    // NAME CHECK
+
+    if (!name.trim()) {
+      return toast.error("Name is required");
+    }
+
     // PASSWORD CHECK
 
     if (password !== confirmPassword) {
@@ -43,14 +49,22 @@ const StudentProfile = () => {
     }
     // DISPATCH ACTION
 
-    dispatch(
-      updateUserProfile({
-        name,
+    const updateData = {
+      name,
+    };
 
-        password,
-      }),
-    );
+    if (password.trim()) {
+      updateData.password = password;
+    }
+
+    dispatch(updateUserProfile(updateData));
   };
+
+  useEffect(() => {
+    if (userInfo) {
+      setName(userInfo.user.name);
+    }
+  }, [userInfo]);
 
   // ---------------- SUCCESS TOAST ----------------
 

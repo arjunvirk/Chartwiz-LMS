@@ -14,6 +14,8 @@ const TeacherDashboard = () => {
 
   const dispatch = useDispatch();
 
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   const teacherCourses = useSelector((state) => state.teacherCourses);
 
   const { loading, error, courses = [] } = teacherCourses;
@@ -26,10 +28,14 @@ const TeacherDashboard = () => {
   const { analyses = [] } = analysisList;
 
   useEffect(() => {
+    if (!userInfo) return;
+
     dispatch(getTeacherCourses());
+
     dispatch(listWebinars());
+
     dispatch(getAnalyses());
-  }, [dispatch]);
+  }, [dispatch, userInfo]);
 
   const totalCourses = courses.length;
 

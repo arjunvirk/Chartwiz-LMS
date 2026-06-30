@@ -1,13 +1,16 @@
+import { useEffect } from "react";
+
 import { Routes, Route } from "react-router-dom";
 
+import { useDispatch } from "react-redux";
+
 import Navbar from "./components/Navbar";
-
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import LeadPopup from "./components/LeadPopup";
 
-import Login from "./pages/Login";
+import { checkAuth } from "./actions/userActions";
 
+import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 import DashboardLayout from "./layouts/DashboardLayout";
@@ -19,57 +22,52 @@ import HomeScreen from "./pages/HomeScreen";
 // PUBLIC COURSES PAGE
 
 import CoursesPage from "./pages/CoursesPage";
-
 import About from "./pages/About";
 
 // STUDENT PAGES
 
 import StudentDashboard from "./pages/student/StudentDashboard";
-
 import MyCourses from "./pages/student/MyCourses";
-
 import StudentProfile from "./pages/student/StudentProfile";
-
 import PaymentScreen from "./pages/student/PaymentScreen";
+import MyLiveCourses from "./pages/student/MyLiveCourses";
 
 // TEACHER PAGES
 
 import TeacherDashboard from "./pages/teacher/TeacherDashboard";
-
 import TeacherProfile from "./pages/teacher/TeacherProfile";
-
 import TeacherCourses from "./pages/teacher/TeacherCourses";
-
+import TeacherLiveCourses from "./pages/teacher/TeacherLiveCourses";
+import CreateLiveCourse from "./pages/teacher/CreateLiveCourse";
 import AnalysisList from "./pages/teacher/AnalysisList";
+import CreateAnalysis from "./pages/teacher/CreateAnalysis";
+import EditAnalysis from "./pages/teacher/EditAnalysis";
 
 // ADMIN PAGES
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
-
 import AdminProfile from "./pages/admin/AdminProfile";
-
 import LeadManagementScreen from "./pages/admin/LeadManagementScreen";
-
-// LIVE CHARTS
-
-import LiveMarkets from "./pages/LiveMarkets";
-
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-
-import TermsConditions from "./pages/TermsConditions";
-import Support from "./pages/Support";
-import LiveCoursesPage from "./pages/LiveCoursesPage";
-import CreateLiveCourse from "./pages/teacher/CreateLiveCourse";
-import TeacherLiveCourses from "./pages/teacher/TeacherLiveCourses";
-
-import CreateAnalysis from "./pages/teacher/CreateAnalysis";
-import EditAnalysis from "./pages/teacher/EditAnalysis";
-
-import MyLiveCourses from "./pages/student/MyLiveCourses";
 import Payments from "./pages/admin/Payments";
 import Invoices from "./pages/admin/Invoices";
 
+// OTHER PAGES
+
+import LiveMarkets from "./pages/LiveMarkets";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions";
+import Support from "./pages/Support";
+import LiveCoursesPage from "./pages/LiveCoursesPage";
+
 const App = () => {
+  const dispatch = useDispatch();
+
+  // ================= CHECK AUTH ON APP LOAD =================
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
   return (
     <>
       {/* NAVBAR */}
@@ -93,7 +91,7 @@ const App = () => {
 
         <Route path="/about" element={<About />} />
 
-        {/* LIVE CHARTS */}
+        {/* LIVE MARKETS */}
 
         <Route path="/live" element={<LiveMarkets />} />
 
@@ -105,8 +103,6 @@ const App = () => {
 
         <Route path="/register" element={<Register />} />
 
-        {/* ECONOMIC CALENDAR  */}
-
         {/* ================= STUDENT DASHBOARD ================= */}
 
         <Route
@@ -117,15 +113,9 @@ const App = () => {
             </ProtectedRoute>
           }
         >
-          {/* DASHBOARD HOME */}
-
           <Route index element={<StudentDashboard />} />
 
-          {/* MY COURSES */}
-
           <Route path="courses" element={<MyCourses />} />
-
-          {/* PROFILE */}
 
           <Route path="profile" element={<StudentProfile />} />
 
@@ -144,15 +134,9 @@ const App = () => {
             </ProtectedRoute>
           }
         >
-          {/* DASHBOARD HOME */}
-
           <Route index element={<TeacherDashboard />} />
 
-          {/* PROFILE */}
-
           <Route path="profile" element={<TeacherProfile />} />
-
-          {/* TEACHER COURSES */}
 
           <Route path="courses" element={<TeacherCourses />} />
 
@@ -160,10 +144,9 @@ const App = () => {
 
           <Route path="create-live-course" element={<CreateLiveCourse />} />
 
-          {/* CREATE ANALYSIS */}
-          <Route path="analysis/create" element={<CreateAnalysis />} />
-
           <Route path="analysis" element={<AnalysisList />} />
+
+          <Route path="analysis/create" element={<CreateAnalysis />} />
 
           <Route path="analysis/:id/edit" element={<EditAnalysis />} />
         </Route>
@@ -188,6 +171,8 @@ const App = () => {
 
           <Route path="leads" element={<LeadManagementScreen />} />
         </Route>
+
+        {/* OTHER PAGES */}
 
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 

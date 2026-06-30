@@ -40,12 +40,7 @@ const Login = () => {
 
   const { loading, error, userInfo } = userLogin;
 
-  const hasRedirected = useRef(false);
-
-  useEffect(() => {
-    console.log("Login effect fired");
-    console.log(userInfo);
-  }, [userInfo]);
+  const hasRedirected = useRef(false)
 
   // ---------------- REDIRECT AFTER LOGIN ----------------
   useEffect(() => {
@@ -113,14 +108,6 @@ const Login = () => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    console.log("Login Mounted");
-
-    return () => {
-      console.log("Login Unmounted");
-    };
-  }, []);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">

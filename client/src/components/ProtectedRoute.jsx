@@ -1,56 +1,22 @@
-import { useEffect, useState } from "react";
-
-import { Navigate } from "react-router-dom";
-import { API_URL } from "../config/api";
+import { Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ProtectedRoute = ({ children }) => {
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { userInfo } = useSelector((state) => state.userLogin);
 
-  useEffect(() => {
-    console.log("ProtectedRoute mounted");
-
-    const checkAuth = async () => {
-      console.log("Checking auth...");
-
-      const response = await fetch(`${API_URL}/api/users/me`, {
-        credentials: "include",
-      });
-
-      console.log("Status:", response.status);
-
-      if (response.ok) {
-        console.log("Authenticated");
-        setIsAuthenticated(true);
-      } else {
-        console.log("Not authenticated");
-        setIsAuthenticated(false);
-      }
-
-      setLoading(false);
-    };
-
-    checkAuth();
-  }, []);
-
-  // LOADING
-
-  if (loading) {
+  if (!userInfo) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-2xl font-bold">
-        Loading...
-      </div>
+      <Navigate
+        to="/login"
+        replace
+        state={{
+          from: location,
+        }}
+      />
     );
   }
-
-  // NOT AUTHENTICATED
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
-
-  // AUTHENTICATED
 
   return children;
 };

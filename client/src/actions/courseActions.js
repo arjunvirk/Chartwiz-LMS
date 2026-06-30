@@ -21,7 +21,9 @@ import {
 
 import { API_URL } from "../config/api";
 
-// ---------------- GET ALL COURSES ----------------
+import fetchWithAuth from "../utils/fetchWithAuth";
+
+// ================= GET ALL COURSES (PUBLIC) =================
 
 export const listCourses = () => async (dispatch) => {
   try {
@@ -39,19 +41,17 @@ export const listCourses = () => async (dispatch) => {
 
     dispatch({
       type: COURSE_LIST_SUCCESS,
-
       payload: data.courses,
     });
   } catch (error) {
     dispatch({
       type: COURSE_LIST_FAIL,
-
       payload: error.message,
     });
   }
 };
 
-// ---------------- GET SINGLE COURSE ----------------
+// ================= GET COURSE DETAILS (PUBLIC) =================
 
 export const getCourseDetails = (id) => async (dispatch) => {
   try {
@@ -69,19 +69,17 @@ export const getCourseDetails = (id) => async (dispatch) => {
 
     dispatch({
       type: COURSE_DETAILS_SUCCESS,
-
       payload: data.course,
     });
   } catch (error) {
     dispatch({
       type: COURSE_DETAILS_FAIL,
-
       payload: error.message,
     });
   }
 };
 
-// ---------------- GET MY COURSES ----------------
+// ================= GET MY COURSES =================
 
 export const getMyCourses = () => async (dispatch) => {
   try {
@@ -89,31 +87,21 @@ export const getMyCourses = () => async (dispatch) => {
       type: MY_COURSES_REQUEST,
     });
 
-    const response = await fetch(
+    const data = await fetchWithAuth(
+      dispatch,
       `${API_URL}/api/courses/student/my-courses`,
-
       {
         method: "GET",
-
-        credentials: "include",
       },
     );
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
-
     dispatch({
       type: MY_COURSES_SUCCESS,
-
       payload: data.courses,
     });
   } catch (error) {
     dispatch({
       type: MY_COURSES_FAIL,
-
       payload: error.message,
     });
   }
@@ -121,19 +109,15 @@ export const getMyCourses = () => async (dispatch) => {
 
 // ================= ENROLL COURSE =================
 
-export const enrollCourse = (id) => async () => {
+export const enrollCourse = (id) => async (dispatch) => {
   try {
-    const response = await fetch(`${API_URL}/api/courses/${id}/enroll`, {
-      method: "POST",
-
-      credentials: "include",
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
+    const data = await fetchWithAuth(
+      dispatch,
+      `${API_URL}/api/courses/${id}/enroll`,
+      {
+        method: "POST",
+      },
+    );
 
     return data;
   } catch (error) {
@@ -149,25 +133,18 @@ export const getTeacherCourses = () => async (dispatch) => {
       type: TEACHER_COURSES_REQUEST,
     });
 
-    const response = await fetch(`${API_URL}/api/courses/teacher/my-courses`, {
-      credentials: "include",
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
+    const data = await fetchWithAuth(
+      dispatch,
+      `${API_URL}/api/courses/teacher/my-courses`,
+    );
 
     dispatch({
       type: TEACHER_COURSES_SUCCESS,
-
       payload: data.courses,
     });
   } catch (error) {
     dispatch({
       type: TEACHER_COURSES_FAIL,
-
       payload: error.message,
     });
   }
@@ -181,27 +158,22 @@ export const createCourse = (courseData) => async (dispatch) => {
       type: CREATE_COURSE_REQUEST,
     });
 
-    const response = await fetch(`${API_URL}/api/courses/teacher/create`, {
-      method: "POST",
+    const data = await fetchWithAuth(
+      dispatch,
+      `${API_URL}/api/courses/teacher/create`,
+      {
+        method: "POST",
 
-      headers: {
-        "Content-Type": "application/json",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(courseData),
       },
-
-      credentials: "include",
-
-      body: JSON.stringify(courseData),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
+    );
 
     dispatch({
       type: CREATE_COURSE_SUCCESS,
-
       payload: data.course,
     });
 
@@ -209,7 +181,6 @@ export const createCourse = (courseData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CREATE_COURSE_FAIL,
-
       payload: error.message,
     });
 
@@ -225,17 +196,13 @@ export const deleteCourse = (id) => async (dispatch) => {
       type: DELETE_COURSE_REQUEST,
     });
 
-    const response = await fetch(`${API_URL}/api/courses/teacher/${id}`, {
-      method: "DELETE",
-
-      credentials: "include",
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
+    const data = await fetchWithAuth(
+      dispatch,
+      `${API_URL}/api/courses/teacher/${id}`,
+      {
+        method: "DELETE",
+      },
+    );
 
     dispatch({
       type: DELETE_COURSE_SUCCESS,
@@ -245,7 +212,6 @@ export const deleteCourse = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_COURSE_FAIL,
-
       payload: error.message,
     });
 

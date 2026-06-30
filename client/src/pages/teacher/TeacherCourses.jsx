@@ -31,9 +31,13 @@ const TeacherCourses = () => {
 
   const [thumbnail, setThumbnail] = useState("");
 
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   useEffect(() => {
+    if (!userInfo) return;
+
     dispatch(getTeacherCourses());
-  }, [dispatch]);
+  }, [dispatch, userInfo]);
 
   // ---------------- ADD COURSE ----------------
 

@@ -11,13 +11,17 @@ const MyLiveCourses = () => {
 
   const myLiveCourses = useSelector((state) => state.myLiveCourses);
 
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   const { loading, error, liveCourses = [] } = myLiveCourses;
 
   // ================= FETCH LIVE COURSES =================
 
   useEffect(() => {
+    if (!userInfo) return;
+
     dispatch(getMyLiveCourses());
-  }, [dispatch]);
+  }, [dispatch, userInfo]);
 
   // ================= ERROR =================
 

@@ -41,12 +41,12 @@ const Navbar = () => {
 
   // ---------------- LOGOUT ----------------
 
-  const logoutHandler = () => {
-    dispatch(logout());
+  const logoutHandler = async () => {
+    await dispatch(logout());
 
-    navigate("/");
-
-    setMobileMenuOpen(false);
+    navigate("/login", {
+      replace: true,
+    });
   };
 
   return (
