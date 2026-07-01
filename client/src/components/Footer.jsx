@@ -165,7 +165,7 @@ const Footer = () => {
                   <p className="mt-1 text-gray-300">
                     ChartWiz Academy
                     <br />
-                    Block No. 38 , First Floor Pocket 20 Sector - 24
+                    Plot No. 38 , First Floor Pocket 20 Sector - 24
                     Rohini-110085
                     <br />
                     Delhi, India
