@@ -89,13 +89,15 @@ const StudentDashboard = () => {
   };
 
   useEffect(() => {
+    if (!userInfo) return;
+
     dispatch(getMyCourses());
 
     dispatch(getMyLiveCourses());
 
     dispatch(listWebinars());
-  }, [dispatch]);
-
+  }, [dispatch, userInfo]);
+  
   return (
     <div className="space-y-8">
       {/* HERO */}

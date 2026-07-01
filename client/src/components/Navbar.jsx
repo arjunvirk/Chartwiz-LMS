@@ -41,12 +41,12 @@ const Navbar = () => {
 
   // ---------------- LOGOUT ----------------
 
-  const logoutHandler = () => {
-    dispatch(logout());
+  const logoutHandler = async () => {
+    await dispatch(logout());
 
-    navigate("/");
-
-    setMobileMenuOpen(false);
+    navigate("/login", {
+      replace: true,
+    });
   };
 
   return (
@@ -237,7 +237,7 @@ const Navbar = () => {
                 {/* PROFILE */}
 
                 <Link
-                  to="/dashboard/profile"
+                  to={profilePath}
                   onClick={() => setMobileMenuOpen(false)}
                   className="rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
                 >
@@ -247,7 +247,7 @@ const Navbar = () => {
                 {/* DASHBOARD */}
 
                 <Link
-                  to="/dashboard"
+                  to={dashboardPath}
                   onClick={() => setMobileMenuOpen(false)}
                   className="rounded-xl bg-black px-4 py-3 text-center text-sm font-semibold text-white"
                 >

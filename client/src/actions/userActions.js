@@ -9,15 +9,14 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
-  USER_VERIFY_REQUEST,
-  USER_VERIFY_SUCCESS,
-  USER_VERIFY_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
 } from "../constants/userConstants";
 
 import { API_URL } from "../config/api";
+
+import fetchWithAuth from "../utils/fetchWithAuth";
 
 // ---------------- LOGIN USER ----------------
 
@@ -27,24 +26,20 @@ export const login = (email, password) => async (dispatch) => {
       type: USER_LOGIN_REQUEST,
     });
 
-    const response = await fetch(
-      `${API_URL}/api/users/login`,
+    const response = await fetch(`${API_URL}/api/users/login`, {
+      method: "POST",
 
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        credentials: "include",
-
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+
+      credentials: "include",
+
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
 
     const data = await response.json();
 
@@ -54,19 +49,13 @@ export const login = (email, password) => async (dispatch) => {
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
-
       payload: data,
     });
 
-    localStorage.setItem(
-      "userInfo",
-
-      JSON.stringify(data),
-    );
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
-
       payload: error.message,
     });
   }
@@ -80,25 +69,21 @@ export const register = (name, email, password) => async (dispatch) => {
       type: USER_REGISTER_REQUEST,
     });
 
-    const response = await fetch(
-      `${API_URL}/api/users/register`,
+    const response = await fetch(`${API_URL}/api/users/register`, {
+      method: "POST",
 
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        credentials: "include",
-
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+
+      credentials: "include",
+
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    });
 
     const data = await response.json();
 
@@ -108,13 +93,11 @@ export const register = (name, email, password) => async (dispatch) => {
 
     dispatch({
       type: USER_REGISTER_SUCCESS,
-
       payload: data,
     });
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
-
       payload: error.message,
     });
   }
@@ -128,31 +111,17 @@ export const getUserDetails = () => async (dispatch) => {
       type: USER_DETAILS_REQUEST,
     });
 
-    const response = await fetch(
-      `${API_URL}/api/users/me`,
-
-      {
-        method: "GET",
-
-        credentials: "include",
-      },
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
+    const data = await fetchWithAuth(dispatch, `${API_URL}/api/users/me`, {
+      method: "GET",
+    });
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
-
       payload: data,
     });
   } catch (error) {
     dispatch({
       type: USER_DETAILS_FAIL,
-
       payload: error.message,
     });
   }
@@ -166,31 +135,18 @@ export const updateUserProfile = (userData) => async (dispatch) => {
       type: USER_UPDATE_PROFILE_REQUEST,
     });
 
-    const response = await fetch(
-      `${API_URL}/api/users/profile`,
+    const data = await fetchWithAuth(dispatch, `${API_URL}/api/users/profile`, {
+      method: "PUT",
 
-      {
-        method: "PUT",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        credentials: "include",
-
-        body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
+      body: JSON.stringify(userData),
+    });
 
     dispatch({
       type: USER_UPDATE_PROFILE_SUCCESS,
-
       payload: data,
     });
 
@@ -198,21 +154,15 @@ export const updateUserProfile = (userData) => async (dispatch) => {
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
-
       payload: data,
     });
 
     // UPDATE LOCAL STORAGE
 
-    localStorage.setItem(
-      "userInfo",
-
-      JSON.stringify(data),
-    );
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
-
       payload: error.message,
     });
   }
@@ -220,20 +170,40 @@ export const updateUserProfile = (userData) => async (dispatch) => {
 
 // ---------------- LOGOUT USER ----------------
 
-export const logout = () => {
-  return async (dispatch) => {
-    try {
-      await fetch(`${API_URL}/api/users/logout`, {
-        method: "GET",
-        credentials: "include",
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    localStorage.removeItem("userInfo");
-
-    dispatch({
-      type: USER_LOGOUT,
+export const logout = () => async (dispatch) => {
+  try {
+    await fetch(`${API_URL}/api/users/logout`, {
+      method: "GET",
+      credentials: "include",
     });
-  };
+  } catch (error) {
+    console.log(error);
+  }
+
+  localStorage.removeItem("userInfo");
+
+  dispatch({
+    type: USER_LOGOUT,
+  });
+
+  return true;
+};
+
+// ---------------- CHECK AUTH ----------------
+
+export const checkAuth = () => async (dispatch, getState) => {
+  const {
+    userLogin: { userInfo },
+  } = getState();
+
+  if (!userInfo) return;
+
+  try {
+    await fetchWithAuth(dispatch, `${API_URL}/api/users/me`, {
+      method: "GET",
+    });
+  } catch (error) {
+    // fetchWithAuth already handles USER_LOGOUT
+    console.log(error.message);
+  }
 };

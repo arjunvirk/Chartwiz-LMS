@@ -13,13 +13,17 @@ const MyCourses = () => {
 
   const myCourses = useSelector((state) => state.myCourses);
 
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   const { loading, error, courses } = myCourses;
 
   // ---------------- FETCH COURSES ----------------
 
   useEffect(() => {
+    if (!userInfo) return;
+
     dispatch(getMyCourses());
-  }, [dispatch]);
+  }, [dispatch, userInfo]);
 
   // ---------------- ERROR TOAST ----------------
 

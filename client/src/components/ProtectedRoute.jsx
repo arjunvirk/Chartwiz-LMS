@@ -1,64 +1,24 @@
-import { useEffect, useState } from "react";
-
-import { Navigate } from "react-router-dom";
-import { API_URL } from "../config/api";
+import { Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ProtectedRoute = ({ children }) => {
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const userLogin = useSelector((state) => state.userLogin);
 
-  useEffect(() => {
-    console.log("ProtectedRoute mounted");
-
-    const checkAuth = async () => {
-      console.log("===== CHECK AUTH =====");
-
-      try {
-        const response = await fetch(`${API_URL}/api/users/me`, {
-          credentials: "include",
-        });
-
-        console.log("Status:", response.status);
-
-        const data = await response.json();
-
-        console.log("Response:", data);
-
-        if (response.ok) {
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
-      } catch (err) {
-        console.log(err);
-
-        setIsAuthenticated(false);
-      }
-
-      setLoading(false);
-    };
-
-    checkAuth();
-  }, []);
-
-  // LOADING
+  const { loading, userInfo } = userLogin;
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-2xl font-bold">
-        Loading...
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-black border-t-transparent"></div>
       </div>
     );
   }
 
-  // NOT AUTHENTICATED
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+  if (!userInfo) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
-
-  // AUTHENTICATED
 
   return children;
 };

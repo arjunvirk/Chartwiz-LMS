@@ -43,22 +43,33 @@ const EditAnalysis = () => {
     }
   }, [analysis]);
 
-  const submitHandler = (e) => {
+  if (!analysis) {
+    return (
+      <div className="flex justify-center py-20">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-black border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    dispatch(
-      updateAnalysis(id, {
-        title,
-        market,
-        featured,
-        image,
-        content,
-      }),
-    );
+    try {
+      await dispatch(
+        updateAnalysis(id, {
+          title,
+          market,
+          featured,
+          image,
+          content,
+        }),
+      );
 
-    navigate("/teacher/dashboard/analysis");
+      navigate("/teacher/dashboard/analysis");
+    } catch (error) {
+      console.log(error);
+    }
   };
-
   return (
     <div className="mx-auto max-w-5xl">
       <div className="rounded-4xl bg-black p-8 text-white">

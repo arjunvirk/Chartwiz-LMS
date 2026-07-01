@@ -56,13 +56,13 @@ const LiveMarkets = () => {
             },
 
             {
-              proName: "NASDAQ:NDX",
-              title: "NASDAQ",
+              proName: "FX:EURUSD",
+              title: "EURUSD",
             },
 
             {
-              proName: "TVC:DXY",
-              title: "DXY",
+              proName: "TVC:USOIL",
+              title: "US Oil",
             },
           ]}
         />
@@ -128,20 +128,20 @@ const LiveMarkets = () => {
           />
         </div>
 
-        {/* NASDAQ */}
+        {/* EURUSD */}
 
         <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#111] p-4 shadow-2xl">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl font-bold">NASDAQ</h2>
+            <h2 className="text-2xl font-bold">EURUSD</h2>
 
-            <span className="rounded-full bg-green-500/20 px-4 py-1 text-xs font-bold text-green-400">
-              INDEX
+            <span className="rounded-full bg-blue-500/20 px-4 py-1 text-xs font-bold text-blue-400">
+              FOREX
             </span>
           </div>
 
           <AdvancedRealTimeChart
             theme="dark"
-            symbol="NASDAQ:NDX"
+            symbol="FX:EURUSD"
             height={500}
             width="100%"
           />
@@ -151,7 +151,7 @@ const LiveMarkets = () => {
 
         <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#111] p-4 shadow-2xl lg:col-span-2">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl font-bold">DXY</h2>
+            <h2 className="text-2xl font-bold">USOIL</h2>
 
             <span className="rounded-full bg-purple-500/20 px-4 py-1 text-xs font-bold text-purple-400">
               DOLLAR INDEX
@@ -160,7 +160,7 @@ const LiveMarkets = () => {
 
           <AdvancedRealTimeChart
             theme="dark"
-            symbol="TVC:DXY"
+            symbol="TVC:USOIL"
             height={600}
             width="100%"
           />

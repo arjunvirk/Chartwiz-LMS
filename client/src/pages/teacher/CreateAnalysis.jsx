@@ -13,6 +13,10 @@ const CreateAnalysis = () => {
   const [image, setImage] = useState("");
   const [content, setContent] = useState("");
 
+  const analysisCreate = useSelector((state) => state.analysisCreate);
+
+  const { loading } = analysisCreate;
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -140,10 +144,11 @@ const CreateAnalysis = () => {
 
         <button
           type="submit"
-          className="mt-8 flex items-center gap-2 rounded-2xl bg-black px-6 py-4 font-semibold text-white transition hover:bg-gray-800"
+          disabled={loading}
+          className="mt-8 flex items-center gap-2 rounded-2xl bg-black px-6 py-4 font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Save size={18} />
-          Publish Analysis
+          {loading ? "Publishing..." : "Publish Analysis"}
         </button>
       </form>
     </div>

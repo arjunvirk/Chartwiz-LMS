@@ -27,9 +27,13 @@ const LeadManagementScreen = () => {
   const leadUpdate = useSelector((state) => state.leadUpdate);
   const { success: successUpdate } = leadUpdate;
 
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   useEffect(() => {
+    if (!userInfo) return;
+
     dispatch(getLeads());
-  }, [dispatch, successDelete, successUpdate]);
+  }, [dispatch, successDelete, successUpdate, userInfo]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Delete this lead?")) {

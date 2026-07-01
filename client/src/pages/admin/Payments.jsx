@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+import fetchWithAuth from "../../utils/fetchWithAuth";
 import toast from "react-hot-toast";
 import { API_URL } from "../../config/api";
 
 const Payments = () => {
+  const dispatch = useDispatch();
   const [payments, setPayments] = useState([]);
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,15 +22,7 @@ const Payments = () => {
 
   const fetchStudents = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/admin/users`, {
-        credentials: "include",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
+      const data = await fetchWithAuth(dispatch, `${API_URL}/api/admin/users`);
 
       const studentUsers = data.users.filter(
         (user) => user.role === "student" && user.isVerified,
@@ -42,15 +38,7 @@ const Payments = () => {
 
   const fetchPayments = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/payments`, {
-        credentials: "include",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
+      const data = await fetchWithAuth(dispatch, `${API_URL}/api/payments`);
 
       setPayments(data.payments);
     } catch (error) {
@@ -58,10 +46,15 @@ const Payments = () => {
     }
   };
 
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   useEffect(() => {
+    if (!userInfo) return;
+
     fetchStudents();
+
     fetchPayments();
-  }, []);
+  }, [userInfo]);
 
   // ================= HANDLE INPUT =================
 
@@ -80,20 +73,19 @@ const Payments = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/api/payments/offline`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const data = await fetchWithAuth(
+        dispatch,
+        `${API_URL}/api/payments/offline`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify(formData),
         },
-        credentials: "include",
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
+      );
 
       toast.success("Payment recorded successfully");
 

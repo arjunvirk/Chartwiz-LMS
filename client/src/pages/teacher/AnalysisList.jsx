@@ -10,6 +10,7 @@ import {
 
 const AnalysisList = () => {
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.userLogin);
 
   const analysisList = useSelector((state) => state.analysisList);
   const { loading, error, analyses = [] } = analysisList;
@@ -18,8 +19,10 @@ const AnalysisList = () => {
   const { success: successDelete } = analysisDelete;
 
   useEffect(() => {
+    if (!userInfo) return;
+
     dispatch(getAnalyses());
-  }, [dispatch, successDelete]);
+  }, [dispatch, successDelete, userInfo]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Delete this analysis?")) {

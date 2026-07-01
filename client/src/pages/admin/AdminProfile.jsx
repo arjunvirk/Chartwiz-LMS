@@ -82,8 +82,16 @@ const AdminProfile = () => {
   }, [success, dispatch]);
 
   useEffect(() => {
+    if (!userInfo) return;
+
     dispatch(getAdminStats());
-  }, [dispatch]);
+  }, [dispatch, userInfo]);
+
+  useEffect(() => {
+    if (userInfo) {
+      setName(userInfo.user.name);
+    }
+  }, [userInfo]);
 
   // ---------------- ERROR ----------------
 

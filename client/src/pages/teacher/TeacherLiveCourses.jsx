@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
+import fetchWithAuth from "../../utils/fetchWithAuth";
 
 import {
   getTeacherLiveCourses,
@@ -24,9 +25,13 @@ const TeacherLiveCourses = () => {
 
   // ================= FETCH COURSES =================
 
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   useEffect(() => {
+    if (!userInfo) return;
+
     dispatch(getTeacherLiveCourses());
-  }, [dispatch]);
+  }, [dispatch, userInfo]);
 
   // ================= ERROR =================
 
@@ -76,29 +81,22 @@ const TeacherLiveCourses = () => {
       if (!meetLink.startsWith("https://meet.google.com")) {
         return toast.error("Enter a valid Google Meet link");
       }
+
       setPublishing(true);
-      const response = await fetch(
+
+      await fetchWithAuth(
+        dispatch,
         `${API_URL}/api/live-courses/${selectedCourse}/publish`,
         {
           method: "PUT",
-
           headers: {
             "Content-Type": "application/json",
           },
-
-          credentials: "include",
-
           body: JSON.stringify({
             meetLink,
           }),
         },
       );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
 
       toast.success("Session published successfully");
 
