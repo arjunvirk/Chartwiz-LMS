@@ -163,10 +163,10 @@ const Footer = () => {
                   <p className="text-sm text-gray-500">Office Address</p>
 
                   <p className="mt-1 text-gray-300">
-                    ChartWiz Academy J20
+                    ChartWiz Academy
                     <br />
-                    Trimurti mandir road near mamta cosmetic Budh vihar phase
-                    2-110086
+                    Block No. 38 , First Floor Pocket 20 Sector - 24
+                    Rohini-110085
                     <br />
                     Delhi, India
                   </p>

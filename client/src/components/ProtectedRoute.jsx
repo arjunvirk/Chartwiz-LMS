@@ -12,19 +12,27 @@ const ProtectedRoute = ({ children }) => {
     console.log("ProtectedRoute mounted");
 
     const checkAuth = async () => {
-      console.log("Checking auth...");
+      console.log("===== CHECK AUTH =====");
 
-      const response = await fetch(`${API_URL}/api/users/me`, {
-        credentials: "include",
-      });
+      try {
+        const response = await fetch(`${API_URL}/api/users/me`, {
+          credentials: "include",
+        });
 
-      console.log("Status:", response.status);
+        console.log("Status:", response.status);
 
-      if (response.ok) {
-        console.log("Authenticated");
-        setIsAuthenticated(true);
-      } else {
-        console.log("Not authenticated");
+        const data = await response.json();
+
+        console.log("Response:", data);
+
+        if (response.ok) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      } catch (err) {
+        console.log(err);
+
         setIsAuthenticated(false);
       }
 

@@ -10,7 +10,7 @@ import {
   Trash2,
   Crown,
   UserPlus,
-} from "lucide-react";
+} from "lucide-react";  
 
 import {
   ResponsiveContainer,

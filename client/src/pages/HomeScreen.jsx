@@ -5,7 +5,6 @@ import { Navigate } from "react-router-dom";
 import HeroSection from "../components/HeroSection";
 import TrustSection from "../components/TrustSection";
 import ChooseUs from "../components/ChooseUs";
-import CoursesShowcase from "../components/CoursesShowcase";
 import TradingFeatures from "../components/TradingFeatures";
 import Testimonials from "../components/Testimonials";
 import FAQ from "../components/FAQ";
@@ -34,7 +33,6 @@ const HomeScreen = () => {
       <HeroSection />
       <TrustSection />
       <ChooseUs />
-      <CoursesShowcase />
       <TradingFeatures />
       <Testimonials />
       <FAQ />
