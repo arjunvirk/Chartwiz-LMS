@@ -20,7 +20,7 @@ const HeroSection = () => {
 
         <div className="mb-6 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-5 py-2 backdrop-blur-md">
           <span className="text-sm font-medium tracking-wide text-green-400">
-            #1 Professional Stock Market Learning Platform
+            #1 Professional Trading Learning Platform
           </span>
         </div>
 
@@ -67,7 +67,7 @@ const HeroSection = () => {
           {/* CARD */}
 
           <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md transition hover:-translate-y-1 hover:bg-white/10">
-            <h2 className="text-4xl font-extrabold text-green-400">5000+</h2>
+            <h2 className="text-4xl font-extrabold text-green-400">500+</h2>
 
             <p className="mt-2 text-sm text-gray-300">Students Enrolled</p>
           </div>
