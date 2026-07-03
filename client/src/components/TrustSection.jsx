@@ -99,7 +99,7 @@ const TrustSection = () => {
             {/* ITEM */}
 
             <div>
-              <h3 className="text-5xl font-extrabold text-green-400">5K+</h3>
+              <h3 className="text-5xl font-extrabold text-green-400">500+</h3>
 
               <p className="mt-3 text-gray-300">Active Students Across India</p>
             </div>

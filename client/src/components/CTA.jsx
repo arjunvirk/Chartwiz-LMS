@@ -114,7 +114,7 @@ const CTA = () => {
 
                   <div className="rounded-3xl border border-white/10 bg-black/30 p-6">
                     <h4 className="text-4xl font-extrabold text-green-400">
-                      5K+
+                      500+
                     </h4>
 
                     <p className="mt-2 text-sm text-gray-400">
@@ -165,7 +165,7 @@ const CTA = () => {
 
                 <div className="text-center">
                   <h4 className="text-3xl font-extrabold text-green-400">
-                    15+
+                    21+
                   </h4>
 
                   <p className="mt-1 text-sm text-gray-400">

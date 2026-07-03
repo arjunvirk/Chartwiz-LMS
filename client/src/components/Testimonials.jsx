@@ -172,7 +172,7 @@ const Testimonials = () => {
               {/* CARD */}
 
               <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-center backdrop-blur-md">
-                <h3 className="text-5xl font-extrabold text-green-400">5K+</h3>
+                <h3 className="text-5xl font-extrabold text-green-400">500+</h3>
 
                 <p className="mt-3 text-gray-300">Active Students</p>
               </div>

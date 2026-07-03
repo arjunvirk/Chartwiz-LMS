@@ -144,7 +144,7 @@ const TradingFeatures = () => {
             {/* ITEM */}
 
             <div>
-              <h3 className="text-5xl font-extrabold text-green-400">15+</h3>
+              <h3 className="text-5xl font-extrabold text-green-400">21+</h3>
 
               <p className="mt-3 text-gray-300">Advanced Trading Strategies</p>
             </div>
