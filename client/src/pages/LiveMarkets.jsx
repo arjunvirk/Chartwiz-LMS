@@ -154,7 +154,7 @@ const LiveMarkets = () => {
             <h2 className="text-2xl font-bold">USOIL</h2>
 
             <span className="rounded-full bg-purple-500/20 px-4 py-1 text-xs font-bold text-purple-400">
-              DOLLAR INDEX
+              US OIL
             </span>
           </div>
 
