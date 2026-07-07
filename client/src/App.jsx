@@ -58,6 +58,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import Support from "./pages/Support";
 import LiveCoursesPage from "./pages/LiveCoursesPage";
+import StudentMarketAnalysisScreen from "./pages/student/StudentMarketAnalysisScreen";
+import StudentMarketAnalysisDetailsScreen from "./pages/student/StudentMarketAnalysisDetailsScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -122,6 +124,16 @@ const App = () => {
           <Route path="live-courses" element={<MyLiveCourses />} />
 
           <Route path="payment" element={<PaymentScreen />} />
+
+          <Route
+            path="/dashboard/market-analysis"
+            element={<StudentMarketAnalysisScreen />}
+          />
+
+          <Route
+            path="/dashboard/market-analysis/:id"
+            element={<StudentMarketAnalysisDetailsScreen />}
+          />
         </Route>
 
         {/* ================= TEACHER DASHBOARD ================= */}

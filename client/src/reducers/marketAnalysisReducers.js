@@ -11,6 +11,9 @@ import {
   ANALYSIS_UPDATE_REQUEST,
   ANALYSIS_UPDATE_SUCCESS,
   ANALYSIS_UPDATE_FAIL,
+  ANALYSIS_DETAILS_REQUEST,
+  ANALYSIS_DETAILS_SUCCESS,
+  ANALYSIS_DETAILS_FAIL,
 } from "../constants/marketAnalysisConstants";
 
 export const analysisListReducer = (
@@ -100,6 +103,28 @@ export const analysisUpdateReducer = (state = {}, action) => {
       };
 
     case ANALYSIS_UPDATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const analysisDetailsReducer = (state = { analysis: {} }, action) => {
+  switch (action.type) {
+    case ANALYSIS_DETAILS_REQUEST:
+      return { loading: true };
+
+    case ANALYSIS_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        analysis: action.payload,
+      };
+
+    case ANALYSIS_DETAILS_FAIL:
       return {
         loading: false,
         error: action.payload,

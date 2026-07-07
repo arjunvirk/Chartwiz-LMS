@@ -22,8 +22,8 @@ const marketAnalysisSchema = new mongoose.Schema(
     },
 
     author: {
-      type: String,
-      default: "Chartwiz Academy",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
 
     featured: {

@@ -6,6 +6,8 @@ import { getMyCourses } from "../../actions/courseActions";
 import { getMyLiveCourses } from "../../actions/liveCourseActions";
 import { listWebinars } from "../../actions/webinarActions";
 
+import { getAnalyses } from "../../actions/marketAnalysisActions";
+
 const StudentDashboard = () => {
   const dispatch = useDispatch();
 
@@ -18,6 +20,10 @@ const StudentDashboard = () => {
   const webinarList = useSelector((state) => state.webinarList);
 
   const { webinars = [] } = webinarList;
+
+  const analysisList = useSelector((state) => state.analysisList);
+
+  const { analyses = [] } = analysisList;
 
   const getWebinarStatus = (webinar) => {
     const now = new Date();
@@ -92,12 +98,11 @@ const StudentDashboard = () => {
     if (!userInfo) return;
 
     dispatch(getMyCourses());
-
     dispatch(getMyLiveCourses());
-
     dispatch(listWebinars());
+    dispatch(getAnalyses());
   }, [dispatch, userInfo]);
-  
+
   return (
     <div className="space-y-8">
       {/* HERO */}
@@ -111,6 +116,80 @@ const StudentDashboard = () => {
           Continue your trading journey with premium mentorship, live sessions
           and structured market education.
         </p>
+
+        {/* MARKET ANALYSIS */}
+
+        <div className="rounded-3xl bg-white p-6 shadow-sm">
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-gray-800">
+              Latest Market Analysis
+            </h2>
+
+            <Link
+              to="/dashboard/market-analysis"
+              className="text-sm font-medium text-black hover:underline"
+            >
+              View All
+            </Link>
+          </div>
+
+          {analyses.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-gray-300 py-12 text-center">
+              <p className="text-gray-500">No market analysis available.</p>
+            </div>
+          ) : (
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {analyses.slice(0, 3).map((analysis) => (
+                <div
+                  key={analysis._id}
+                  className="overflow-hidden rounded-3xl border transition hover:shadow-lg"
+                >
+                  <img
+                    src={
+                      analysis.image ||
+                      "https://via.placeholder.com/600x400?text=Market+Analysis"
+                    }
+                    alt={analysis.title}
+                    className="h-44 w-full object-cover"
+                  />
+
+                  <div className="p-5">
+                    <div className="flex items-center justify-between">
+                      <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+                        {analysis.market}
+                      </span>
+
+                      {analysis.featured && (
+                        <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700">
+                          Featured
+                        </span>
+                      )}
+                    </div>
+
+                    <h3 className="mt-4 line-clamp-2 text-lg font-bold">
+                      {analysis.title}
+                    </h3>
+
+                    <p className="mt-2 line-clamp-3 text-sm text-gray-500">
+                      {analysis.content}
+                    </p>
+
+                    <p className="mt-3 text-xs text-gray-400">
+                      By {analysis.author?.name || "ChartWiz Academy"}
+                    </p>
+
+                    <Link
+                      to={`/dashboard/market-analysis/${analysis._id}`}
+                      className="mt-5 inline-block rounded-xl bg-black px-4 py-2 text-sm font-semibold text-white"
+                    >
+                      Read Analysis
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
           <Link

@@ -3,7 +3,10 @@ import MarketAnalysis from "../models/MarketAnalysis.js";
 // CREATE
 export const createAnalysis = async (req, res) => {
   try {
-    const analysis = await MarketAnalysis.create(req.body);
+    const analysis = await MarketAnalysis.create({
+      ...req.body,
+      author: req.user._id,
+    });
 
     res.status(201).json({
       success: true,
@@ -20,9 +23,11 @@ export const createAnalysis = async (req, res) => {
 // GET ALL
 export const getAllAnalyses = async (req, res) => {
   try {
-    const analyses = await MarketAnalysis.find().sort({
-      createdAt: -1,
-    });
+    const analyses = await MarketAnalysis.find()
+      .populate("author", "name")
+      .sort({
+        createdAt: -1,
+      });
 
     res.status(200).json({
       success: true,
@@ -40,7 +45,10 @@ export const getAllAnalyses = async (req, res) => {
 // GET ONE
 export const getSingleAnalysis = async (req, res) => {
   try {
-    const analysis = await MarketAnalysis.findById(req.params.id);
+    const analysis = await MarketAnalysis.findById(req.params.id).populate(
+      "author",
+      "name",
+    );
 
     if (!analysis) {
       return res.status(404).json({

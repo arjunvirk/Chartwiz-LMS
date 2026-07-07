@@ -46,6 +46,7 @@ import {
   analysisCreateReducer,
   analysisDeleteReducer,
   analysisUpdateReducer,
+  analysisDetailsReducer,
 } from "./reducers/marketAnalysisReducers";
 
 import {
@@ -112,6 +113,7 @@ const store = configureStore({
     analysisCreate: analysisCreateReducer,
     analysisDelete: analysisDeleteReducer,
     analysisUpdate: analysisUpdateReducer,
+    analysisDetails: analysisDetailsReducer,
 
     leadList: leadListReducer,
     leadDetails: leadDetailsReducer,

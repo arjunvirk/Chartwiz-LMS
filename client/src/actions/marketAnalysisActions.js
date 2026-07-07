@@ -11,7 +11,12 @@ import {
   ANALYSIS_UPDATE_REQUEST,
   ANALYSIS_UPDATE_SUCCESS,
   ANALYSIS_UPDATE_FAIL,
+  ANALYSIS_DETAILS_FAIL,
+  ANALYSIS_DETAILS_SUCCESS,
+  ANALYSIS_DETAILS_REQUEST,
 } from "../constants/marketAnalysisConstants";
+
+import { API_URL } from "../config/api";
 
 export const getAnalyses = () => async (dispatch) => {
   try {
@@ -19,11 +24,15 @@ export const getAnalyses = () => async (dispatch) => {
       type: ANALYSIS_LIST_REQUEST,
     });
 
-    const response = await fetch("http://localhost:5000/api/analysis", {
+    const response = await fetch(`${API_URL}/api/analysis`, {
       credentials: "include",
     });
 
     const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to fetch analyses");
+    }
 
     dispatch({
       type: ANALYSIS_LIST_SUCCESS,
@@ -43,7 +52,7 @@ export const createAnalysis = (analysisData) => async (dispatch) => {
       type: ANALYSIS_CREATE_REQUEST,
     });
 
-    const response = await fetch("http://localhost:5000/api/analysis", {
+    const response = await fetch(`${API_URL}/api/analysis`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -76,7 +85,7 @@ export const deleteAnalysis = (id) => async (dispatch) => {
       type: ANALYSIS_DELETE_REQUEST,
     });
 
-    const response = await fetch(`http://localhost:5000/api/analysis/${id}`, {
+    const response = await fetch(`${API_URL}/api/analysis/${id}`, {
       method: "DELETE",
       credentials: "include",
     });
@@ -104,7 +113,7 @@ export const updateAnalysis = (id, analysisData) => async (dispatch) => {
       type: ANALYSIS_UPDATE_REQUEST,
     });
 
-    const response = await fetch(`http://localhost:5000/api/analysis/${id}`, {
+    const response = await fetch(`${API_URL}/api/analysis/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -126,6 +135,34 @@ export const updateAnalysis = (id, analysisData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ANALYSIS_UPDATE_FAIL,
+      payload: error.message,
+    });
+  }
+};
+
+export const getAnalysisDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ANALYSIS_DETAILS_REQUEST,
+    });
+
+    const response = await fetch(`${API_URL}/api/analysis/${id}`, {
+      credentials: "include",
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to fetch analysis");
+    }
+
+    dispatch({
+      type: ANALYSIS_DETAILS_SUCCESS,
+      payload: data.analysis,
+    });
+  } catch (error) {
+    dispatch({
+      type: ANALYSIS_DETAILS_FAIL,
       payload: error.message,
     });
   }

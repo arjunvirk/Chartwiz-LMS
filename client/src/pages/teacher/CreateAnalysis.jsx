@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Save, TrendingUp } from "lucide-react";
 
 import { createAnalysis } from "../../actions/marketAnalysisActions";
