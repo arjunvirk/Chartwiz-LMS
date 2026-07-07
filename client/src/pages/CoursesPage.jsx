@@ -78,7 +78,7 @@ const CoursesPage = () => {
   };
 
   return (
-    <section className="min-h-screen bg-[#f5f7fb] py-16 sm:py-10">
+    <section className="min-h-screen bg-[#f5f7fb] py-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         
         {/* COURSES */}
