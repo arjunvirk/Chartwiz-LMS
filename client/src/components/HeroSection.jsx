@@ -26,7 +26,7 @@ const HeroSection = () => {
 
         {/* HEADING */}
 
-        <h1 className="max-w-5xl text-5xl font-extrabold leading-tight tracking-tight md:text-7xl">
+        <h1 className="max-w-5xl text-4xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
           Become a{" "}
           <span className="bg-linear-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
             Consistent Trader
@@ -34,7 +34,7 @@ const HeroSection = () => {
           <br />
           With Expert Mentorship
         </h1>
-
+        
         {/* DESCRIPTION */}
 
         <p className="mt-8 max-w-3xl text-lg leading-relaxed text-gray-300 md:text-xl">

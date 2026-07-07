@@ -80,7 +80,6 @@ const CoursesPage = () => {
   return (
     <section className="min-h-screen bg-[#f5f7fb] py-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        
         {/* COURSES */}
 
         <div className="mt-10">
@@ -112,7 +111,7 @@ const CoursesPage = () => {
           ) : courses.length === 0 ? (
             <div className="mt-16">
               {/* Hero */}
-              <div className="overflow-hidden rounded-[32px] bg-gradient-to-br from-black via-zinc-900 to-black px-8 py-16 text-center text-white shadow-2xl">
+              <div className="overflow-hidden rounded-4xl bg-linear-to-br from-black via-zinc-900 to-black px-8 py-16 text-center text-white shadow-2xl">
                 <span className="inline-flex items-center rounded-full border border-green-500/30 bg-green-500/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.25em] text-green-400">
                   Admissions Open
                 </span>
