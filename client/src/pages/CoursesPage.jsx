@@ -78,41 +78,12 @@ const CoursesPage = () => {
   };
 
   return (
-    <section className="min-h-screen bg-[#f5f7fb] py-16 sm:py-20">
+    <section className="min-h-screen bg-[#f5f7fb] py-16 sm:py-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        {/* HERO */}
-
-        <div className="relative overflow-hidden rounded-4xl bg-black px-6 py-14 text-white shadow-[0_30px_100px_rgba(0,0,0,0.35)] sm:px-10 lg:px-16 lg:py-20">
-          {/* GLOW */}
-
-          <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-green-500/10 blur-3xl"></div>
-
-          <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl"></div>
-
-          <div className="relative z-10 max-w-4xl">
-            <span className="inline-flex max-w-full items-center justify-center rounded-full border border-white/10 bg-white/5 px-3 py-2 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-green-400 backdrop-blur-md sm:px-5 sm:text-xs sm:tracking-[0.2em]">
-              Explore Premium Mentorship
-            </span>
-
-            <h1 className="mt-8 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-7xl">
-              Professional
-              <span className="bg-linear-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
-                {" "}
-                Trading Courses
-              </span>
-            </h1>
-
-            <p className="mt-8 max-w-3xl text-base leading-relaxed text-gray-300 sm:text-lg">
-              Learn stock market trading through structured premium mentorship
-              focused on practical strategies, risk management, psychology and
-              disciplined execution.
-            </p>
-          </div>
-        </div>
-
+        
         {/* COURSES */}
 
-        <div className="mt-20">
+        <div className="mt-10">
           <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
             <div>
               <span className="rounded-full bg-black px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-white">
@@ -139,38 +110,156 @@ const CoursesPage = () => {
               <div className="h-14 w-14 animate-spin rounded-full border-4 border-black border-t-transparent"></div>
             </div>
           ) : courses.length === 0 ? (
-            <div className="mt-16 overflow-hidden rounded-4xl border border-dashed border-gray-300 bg-white px-6 py-20 text-center shadow-sm sm:px-10">
-              <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-black text-4xl text-white shadow-lg">
-                📚
+            <div className="mt-16">
+              {/* Hero */}
+              <div className="overflow-hidden rounded-[32px] bg-gradient-to-br from-black via-zinc-900 to-black px-8 py-16 text-center text-white shadow-2xl">
+                <span className="inline-flex items-center rounded-full border border-green-500/30 bg-green-500/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.25em] text-green-400">
+                  Admissions Open
+                </span>
+
+                <h2 className="mt-6 text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
+                  Offline{" "}
+                  <span className="text-green-400">Trading Programs</span>
+                </h2>
+
+                <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-gray-300">
+                  Learn directly from experienced mentors through classroom
+                  training, practical chart analysis, live market sessions and
+                  professional trading mentorship.
+                </p>
               </div>
 
-              <h2 className="mt-8 text-4xl font-extrabold tracking-tight text-black">
-                Courses Coming Soon
-              </h2>
+              {/* Offline Courses */}
+              <div className="mt-14 grid gap-8 lg:grid-cols-2">
+                {/* Course 1 */}
+                <div className="group rounded-[30px] border border-gray-200 bg-white p-8 shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-full bg-green-500 px-4 py-2 text-xs font-bold uppercase tracking-wider text-black">
+                      Admissions Open
+                    </span>
 
-              <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-gray-500 sm:text-lg">
-                Our mentorship team is currently preparing high-quality premium
-                trading courses focused on real market experience, disciplined
-                execution, risk management and long-term profitability.
-              </p>
+                    <span className="rounded-full bg-black px-4 py-2 text-sm font-bold text-white">
+                      2 Months
+                    </span>
+                  </div>
 
-              <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-gray-400">
-                We are recording structured video lessons, live chart analysis
-                sessions and practical Courses Available to deliver the best
-                learning experience for our future students.
-              </p>
+                  <h3 className="mt-8 text-3xl font-extrabold text-black">
+                    The Forex Program
+                  </h3>
 
-              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-                <div className="rounded-2xl bg-black px-5 py-3 text-sm font-semibold text-white">
-                  Professional Mentorship
+                  <p className="mt-4 leading-relaxed text-gray-600">
+                    A complete classroom-based Forex trading program covering
+                    technical analysis, market structure, risk management,
+                    psychology and live market execution.
+                  </p>
+
+                  <div className="mt-8 grid gap-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-green-500">✔</span>
+                      Classroom Training
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-green-500">✔</span>
+                      Live Market Analysis
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-green-500">✔</span>
+                      Risk Management
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-green-500">✔</span>
+                      Trading Psychology
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-green-500">✔</span>
+                      Mentor Support
+                    </div>
+                  </div>
+
+                  <button className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black">
+                    Apply for Offline Batch
+                  </button>
                 </div>
 
-                <div className="rounded-2xl bg-green-500 px-5 py-3 text-sm font-semibold text-black">
-                  Real Market Strategies
+                {/* Course 2 */}
+                <div className="group rounded-[30px] border border-gray-200 bg-white p-8 shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-full bg-green-500 px-4 py-2 text-xs font-bold uppercase tracking-wider text-black">
+                      Admissions Open
+                    </span>
+
+                    <span className="rounded-full bg-black px-4 py-2 text-sm font-bold text-white">
+                      3 Months
+                    </span>
+                  </div>
+
+                  <h3 className="mt-8 text-3xl font-extrabold text-black">
+                    The Forex Program with Indian Market
+                  </h3>
+
+                  <p className="mt-4 leading-relaxed text-gray-600">
+                    Master both Forex and the Indian Stock Market with
+                    comprehensive classroom training, live trading sessions and
+                    professional mentorship.
+                  </p>
+
+                  <div className="mt-8 grid gap-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-green-500">✔</span>
+                      Forex + Indian Market
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-green-500">✔</span>
+                      Technical Analysis
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-green-500">✔</span>
+                      Live Practical Sessions
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-green-500">✔</span>
+                      Trading Psychology
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-green-500">✔</span>
+                      Professional Mentorship
+                    </div>
+                  </div>
+
+                  <button className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black">
+                    Apply for Offline Batch
+                  </button>
+                </div>
+              </div>
+
+              {/* Online Coming Soon */}
+              <div className="mt-16 rounded-[30px] border border-dashed border-gray-300 bg-white p-10 text-center">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-black text-4xl text-white">
+                  💻
                 </div>
 
-                <div className="rounded-2xl border border-gray-300 px-5 py-3 text-sm font-semibold text-gray-700">
-                  Courses Launching Soon
+                <h3 className="mt-6 text-4xl font-extrabold text-black">
+                  Online Courses
+                  <span className="text-green-500"> Coming Soon</span>
+                </h3>
+
+                <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-gray-600">
+                  We're building a premium online learning experience featuring
+                  recorded video lessons, live webinars, quizzes, downloadable
+                  study materials and mentor support so you can learn from
+                  anywhere.
+                </p>
+
+                <div className="mt-8 inline-flex rounded-full border border-green-200 bg-green-50 px-6 py-3 font-semibold text-green-700">
+                  🚀 Launching Soon
                 </div>
               </div>
             </div>
