@@ -35,7 +35,7 @@ const HeroSection = () => {
           With Expert Mentorship
         </h1>
         
-        {/* DESCRIPTION */}
+        {/* DESCRIPTION
 
         <p className="mt-8 max-w-3xl text-lg leading-relaxed text-gray-300 md:text-xl">
           Master Price Action, Options Trading, Risk Management, Trading
@@ -45,7 +45,7 @@ const HeroSection = () => {
           </span>
           . Learn directly from experienced mentors with practical market
           sessions, personalized guidance, and lifetime community support.
-        </p>
+        </p> */}
 
         {/* TRUST POINTS */}
 
@@ -69,7 +69,7 @@ const HeroSection = () => {
 
         {/* BUTTONS */}
 
-        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+        <div className="mt-20 flex flex-col gap-4 sm:flex-row">
           <Link
             to="/register"
             className="rounded-2xl bg-green-500 px-8 py-4 text-sm font-bold text-black transition hover:scale-105 hover:bg-green-400"
