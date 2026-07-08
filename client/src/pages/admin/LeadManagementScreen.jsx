@@ -1,14 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-import {
-  Users,
-  Search,
-  Phone,
-  Trash2,
-  CalendarDays,
-  FileText,
-} from "lucide-react";
+import { Users, Search, Phone, Trash2, CalendarDays } from "lucide-react";
 
 import { getLeads, deleteLead } from "../../actions/leadActions";
 
@@ -66,6 +60,14 @@ const LeadManagementScreen = () => {
     (lead) => lead.status === "converted",
   ).length;
 
+  const demoBookedLeads = leads.filter(
+    (lead) => lead.status === "demo_booked",
+  ).length;
+
+  const paymentPendingLeads = leads.filter(
+    (lead) => lead.status === "payment_pending",
+  ).length;
+
   const getStatusBadge = (status) => {
     switch (status) {
       case "new":
@@ -74,20 +76,25 @@ const LeadManagementScreen = () => {
       case "contacted":
         return "bg-yellow-100 text-yellow-700";
 
-      case "interested":
+      case "demo_booked":
         return "bg-purple-100 text-purple-700";
+
+      case "visit_scheduled":
+        return "bg-indigo-100 text-indigo-700";
+
+      case "payment_pending":
+        return "bg-orange-100 text-orange-700";
 
       case "converted":
         return "bg-green-100 text-green-700";
 
-      case "not_interested":
+      case "closed":
         return "bg-red-100 text-red-700";
 
       default:
         return "bg-gray-100 text-gray-700";
     }
   };
-
   return (
     <div>
       {/* HEADER */}
@@ -112,7 +119,7 @@ const LeadManagementScreen = () => {
 
       {/* STATS */}
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         <div className="rounded-3xl border border-gray-200 bg-white p-7 shadow-sm">
           <p className="text-sm font-medium text-gray-500">Total Leads</p>
 
@@ -135,6 +142,20 @@ const LeadManagementScreen = () => {
           <p className="text-sm font-medium text-gray-500">Converted</p>
 
           <h2 className="mt-3 text-4xl font-extrabold">{convertedLeads}</h2>
+        </div>
+
+        <div className="rounded-3xl border border-gray-200 bg-white p-7 shadow-sm">
+          <p className="text-sm font-medium text-gray-500">Demo Booked</p>
+
+          <h2 className="mt-3 text-4xl font-extrabold">{demoBookedLeads}</h2>
+        </div>
+
+        <div className="rounded-3xl border border-gray-200 bg-white p-7 shadow-sm">
+          <p className="text-sm font-medium text-gray-500">Payment Pending</p>
+
+          <h2 className="mt-3 text-4xl font-extrabold">
+            {paymentPendingLeads}
+          </h2>
         </div>
       </div>
 
@@ -165,9 +186,11 @@ const LeadManagementScreen = () => {
             <option value="all">All Leads</option>
             <option value="new">New</option>
             <option value="contacted">Contacted</option>
-            <option value="interested">Interested</option>
+            <option value="demo_booked">Demo Booked</option>
+            <option value="visit_scheduled">Visit Scheduled</option>
+            <option value="payment_pending">Payment Pending</option>
             <option value="converted">Converted</option>
-            <option value="not_interested">Not Interested</option>
+            <option value="closed">Closed</option>
           </select>
         </div>
       </div>
@@ -204,11 +227,15 @@ const LeadManagementScreen = () => {
 
                   <th className="px-4 py-4 text-left">Phone</th>
 
+                  <th className="px-4 py-4 text-left">Course</th>
+
+                  <th className="px-4 py-4 text-left">Source</th>
+
+                  <th className="px-4 py-4 text-left">Priority</th>
+
                   <th className="px-4 py-4 text-left">Status</th>
 
                   <th className="px-4 py-4 text-left">Follow Up</th>
-
-                  <th className="px-4 py-4 text-left">Notes</th>
 
                   <th className="px-4 py-4 text-left">Actions</th>
                 </tr>
@@ -223,8 +250,31 @@ const LeadManagementScreen = () => {
                       <div className="flex items-center gap-2">
                         <Phone size={16} />
 
-                        {lead.phone}
+                        <a
+                          href={`tel:${lead.phone}`}
+                          className="hover:text-blue-600"
+                        >
+                          {lead.phone}
+                        </a>
                       </div>
+                    </td>
+
+                    <td className="px-4 py-5">{lead.course}</td>
+
+                    <td className="px-4 py-5">{lead.source}</td>
+
+                    <td className="px-4 py-5">
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                          lead.priority === "High"
+                            ? "bg-red-100 text-red-700"
+                            : lead.priority === "Medium"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-green-100 text-green-700"
+                        }`}
+                      >
+                        {lead.priority}
+                      </span>
                     </td>
 
                     <td className="px-4 py-5">
@@ -249,24 +299,22 @@ const LeadManagementScreen = () => {
                       )}
                     </td>
 
-                    <td className="max-w-xs px-4 py-5">
-                      <div className="flex items-start gap-2">
-                        <FileText size={16} />
-
-                        <span className="line-clamp-2 text-sm text-gray-600">
-                          {lead.notes || "No notes"}
-                        </span>
-                      </div>
-                    </td>
-
                     <td className="px-4 py-5">
-                      <button
-                        onClick={() => deleteHandler(lead._id)}
-                        className="flex items-center gap-2 rounded-xl border border-red-300 px-4 py-2 text-red-500 transition hover:bg-red-500 hover:text-white"
-                      >
-                        <Trash2 size={16} />
-                        Delete
-                      </button>
+                      <div className="flex gap-2">
+                        <Link
+                          to={`/admin/dashboard/leads/${lead._id}`}
+                          className="rounded-xl bg-black px-4 py-2 text-sm font-semibold text-white"
+                        >
+                          View
+                        </Link>
+
+                        <button
+                          onClick={() => deleteHandler(lead._id)}
+                          className="rounded-xl border border-red-300 px-4 py-2 text-red-500 hover:bg-red-500 hover:text-white"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

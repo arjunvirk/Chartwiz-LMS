@@ -8,10 +8,30 @@ import {
   deleteLead,
 } from "../controllers/leadController.js";
 
+import { protect } from "../middlewares/authMiddleware.js";
+import { adminOnly } from "../middlewares/adminMiddleware.js";
+
 const router = express.Router();
 
-router.route("/").post(createLead).get(getLeads);
+/* Public Route */
 
-router.route("/:id").get(getLeadById).put(updateLead).delete(deleteLead);
+// Anyone can submit a lead from the website popup
+router.post("/", createLead);
+
+/* Admin Routes */
+
+
+
+// Get all leads
+router.get("/", protect, adminOnly, getLeads);
+
+// Get single lead
+router.get("/:id", protect, adminOnly, getLeadById);
+
+// Update lead
+router.put("/:id", protect, adminOnly, updateLead);
+
+// Delete lead
+router.delete("/:id", protect, adminOnly, deleteLead);
 
 export default router;

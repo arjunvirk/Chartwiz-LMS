@@ -21,8 +21,15 @@ export const getLeads = () => async (dispatch) => {
   try {
     dispatch({ type: LEAD_LIST_REQUEST });
 
-    const response = await fetch(`${API_URL}/api/leads`);
+    const response = await fetch(`${API_URL}/api/leads`, {
+      credentials: "include",
+    });
+
     const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
 
     dispatch({
       type: LEAD_LIST_SUCCESS,
@@ -42,8 +49,15 @@ export const getLeadDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: LEAD_DETAILS_REQUEST });
 
-    const response = await fetch(`${API_URL}/api/leads/${id}`);
+    const response = await fetch(`${API_URL}/api/leads/${id}`, {
+      credentials: "include",
+    });
+
     const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
 
     dispatch({
       type: LEAD_DETAILS_SUCCESS,
@@ -65,15 +79,18 @@ export const updateLead = (id, leadData) => async (dispatch) => {
 
     const response = await fetch(`${API_URL}/api/leads/${id}`, {
       method: "PUT",
-
       headers: {
         "Content-Type": "application/json",
       },
-
+      credentials: "include",
       body: JSON.stringify(leadData),
     });
 
     const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
 
     dispatch({
       type: LEAD_UPDATE_SUCCESS,
@@ -93,9 +110,16 @@ export const deleteLead = (id) => async (dispatch) => {
   try {
     dispatch({ type: LEAD_DELETE_REQUEST });
 
-    await fetch(`${API_URL}/api/leads/${id}`, {
+    const response = await fetch(`${API_URL}/api/leads/${id}`, {
       method: "DELETE",
+      credentials: "include",
     });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message);
+    }
 
     dispatch({
       type: LEAD_DELETE_SUCCESS,

@@ -14,7 +14,15 @@ const leadSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["new", "contacted", "interested", "not_interested", "converted"],
+      enum: [
+        "new",
+        "contacted",
+        "demo_booked",
+        "visit_scheduled",
+        "payment_pending",
+        "converted",
+        "closed",
+      ],
       default: "new",
     },
 
@@ -24,6 +32,38 @@ const leadSchema = new mongoose.Schema(
     },
 
     followUpDate: {
+      type: Date,
+    },
+    email: {
+      type: String,
+      default: "",
+    },
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+    },
+    source: {
+      type: String,
+      enum: ["Website", "Meta Ads", "Google", "WhatsApp", "Referral"],
+      default: "Website",
+    },
+    lastContacted: {
+      type: Date,
+    },
+    priority: {
+      type: String,
+      enum: ["Low", "Medium", "High"],
+      default: "Medium",
+    },
+    visitDate: {
+      type: Date,
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["Pending", "Paid"],
+      default: "Pending",
+    },
+    convertedAt: {
       type: Date,
     },
   },

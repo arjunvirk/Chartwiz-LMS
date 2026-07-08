@@ -60,6 +60,7 @@ import Support from "./pages/Support";
 import LiveCoursesPage from "./pages/LiveCoursesPage";
 import StudentMarketAnalysisScreen from "./pages/student/StudentMarketAnalysisScreen";
 import StudentMarketAnalysisDetailsScreen from "./pages/student/StudentMarketAnalysisDetailsScreen";
+import LeadDetailsScreen from "./pages/admin/LeadDetailsScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -182,6 +183,8 @@ const App = () => {
           <Route path="invoices" element={<Invoices />} />
 
           <Route path="leads" element={<LeadManagementScreen />} />
+
+          <Route path="leads/:id" element={<LeadDetailsScreen />} />
         </Route>
 
         {/* OTHER PAGES */}
