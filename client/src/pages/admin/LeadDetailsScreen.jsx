@@ -13,7 +13,11 @@ import {
   Clock,
 } from "lucide-react";
 
-import { getLeadDetails } from "../../actions/leadActions";
+import { getLeadDetails, updateLead } from "../../actions/leadActions";
+
+import { LEAD_UPDATE_RESET } from "../../constants/leadConstants";
+
+import { toast } from "react-hot-toast";
 
 const LeadDetailsScreen = () => {
   const { id } = useParams();
@@ -24,6 +28,14 @@ const LeadDetailsScreen = () => {
 
   const { loading, error, lead = {} } = leadDetails;
 
+  const leadUpdate = useSelector((state) => state.leadUpdate);
+
+  const {
+    loading: loadingUpdate,
+    success: successUpdate,
+    error: errorUpdate,
+  } = leadUpdate;
+
   const [status, setStatus] = useState("");
   const [priority, setPriority] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
@@ -33,7 +45,7 @@ const LeadDetailsScreen = () => {
 
   useEffect(() => {
     dispatch(getLeadDetails(id));
-  }, [dispatch, id]);
+  }, [dispatch, id, successUpdate]);
 
   useEffect(() => {
     if (lead._id) {
@@ -57,6 +69,27 @@ const LeadDetailsScreen = () => {
     }
   }, [lead]);
 
+  useEffect(() => {
+    if (successUpdate) {
+      toast.success("Lead updated successfully");
+      dispatch({ type: LEAD_UPDATE_RESET });
+    }
+  }, [successUpdate, dispatch]);
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    dispatch(
+      updateLead(id, {
+        status,
+        priority,
+        paymentStatus,
+        followUpDate,
+        visitDate,
+        notes,
+      }),
+    );
+  };
+
   if (loading) {
     return (
       <div className="rounded-3xl bg-white p-16 text-center shadow-sm">
@@ -78,7 +111,7 @@ const LeadDetailsScreen = () => {
       {/* BACK */}
 
       <Link
-        to="/admin/leads"
+        to="/admin/dashboard/leads"
         className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-5 py-3 text-sm font-semibold transition hover:bg-gray-100"
       >
         <ArrowLeft size={18} />
@@ -189,7 +222,20 @@ const LeadDetailsScreen = () => {
           </div>
         </div>
 
-        <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
+        <form
+          onSubmit={submitHandler}
+          className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm"
+        >
+          {successUpdate && (
+            <div className="mb-6 rounded-2xl bg-green-100 p-4 text-green-700">
+              Lead updated successfully.
+            </div>
+          )}
+          {errorUpdate && (
+            <div className="mb-6 rounded-2xl bg-red-100 p-4 text-red-700">
+              {errorUpdate}
+            </div>
+          )}
           <h2 className="mb-8 text-2xl font-bold">CRM Management</h2>
 
           <div className="grid gap-6 md:grid-cols-2">
@@ -305,7 +351,17 @@ const LeadDetailsScreen = () => {
               className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
             />
           </div>
-        </div>
+
+          <div className="mt-8 flex justify-end">
+            <button
+              type="submit"
+              disabled={loadingUpdate}
+              className="rounded-2xl bg-black px-8 py-4 font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loadingUpdate ? "Saving..." : "Save Changes"}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
