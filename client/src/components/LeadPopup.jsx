@@ -11,6 +11,8 @@ const LeadPopup = () => {
 
   const [phone, setPhone] = useState("");
 
+  const [email, setEmail] = useState("");
+
   // OPEN AFTER 4 SECONDS
 
   useEffect(() => {
@@ -56,6 +58,7 @@ const LeadPopup = () => {
 
         body: JSON.stringify({
           name,
+          email,
           phone,
         }),
       });
@@ -73,6 +76,8 @@ const LeadPopup = () => {
       setOpen(false);
 
       setName("");
+
+      setEmail("");
 
       setPhone("");
     } catch (error) {
@@ -119,6 +124,14 @@ const LeadPopup = () => {
             placeholder="Enter your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
+          />
+
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
           />
 

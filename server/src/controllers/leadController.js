@@ -4,7 +4,7 @@ import Lead from "../models/Lead.js";
 
 export const createLead = async (req, res) => {
   try {
-    const { name, phone } = req.body;
+    const { name, email, phone, source } = req.body;
 
     if (!name || !phone) {
       return res.status(400).json({
@@ -15,7 +15,9 @@ export const createLead = async (req, res) => {
 
     const lead = await Lead.create({
       name,
+      email,
       phone,
+      source,
     });
 
     res.status(201).json({
