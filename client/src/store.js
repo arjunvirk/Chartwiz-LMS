@@ -56,6 +56,15 @@ import {
   leadDeleteReducer,
 } from "./reducers/leadReducers";
 
+import {
+  admissionCreateReducer,
+  admissionListReducer,
+  admissionDetailsReducer,
+  admissionUpdateReducer,
+  admissionDeleteReducer,
+  admissionApproveReducer,
+} from "./reducers/admissionReducers";
+
 import { razorpayOrderReducer } from "./reducers/razorpayReducers";
 
 // USER INFO FROM LOCAL STORAGE
@@ -119,6 +128,17 @@ const store = configureStore({
     leadDetails: leadDetailsReducer,
     leadUpdate: leadUpdateReducer,
     leadDelete: leadDeleteReducer,
+
+    // Admission Management System (AMS)
+
+    admissionCreate: admissionCreateReducer,
+    admissionList: admissionListReducer,
+    admissionDetails: admissionDetailsReducer,
+    admissionUpdate: admissionUpdateReducer,
+    admissionDelete: admissionDeleteReducer,
+    admissionApprove: admissionApproveReducer,
+
+    // Razorpay
 
     razorpayOrder: razorpayOrderReducer,
   },

@@ -39,13 +39,36 @@ const leadSchema = new mongoose.Schema(
       default: "",
     },
     course: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Course",
+      type: String,
+      required: true,
+      enum: ["The Forex Program", "The Forex Program with Indian Market"],
     },
     source: {
       type: String,
-      enum: ["Website", "Meta Ads", "Google", "WhatsApp", "Referral"],
       default: "Website",
+    },
+    utmSource: {
+      type: String,
+      default: "",
+    },
+    referrer: {
+      type: String,
+      default: "",
+    },
+
+    utmMedium: {
+      type: String,
+      default: "",
+    },
+
+    utmCampaign: {
+      type: String,
+      default: "",
+    },
+
+    utmContent: {
+      type: String,
+      default: "",
     },
     lastContacted: {
       type: Date,

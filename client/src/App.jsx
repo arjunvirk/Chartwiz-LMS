@@ -61,6 +61,9 @@ import LiveCoursesPage from "./pages/LiveCoursesPage";
 import StudentMarketAnalysisScreen from "./pages/student/StudentMarketAnalysisScreen";
 import StudentMarketAnalysisDetailsScreen from "./pages/student/StudentMarketAnalysisDetailsScreen";
 import LeadDetailsScreen from "./pages/admin/LeadDetailsScreen";
+import AdmissionScreen from "./pages/AdmissionScreen";
+import AdmissionManagementScreen from "./pages/admin/AdmissionManagementScreen";
+import AdmissionDetailsScreen from "./pages/admin/AdmissionDetailsScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -93,6 +96,8 @@ const App = () => {
         <Route path="/live-courses" element={<LiveCoursesPage />} />
 
         <Route path="/about" element={<About />} />
+
+        <Route path="/admission" element={<AdmissionScreen />} />
 
         {/* LIVE MARKETS */}
 
@@ -185,6 +190,10 @@ const App = () => {
           <Route path="leads" element={<LeadManagementScreen />} />
 
           <Route path="leads/:id" element={<LeadDetailsScreen />} />
+
+          <Route path="admissions" element={<AdmissionManagementScreen />} />
+
+          <Route path="admissions/:id" element={<AdmissionDetailsScreen />} />
         </Route>
 
         {/* OTHER PAGES */}

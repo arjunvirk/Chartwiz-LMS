@@ -45,6 +45,8 @@ const DashboardLayout = () => {
 
   const adminInvoicesPath = "/admin/dashboard/invoices";
 
+  const adminAdmissionsPath = "/admin/dashboard/admissions";
+
   const paymentPath = "/dashboard/payment";
 
   return (
@@ -230,6 +232,14 @@ const DashboardLayout = () => {
                 >
                   Leads
                 </Link>
+
+                <Link
+                  to={adminAdmissionsPath}
+                  onClick={() => setSidebarOpen(false)}
+                  className="rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-black hover:text-white"
+                >
+                  Admissions
+                </Link>
               </>
             )}
 
@@ -253,20 +263,6 @@ const DashboardLayout = () => {
           desktopSidebarOpen ? "w-72" : "w-24"
         }`}
       >
-        {/* LOGO
-
-        <div
-          className={`flex items-center ${
-            desktopSidebarOpen ? "justify-between px-6" : "justify-center"
-          } py-6`}
-        >
-          {desktopSidebarOpen && (
-            <h1 className="text-3xl font-extrabold text-black">C</h1>
-          )}
-        </div> */}
-
-        {/* USER CARD */}
-
         {desktopSidebarOpen && (
           <div className="mx-4 mt-6 rounded-3xl border border-gray-200 bg-linear-to-br from-black to-gray-800 p-5 text-white shadow-lg">
             <div className="flex items-center gap-4">
@@ -416,6 +412,15 @@ const DashboardLayout = () => {
                 }`}
               >
                 {desktopSidebarOpen ? "Leads" : "L"}
+              </Link>
+
+              <Link
+                to={adminAdmissionsPath}
+                className={`rounded-2xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-black hover:text-white ${
+                  desktopSidebarOpen ? "text-left" : "text-center"
+                }`}
+              >
+                {desktopSidebarOpen ? "Admissions" : "A"}
               </Link>
 
               <Link

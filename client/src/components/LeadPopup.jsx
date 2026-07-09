@@ -13,6 +13,17 @@ const LeadPopup = () => {
 
   const [email, setEmail] = useState("");
 
+  const [course, setCourse] = useState("The Forex Program");
+
+  const params = new URLSearchParams(window.location.search);
+
+  const utmSource = params.get("utm_source") || "Website";
+  const utmMedium = params.get("utm_medium") || "";
+  const utmCampaign = params.get("utm_campaign") || "";
+  const utmContent = params.get("utm_content") || "";
+
+  const referrer = document.referrer || "";
+
   // OPEN AFTER 4 SECONDS
 
   useEffect(() => {
@@ -60,6 +71,13 @@ const LeadPopup = () => {
           name,
           email,
           phone,
+          course,
+          source: utmSource,
+          utmSource,
+          utmMedium,
+          utmCampaign,
+          utmContent,
+          referrer
         }),
       });
 
@@ -142,6 +160,16 @@ const LeadPopup = () => {
             onChange={(e) => setPhone(e.target.value)}
             className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
           />
+
+          <select
+            value={course}
+            onChange={(e) => setCourse(e.target.value)}
+            className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none focus:border-black"
+          >
+            <option>The Forex Program</option>
+
+            <option>The Forex Program with Indian Market</option>
+          </select>
 
           <button
             type="submit"

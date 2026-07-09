@@ -16,6 +16,7 @@ import supportRoutes from "./routes/supportRoutes.js";
 import googleMeetRoutes from "./routes/googleMeetRoutes.js";
 import webinarRoutes from "./routes/webinarRoutes.js";
 import marketAnalysisRoutes from "./routes/marketAnalysisRoutes.js";
+import admissionRoutes from "./routes/admissionRoutes.js";
 import razorpayRoutes from "./routes/razorpayRoutes.js";
 
 import connectDB from "./config/db.js";
@@ -56,6 +57,7 @@ app.use("/api/google", googleMeetRoutes);
 app.use("/api/webinars", webinarRoutes);
 app.use("/api/analysis", marketAnalysisRoutes);
 app.use("/api/razorpay", razorpayRoutes);
+app.use("/api/admissions", admissionRoutes);
 
 // ---------------- TEST ROUTE ----------------
 
