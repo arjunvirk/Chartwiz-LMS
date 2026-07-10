@@ -6,6 +6,9 @@ import toast from "react-hot-toast";
 
 import { API_URL } from "../config/api";
 
+import forexImage from "../assets/images/forex.jpg";
+import indianMarketImage from "../assets/images/indianmarket.jpg";
+
 const CoursesPage = () => {
   const navigate = useNavigate();
 
@@ -102,117 +105,137 @@ const CoursesPage = () => {
               {/* Offline Courses */}
               <div className="mt-14 grid gap-8 lg:grid-cols-2">
                 {/* Course 1 */}
-                <div className="group rounded-[30px] border border-gray-200 bg-white p-8 shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
-                  <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-green-500 px-4 py-2 text-xs font-bold uppercase tracking-wider text-black">
-                      Admissions Open
-                    </span>
-
-                    <span className="rounded-full bg-black px-4 py-2 text-sm font-bold text-white">
-                      2 Months
-                    </span>
+                <div className="group overflow-hidden rounded-[30px] border border-gray-200 bg-white shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                  <div className="overflow-hidden rounded-t-[30px]">
+                    <img
+                      src={forexImage}
+                      alt="The Forex Program"
+                      className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
                   </div>
 
-                  <h3 className="mt-8 text-3xl font-extrabold text-black">
-                    The Forex Program
-                  </h3>
+                  <div className="p-8">
+                    <div className="flex items-center justify-between">
+                      <span className="rounded-full bg-green-500 px-4 py-2 text-xs font-bold uppercase tracking-wider text-black">
+                        Admissions Open
+                      </span>
 
-                  <p className="mt-4 leading-relaxed text-gray-600">
-                    A complete classroom-based Forex trading program covering
-                    technical analysis, market structure, risk management,
-                    psychology and live market execution.
-                  </p>
-
-                  <div className="mt-8 grid gap-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-green-500">✔</span>
-                      Classroom Training
+                      <span className="rounded-full bg-black px-4 py-2 text-sm font-bold text-white">
+                        2 Months
+                      </span>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <span className="text-green-500">✔</span>
-                      Live Market Analysis
+                    <h3 className="mt-8 text-3xl font-extrabold text-black">
+                      The Forex Program
+                    </h3>
+
+                    <p className="mt-4 leading-relaxed text-gray-600">
+                      A complete classroom-based Forex trading program covering
+                      technical analysis, market structure, risk management,
+                      psychology and live market execution.
+                    </p>
+
+                    <div className="mt-8 grid gap-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-green-500">✔</span>
+                        Classroom Training
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <span className="text-green-500">✔</span>
+                        Live Market Analysis
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <span className="text-green-500">✔</span>
+                        Risk Management
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <span className="text-green-500">✔</span>
+                        Trading Psychology
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <span className="text-green-500">✔</span>
+                        Mentor Support
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <span className="text-green-500">✔</span>
-                      Risk Management
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <span className="text-green-500">✔</span>
-                      Trading Psychology
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <span className="text-green-500">✔</span>
-                      Mentor Support
-                    </div>
+                    <button
+                      onClick={() => navigate("/admission")}
+                      className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black"
+                    >
+                      Apply for Admission
+                    </button>
                   </div>
-
-                  <button
-                    onClick={() => navigate("/admission")}
-                    className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black"
-                  >
-                    Apply for Admission
-                  </button>
                 </div>
 
                 {/* Course 2 */}
-                <div className="group rounded-[30px] border border-gray-200 bg-white p-8 shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
-                  <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-green-500 px-4 py-2 text-xs font-bold uppercase tracking-wider text-black">
-                      Admissions Open
-                    </span>
-
-                    <span className="rounded-full bg-black px-4 py-2 text-sm font-bold text-white">
-                      3 Months
-                    </span>
+                <div className="group overflow-hidden rounded-[30px] border border-gray-200 bg-white shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                  <div className="overflow-hidden rounded-t-[30px]">
+                    <img
+                      src={indianMarketImage}
+                      alt="The Forex Program with Indian Market"
+                      className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
                   </div>
 
-                  <h3 className="mt-8 text-3xl font-extrabold text-black">
-                    The Forex Program with Indian Market
-                  </h3>
+                  <div className="p-8">
+                    <div className="flex items-center justify-between">
+                      <span className="rounded-full bg-green-500 px-4 py-2 text-xs font-bold uppercase tracking-wider text-black">
+                        Admissions Open
+                      </span>
 
-                  <p className="mt-4 leading-relaxed text-gray-600">
-                    Master both Forex and the Indian Stock Market with
-                    comprehensive classroom training, live trading sessions and
-                    professional mentorship.
-                  </p>
-
-                  <div className="mt-8 grid gap-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-green-500">✔</span>
-                      Forex + Indian Market
+                      <span className="rounded-full bg-black px-4 py-2 text-sm font-bold text-white">
+                        3 Months
+                      </span>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <span className="text-green-500">✔</span>
-                      Technical Analysis
+                    <h3 className="mt-8 text-3xl font-extrabold text-black">
+                      The Forex Program with Indian Market
+                    </h3>
+
+                    <p className="mt-4 leading-relaxed text-gray-600">
+                      Master both Forex and the Indian Stock Market with
+                      comprehensive classroom training, live trading sessions
+                      and professional mentorship.
+                    </p>
+
+                    <div className="mt-8 grid gap-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-green-500">✔</span>
+                        Forex + Indian Market
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <span className="text-green-500">✔</span>
+                        Technical Analysis
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <span className="text-green-500">✔</span>
+                        Live Practical Sessions
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <span className="text-green-500">✔</span>
+                        Trading Psychology
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <span className="text-green-500">✔</span>
+                        Professional Mentorship
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <span className="text-green-500">✔</span>
-                      Live Practical Sessions
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <span className="text-green-500">✔</span>
-                      Trading Psychology
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <span className="text-green-500">✔</span>
-                      Professional Mentorship
-                    </div>
+                    <button
+                      onClick={() => navigate("/admission")}
+                      className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black"
+                    >
+                      Apply for Admission
+                    </button>
                   </div>
-
-                  <button
-                    onClick={() => navigate("/admission")}
-                    className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black"
-                  >
-                    Apply for Admission
-                  </button>
                 </div>
               </div>
 
@@ -246,22 +269,18 @@ const CoursesPage = () => {
                   key={course._id}
                   className="group overflow-hidden rounded-4xl border border-gray-200 bg-white shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
                 >
-                  {/* IMAGE */}
-
-                  <div className="relative overflow-hidden">
+                  {/* CONTENT */}
+                  <div className="overflow-hidden">
                     <img
-                      src={course.thumbnail}
+                      src={
+                        course.title === "The Forex Program"
+                          ? forexImage
+                          : indianMarketImage
+                      }
                       alt={course.title}
-                      onError={(e) => {
-                        e.target.src =
-                          "https://via.placeholder.com/800x400?text=Course";
-                      }}
                       className="h-72 w-full object-cover transition duration-500 group-hover:scale-105"
                     />
                   </div>
-
-                  {/* CONTENT */}
-
                   <div className="p-6 sm:p-8">
                     {/* TITLE */}
 
