@@ -164,17 +164,17 @@ const Navbar = () => {
           ) : (
             <div className="flex items-center gap-3">
               <Link
-                to="/login"
+                to="/admission"
                 className="text-sm font-semibold text-gray-700 transition hover:text-black"
               >
-                Login
+                Enroll
               </Link>
 
               <Link
-                to="/register"
+                to="/courses"
                 className="rounded-xl bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800"
               >
-                Register
+                View Course
               </Link>
             </div>
           )}
@@ -268,21 +268,21 @@ const Navbar = () => {
                 {/* LOGIN */}
 
                 <Link
-                  to="/login"
+                  to="/admission"
                   onClick={() => setMobileMenuOpen(false)}
                   className="rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
                 >
-                  Login
+                  Enroll
                 </Link>
 
                 {/* REGISTER */}
 
                 <Link
-                  to="/register"
+                  to="/courses"
                   onClick={() => setMobileMenuOpen(false)}
                   className="rounded-xl bg-black px-4 py-3 text-center text-sm font-semibold text-white"
                 >
-                  Register
+                  Courses
                 </Link>
               </>
             )}

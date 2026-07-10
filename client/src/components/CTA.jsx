@@ -37,7 +37,7 @@ const CTA = () => {
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <Link
-                  to="/register"
+                  to="/admission"
                   className="rounded-2xl bg-green-500 px-8 py-5 text-center text-sm font-bold text-black transition hover:scale-105 hover:bg-green-400"
                 >
                   Join ChartWiz Today

@@ -9,6 +9,7 @@ import {
   verifyEmail,
   updateUserProfile,
   checkVerificationStatus,
+  changePassword,
 } from "../controllers/userController.js";
 
 import { protect } from "../middlewares/authMiddleware.js";
@@ -20,7 +21,7 @@ const router = express.Router();
 // ---------------- MANUAL AUTH ----------------
 
 // Register User
-router.post("/register", authLimiter, registerUser);
+// router.post("/register", authLimiter, registerUser);
 
 // Login User
 router.post("/login", authLimiter, loginUser);
@@ -37,6 +38,8 @@ router.get("/me", protect, getMe);
 
 // Update User
 router.put("/profile", protect, updateUserProfile);
+
+router.put("/change-password", protect, changePassword);
 
 // ---------------- LOGOUT ----------------
 

@@ -77,17 +77,10 @@ const Footer = () => {
               </Link>
 
               <Link
-                to="/login"
+                to="/admission"
                 className="text-gray-400 transition hover:text-green-400"
               >
-                Login
-              </Link>
-
-              <Link
-                to="/register"
-                className="text-gray-400 transition hover:text-green-400"
-              >
-                Register
+                Apply For Admission
               </Link>
             </div>
           </div>
@@ -99,19 +92,11 @@ const Footer = () => {
 
             <div className="mt-8 flex flex-col gap-4">
               <p className="text-gray-400 transition hover:text-green-400">
-                Price Action Mastery
+                The Forex Program
               </p>
 
               <p className="text-gray-400 transition hover:text-green-400">
-                Options Trading
-              </p>
-
-              <p className="text-gray-400 transition hover:text-green-400">
-                Trading Psychology
-              </p>
-
-              <p className="text-gray-400 transition hover:text-green-400">
-                Risk Management
+                The Forex Program with Indian Market
               </p>
             </div>
           </div>
@@ -208,6 +193,15 @@ const Footer = () => {
 
             <Link to="/support" className="transition hover:text-green-400">
               Support
+            </Link>
+
+            <span className="text-gray-700">|</span>
+
+            <Link
+              to="/login"
+              className="font-semibold text-green-400 transition hover:text-green-300"
+            >
+              Student & Staff Portal
             </Link>
           </div>
         </div>

@@ -69,6 +69,11 @@ const userSchema = new mongoose.Schema(
       enum: ["manual", "google"],
       default: "manual",
     },
+
+    mustChangePassword: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   {

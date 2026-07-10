@@ -181,9 +181,11 @@ export const loginUser = async (req, res) => {
     }
 
     // CHECK PASSWORD
-
+    console.log("Email entered:", email);
+    console.log("Password entered:", password);
+    console.log("User found:", user.email);
     const isMatch = await bcrypt.compare(password, user.password);
-
+    console.log("Password Match:", isMatch);
     if (!isMatch) {
       return res.status(400).json({
         success: false,
@@ -214,6 +216,8 @@ export const loginUser = async (req, res) => {
       success: true,
 
       message: "Login successful",
+
+      mustChangePassword: user.mustChangePassword,
 
       user: {
         _id: user._id,
@@ -260,24 +264,27 @@ export const googleLogin = async (req, res) => {
     }
 
     // FIND USER
-    let user = await User.findOne({
+
+    const user = await User.findOne({
       email: payload.email,
     });
 
-    // CREATE USER IF NOT EXISTS
+    // Account not found
+
     if (!user) {
-      user = await User.create({
-        name: payload.name,
+      return res.status(403).json({
+        success: false,
+        message:
+          "Your account has not been approved yet. Please submit an admission application.",
+      });
+    }
 
-        email: payload.email,
+    // Existing user must have signed in with Google
 
-        googleId: payload.sub,
-
-        profilePic: payload.picture,
-
-        isVerified: true,
-
-        authProvider: "google",
+    if (user.authProvider !== "google") {
+      return res.status(400).json({
+        success: false,
+        message: "This account uses email and password. Please login manually.",
       });
     }
 
@@ -301,15 +308,13 @@ export const googleLogin = async (req, res) => {
 
       message: "Google login successful",
 
+      mustChangePassword: user.mustChangePassword,
+
       user: {
         _id: user._id,
-
         name: user.name,
-
         email: user.email,
-
         role: user.role,
-
         profilePic: user.profilePic,
       },
     });
@@ -467,6 +472,70 @@ export const updateUserProfile = async (req, res) => {
     res.status(500).json({
       success: false,
 
+      message: error.message,
+    });
+  }
+};
+
+// ---------------- CHANGE PASSWORD ----------------
+
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide current and new password.",
+      });
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    // Check current password
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Current password is incorrect.",
+      });
+    }
+
+    // Prevent same password
+
+    if (currentPassword === newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "New password must be different from current password.",
+      });
+    }
+
+    // Save new password
+
+    user.password = await bcrypt.hash(newPassword, 10);
+
+    // Student has now changed password
+
+    user.mustChangePassword = false;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully.",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
       message: error.message,
     });
   }

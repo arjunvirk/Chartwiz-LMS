@@ -373,7 +373,7 @@ const CoursesPage = () => {
 
           <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
             <Link
-              to="/register"
+              to="/admission"
               className="rounded-2xl bg-green-500 px-8 py-4 text-sm font-bold text-black transition hover:scale-[1.02] hover:bg-green-400"
             >
               Join ChartWiz Today

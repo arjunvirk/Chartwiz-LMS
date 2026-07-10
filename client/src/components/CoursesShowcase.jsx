@@ -82,7 +82,7 @@ const CoursesShowcase = () => {
           {/* BUTTON */}
 
           <Link
-            to="/register"
+            to="/admission"
             className="rounded-2xl bg-black px-8 py-4 text-sm font-bold text-white transition hover:scale-105 hover:bg-gray-800"
           >
             Start Learning
@@ -173,7 +173,7 @@ const CoursesShowcase = () => {
           </p>
 
           <Link
-            to="/register"
+            to="/admission"
             className="mt-10 inline-block rounded-2xl bg-green-500 px-10 py-5 text-sm font-bold text-black transition hover:scale-105 hover:bg-green-400"
           >
             Join ChartWiz Today

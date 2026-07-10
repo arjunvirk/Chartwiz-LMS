@@ -16,8 +16,14 @@ const ProtectedRoute = ({ children }) => {
     );
   }
 
+  // Not logged in
   if (!userInfo) {
     return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  // Must change password before accessing LMS
+  if (userInfo.mustChangePassword && location.pathname !== "/change-password") {
+    return <Navigate to="/change-password" replace />;
   }
 
   return children;

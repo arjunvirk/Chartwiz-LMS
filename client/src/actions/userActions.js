@@ -12,6 +12,9 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
+  USER_CHANGE_PASSWORD_REQUEST,
+  USER_CHANGE_PASSWORD_SUCCESS,
+  USER_CHANGE_PASSWORD_FAIL,
 } from "../constants/userConstants";
 
 import { API_URL } from "../config/api";
@@ -199,11 +202,59 @@ export const checkAuth = () => async (dispatch, getState) => {
   if (!userInfo) return;
 
   try {
-    await fetchWithAuth(dispatch, `${API_URL}/api/users/me`, {
+    const data = await fetchWithAuth(dispatch, `${API_URL}/api/users/me`, {
       method: "GET",
     });
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
-    // fetchWithAuth already handles USER_LOGOUT
     console.log(error.message);
   }
 };
+
+// ---------------- CHANGE PASSWORD ----------------
+
+export const changePassword =
+  (currentPassword, newPassword) => async (dispatch) => {
+    try {
+      dispatch({
+        type: USER_CHANGE_PASSWORD_REQUEST,
+      });
+
+      const response = await fetch(`${API_URL}/api/users/change-password`, {
+        method: "PUT",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        credentials: "include",
+
+        body: JSON.stringify({
+          currentPassword,
+          newPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      dispatch({
+        type: USER_CHANGE_PASSWORD_SUCCESS,
+        payload: data.message,
+      });
+    } catch (error) {
+      dispatch({
+        type: USER_CHANGE_PASSWORD_FAIL,
+        payload: error.message,
+      });
+    }
+  };

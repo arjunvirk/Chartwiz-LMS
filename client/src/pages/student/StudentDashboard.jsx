@@ -252,12 +252,7 @@ const StudentDashboard = () => {
                     {course.instructor}
                   </p>
 
-                  <Link
-                    to={`/dashboard/courses/${course._id}`}
-                    className="mt-4 inline-block rounded-xl bg-black px-4 py-2 text-sm font-semibold text-white"
-                  >
-                    Continue
-                  </Link>
+                  <p>Offline course</p>
                 </div>
               </div>
             ))}

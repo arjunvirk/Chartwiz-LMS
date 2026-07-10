@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import User from "../models/User.js";
 import Course from "../models/Course.js";
+import sendWelcomeEmail from "../utils/sendWelcomeEmail.js";
 
 // ================= CREATE ADMISSION =================
 
@@ -195,6 +196,7 @@ export const approveAdmission = async (req, res) => {
     // Generate temporary password
 
     const temporaryPassword = crypto.randomBytes(5).toString("hex");
+    console.log("Temporary Password:", temporaryPassword);
 
     const hashedPassword = await bcrypt.hash(temporaryPassword, 10);
 
@@ -219,6 +221,7 @@ export const approveAdmission = async (req, res) => {
       password: hashedPassword,
       role: "student",
       isVerified: true,
+      mustChangePassword: true,
       enrolledCourses: [course._id],
     });
 
@@ -240,13 +243,20 @@ export const approveAdmission = async (req, res) => {
 
     await admission.save();
 
-    // TODO:
-    // Send Welcome Email here
+    // Send Welcome Email
+
+    await sendWelcomeEmail({
+      name: student.name,
+      email: student.email,
+      temporaryPassword,
+    });
+
+    // Return response to frontend
 
     res.status(200).json({
       success: true,
-      message: "Admission approved successfully.",
-      temporaryPassword,
+      message:
+        "Admission approved successfully. Login credentials have been emailed to the student.",
       student,
     });
   } catch (error) {

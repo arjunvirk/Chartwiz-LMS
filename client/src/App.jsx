@@ -11,7 +11,6 @@ import LeadPopup from "./components/LeadPopup";
 import { checkAuth } from "./actions/userActions";
 
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 
 import DashboardLayout from "./layouts/DashboardLayout";
 
@@ -64,6 +63,7 @@ import LeadDetailsScreen from "./pages/admin/LeadDetailsScreen";
 import AdmissionScreen from "./pages/AdmissionScreen";
 import AdmissionManagementScreen from "./pages/admin/AdmissionManagementScreen";
 import AdmissionDetailsScreen from "./pages/admin/AdmissionDetailsScreen";
+import ChangePasswordScreen from "./pages/ChangePasswordScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -107,9 +107,14 @@ const App = () => {
 
         <Route path="/login" element={<Login />} />
 
-        {/* REGISTER */}
-
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/change-password"
+          element={
+            <ProtectedRoute>
+              <ChangePasswordScreen />
+            </ProtectedRoute>
+          }
+        />
 
         {/* ================= STUDENT DASHBOARD ================= */}
 

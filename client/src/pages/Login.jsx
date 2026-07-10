@@ -40,9 +40,10 @@ const Login = () => {
 
   const { loading, error, userInfo } = userLogin;
 
-  const hasRedirected = useRef(false)
+  const hasRedirected = useRef(false);
 
   // ---------------- REDIRECT AFTER LOGIN ----------------
+
   useEffect(() => {
     if (!userInfo || hasRedirected.current) return;
 
@@ -50,12 +51,27 @@ const Login = () => {
 
     toast.success("Welcome back");
 
+    // Force password change first
+    if (userInfo.mustChangePassword) {
+      navigate("/change-password", {
+        replace: true,
+      });
+
+      return;
+    }
+
     if (userInfo.user.role === "admin") {
-      navigate("/admin/dashboard", { replace: true });
+      navigate("/admin/dashboard", {
+        replace: true,
+      });
     } else if (userInfo.user.role === "teacher") {
-      navigate("/teacher/dashboard", { replace: true });
+      navigate("/teacher/dashboard", {
+        replace: true,
+      });
     } else {
-      navigate("/dashboard", { replace: true });
+      navigate("/dashboard", {
+        replace: true,
+      });
     }
   }, [userInfo, navigate]);
 
@@ -96,14 +112,18 @@ const Login = () => {
 
       const data = await response.json();
 
-      if (data.success) {
-        dispatch({
-          type: USER_LOGIN_SUCCESS,
-          payload: data,
-        });
+      if (!response.ok) {
+        toast.error(data.message);
 
-        localStorage.setItem("userInfo", JSON.stringify(data));
+        return;
       }
+
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
     } catch (error) {
       console.log(error);
     }
@@ -185,21 +205,24 @@ const Login = () => {
 
         {/* GOOGLE LOGIN */}
 
-        <div className="flex justify-center">
+        {/* <div className="flex justify-center">
           <GoogleLogin
             onSuccess={googleSuccess}
             onError={() => toast.error("Google login failed")}
           />
-        </div>
-
-        {/* REGISTER */}
-
-        <p className="mt-6 text-center text-sm text-gray-600">
-          Don&apos;t have an account?{" "}
-          <Link to="/register" className="font-medium text-black">
-            Register
-          </Link>
+        </div> */}
+        <p className="mt-6 text-center text-sm text-gray-500">
+          Student accounts are created after your admission is approved by
+          ChartWiz Academy.
         </p>
+        <div className="text-center">
+          <Link
+            to="/admission"
+            className="mt-4 inline-block rounded-lg bg-black px-5 py-2 text-sm font-semibold text-white"
+          >
+            Apply for Admission
+          </Link>
+        </div>
       </div>
     </div>
   );

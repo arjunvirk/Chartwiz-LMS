@@ -5,6 +5,7 @@ import {
   userRegisterReducer,
   userVerifyReducer,
   userUpdateProfileReducer,
+  userChangePasswordReducer,
 } from "./reducers/userReducers";
 
 import {
@@ -90,6 +91,7 @@ const store = configureStore({
     userRegister: userRegisterReducer,
     userVerify: userVerifyReducer,
     userUpdateProfile: userUpdateProfileReducer,
+    userChangePassword: userChangePasswordReducer,
 
     // Course
     courseList: courseListReducer,

@@ -69,6 +69,9 @@ const AdmissionDetailsScreen = () => {
   useEffect(() => {
     if (successUpdate) {
       toast.success("Admission updated successfully");
+
+      // Refresh admission details
+      dispatch(getAdmissionDetails(id));
     }
 
     if (errorUpdate) {
@@ -78,6 +81,7 @@ const AdmissionDetailsScreen = () => {
     if (successApprove) {
       toast.success("Admission approved successfully");
 
+      // Refresh admission details
       dispatch(getAdmissionDetails(id));
     }
 
@@ -261,9 +265,11 @@ const AdmissionDetailsScreen = () => {
               >
                 <option value="Pending">Pending</option>
 
-                <option value="Approved">Approved</option>
+                <option value="Contacted">Contacted</option>
 
-                <option value="Rejected">Rejected</option>
+                <option value="Documents Pending">Documents Pending</option>
+
+                <option value="Payment Pending">Payment Pending</option>
               </select>
             </div>
 
@@ -349,20 +355,6 @@ const AdmissionDetailsScreen = () => {
               className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
             />
           </div>
-
-          {/* SAVE */}
-
-          <div className="mt-8 flex justify-end">
-            {admission.status !== "Approved" &&
-              admission.status !== "Rejected" && (
-                <button
-                  type="submit"
-                  className="rounded-2xl bg-black px-8 py-4 font-semibold text-white"
-                >
-                  Save Changes
-                </button>
-              )}
-          </div>
         </div>
 
         {/* ADMISSION TIMELINE */}
@@ -426,7 +418,18 @@ const AdmissionDetailsScreen = () => {
                   Save Changes
                 </button>
               )}
-           
+
+            {!admission.studentCreated && admission.status !== "Rejected" && (
+              <button
+                type="button"
+                onClick={approveHandler}
+                disabled={paymentStatus !== "Paid" || loadingApprove}
+                className="rounded-2xl bg-green-600 px-8 py-4 font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {loadingApprove ? "Approving..." : "Approve Student"}
+              </button>
+            )}
+
             {/* APPROVED BADGE */}
 
             {admission.status === "Approved" && (
