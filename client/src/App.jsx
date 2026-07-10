@@ -64,6 +64,7 @@ import AdmissionScreen from "./pages/AdmissionScreen";
 import AdmissionManagementScreen from "./pages/admin/AdmissionManagementScreen";
 import AdmissionDetailsScreen from "./pages/admin/AdmissionDetailsScreen";
 import ChangePasswordScreen from "./pages/ChangePasswordScreen";
+import AdmissionSuccessScreen from "./pages/AdmissionSuccessScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -98,6 +99,8 @@ const App = () => {
         <Route path="/about" element={<About />} />
 
         <Route path="/admission" element={<AdmissionScreen />} />
+
+        <Route path="/admission/success" element={<AdmissionSuccessScreen />} />
 
         {/* LIVE MARKETS */}
 

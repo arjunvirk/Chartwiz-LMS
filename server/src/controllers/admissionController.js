@@ -28,6 +28,20 @@ export const createAdmission = async (req, res) => {
       });
     }
 
+    // Check for existing admission
+
+    const existingAdmission = await Admission.findOne({
+      email: email.toLowerCase(),
+    });
+
+    if (existingAdmission) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "You have already submitted an admission application. Please wait for our team to contact you.",
+      });
+    }
+
     const admission = await Admission.create({
       name,
       email,

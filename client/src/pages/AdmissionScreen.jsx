@@ -35,7 +35,11 @@ const AdmissionScreen = () => {
 
   useEffect(() => {
     if (success) {
-      toast.success("Admission submitted successfully!");
+      toast.success("Admission submitted successfully");
+
+      navigate("/admission/success", {
+        replace: true,
+      });
 
       dispatch({
         type: ADMISSION_CREATE_RESET,
