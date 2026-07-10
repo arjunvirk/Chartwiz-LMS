@@ -1,23 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useEffect, useState } from "react";
-
-import { useDispatch } from "react-redux";
-
-import { enrollCourse } from "../actions/courseActions";
 
 import toast from "react-hot-toast";
 
 import { API_URL } from "../config/api";
 
 const CoursesPage = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [courses, setCourses] = useState([]);
 
   const [loading, setLoading] = useState(true);
-
-  const [enrollingId, setEnrollingId] = useState(null);
 
   const totalCourses = courses?.length || 0;
 
@@ -53,29 +47,6 @@ const CoursesPage = () => {
 
     fetchCourses();
   }, []);
-
-  const enrollHandler = async (id) => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-    if (!userInfo) {
-      toast.dismiss();
-      return toast.error("Please login first");
-    }
-
-    try {
-      setEnrollingId(id);
-
-      const data = await dispatch(enrollCourse(id));
-
-      toast.dismiss();
-      toast.success(data.message);
-    } catch (error) {
-      toast.dismiss();
-      toast.error(error.message);
-    } finally {
-      setEnrollingId(null);
-    }
-  };
 
   return (
     <section className="min-h-screen bg-[#f5f7fb] py-10">
@@ -179,8 +150,11 @@ const CoursesPage = () => {
                     </div>
                   </div>
 
-                  <button className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black">
-                    Apply for Offline Batch
+                  <button
+                    onClick={() => navigate("/admission")}
+                    className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black"
+                  >
+                    Apply for Admission
                   </button>
                 </div>
 
@@ -233,8 +207,11 @@ const CoursesPage = () => {
                     </div>
                   </div>
 
-                  <button className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black">
-                    Apply for Offline Batch
+                  <button
+                    onClick={() => navigate("/admission")}
+                    className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black"
+                  >
+                    Apply for Admission
                   </button>
                 </div>
               </div>
@@ -338,13 +315,10 @@ const CoursesPage = () => {
                       </div>
 
                       <button
-                        disabled={enrollingId === course._id}
-                        onClick={() => enrollHandler(course._id)}
-                        className="rounded-2xl bg-black px-8 py-4 text-sm font-bold text-white transition hover:bg-green-500 hover:text-black disabled:cursor-not-allowed disabled:opacity-60"
+                        onClick={() => navigate("/admission")}
+                        className="rounded-2xl bg-black px-8 py-4 text-sm font-bold text-white transition hover:bg-green-500 hover:text-black"
                       >
-                        {enrollingId === course._id
-                          ? "Enrolling..."
-                          : "Enroll Now"}
+                        Apply for Admission
                       </button>
                     </div>
                   </div>

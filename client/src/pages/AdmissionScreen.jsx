@@ -35,20 +35,30 @@ const AdmissionScreen = () => {
 
   useEffect(() => {
     if (success) {
-      toast.success("Admission submitted successfully");
-
-      navigate("/admission/success", {
-        replace: true,
+      toast.success("Admission submitted successfully", {
+        duration: 3000,
       });
 
       dispatch({
         type: ADMISSION_CREATE_RESET,
       });
 
-      navigate("/");
+      navigate("/admission/success", {
+        replace: true,
+      });
     }
-  }, [success, dispatch, navigate]);
 
+    if (error) {
+      toast.error(error, {
+        duration: 3000,
+      });
+
+      dispatch({
+        type: ADMISSION_CREATE_RESET,
+      });
+    }
+  }, [success, error, dispatch, navigate]);
+  
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -78,12 +88,6 @@ const AdmissionScreen = () => {
             will contact you shortly.
           </p>
         </div>
-
-        {error && (
-          <div className="mb-6 rounded-xl bg-red-50 p-4 text-red-600">
-            {error}
-          </div>
-        )}
 
         <form onSubmit={submitHandler} className="space-y-6">
           <div className="grid gap-6 md:grid-cols-2">
