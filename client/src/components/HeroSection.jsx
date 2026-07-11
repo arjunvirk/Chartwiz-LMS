@@ -73,20 +73,6 @@ const HeroSection = () => {
 
       {/* CONTENT */}
       <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-6 pb-16 pt-32 text-center">
-        {/* BADGE */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          custom={0}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.07] px-5 py-2 backdrop-blur-md"
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          <span className="font-mono text-xs font-medium tracking-wide text-emerald-400">
-            INDIA'S PROFESSIONAL OFFLINE TRADING ACADEMY
-          </span>
-        </motion.div>
-
         {/* HEADING */}
         <motion.h1
           variants={fadeUp}
@@ -96,7 +82,7 @@ const HeroSection = () => {
           className="text-balance max-w-5xl font-display text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl xl:text-7xl"
         >
           Become a{" "}
-          <span className="bg-gradient-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent">
             Consistent Trader
           </span>
           <br />
@@ -119,7 +105,7 @@ const HeroSection = () => {
           ].map((item) => (
             <div
               key={item}
-              className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-gray-300"
+              className="rounded-full border border-white/10 bg-white/3 px-4 py-2 text-sm text-gray-300"
             >
               {item}
             </div>
@@ -147,7 +133,7 @@ const HeroSection = () => {
 
           <Link
             to="/courses"
-            className="rounded-2xl border border-white/15 bg-white/[0.02] px-8 py-4 text-sm font-bold text-white backdrop-blur-md transition hover:border-white/30 hover:bg-white/5"
+            className="rounded-2xl border border-white/15 bg-white/2 px-8 py-4 text-sm font-bold text-white backdrop-blur-md transition hover:border-white/30 hover:bg-white/5"
           >
             View Course Curriculum
           </Link>
@@ -173,7 +159,7 @@ const HeroSection = () => {
               whileInView="show"
               viewport={{ once: true }}
               custom={i}
-              className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-md transition hover:-translate-y-1 hover:border-emerald-500/20 hover:bg-white/[0.05]"
+              className="rounded-3xl border border-white/10 bg-white/3 p-8 backdrop-blur-md transition hover:-translate-y-1 hover:border-emerald-500/20 hover:bg-white/5"
             >
               <h2 className="font-mono text-4xl font-bold text-emerald-400">
                 <CountUpComponent
@@ -191,7 +177,7 @@ const HeroSection = () => {
       </div>
 
       {/* LIVE TICKER MARQUEE */}
-      <div className="relative border-y border-white/10 bg-white/[0.02] py-4">
+      <div className="relative border-y border-white/10 bg-white/2 py-4">
         <MarqueeComponent gradient={false} speed={40} pauseOnHover>
           {TICKER_DATA.map((item, i) => (
             <div
