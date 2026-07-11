@@ -208,6 +208,8 @@ export const loginUser = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
+    console.log(res.getHeaders());
+    
     console.log("Cookie sent:", token);
     // RESPONSE
 
