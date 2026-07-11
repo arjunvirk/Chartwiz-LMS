@@ -1,5 +1,7 @@
-import { motion } from "motion/react";
-import CountUp from "react-countup";
+import { motion } from "framer-motion";
+import CountUpImport from "react-countup";
+
+const CountUp = CountUpImport.default ?? CountUpImport;
 
 const FEATURES = [
   {
@@ -46,8 +48,6 @@ const FEATURES = [
   },
 ];
 
-const CountUpComponent = CountUp.default ?? CountUp;
-
 const BOTTOM_STATS = [
   { value: 21, suffix: "+", label: "Advanced Trading Strategies" },
   { value: 120, suffix: "+", label: "Structured Video Lessons" },
@@ -56,11 +56,10 @@ const BOTTOM_STATS = [
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
+  show: { transition: { staggerChildren: 0.07 } },
 };
-
 const cardVariant = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 20 },
   show: {
     opacity: 1,
     y: 0,
@@ -70,92 +69,74 @@ const cardVariant = {
 
 const TradingFeatures = () => {
   return (
-    <section className="relative overflow-hidden bg-[#050607] py-24 text-white">
-      {/* BACKGROUND GLOW */}
-      <div className="pointer-events-none absolute left-0 top-0 h-96 w-96 rounded-full bg-emerald-500/6 blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-0 right-0 h-96 w-96 rounded-full bg-emerald-400/5 blur-[120px]" />
-
-      <div className="relative mx-auto max-w-7xl px-6">
-        {/* TOP */}
+    <section className="bg-vellum py-24">
+      <div className="mx-auto max-w-[1200px] px-6">
+        {/* HEADING */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mx-auto max-w-3xl text-center"
+          className="max-w-2xl"
         >
-          <span className="rounded-full border border-white/10 bg-white/3 px-5 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400">
+          <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
             What You Will Learn
           </span>
-
-          <h2 className="text-balance mt-6 font-display text-4xl font-extrabold leading-tight tracking-tight md:text-6xl">
-            Master The Core Of
-            <span className="bg-linear-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent">
-              {" "}
-              Professional Trading
-            </span>
+          <h2 className="mt-4 font-serif text-4xl leading-[1.05] tracking-[-0.02em] text-graphite md:text-5xl">
+            Master the core of professional trading
           </h2>
-
-          <p className="mt-6 text-lg leading-relaxed text-gray-400">
+          <p className="mt-4 text-lg leading-relaxed text-slate">
             Learn practical market concepts, disciplined execution and advanced
-            trading techniques through structured mentorship and premium
-            education.
+            trading techniques through structured mentorship.
           </p>
         </motion.div>
 
-        {/* FEATURES GRID */}
+        {/* 3-COL GRID */}
         <motion.div
           variants={container}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.15 }}
-          className="mt-20 grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+          className="mt-14 grid gap-3 md:grid-cols-2 xl:grid-cols-3"
         >
           {FEATURES.map((feature) => (
             <motion.div
               key={feature.id}
               variants={cardVariant}
-              className="group rounded-[2.5rem] border border-white/10 bg-white/3 p-8 backdrop-blur-md transition duration-300 hover:-translate-y-2 hover:border-emerald-500/25 hover:bg-white/5"
+              className="rounded-3xl bg-bone p-8 transition duration-300 hover:-translate-y-1"
             >
-              {/* ICON */}
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/6 text-3xl transition duration-300 group-hover:bg-emerald-500 group-hover:text-black">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-obsidian text-2xl">
                 {feature.icon}
               </div>
-
-              {/* TITLE */}
-              <h3 className="mt-7 font-display text-2xl font-bold leading-tight">
+              <h3 className="mt-6 text-xl font-semibold text-graphite">
                 {feature.title}
               </h3>
-
-              {/* DESCRIPTION */}
-              <p className="mt-4 leading-relaxed text-gray-400">
+              <p className="mt-3 text-sm leading-relaxed text-slate">
                 {feature.description}
               </p>
-
-              {/* BOTTOM */}
-              <div className="mt-7 flex items-center gap-2">
-                <div className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                <span className="font-mono text-xs font-medium tracking-wide text-emerald-400">
-                  PROFESSIONAL MENTORSHIP
+              <div className="mt-6 flex items-center gap-2">
+                <div className="h-1.5 w-1.5 rounded-full bg-ember-orange" />
+                <span className="font-mono text-[11px] uppercase tracking-[-0.02em] text-ember-orange">
+                  Professional Mentorship
                 </span>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* BOTTOM STRIP */}
+        {/* BOTTOM STRIP — dark band */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-20 rounded-[2.5rem] border border-white/10 bg-white/3 p-10 backdrop-blur-md"
+          className="mt-14 rounded-3xl bg-obsidian p-10"
         >
           <div className="grid gap-10 text-center md:grid-cols-3">
             {BOTTOM_STATS.map((stat) => (
               <div key={stat.label}>
-                <h3 className="font-mono text-4xl font-bold text-emerald-400 md:text-5xl">
-                  <CountUpComponent
+                <h3 className="font-mono text-4xl font-medium text-vellum">
+                  <CountUp
                     end={stat.value}
                     duration={2}
                     enableScrollSpy
@@ -163,7 +144,7 @@ const TradingFeatures = () => {
                   />
                   {stat.suffix}
                 </h3>
-                <p className="mt-3 text-gray-400">{stat.label}</p>
+                <p className="mt-2 text-sm text-mist">{stat.label}</p>
               </div>
             ))}
           </div>

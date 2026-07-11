@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { Star } from "lucide-react";
-import CountUp from "react-countup";
+import CountUpImport from "react-countup";
 import kajalPhoto from "../assets/kajal_kushwaha.jpeg";
 import anandMalhotra from "../assets/anand_malhotra.jpeg";
 import varunMalhotra from "../assets/varun_malhotra.jpeg";
 import lalitKumar from "../assets/lalit_kumar.jpeg";
 import sohail from "../assets/sohel.jpeg";
 
-const CountUpComponent = CountUp.default ?? CountUp;
+const CountUp = CountUpImport.default ?? CountUpImport;
 
 const TESTIMONIALS = [
   {
@@ -41,7 +41,7 @@ const TESTIMONIALS = [
     role: "Swing Trader",
     image: lalitKumar,
     review:
-      "ChartWiz Academy is one of the best institutes for anyone looking to learn stock market trading and investing from scratch. The courses are structured in a simple and practical way.",
+      "ChartWiz Academy is one of the best institutes for anyone looking to learn stock market trading and investing from scratch.",
   },
   {
     id: 5,
@@ -57,53 +57,42 @@ const STATS = [
   { value: 500, suffix: "+", label: "Active Students" },
   { value: 4.9, suffix: "★", label: "Student Satisfaction", decimals: 1 },
   { value: 120, suffix: "+", label: "Premium Lessons" },
-  { value: 24, suffix: "/7", label: "Learning Access" },
 ];
 
 const cardVariant = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 24 },
   show: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+    transition: { delay: i * 0.07, duration: 0.55, ease: [0.22, 1, 0.36, 1] },
   }),
 };
 
 const Testimonials = () => {
   return (
-    <section className="relative overflow-hidden bg-[#050607] py-24 text-white">
-      <div className="pointer-events-none absolute left-1/2 top-0 h-96 w-160 -translate-x-1/2 rounded-full bg-emerald-500/5 blur-[130px]" />
-
-      <div className="relative mx-auto max-w-7xl px-6">
-        {/* TOP */}
+    <section className="bg-vellum py-24">
+      <div className="mx-auto max-w-[1200px] px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mx-auto max-w-3xl text-center"
+          className="max-w-2xl"
         >
-          <span className="rounded-full border border-white/10 bg-white/3 px-5 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400">
+          <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
             Student Testimonials
           </span>
-
-          <h2 className="text-balance mt-6 font-display text-4xl font-extrabold leading-tight tracking-tight md:text-6xl">
-            Trusted By
-            <span className="bg-linear-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent">
-              {" "}
-              Aspiring Traders
-            </span>
+          <h2 className="mt-4 font-serif text-4xl leading-[1.05] tracking-[-0.02em] text-graphite md:text-5xl">
+            Trusted by aspiring traders
           </h2>
-
-          <p className="mt-6 text-lg leading-relaxed text-gray-400">
-            Thousands of students are learning professional trading skills,
-            market psychology and disciplined execution through ChartWiz
-            Academy.
+          <p className="mt-4 text-lg leading-relaxed text-slate">
+            Thousands of students are learning professional trading skills
+            through ChartWiz Academy.
           </p>
         </motion.div>
 
-        {/* TESTIMONIAL GRID */}
-        <div className="mt-20 grid gap-6 lg:grid-cols-3">
+        {/* GRID */}
+        <div className="mt-14 grid gap-3 lg:grid-cols-3">
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={t.id}
@@ -112,84 +101,75 @@ const Testimonials = () => {
               whileInView="show"
               viewport={{ once: true }}
               custom={i}
-              className="group rounded-[2.5rem] border border-white/10 bg-white/3 p-8 backdrop-blur-md transition duration-300 hover:-translate-y-2 hover:border-emerald-500/25 hover:bg-white/5"
+              className="rounded-3xl bg-bone p-8"
             >
-              {/* STARS */}
               <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }).map((_, idx) => (
                   <Star
                     key={idx}
-                    size={16}
-                    className="fill-amber-400 text-amber-400"
+                    size={14}
+                    className="fill-ember-orange text-ember-orange"
                   />
                 ))}
               </div>
-
-              {/* REVIEW */}
-              <p className="mt-7 leading-relaxed text-gray-300">
+              <p className="mt-6 text-sm leading-relaxed text-slate">
                 &ldquo;{t.review}&rdquo;
               </p>
-
-              {/* USER */}
-              <div className="mt-8 flex items-center gap-4 border-t border-white/10 pt-6">
+              <div className="mt-7 flex items-center gap-3 border-t border-pebble pt-5">
                 <img
                   src={t.image}
                   alt={t.name}
-                  className="h-12 w-12 rounded-full border border-white/10 object-cover"
+                  className="h-11 w-11 rounded-full object-cover"
                 />
                 <div>
-                  <h3 className="text-base font-semibold text-white">
+                  <h3 className="text-sm font-semibold text-graphite">
                     {t.name}
                   </h3>
-                  <p className="font-mono text-xs text-emerald-400">{t.role}</p>
+                  <p className="font-mono text-xs text-ember-orange">
+                    {t.role}
+                  </p>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* BOTTOM CTA */}
+        {/* DARK CTA BAND */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-24 overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/3"
+          className="mt-14 overflow-hidden rounded-3xl bg-obsidian"
         >
-          <div className="grid items-center gap-12 p-10 lg:grid-cols-2 lg:p-16">
-            {/* LEFT */}
+          <div className="grid items-center gap-10 p-10 lg:grid-cols-2 lg:p-14">
             <div>
-              <span className="rounded-full border border-white/10 bg-white/4 px-5 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400">
+              <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
                 Join The Community
               </span>
-
-              <h2 className="mt-6 font-display text-4xl font-extrabold leading-tight md:text-5xl">
-                Become A Confident &
-                <span className="text-emerald-400"> Disciplined Trader</span>
+              <h2 className="mt-4 font-serif text-3xl leading-[1.05] text-vellum md:text-4xl">
+                Become a confident & disciplined trader
               </h2>
-
-              <p className="mt-6 text-lg leading-relaxed text-gray-400">
+              <p className="mt-4 text-base leading-relaxed text-mist">
                 Learn professional market strategies, trading psychology and
                 structured mentorship from ChartWiz Academy.
               </p>
-
               <Link
                 to="/admission"
-                className="mt-10 inline-flex items-center justify-center rounded-2xl bg-emerald-500 px-10 py-4 text-sm font-bold text-black transition hover:scale-105 hover:bg-emerald-400"
+                className="mt-8 inline-flex items-center justify-center rounded-[600px] bg-ember-orange px-8 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
               >
                 Start Your Journey
               </Link>
             </div>
 
-            {/* RIGHT */}
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-3 gap-4">
               {STATS.map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-3xl border border-white/10 bg-white/3 p-7 text-center"
+                  className="rounded-2xl border border-white/10 p-5 text-center"
                 >
-                  <h3 className="font-mono text-4xl font-bold text-emerald-400">
-                    <CountUpComponent
+                  <h3 className="font-mono text-3xl font-medium text-vellum">
+                    <CountUp
                       end={stat.value}
                       decimals={stat.decimals || 0}
                       duration={2}
@@ -198,7 +178,7 @@ const Testimonials = () => {
                     />
                     {stat.suffix}
                   </h3>
-                  <p className="mt-3 text-sm text-gray-400">{stat.label}</p>
+                  <p className="mt-2 text-xs text-mist">{stat.label}</p>
                 </div>
               ))}
             </div>

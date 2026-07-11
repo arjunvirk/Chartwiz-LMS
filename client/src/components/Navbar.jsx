@@ -22,147 +22,111 @@ const Navbar = () => {
   const isTeacher = userInfo?.user?.role === "teacher";
   const isAdmin = userInfo?.user?.role === "admin";
 
-  // ================= DASHBOARD PATH =================
   const dashboardPath = isAdmin
     ? "/admin/dashboard"
     : isTeacher
       ? "/teacher/dashboard"
       : "/dashboard";
 
-  // ================= PROFILE PATH =================
   const profilePath = isAdmin
     ? "/admin/dashboard/profile"
     : isTeacher
       ? "/teacher/dashboard/profile"
       : "/dashboard/profile";
 
-  // ---------------- LOGOUT ----------------
   const logoutHandler = async () => {
     await dispatch(logout());
     navigate("/login", { replace: true });
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#050607]/80 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
-        {/* LEFT */}
-        <div className="flex items-center gap-10">
-          {/* LOGO */}
-          <Link
-            to={
-              userInfo
-                ? userInfo?.user?.role === "admin"
-                  ? "/admin/dashboard"
-                  : userInfo?.user?.role === "teacher"
-                    ? "/teacher/dashboard"
-                    : "/dashboard"
-                : "/"
-            }
-            className="font-display text-2xl font-extrabold tracking-tight text-white sm:text-3xl"
-          >
-            Chart<span className="bg-gradient-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent">Wiz</span>
-          </Link>
+    <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-obsidian">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-5">
+        {/* LOGO */}
+        <Link
+          to={
+            userInfo
+              ? userInfo?.user?.role === "admin"
+                ? "/admin/dashboard"
+                : userInfo?.user?.role === "teacher"
+                  ? "/teacher/dashboard"
+                  : "/dashboard"
+              : "/"
+          }
+          className="text-xl font-semibold tracking-tight text-vellum"
+        >
+          ChartWiz
+        </Link>
 
-          {/* DESKTOP NAV */}
-          <div className="hidden items-center gap-8 md:flex">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className="group relative text-sm font-medium text-gray-400 transition hover:text-white"
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-emerald-400 transition-all duration-300 group-hover:w-full" />
-              </Link>
-            ))}
-
+        {/* CENTER STATUS LABELS */}
+        <div className="hidden items-center gap-8 md:flex">
+          {NAV_LINKS.map((link) => (
             <Link
-              to="/live"
-              className="flex items-center gap-2 text-sm font-medium text-red-400 transition hover:text-red-300"
+              key={link.to}
+              to={link.to}
+              className="font-mono text-xs uppercase tracking-[-0.02em] text-mist transition hover:text-vellum"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
-              </span>
-              LIVE
+              {link.label}
             </Link>
-
-            {userInfo && (
-              <Link
-                to={profilePath}
-                className="group relative text-sm font-medium text-gray-400 transition hover:text-white"
-              >
-                Profile
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-emerald-400 transition-all duration-300 group-hover:w-full" />
-              </Link>
-            )}
-          </div>
+          ))}
+          <Link
+            to="/live"
+            className="flex items-center gap-2 font-mono text-xs uppercase tracking-[-0.02em] text-ember-orange"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-ember-orange" />
+            Live
+          </Link>
+          {userInfo && (
+            <Link
+              to={profilePath}
+              className="font-mono text-xs uppercase tracking-[-0.02em] text-mist transition hover:text-vellum"
+            >
+              Profile
+            </Link>
+          )}
         </div>
 
         {/* RIGHT */}
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-3 md:flex">
           {userInfo ? (
-            <div className="flex items-center gap-4">
-              {/* PROFILE */}
-              <div className="flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-3 py-2">
-                <img
-                  src={
-                    userInfo?.user?.profilePic ||
-                    "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                  }
-                  alt="profile"
-                  className="h-9 w-9 rounded-full border border-white/10 object-cover"
-                />
-                <div className="flex flex-col">
-                  <span className="text-sm font-semibold text-white">
-                    {userInfo?.user?.name}
-                  </span>
-                  <span className="font-mono text-[11px] uppercase tracking-wide text-emerald-400">
-                    {userInfo?.user?.role}
-                  </span>
-                </div>
-              </div>
-
-              {/* DASHBOARD */}
+            <>
               <Link
                 to={dashboardPath}
-                className="rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-emerald-400"
+                className="rounded-[600px] bg-ember-orange px-5 py-2 font-mono text-xs font-medium text-black transition hover:brightness-95"
               >
                 Dashboard
               </Link>
-
-              {/* LOGOUT */}
               <button
                 onClick={logoutHandler}
-                className="cursor-pointer rounded-xl border border-white/15 px-5 py-2.5 text-sm font-semibold text-gray-300 transition hover:border-red-500/40 hover:text-red-400"
+                className="rounded-[600px] border border-white/15 px-5 py-2 font-mono text-xs font-medium text-vellum transition hover:border-white/30"
               >
                 Logout
               </button>
-            </div>
+            </>
           ) : (
-            <div className="flex items-center gap-3">
+            <>
               <Link
                 to="/admission"
-                className="text-sm font-medium text-gray-400 transition hover:text-white"
+                className="font-mono text-xs uppercase tracking-[-0.02em] text-mist transition hover:text-vellum"
               >
                 Enroll
               </Link>
               <Link
-                to="/courses"
-                className="rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-emerald-400"
+                to="/login"
+                className="inline-flex items-center gap-2 rounded-[600px] bg-ember-orange px-5 py-2 font-mono text-xs font-medium text-black transition hover:brightness-95"
               >
-                View Course
+                Login
               </Link>
-            </div>
+            </>
           )}
         </div>
 
         {/* MOBILE MENU BUTTON */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 text-white md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 text-vellum md:hidden"
         >
-          {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
@@ -173,49 +137,46 @@ const Navbar = () => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="overflow-hidden border-t border-white/10 bg-[#050607] md:hidden"
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden border-t border-white/10 bg-obsidian md:hidden"
           >
-            <div className="flex flex-col gap-2 px-4 py-5">
+            <div className="flex flex-col gap-2 px-6 py-6">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-xl px-4 py-3 text-sm font-medium text-gray-300 transition hover:bg-white/5 hover:text-white"
+                  className="rounded-lg px-4 py-3 font-mono text-xs uppercase tracking-[-0.02em] text-mist hover:bg-white/5 hover:text-vellum"
                 >
                   {link.label}
                 </Link>
               ))}
-
               <Link
                 to="/live"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium text-red-400 transition hover:bg-red-500/10"
+                className="rounded-lg px-4 py-3 font-mono text-xs uppercase tracking-[-0.02em] text-ember-orange"
               >
-                <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
-                LIVE
+                Live
               </Link>
-
               {userInfo ? (
                 <>
                   <Link
                     to={profilePath}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-xl px-4 py-3 text-sm font-medium text-gray-300 transition hover:bg-white/5 hover:text-white"
+                    className="rounded-lg px-4 py-3 font-mono text-xs uppercase tracking-[-0.02em] text-mist"
                   >
                     Profile
                   </Link>
                   <Link
                     to={dashboardPath}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-xl bg-emerald-500 px-4 py-3 text-center text-sm font-semibold text-black"
+                    className="rounded-[600px] bg-ember-orange px-4 py-3 text-center font-mono text-xs font-medium text-black"
                   >
                     Dashboard
                   </Link>
                   <button
                     onClick={logoutHandler}
-                    className="rounded-xl border border-white/15 px-4 py-3 text-sm font-semibold text-gray-300"
+                    className="rounded-[600px] border border-white/15 px-4 py-3 font-mono text-xs font-medium text-vellum"
                   >
                     Logout
                   </button>
@@ -225,16 +186,16 @@ const Navbar = () => {
                   <Link
                     to="/admission"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-xl px-4 py-3 text-sm font-medium text-gray-300 transition hover:bg-white/5 hover:text-white"
+                    className="rounded-lg px-4 py-3 font-mono text-xs uppercase tracking-[-0.02em] text-mist"
                   >
                     Enroll
                   </Link>
                   <Link
-                    to="/courses"
+                    to="/login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-xl bg-emerald-500 px-4 py-3 text-center text-sm font-semibold text-black"
+                    className="rounded-[600px] bg-ember-orange px-4 py-3 text-center font-mono text-xs font-medium text-black"
                   >
-                    Courses
+                    Login
                   </Link>
                 </>
               )}

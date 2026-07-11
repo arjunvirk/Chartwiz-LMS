@@ -1,28 +1,30 @@
 import { Link, useNavigate } from "react-router-dom";
-
 import { useEffect, useState } from "react";
-
 import toast from "react-hot-toast";
-
+import { motion } from "framer-motion";
 import { API_URL } from "../config/api";
-
 import forexImage from "../assets/images/forex.jpg";
 import indianMarketImage from "../assets/images/indianmarket.jpg";
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
+
 const CoursesPage = () => {
   const navigate = useNavigate();
-
   const [courses, setCourses] = useState([]);
-
   const [loading, setLoading] = useState(true);
 
   const totalCourses = courses?.length || 0;
-
   const totalStudents = courses?.reduce(
     (total, course) => total + (course.students?.length || 0),
     0,
   );
-
   const totalLessons = courses?.reduce(
     (total, course) => total + (course.videos?.length || 0),
     0,
@@ -32,7 +34,6 @@ const CoursesPage = () => {
     const fetchCourses = async () => {
       try {
         const response = await fetch(`${API_URL}/api/courses`);
-
         const data = await response.json();
 
         if (!response.ok) {
@@ -52,290 +53,276 @@ const CoursesPage = () => {
   }, []);
 
   return (
-    <section className="min-h-screen bg-[#f5f7fb] py-10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+    <section className="min-h-screen bg-vellum py-10">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
         {/* COURSES */}
-
-        <div className="mt-10">
-          <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
+        <div className="mt-20">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end"
+          >
             <div>
-              <span className="rounded-full bg-black px-5 py-2 text-xs font-bold uppercase tracking-[0.2em] text-white">
+              <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
                 Our Courses
               </span>
-
-              <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-black sm:text-5xl">
-                Learn Trading Like A
-                <span className="text-green-500"> Professional</span>
+              <h2 className="mt-4 font-serif text-4xl leading-[1.05] tracking-[-0.02em] text-graphite sm:text-5xl">
+                Learn trading like a professional
               </h2>
             </div>
 
-            <p className="max-w-2xl text-base leading-relaxed text-gray-600 sm:text-lg">
+            <p className="max-w-2xl text-base leading-relaxed text-slate sm:text-lg">
               Structured mentorship programs designed for aspiring traders who
               want to build long-term market understanding and disciplined
               execution.
             </p>
-          </div>
+          </motion.div>
 
           {/* GRID */}
-
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <div className="h-14 w-14 animate-spin rounded-full border-4 border-black border-t-transparent"></div>
+              <div className="h-12 w-12 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
             </div>
           ) : courses.length === 0 ? (
             <div className="mt-16">
-              {/* Hero */}
-              <div className="overflow-hidden rounded-4xl bg-linear-to-br from-black via-zinc-900 to-black px-8 py-16 text-center text-white shadow-2xl">
-                <span className="inline-flex items-center rounded-full border border-green-500/30 bg-green-500/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.25em] text-green-400">
+              {/* HERO CARD */}
+              <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                className="overflow-hidden rounded-3xl bg-obsidian px-8 py-16 text-center text-vellum"
+              >
+                <span className="inline-flex items-center rounded-[600px] border border-white/15 px-5 py-2 font-mono text-xs uppercase tracking-[-0.02em] text-ember-orange">
                   Admissions Open
                 </span>
 
-                <h2 className="mt-6 text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
+                <h2 className="mt-6 font-serif text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">
                   Offline{" "}
-                  <span className="text-green-400">Trading Programs</span>
+                  <span className="text-ember-orange">Trading Programs</span>
                 </h2>
 
-                <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-gray-300">
+                <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-mist">
                   Learn directly from experienced mentors through classroom
                   training, practical chart analysis, live market sessions and
                   professional trading mentorship.
                 </p>
-              </div>
+              </motion.div>
 
-              {/* Offline Courses */}
-              <div className="mt-14 grid gap-8 lg:grid-cols-2">
-                {/* Course 1 */}
-                <div className="group overflow-hidden rounded-[30px] border border-gray-200 bg-white shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
-                  <div className="overflow-hidden rounded-t-[30px]">
-                    <img
-                      src={forexImage}
-                      alt="The Forex Program"
-                      className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </div>
+              {/* OFFLINE COURSES */}
+              <div className="mt-14 grid gap-3 lg:grid-cols-2">
+                {/* COURSE 1 */}
+                <motion.div
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                  custom={1}
+                  className="overflow-hidden rounded-3xl bg-bone transition duration-300 hover:-translate-y-1"
+                >
+                  <img
+                    src={forexImage}
+                    alt="The Forex Program"
+                    className="h-60 w-full object-cover"
+                  />
 
                   <div className="p-8">
                     <div className="flex items-center justify-between">
-                      <span className="rounded-full bg-green-500 px-4 py-2 text-xs font-bold uppercase tracking-wider text-black">
+                      <span className="rounded-[600px] bg-ember-orange px-4 py-1.5 font-mono text-[11px] uppercase tracking-wide text-black">
                         Admissions Open
                       </span>
-
-                      <span className="rounded-full bg-black px-4 py-2 text-sm font-bold text-white">
+                      <span className="rounded-[600px] bg-obsidian px-4 py-1.5 font-mono text-xs font-medium text-vellum">
                         2 Months
                       </span>
                     </div>
 
-                    <h3 className="mt-8 text-3xl font-extrabold text-black">
+                    <h3 className="mt-8 font-serif text-3xl leading-tight text-graphite">
                       The Forex Program
                     </h3>
 
-                    <p className="mt-4 leading-relaxed text-gray-600">
+                    <p className="mt-4 text-sm leading-relaxed text-slate">
                       A complete classroom-based Forex trading program covering
                       technical analysis, market structure, risk management,
                       psychology and live market execution.
                     </p>
 
-                    <div className="mt-8 grid gap-4">
-                      <div className="flex items-center gap-3">
-                        <span className="text-green-500">✔</span>
-                        Classroom Training
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <span className="text-green-500">✔</span>
-                        Live Market Analysis
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <span className="text-green-500">✔</span>
-                        Risk Management
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <span className="text-green-500">✔</span>
-                        Trading Psychology
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <span className="text-green-500">✔</span>
-                        Mentor Support
-                      </div>
+                    <div className="mt-8 grid gap-3">
+                      {[
+                        "Classroom Training",
+                        "Live Market Analysis",
+                        "Risk Management",
+                        "Trading Psychology",
+                        "Mentor Support",
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="flex items-center gap-3 text-sm text-graphite"
+                        >
+                          <span className="text-ember-orange">✔</span>
+                          {item}
+                        </div>
+                      ))}
                     </div>
 
                     <button
                       onClick={() => navigate("/admission")}
-                      className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black"
+                      className="mt-10 w-full rounded-[600px] bg-obsidian py-4 font-mono text-sm font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
                     >
                       Apply for Admission
                     </button>
                   </div>
-                </div>
+                </motion.div>
 
-                {/* Course 2 */}
-                <div className="group overflow-hidden rounded-[30px] border border-gray-200 bg-white shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
-                  <div className="overflow-hidden rounded-t-[30px]">
-                    <img
-                      src={indianMarketImage}
-                      alt="The Forex Program with Indian Market"
-                      className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </div>
+                {/* COURSE 2 */}
+                <motion.div
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                  custom={2}
+                  className="overflow-hidden rounded-3xl bg-bone transition duration-300 hover:-translate-y-1"
+                >
+                  <img
+                    src={indianMarketImage}
+                    alt="The Forex Program with Indian Market"
+                    className="h-60 w-full object-cover"
+                  />
 
                   <div className="p-8">
                     <div className="flex items-center justify-between">
-                      <span className="rounded-full bg-green-500 px-4 py-2 text-xs font-bold uppercase tracking-wider text-black">
+                      <span className="rounded-[600px] bg-ember-orange px-4 py-1.5 font-mono text-[11px] uppercase tracking-wide text-black">
                         Admissions Open
                       </span>
-
-                      <span className="rounded-full bg-black px-4 py-2 text-sm font-bold text-white">
+                      <span className="rounded-[600px] bg-obsidian px-4 py-1.5 font-mono text-xs font-medium text-vellum">
                         3 Months
                       </span>
                     </div>
 
-                    <h3 className="mt-8 text-3xl font-extrabold text-black">
+                    <h3 className="mt-8 font-serif text-3xl leading-tight text-graphite">
                       The Forex Program with Indian Market
                     </h3>
 
-                    <p className="mt-4 leading-relaxed text-gray-600">
+                    <p className="mt-4 text-sm leading-relaxed text-slate">
                       Master both Forex and the Indian Stock Market with
                       comprehensive classroom training, live trading sessions
                       and professional mentorship.
                     </p>
 
-                    <div className="mt-8 grid gap-4">
-                      <div className="flex items-center gap-3">
-                        <span className="text-green-500">✔</span>
-                        Forex + Indian Market
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <span className="text-green-500">✔</span>
-                        Technical Analysis
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <span className="text-green-500">✔</span>
-                        Live Practical Sessions
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <span className="text-green-500">✔</span>
-                        Trading Psychology
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <span className="text-green-500">✔</span>
-                        Professional Mentorship
-                      </div>
+                    <div className="mt-8 grid gap-3">
+                      {[
+                        "Forex + Indian Market",
+                        "Technical Analysis",
+                        "Live Practical Sessions",
+                        "Trading Psychology",
+                        "Professional Mentorship",
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="flex items-center gap-3 text-sm text-graphite"
+                        >
+                          <span className="text-ember-orange">✔</span>
+                          {item}
+                        </div>
+                      ))}
                     </div>
 
                     <button
                       onClick={() => navigate("/admission")}
-                      className="mt-10 w-full rounded-2xl bg-black py-4 font-bold text-white transition hover:bg-green-500 hover:text-black"
+                      className="mt-10 w-full rounded-[600px] bg-obsidian py-4 font-mono text-sm font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
                     >
                       Apply for Admission
                     </button>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
-              {/* Online Coming Soon */}
-              <div className="mt-16 rounded-[30px] border border-dashed border-gray-300 bg-white p-10 text-center">
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-black text-4xl text-white">
+              {/* ONLINE COMING SOON */}
+              <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                className="mt-14 rounded-3xl border border-dashed border-pebble bg-vellum p-10 text-center"
+              >
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-obsidian text-3xl">
                   💻
                 </div>
 
-                <h3 className="mt-6 text-4xl font-extrabold text-black">
-                  Online Courses
-                  <span className="text-green-500"> Coming Soon</span>
+                <h3 className="mt-6 font-serif text-3xl leading-tight text-graphite sm:text-4xl">
+                  Online Courses{" "}
+                  <span className="text-ember-orange">Coming Soon</span>
                 </h3>
 
-                <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-gray-600">
+                <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-slate">
                   We're building a premium online learning experience featuring
                   recorded video lessons, live webinars, quizzes, downloadable
                   study materials and mentor support so you can learn from
                   anywhere.
                 </p>
 
-                <div className="mt-8 inline-flex rounded-full border border-green-200 bg-green-50 px-6 py-3 font-semibold text-green-700">
+                <div className="mt-8 inline-flex rounded-[600px] bg-bone px-6 py-3 font-mono text-sm font-medium text-ember-orange">
                   🚀 Launching Soon
                 </div>
-              </div>
+              </motion.div>
             </div>
           ) : (
-            <div className="mt-16 grid gap-8 lg:grid-cols-2">
+            <div className="mt-16 grid gap-3 lg:grid-cols-2">
               {courses.map((course) => (
                 <div
                   key={course._id}
-                  className="group overflow-hidden rounded-4xl border border-gray-200 bg-white shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                  className="overflow-hidden rounded-3xl bg-bone transition duration-300 hover:-translate-y-1"
                 >
-                  {/* CONTENT */}
-                  <div className="overflow-hidden">
-                    <img
-                      src={
-                        course.title === "The Forex Program"
-                          ? forexImage
-                          : indianMarketImage
-                      }
-                      alt={course.title}
-                      className="h-72 w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </div>
+                  <img
+                    src={
+                      course.title === "The Forex Program"
+                        ? forexImage
+                        : indianMarketImage
+                    }
+                    alt={course.title}
+                    className="h-64 w-full object-cover"
+                  />
                   <div className="p-6 sm:p-8">
-                    {/* TITLE */}
-
-                    <h3 className="text-3xl font-extrabold text-black transition group-hover:text-green-500">
+                    <h3 className="font-serif text-3xl leading-tight text-graphite transition group-hover:text-ember-orange">
                       {course.title}
                     </h3>
 
-                    {/* DESCRIPTION */}
-
-                    <p className="mt-5 leading-relaxed text-gray-600">
+                    <p className="mt-4 text-sm leading-relaxed text-slate">
                       {course.description}
                     </p>
 
-                    {/* INFO */}
-
                     <div className="mt-8 grid gap-5 sm:grid-cols-3">
                       <div>
-                        <p className="text-sm text-gray-500">Instructor</p>
-
-                        <h4 className="mt-1 font-bold text-black">
+                        <p className="text-xs text-slate">Instructor</p>
+                        <h4 className="mt-1 font-semibold text-graphite">
                           {course.instructor}
                         </h4>
                       </div>
-
                       <div>
-                        <p className="text-sm text-gray-500">Lessons</p>
-
-                        <h4 className="mt-1 font-bold text-black">
+                        <p className="text-xs text-slate">Lessons</p>
+                        <h4 className="mt-1 font-semibold text-graphite">
                           {course.videos?.length || 0}
                         </h4>
                       </div>
-
                       <div>
-                        <p className="text-sm text-gray-500">Students</p>
-
-                        <h4 className="mt-1 font-bold text-black">
+                        <p className="text-xs text-slate">Students</p>
+                        <h4 className="mt-1 font-semibold text-graphite">
                           {course.students?.length || 0}
                         </h4>
                       </div>
                     </div>
 
-                    {/* PRICE */}
-
                     <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                       <div>
-                        <p className="text-sm text-gray-500">Course Price</p>
-
-                        <h3 className="mt-1 text-4xl font-extrabold text-green-500">
+                        <p className="text-xs text-slate">Course Price</p>
+                        <h3 className="mt-1 font-mono text-3xl font-medium text-ember-orange">
                           ₹{course.price}
                         </h3>
                       </div>
 
                       <button
                         onClick={() => navigate("/admission")}
-                        className="rounded-2xl bg-black px-8 py-4 text-sm font-bold text-white transition hover:bg-green-500 hover:text-black"
+                        className="rounded-[600px] bg-obsidian px-8 py-3.5 font-mono text-sm font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
                       >
                         Apply for Admission
                       </button>
@@ -348,17 +335,19 @@ const CoursesPage = () => {
         </div>
 
         {/* CTA */}
-
-        <div className="mt-24 overflow-hidden rounded-4xl bg-black px-6 py-14 text-center text-white shadow-[0_30px_100px_rgba(0,0,0,0.35)] sm:px-10 lg:px-16 lg:py-20">
-          <h2 className="text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
-            Ready To Start Your
-            <span className="bg-linear-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
-              {" "}
-              Trading Journey?
-            </span>
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="mt-24 overflow-hidden rounded-3xl bg-obsidian px-6 py-14 text-center text-vellum sm:px-10 lg:px-16 lg:py-20"
+        >
+          <h2 className="font-serif text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">
+            Ready to start your{" "}
+            <span className="text-ember-orange">trading journey?</span>
           </h2>
 
-          <p className="mx-auto mt-8 max-w-3xl text-base leading-relaxed text-gray-300 sm:text-lg">
+          <p className="mx-auto mt-8 max-w-3xl text-base leading-relaxed text-mist sm:text-lg">
             Join ChartWiz Academy and learn professional trading through
             structured mentorship, practical strategies and premium market
             education.
@@ -367,19 +356,18 @@ const CoursesPage = () => {
           <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
             <Link
               to="/admission"
-              className="rounded-2xl bg-green-500 px-8 py-4 text-sm font-bold text-black transition hover:scale-[1.02] hover:bg-green-400"
+              className="rounded-[600px] bg-ember-orange px-8 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
             >
               Join ChartWiz Today
             </Link>
-
             <Link
               to="/login"
-              className="rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-md transition hover:border-white/20 hover:bg-white/10"
+              className="rounded-[600px] border border-white/15 px-8 py-3.5 font-mono text-sm font-medium text-vellum transition hover:border-white/30"
             >
               Student Login
             </Link>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

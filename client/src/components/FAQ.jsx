@@ -38,19 +38,12 @@ const FAQ_DATA = [
 
 const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState(null);
-
-  const toggleFAQ = (index) => {
+  const toggleFAQ = (index) =>
     setActiveIndex(activeIndex === index ? null : index);
-  };
 
   return (
-    <section className="relative overflow-hidden bg-[#050607] py-24 text-white">
-      {/* BACKGROUND GLOW */}
-      <div className="pointer-events-none absolute left-0 top-0 h-96 w-96 rounded-full bg-emerald-500/[0.07] blur-[120px]" />
-      <div className="pointer-events-none absolute bottom-0 right-0 h-96 w-96 rounded-full bg-emerald-400/[0.05] blur-[120px]" />
-
-      <div className="relative mx-auto max-w-5xl px-6">
-        {/* TOP */}
+    <section className="bg-vellum py-24">
+      <div className="mx-auto max-w-3xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,62 +51,46 @@ const FAQ = () => {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <span className="rounded-full border border-white/10 bg-white/[0.03] px-5 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400">
+          <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
             Frequently Asked Questions
           </span>
-
-          <h2 className="text-balance mt-6 font-display text-4xl font-extrabold leading-tight tracking-tight md:text-6xl">
-            Got Questions?
-            <span className="bg-gradient-to-r from-emerald-400 to-emerald-500 bg-clip-text text-transparent">
-              {" "}
-              We Have Answers
-            </span>
+          <h2 className="mt-4 font-serif text-4xl leading-[1.05] tracking-[-0.02em] text-graphite md:text-5xl">
+            Got questions? We have answers
           </h2>
-
-          <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-gray-400">
-            Everything you need to know about ChartWiz Academy, our mentorship
-            structure and learning platform.
-          </p>
         </motion.div>
 
-        {/* FAQ LIST */}
-        <div className="mt-20 space-y-4">
+        <div className="mt-14 space-y-2">
           {FAQ_DATA.map((faq, index) => {
             const isOpen = activeIndex === index;
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05, duration: 0.5 }}
-                className={`overflow-hidden rounded-[2rem] border bg-white/[0.03] backdrop-blur-md transition duration-300 ${
-                  isOpen ? "border-emerald-500/30" : "border-white/10"
-                }`}
+                className="overflow-hidden rounded-2xl bg-bone"
               >
-                {/* QUESTION */}
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="flex w-full items-center justify-between px-8 py-6 text-left"
+                  className="flex w-full items-center justify-between px-7 py-5 text-left"
                 >
-                  <h3 className="pr-6 text-lg font-semibold leading-relaxed md:text-xl">
+                  <h3 className="pr-6 text-base font-semibold text-graphite">
                     {faq.question}
                   </h3>
-
                   <motion.div
                     animate={{ rotate: isOpen ? 45 : 0 }}
                     transition={{ duration: 0.25 }}
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition ${
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition ${
                       isOpen
-                        ? "bg-emerald-500 text-black"
-                        : "bg-white/[0.06] text-emerald-400"
+                        ? "bg-ember-orange text-black"
+                        : "bg-white text-slate"
                     }`}
                   >
-                    <Plus size={18} strokeWidth={2.5} />
+                    <Plus size={16} strokeWidth={2.5} />
                   </motion.div>
                 </button>
 
-                {/* ANSWER */}
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
@@ -123,11 +100,9 @@ const FAQ = () => {
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="px-8 pb-7">
-                        <p className="leading-relaxed text-gray-400">
-                          {faq.answer}
-                        </p>
-                      </div>
+                      <p className="px-7 pb-6 text-sm leading-relaxed text-slate">
+                        {faq.answer}
+                      </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -136,26 +111,23 @@ const FAQ = () => {
           })}
         </div>
 
-        {/* BOTTOM CTA */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-20 rounded-[2.5rem] border border-white/10 bg-white/[0.03] p-10 text-center backdrop-blur-md"
+          className="mt-14 rounded-3xl bg-obsidian p-10 text-center"
         >
-          <h2 className="font-display text-4xl font-extrabold leading-tight md:text-5xl">
-            Still Have Questions?
+          <h2 className="font-serif text-3xl leading-tight text-vellum md:text-4xl">
+            Still have questions?
           </h2>
-
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-gray-400">
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-mist">
             Join ChartWiz Academy and start your journey towards professional
-            trading with structured mentorship and practical market education.
+            trading with structured mentorship.
           </p>
-
           <Link
             to="/admission"
-            className="mt-10 inline-flex items-center justify-center rounded-2xl bg-emerald-500 px-10 py-4 text-sm font-bold text-black transition hover:scale-105 hover:bg-emerald-400"
+            className="mt-8 inline-flex items-center justify-center rounded-[600px] bg-ember-orange px-8 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
           >
             Join ChartWiz Today
           </Link>

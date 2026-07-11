@@ -1,30 +1,44 @@
-/* Add near the top of your index.css, above @import "tailwindcss"; is fine too */
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+/* Add to the top of index.css, above your @import "tailwindcss"; */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
 
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Manrope", sans-serif;
+  /* Colors */
+  --color-ember-orange: #ff7817;
+  --color-vellum: #ffffff;
+  --color-obsidian: #18181b;
+  --color-onyx: #09090b;
+  --color-graphite: #000000;
+  --color-pebble: #e5e7eb;
+  --color-bone: #ebebeb;
+  --color-slate: #71717a;
+  --color-mist: #a1a1aa;
+
+  /* Typography */
+  --font-serif: "Playfair Display", serif;
   --font-body: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  --color-gold: #d4af37;
+  /* Radius */
+  --radius-card: 20px;
+  --radius-pill: 600px;
 }
 
-/* Utility classes used across the redesigned sections */
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+body {
+  font-family: var(--font-body);
+  background-color: #ffffff;
+  letter-spacing: -0.02em;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-body {
-  font-family: var(--font-body);
-  background-color: #050607;
+/* Ogg Text Light signature: thin-weight serif, tight leading, tight tracking — headings only, 28px+ */
+.font-serif {
+  font-weight: 300;
+  letter-spacing: -0.02em;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -32,8 +46,6 @@ body {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }
