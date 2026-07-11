@@ -6,21 +6,15 @@ import fetchWithAuth from "../../utils/fetchWithAuth";
 
 const Invoices = () => {
   const dispatch = useDispatch();
-
   const { userInfo } = useSelector((state) => state.userLogin);
 
   const [payments, setPayments] = useState([]);
-
   const [loading, setLoading] = useState(true);
-
-  // ================= FETCH INVOICES =================
 
   const fetchInvoices = async () => {
     try {
       setLoading(true);
-
       const data = await fetchWithAuth(dispatch, `${API_URL}/api/payments`);
-
       setPayments(data.payments);
     } catch (error) {
       console.log(error.message);
@@ -29,70 +23,87 @@ const Invoices = () => {
     }
   };
 
-  // ================= LOAD =================
-
   useEffect(() => {
     if (!userInfo) return;
-
     fetchInvoices();
   }, [userInfo]);
 
-  // ================= LOADING =================
-
   if (loading) {
     return (
-      <div className="p-6 text-center text-lg font-semibold">
-        Loading invoices...
+      <div className="flex items-center justify-center py-20">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
       </div>
     );
   }
 
-  // ================= EMPTY =================
-
   if (!payments.length) {
     return (
-      <div className="p-6">
-        <h1 className="mb-6 text-3xl font-bold">Invoices</h1>
-
-        <div className="rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-          <p className="text-gray-500">No invoices found.</p>
+      <div>
+        <h1 className="mb-6 font-serif text-3xl leading-tight text-graphite">
+          Invoices
+        </h1>
+        <div className="rounded-2xl bg-bone p-10 text-center">
+          <p className="text-sm text-slate">No invoices found.</p>
         </div>
       </div>
     );
   }
 
-  // ================= UI =================
-
   return (
-    <div className="p-6">
-      <h1 className="mb-6 text-3xl font-bold">Invoices</h1>
+    <div>
+      <h1 className="mb-6 font-serif text-3xl leading-tight text-graphite">
+        Invoices
+      </h1>
 
-      <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+      <div className="overflow-x-auto rounded-2xl bg-bone">
         <table className="w-full">
           <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-3">Invoice No</th>
-              <th className="border p-3">Student</th>
-              <th className="border p-3">Amount</th>
-              <th className="border p-3">Status</th>
-              <th className="border p-3">Date</th>
+            <tr className="border-b border-pebble">
+              <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                Invoice No
+              </th>
+              <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                Student
+              </th>
+              <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                Amount
+              </th>
+              <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                Status
+              </th>
+              <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                Date
+              </th>
             </tr>
           </thead>
 
           <tbody>
             {payments.map((payment) => (
-              <tr key={payment._id} className="hover:bg-gray-50">
-                <td className="border p-3">{payment.invoiceNumber}</td>
-
-                <td className="border p-3">{payment.studentName}</td>
-
-                <td className="border p-3">₹{payment.amount}</td>
-
-                <td className="border p-3 capitalize">
-                  {payment.paymentStatus}
+              <tr
+                key={payment._id}
+                className="border-b border-pebble last:border-0 hover:bg-vellum"
+              >
+                <td className="p-4 text-sm font-medium text-graphite">
+                  {payment.invoiceNumber}
                 </td>
-
-                <td className="border p-3">
+                <td className="p-4 text-sm text-graphite">
+                  {payment.studentName}
+                </td>
+                <td className="p-4 font-mono text-sm font-medium text-graphite">
+                  ₹{payment.amount}
+                </td>
+                <td className="p-4">
+                  <span
+                    className={`rounded-[600px] px-3 py-1 font-mono text-[11px] font-medium capitalize ${
+                      payment.paymentStatus === "paid"
+                        ? "bg-ember-orange/15 text-ember-orange"
+                        : "border border-pebble text-slate"
+                    }`}
+                  >
+                    {payment.paymentStatus}
+                  </span>
+                </td>
+                <td className="p-4 text-sm text-slate">
                   {new Date(payment.paidAt).toLocaleDateString()}
                 </td>
               </tr>

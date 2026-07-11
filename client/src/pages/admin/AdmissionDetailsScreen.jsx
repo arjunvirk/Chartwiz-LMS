@@ -10,7 +10,6 @@ import {
   BookOpen,
   Calendar,
   MapPin,
-  GraduationCap,
 } from "lucide-react";
 
 import toast from "react-hot-toast";
@@ -21,17 +20,17 @@ import {
   approveAdmission,
 } from "../../actions/admissionActions";
 
+const inputClass =
+  "w-full rounded-xl border border-pebble bg-vellum px-4 py-3 text-sm outline-none focus:border-obsidian";
+
 const AdmissionDetailsScreen = () => {
   const { id } = useParams();
-
   const dispatch = useDispatch();
 
   const admissionDetails = useSelector((state) => state.admissionDetails);
-
   const { loading, error, admission = {} } = admissionDetails;
 
   const admissionUpdate = useSelector((state) => state.admissionUpdate);
-
   const admissionApprove = useSelector((state) => state.admissionApprove);
 
   const {
@@ -69,8 +68,6 @@ const AdmissionDetailsScreen = () => {
   useEffect(() => {
     if (successUpdate) {
       toast.success("Admission updated successfully");
-
-      // Refresh admission details
       dispatch(getAdmissionDetails(id));
     }
 
@@ -80,8 +77,6 @@ const AdmissionDetailsScreen = () => {
 
     if (successApprove) {
       toast.success("Admission approved successfully");
-
-      // Refresh admission details
       dispatch(getAdmissionDetails(id));
     }
 
@@ -92,16 +87,18 @@ const AdmissionDetailsScreen = () => {
 
   if (loading) {
     return (
-      <div className="rounded-3xl bg-white p-16 text-center shadow-sm">
-        <h2 className="text-2xl font-bold">Loading Admission...</h2>
+      <div className="rounded-2xl bg-bone p-16 text-center">
+        <h2 className="text-xl font-semibold text-graphite">
+          Loading Admission...
+        </h2>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-3xl bg-red-50 p-16 text-center shadow-sm">
-        <h2 className="text-xl font-bold text-red-600">{error}</h2>
+      <div className="rounded-2xl border border-red-200 bg-red-50 p-16 text-center">
+        <h2 className="text-lg font-semibold text-red-600">{error}</h2>
       </div>
     );
   }
@@ -110,13 +107,7 @@ const AdmissionDetailsScreen = () => {
     e.preventDefault();
 
     dispatch(
-      updateAdmission(id, {
-        status,
-        paymentStatus,
-        batch,
-        mentor,
-        notes,
-      }),
+      updateAdmission(id, { status, paymentStatus, batch, mentor, notes }),
     );
   };
 
@@ -129,131 +120,120 @@ const AdmissionDetailsScreen = () => {
   };
 
   return (
-    <form onSubmit={submitHandler} className="space-y-8">
+    <form onSubmit={submitHandler} className="space-y-6">
       {/* BACK */}
-
       <Link
         to="/admin/dashboard/admissions"
-        className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-5 py-3 text-sm font-semibold transition hover:bg-gray-100"
+        className="inline-flex items-center gap-2 rounded-xl border border-pebble bg-vellum px-5 py-3 text-sm font-medium text-graphite transition hover:bg-bone"
       >
-        <ArrowLeft size={18} />
+        <ArrowLeft size={16} />
         Back to Admissions
       </Link>
 
       {/* HEADER */}
-
-      <div className="rounded-3xl bg-linear-to-r from-black to-gray-800 p-8 text-white shadow-lg">
-        <h1 className="text-4xl font-extrabold">Admission Details</h1>
-
-        <p className="mt-3 text-gray-300">
+      <div className="rounded-2xl bg-obsidian p-8 text-vellum">
+        <h1 className="font-serif text-3xl leading-tight">Admission Details</h1>
+        <p className="mt-2 text-sm text-mist">
           Review this application before approving student admission.
         </p>
       </div>
 
       {/* INFO */}
-
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-3 lg:grid-cols-2">
         {/* PERSONAL */}
+        <div className="rounded-2xl bg-bone p-8">
+          <h2 className="mb-6 text-lg font-semibold text-graphite">
+            Personal Information
+          </h2>
 
-        <div className="rounded-3xl border bg-white p-8 shadow-sm">
-          <h2 className="mb-8 text-2xl font-bold">Personal Information</h2>
-
-          <div className="space-y-6">
+          <div className="space-y-5">
             <div className="flex items-center gap-4">
-              <User className="text-gray-500" />
-
+              <User size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Full Name</p>
-
-                <p className="font-semibold">{admission.name}</p>
+                <p className="text-xs text-slate">Full Name</p>
+                <p className="text-sm font-semibold text-graphite">
+                  {admission.name}
+                </p>
               </div>
             </div>
-
             <div className="flex items-center gap-4">
-              <Mail className="text-gray-500" />
-
+              <Mail size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Email</p>
-
-                <p className="font-semibold">{admission.email}</p>
+                <p className="text-xs text-slate">Email</p>
+                <p className="text-sm font-semibold text-graphite">
+                  {admission.email}
+                </p>
               </div>
             </div>
-
             <div className="flex items-center gap-4">
-              <Phone className="text-gray-500" />
-
+              <Phone size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Phone</p>
-
-                <p className="font-semibold">{admission.phone}</p>
+                <p className="text-xs text-slate">Phone</p>
+                <p className="text-sm font-semibold text-graphite">
+                  {admission.phone}
+                </p>
               </div>
             </div>
-
             <div className="flex items-center gap-4">
-              <MapPin className="text-gray-500" />
-
+              <MapPin size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Address</p>
-
-                <p className="font-semibold">{admission.address || "-"}</p>
+                <p className="text-xs text-slate">Address</p>
+                <p className="text-sm font-semibold text-graphite">
+                  {admission.address || "-"}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
         {/* COURSE */}
+        <div className="rounded-2xl bg-bone p-8">
+          <h2 className="mb-6 text-lg font-semibold text-graphite">
+            Course Information
+          </h2>
 
-        <div className="rounded-3xl border bg-white p-8 shadow-sm">
-          <h2 className="mb-8 text-2xl font-bold">Course Information</h2>
-
-          <div className="space-y-6">
+          <div className="space-y-5">
             <div className="flex items-center gap-4">
-              <BookOpen className="text-gray-500" />
-
+              <BookOpen size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Selected Course</p>
-
-                <p className="font-semibold">{admission.course}</p>
+                <p className="text-xs text-slate">Selected Course</p>
+                <p className="text-sm font-semibold text-graphite">
+                  {admission.course}
+                </p>
               </div>
             </div>
-
             <div className="flex items-center gap-4">
-              <Calendar className="text-gray-500" />
-
+              <Calendar size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Applied On</p>
-
-                <p className="font-semibold">
+                <p className="text-xs text-slate">Applied On</p>
+                <p className="text-sm font-semibold text-graphite">
                   {new Date(admission.createdAt).toLocaleDateString()}
                 </p>
               </div>
             </div>
-
             <div className="flex items-center gap-4">
-              <Calendar className="text-gray-500" />
-
+              <Calendar size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Current Status</p>
-
-                <p className="font-semibold">{admission.status}</p>
+                <p className="text-xs text-slate">Current Status</p>
+                <p className="text-sm font-semibold text-graphite">
+                  {admission.status}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
         {/* ADMISSION MANAGEMENT */}
+        <div className="rounded-2xl bg-bone p-8 lg:col-span-2">
+          <h2 className="mb-6 text-lg font-semibold text-graphite">
+            Admission Management
+          </h2>
 
-        <div className="rounded-3xl border bg-white p-8 shadow-sm lg:col-span-2">
-          <h2 className="mb-8 text-2xl font-bold">Admission Management</h2>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* STATUS */}
-
+          <div className="grid gap-5 md:grid-cols-2">
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Admission Status
               </label>
-
               <select
                 disabled={
                   admission.status === "Approved" ||
@@ -261,114 +241,91 @@ const AdmissionDetailsScreen = () => {
                 }
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+                className={inputClass}
               >
                 <option value="Pending">Pending</option>
-
                 <option value="Contacted">Contacted</option>
-
                 <option value="Documents Pending">Documents Pending</option>
-
                 <option value="Payment Pending">Payment Pending</option>
               </select>
             </div>
 
-            {/* PAYMENT */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Payment Status
               </label>
-
               <select
                 value={paymentStatus}
                 onChange={(e) => setPaymentStatus(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+                className={inputClass}
               >
                 <option value="Pending">Pending</option>
-
                 <option value="Partially Paid">Partially Paid</option>
-
                 <option value="Paid">Paid</option>
               </select>
             </div>
 
-            {/* BATCH */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Assign Batch
               </label>
-
               <select
                 value={batch}
                 onChange={(e) => setBatch(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+                className={inputClass}
               >
                 <option value="">Select Batch</option>
-
                 <option>August 2026 Morning Batch</option>
-
                 <option>August 2026 Evening Batch</option>
-
                 <option>September 2026 Morning Batch</option>
-
                 <option>September 2026 Evening Batch</option>
               </select>
             </div>
 
-            {/* MENTOR */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Assign Mentor
               </label>
-
               <select
                 value={mentor}
                 onChange={(e) => setMentor(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+                className={inputClass}
               >
                 <option value="">Select Mentor</option>
-
                 <option>ChartWiz Faculty 1</option>
-
                 <option>ChartWiz Faculty 2</option>
-
                 <option>ChartWiz Faculty 3</option>
               </select>
             </div>
           </div>
 
-          {/* NOTES */}
-
-          <div className="mt-8">
-            <label className="mb-2 block text-sm font-semibold text-gray-700">
+          <div className="mt-6">
+            <label className="mb-2 block text-sm font-medium text-graphite">
               Admission Notes
             </label>
-
             <textarea
               rows={6}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Write internal notes..."
-              className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+              className={inputClass}
             />
           </div>
         </div>
 
-        {/* ADMISSION TIMELINE */}
+        {/* TIMELINE */}
+        <div className="rounded-2xl bg-bone p-8 lg:col-span-2">
+          <h2 className="mb-6 text-lg font-semibold text-graphite">
+            Admission Timeline
+          </h2>
 
-        <div className="rounded-3xl border bg-white p-8 shadow-sm lg:col-span-2">
-          <h2 className="mb-8 text-2xl font-bold">Admission Timeline</h2>
-
-          <div className="space-y-8 border-l-2 border-gray-300 pl-8">
+          <div className="space-y-7 border-l-2 border-pebble pl-8">
             <div className="relative">
-              <span className="absolute -left-10.25 h-5 w-5 rounded-full bg-green-500"></span>
-
-              <h3 className="font-bold">Admission Submitted</h3>
-
-              <p className="text-sm text-gray-500">
+              <span className="absolute -left-[2.55rem] h-4 w-4 rounded-full bg-ember-orange" />
+              <h3 className="text-sm font-semibold text-graphite">
+                Admission Submitted
+              </h3>
+              <p className="mt-1 text-xs text-slate">
                 {admission.createdAt
                   ? new Date(admission.createdAt).toLocaleDateString()
                   : "-"}
@@ -376,44 +333,43 @@ const AdmissionDetailsScreen = () => {
             </div>
 
             <div className="relative">
-              <span className="absolute -left-10.25 h-5 w-5 rounded-full bg-blue-500"></span>
-
-              <h3 className="font-bold">Counselor Review</h3>
-
-              <p className="text-sm text-gray-500">Waiting for review</p>
+              <span className="absolute -left-[2.55rem] h-4 w-4 rounded-full bg-slate" />
+              <h3 className="text-sm font-semibold text-graphite">
+                Counselor Review
+              </h3>
+              <p className="mt-1 text-xs text-slate">Waiting for review</p>
             </div>
 
             <div className="relative">
-              <span className="absolute -left-10.25 h-5 w-5 rounded-full bg-yellow-500"></span>
-
-              <h3 className="font-bold">Payment Verification</h3>
-
-              <p className="text-sm text-gray-500">{paymentStatus}</p>
+              <span className="absolute -left-[2.55rem] h-4 w-4 rounded-full bg-mist" />
+              <h3 className="text-sm font-semibold text-graphite">
+                Payment Verification
+              </h3>
+              <p className="mt-1 text-xs text-slate">{paymentStatus}</p>
             </div>
 
             <div className="relative">
-              <span className="absolute -left-10.25 h-5 w-5 rounded-full bg-purple-500"></span>
-
-              <h3 className="font-bold">Final Admission Status</h3>
-
-              <p className="text-sm text-gray-500">{status}</p>
+              <span className="absolute -left-[2.55rem] h-4 w-4 rounded-full bg-obsidian" />
+              <h3 className="text-sm font-semibold text-graphite">
+                Final Admission Status
+              </h3>
+              <p className="mt-1 text-xs text-slate">{status}</p>
             </div>
           </div>
         </div>
 
-        {/* ACTION BUTTONS */}
+        {/* ACTIONS */}
+        <div className="rounded-2xl bg-bone p-8 lg:col-span-2">
+          <h2 className="mb-6 text-lg font-semibold text-graphite">
+            Admission Actions
+          </h2>
 
-        <div className="rounded-3xl border bg-white p-8 shadow-sm lg:col-span-2">
-          <h2 className="mb-8 text-2xl font-bold">Admission Actions</h2>
-
-          <div className="flex flex-wrap gap-4">
-            {/* SAVE */}
-
+          <div className="flex flex-wrap gap-3">
             {admission.status !== "Approved" &&
               admission.status !== "Rejected" && (
                 <button
                   type="submit"
-                  className="rounded-2xl bg-black px-8 py-4 font-semibold text-white transition hover:bg-gray-800"
+                  className="rounded-[600px] bg-obsidian px-8 py-3.5 font-mono text-sm font-semibold text-vellum transition hover:bg-ember-orange hover:text-black"
                 >
                   Save Changes
                 </button>
@@ -424,30 +380,26 @@ const AdmissionDetailsScreen = () => {
                 type="button"
                 onClick={approveHandler}
                 disabled={paymentStatus !== "Paid" || loadingApprove}
-                className="rounded-2xl bg-green-600 px-8 py-4 font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-[600px] bg-ember-orange px-8 py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loadingApprove ? "Approving..." : "Approve Student"}
               </button>
             )}
 
-            {/* APPROVED BADGE */}
-
             {admission.status === "Approved" && (
-              <div className="rounded-2xl border border-green-200 bg-green-50 px-8 py-4 text-center font-bold text-green-700">
+              <div className="rounded-[600px] border border-ember-orange/30 bg-ember-orange/10 px-8 py-3.5 text-center text-sm font-semibold text-ember-orange">
                 ✅ Student Approved
               </div>
             )}
 
-            {/* REJECTED BADGE */}
-
             {admission.status === "Rejected" && (
-              <div className="rounded-2xl border border-red-200 bg-red-50 px-8 py-4 text-center font-bold text-red-700">
+              <div className="rounded-[600px] border border-red-200 bg-red-50 px-8 py-3.5 text-center text-sm font-semibold text-red-700">
                 ❌ Admission Rejected
               </div>
             )}
           </div>
 
-          <p className="mt-6 text-sm text-gray-500">
+          <p className="mt-5 text-sm text-slate">
             Approving this admission will automatically create the student
             account and enroll the student in the selected course.
           </p>

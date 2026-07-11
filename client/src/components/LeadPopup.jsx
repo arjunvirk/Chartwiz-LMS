@@ -1,48 +1,29 @@
 import { useEffect, useState } from "react";
-
 import toast from "react-hot-toast";
-
 import { API_URL } from "../config/api";
 
 const LeadPopup = () => {
   const [open, setOpen] = useState(false);
-
   const [name, setName] = useState("");
-
   const [phone, setPhone] = useState("");
-
   const [email, setEmail] = useState("");
-
   const [course, setCourse] = useState("The Forex Program");
 
   const params = new URLSearchParams(window.location.search);
-
   const utmSource = params.get("utm_source") || "Website";
   const utmMedium = params.get("utm_medium") || "";
   const utmCampaign = params.get("utm_campaign") || "";
   const utmContent = params.get("utm_content") || "";
-
   const referrer = document.referrer || "";
 
   // OPEN AFTER 4 SECONDS
-
   useEffect(() => {
     const popupShown = localStorage.getItem("leadPopupShown");
-
-    // ALREADY SHOWN
-
     if (popupShown) return;
-
-    // SHOW AFTER 4 SECONDS
 
     const timer = setTimeout(() => {
       setOpen(true);
-
-      // SAVE FLAG
-
       localStorage.setItem("leadPopupShown", "true");
-
-      // REMOVE AFTER 24 HOURS
 
       setTimeout(
         () => {
@@ -54,19 +35,15 @@ const LeadPopup = () => {
 
     return () => clearTimeout(timer);
   }, []);
-  // SUBMIT
 
+  // SUBMIT
   const submitHandler = async (e) => {
     e.preventDefault();
 
     try {
       const response = await fetch(`${API_URL}/api/leads`, {
         method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
           email,
@@ -77,7 +54,7 @@ const LeadPopup = () => {
           utmMedium,
           utmCampaign,
           utmContent,
-          referrer
+          referrer,
         }),
       });
 
@@ -87,16 +64,10 @@ const LeadPopup = () => {
         throw new Error(data.message);
       }
 
-      toast.success(data.message, {
-        duration: 3000,
-      });
-
+      toast.success(data.message, { duration: 3000 });
       setOpen(false);
-
       setName("");
-
       setEmail("");
-
       setPhone("");
     } catch (error) {
       toast.error(error.message);
@@ -105,75 +76,71 @@ const LeadPopup = () => {
 
   if (!open) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
-      <div className="relative w-full max-w-md overflow-hidden rounded-4xl bg-white p-8 shadow-2xl">
-        {/* CLOSE */}
+  const inputClass =
+    "w-full rounded-xl border border-pebble bg-vellum px-5 py-3.5 text-sm outline-none transition focus:border-obsidian";
 
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-obsidian/70 px-4 backdrop-blur-sm">
+      <div className="relative w-full max-w-md overflow-hidden rounded-3xl bg-bone p-8">
+        {/* CLOSE */}
         <button
           onClick={() => setOpen(false)}
-          className="absolute right-5 top-5 text-2xl font-bold text-gray-400 transition hover:text-black"
+          className="absolute right-5 top-5 text-2xl font-medium text-slate transition hover:text-graphite"
         >
           ×
         </button>
 
         {/* HEADER */}
-
         <div className="text-center">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-black text-4xl text-white">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-obsidian text-3xl">
             📈
           </div>
 
-          <h2 className="mt-6 text-4xl font-extrabold text-black">
-            Want To Become A Profitable Trader?
+          <h2 className="mt-6 font-serif text-3xl leading-tight text-graphite">
+            Want to become a profitable trader?
           </h2>
 
-          <p className="mt-4 text-gray-500">
+          <p className="mt-4 text-sm leading-relaxed text-slate">
             Learn Forex, Stock Market, Risk Management and Professional Trading
             Strategies from expert mentors.
           </p>
         </div>
 
         {/* FORM */}
-
-        <form onSubmit={submitHandler} className="mt-8 space-y-5">
+        <form onSubmit={submitHandler} className="mt-8 space-y-4">
           <input
             type="text"
             placeholder="Enter your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
+            className={inputClass}
           />
-
           <input
             type="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
+            className={inputClass}
           />
-
           <input
             type="text"
             placeholder="Enter mobile number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
+            className={inputClass}
           />
-
           <select
             value={course}
             onChange={(e) => setCourse(e.target.value)}
-            className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none focus:border-black"
+            className={inputClass}
           >
             <option>The Forex Program</option>
-
             <option>The Forex Program with Indian Market</option>
           </select>
 
           <button
             type="submit"
-            className="w-full rounded-2xl bg-green-500 py-4 text-sm font-bold text-black transition hover:bg-green-400"
+            className="w-full rounded-[600px] bg-ember-orange py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95"
           >
             Yes, I Want To Learn
           </button>

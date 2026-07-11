@@ -36,24 +36,8 @@ const HeroSection = () => {
   console.log("CountUp:", CountUp);
   return (
     <section className="relative flex min-h-[85vh] flex-col justify-end overflow-hidden bg-obsidian text-vellum">
-      {/* CHART LINE ACCENT */}
-      <svg
-        className="pointer-events-none absolute inset-x-0 top-1/4 h-64 w-full opacity-25"
-        viewBox="0 0 1200 200"
-        preserveAspectRatio="none"
-        fill="none"
-      >
-        <motion.path
-          d="M0,150 L120,110 L240,135 L360,70 L480,95 L600,45 L720,85 L840,35 L960,65 L1080,20 L1200,50"
-          stroke="#ff7817"
-          strokeWidth="1.5"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 2.2, ease: "easeInOut" }}
-        />
-      </svg>
 
-      <div className="relative mx-auto w-full max-w-[1200px] px-6 pb-16 pt-40">
+      <div className="relative mx-auto w-full max-w-300 px-6 pb-16 pt-40">
         {/* KICKER */}
         <motion.span
           variants={fadeUp}

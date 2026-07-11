@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  Users,
-  GraduationCap,
-  ShieldCheck,
-  UserCheck,
-  Trash2,
-  Crown,
-  UserPlus,
-} from "lucide-react";  
+import { GraduationCap, Trash2, Crown, UserPlus, Video } from "lucide-react";
 
 import {
   ResponsiveContainer,
@@ -29,13 +20,10 @@ import {
   deleteUser,
   updateUserRole,
   createUser,
+  getAdminAnalytics,
 } from "../../actions/adminActions";
 
 import { API_URL } from "../../config/api";
-
-import { getAdminAnalytics } from "../../actions/adminActions";
-
-import { CalendarDays, Video } from "lucide-react";
 
 import {
   createWebinar,
@@ -45,48 +33,37 @@ import {
 
 import toast from "react-hot-toast";
 
+const inputClass =
+  "w-full rounded-xl border border-pebble bg-vellum px-5 py-3.5 text-sm outline-none focus:border-obsidian";
+
 const AdminDashboard = () => {
   const dispatch = useDispatch();
 
   const adminStats = useSelector((state) => state.adminStats);
-
   const { loading, error, stats } = adminStats;
 
   const adminUsers = useSelector((state) => state.adminUsers);
-
   const { users = [] } = adminUsers;
 
   const adminAnalytics = useSelector((state) => state.adminAnalytics);
-
   const { analytics = [] } = adminAnalytics;
 
   const webinarList = useSelector((state) => state.webinarList);
-
   const { webinars = [] } = webinarList;
 
   const webinarCreate = useSelector((state) => state.webinarCreate);
-
   const { success: webinarCreated } = webinarCreate;
 
-  // ================= CREATE USER FORM =================
-
   const [name, setName] = useState("");
-
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
-
   const [role, setRole] = useState("student");
 
   const [webinarTitle, setWebinarTitle] = useState("");
-
   const [webinarDescription, setWebinarDescription] = useState("");
-
   const [startTime, setStartTime] = useState("");
-
   const [duration, setDuration] = useState(60);
 
-  // ---------------- FETCH STATS ----------------
   const { userInfo } = useSelector((state) => state.userLogin);
 
   useEffect(() => {
@@ -101,12 +78,9 @@ const AdminDashboard = () => {
   useEffect(() => {
     if (webinarCreated) {
       dispatch(listWebinars());
-
       toast.success("Webinar created successfully");
     }
   }, [webinarCreated, dispatch]);
-
-  // ---------------- ERROR ----------------
 
   useEffect(() => {
     if (error) {
@@ -127,15 +101,10 @@ const AdminDashboard = () => {
     );
 
     setWebinarTitle("");
-
     setWebinarDescription("");
-
     setStartTime("");
-
     setDuration(60);
   };
-
-  // ================= DELETE USER =================
 
   const deleteHandler = async (id, status) => {
     if (!window.confirm("Delete this user?")) {
@@ -150,7 +119,6 @@ const AdminDashboard = () => {
 
       const response = await fetch(endpoint, {
         method: "DELETE",
-
         credentials: "include",
       });
 
@@ -161,9 +129,7 @@ const AdminDashboard = () => {
       }
 
       toast.success(data.message);
-
       dispatch(getAllUsers());
-
       dispatch(getAdminStats());
     } catch (error) {
       toast.error(error.message);
@@ -177,45 +143,29 @@ const AdminDashboard = () => {
 
     try {
       await dispatch(deleteWebinar(id));
-
       dispatch(listWebinars());
-
       toast.success("Webinar deleted");
     } catch (error) {
       toast.error("Failed to delete webinar");
     }
   };
-  // ================= CHANGE ROLE =================
 
   const roleHandler = async (id, newRole) => {
     try {
       await dispatch(updateUserRole(id, newRole));
-
       await dispatch(getAllUsers());
-
       await dispatch(getAdminStats());
-
       toast.success("Role updated");
     } catch (error) {
       toast.error("Failed to update role");
     }
   };
-  // ================= CREATE USER =================
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    await dispatch(
-      createUser({
-        name,
-        email,
-        password,
-        role,
-      }),
-    );
-
+    await dispatch(createUser({ name, email, password, role }));
     dispatch(getAllUsers());
-
     dispatch(getAdminStats());
 
     setName("");
@@ -224,327 +174,211 @@ const AdminDashboard = () => {
     setRole("student");
   };
 
-  const chartData = [
-    {
-      name: "Students",
-      value: stats?.totalStudents || 0,
-    },
-
-    {
-      name: "Teachers",
-      value: stats?.totalTeachers || 0,
-    },
-
-    {
-      name: "Courses",
-      value: stats?.totalCourses || 0,
-    },
-
-    {
-      name: "Leads",
-      value: stats?.totalLeads || 0,
-    },
-
-    {
-      name: "Enrollments",
-      value: stats?.totalEnrollments || 0,
-    },
+  const STAT_CARDS = [
+    { label: "Total Students", value: stats?.totalStudents },
+    { label: "Total Teachers", value: stats?.totalTeachers },
+    { label: "Total Courses", value: stats?.totalCourses },
+    { label: "Total Leads", value: stats?.totalLeads },
+    { label: "Total Enrollments", value: stats?.totalEnrollments },
+    { label: "New Students Today", value: stats?.newEnrollmentsToday },
   ];
 
   return (
     <div>
       {/* HEADER */}
-
-      <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-black">
+          <h1 className="font-serif text-3xl leading-tight text-graphite">
             Admin Dashboard
           </h1>
-
-          <p className="mt-3 text-base text-gray-500">
+          <p className="mt-2 text-sm text-slate">
             Manage users, teachers and platform analytics from one place.
           </p>
         </div>
 
-        {/* STATUS */}
-
-        <div className="rounded-2xl bg-black px-6 py-4 text-white shadow-lg">
-          <p className="text-sm text-gray-300">LMS Platform Status</p>
-
-          <h2 className="mt-1 text-2xl font-bold">Active</h2>
+        <div className="rounded-2xl bg-obsidian px-6 py-4 text-vellum">
+          <p className="font-mono text-xs uppercase text-mist">
+            LMS Platform Status
+          </p>
+          <h2 className="mt-1 text-xl font-semibold text-ember-orange">
+            Active
+          </h2>
         </div>
       </div>
 
-      {/* LOADING */}
-
       {loading ? (
         <div className="flex h-60 items-center justify-center">
-          <h2 className="text-2xl font-bold">Loading...</h2>
+          <div className="h-10 w-10 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
         </div>
       ) : (
         <>
           {/* STATS GRID */}
-
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            <div className="rounded-3xl border border-gray-200 bg-white p-7 shadow-sm">
-              <p className="text-sm font-medium text-gray-500">
-                Total Students
-              </p>
-
-              <h2 className="mt-3 text-4xl font-extrabold text-black">
-                {stats?.totalStudents || 0}
-              </h2>
-            </div>
-
-            <div className="rounded-3xl border border-gray-200 bg-white p-7 shadow-sm">
-              <p className="text-sm font-medium text-gray-500">
-                Total Teachers
-              </p>
-
-              <h2 className="mt-3 text-4xl font-extrabold text-black">
-                {stats?.totalTeachers || 0}
-              </h2>
-            </div>
-
-            <div className="rounded-3xl border border-gray-200 bg-white p-7 shadow-sm">
-              <p className="text-sm font-medium text-gray-500">Total Courses</p>
-
-              <h2 className="mt-3 text-4xl font-extrabold text-black">
-                {stats?.totalCourses || 0}
-              </h2>
-            </div>
-
-            <div className="rounded-3xl border border-gray-200 bg-white p-7 shadow-sm">
-              <p className="text-sm font-medium text-gray-500">Total Leads</p>
-
-              <h2 className="mt-3 text-4xl font-extrabold text-black">
-                {stats?.totalLeads || 0}
-              </h2>
-            </div>
-
-            <div className="rounded-3xl border border-gray-200 bg-white p-7 shadow-sm">
-              <p className="text-sm font-medium text-gray-500">
-                Total Enrollments
-              </p>
-
-              <h2 className="mt-3 text-4xl font-extrabold text-black">
-                {stats?.totalEnrollments || 0}
-              </h2>
-            </div>
-
-            <div className="rounded-3xl border border-gray-200 bg-white p-7 shadow-sm">
-              <p className="text-sm font-medium text-gray-500">
-                New Students Today
-              </p>
-
-              <h2 className="mt-3 text-4xl font-extrabold text-black">
-                {stats?.newEnrollmentsToday || 0}
-              </h2>
-            </div>
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {STAT_CARDS.map((card) => (
+              <div key={card.label} className="rounded-2xl bg-bone p-6">
+                <p className="text-sm font-medium text-slate">{card.label}</p>
+                <h2 className="mt-3 font-mono text-3xl font-medium text-graphite">
+                  {card.value || 0}
+                </h2>
+              </div>
+            ))}
           </div>
 
           {/* PLATFORM OVERVIEW */}
-
-          <div className="mt-10 grid gap-8 xl:grid-cols-2">
-            {/* LEFT */}
-
-            <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
-              <h2 className="text-2xl font-extrabold text-black">
+          <div className="mt-8 grid gap-3 xl:grid-cols-2">
+            <div className="rounded-2xl bg-bone p-8">
+              <h2 className="text-xl font-semibold text-graphite">
                 Platform Growth Analytics
               </h2>
-
-              <p className="mt-2 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-slate">
                 Monthly growth of students, teachers, leads and courses.
               </p>
 
-              <div className="mt-8 h-100">
+              <div className="mt-8 h-96">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={analytics}>
-                    <CartesianGrid strokeDasharray="3 3" />
-
-                    <XAxis dataKey="month" />
-
-                    <YAxis />
-
+                    <CartesianGrid stroke="#e5e7eb" strokeDasharray="3 3" />
+                    <XAxis dataKey="month" stroke="#71717a" fontSize={12} />
+                    <YAxis stroke="#71717a" fontSize={12} />
                     <Tooltip />
-
                     <Legend />
-
                     <Line
                       type="monotone"
                       dataKey="students"
-                      stroke="#000000"
-                      strokeWidth={3}
+                      stroke="#18181b"
+                      strokeWidth={2.5}
                     />
-
                     <Line
                       type="monotone"
                       dataKey="teachers"
-                      stroke="#16a34a"
-                      strokeWidth={3}
+                      stroke="#ff7817"
+                      strokeWidth={2.5}
                     />
-
                     <Line
                       type="monotone"
                       dataKey="leads"
-                      stroke="#2563eb"
-                      strokeWidth={3}
+                      stroke="#71717a"
+                      strokeWidth={2}
                     />
-
                     <Line
                       type="monotone"
                       dataKey="courses"
-                      stroke="#dc2626"
-                      strokeWidth={3}
+                      stroke="#a1a1aa"
+                      strokeWidth={2}
                     />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* RIGHT */}
-
-            <div className="rounded-3xl bg-linear-to-br from-black to-gray-900 p-8 text-white shadow-lg">
-              <h2 className="text-3xl font-extrabold">ChartWiz LMS</h2>
-
-              <p className="mt-4 text-gray-300">
+            <div className="rounded-2xl bg-obsidian p-8 text-vellum">
+              <h2 className="font-serif text-2xl leading-tight">
+                ChartWiz LMS
+              </h2>
+              <p className="mt-4 text-sm leading-relaxed text-mist">
                 Professional stock market learning management platform with
                 mentorship, trading education and live market analytics.
               </p>
 
-              <div className="mt-10 grid grid-cols-2 gap-5">
-                <div className="rounded-2xl bg-white/10 p-5 backdrop-blur-md">
-                  <h3 className="text-3xl font-extrabold">
+              <div className="mt-8 grid grid-cols-2 gap-3">
+                <div className="rounded-xl border border-white/10 p-5">
+                  <h3 className="font-mono text-2xl font-medium">
                     {stats?.totalStudents || 0}
                   </h3>
-
-                  <p className="mt-2 text-sm text-gray-300">Active Students</p>
+                  <p className="mt-2 text-xs text-mist">Active Students</p>
                 </div>
-
-                <div className="rounded-2xl bg-white/10 p-5 backdrop-blur-md">
-                  <h3 className="text-3xl font-extrabold">
+                <div className="rounded-xl border border-white/10 p-5">
+                  <h3 className="font-mono text-2xl font-medium">
                     {stats?.totalTeachers || 0}
                   </h3>
-
-                  <p className="mt-2 text-sm text-gray-300">Mentors</p>
+                  <p className="mt-2 text-xs text-mist">Mentors</p>
                 </div>
-
-                <div className="rounded-2xl bg-white/10 p-5 backdrop-blur-md">
-                  <h3 className="text-3xl font-extrabold">
+                <div className="rounded-xl border border-white/10 p-5">
+                  <h3 className="font-mono text-2xl font-medium">
                     {stats?.totalCourses || 0}
                   </h3>
-
-                  <p className="mt-2 text-sm text-gray-300">
-                    Published Courses
-                  </p>
+                  <p className="mt-2 text-xs text-mist">Published Courses</p>
                 </div>
-
-                <div className="rounded-2xl bg-white/10 p-5 backdrop-blur-md">
-                  <h3 className="text-3xl font-extrabold">
+                <div className="rounded-xl border border-white/10 p-5">
+                  <h3 className="font-mono text-2xl font-medium">
                     {stats?.totalLeads || 0}
                   </h3>
-
-                  <p className="mt-2 text-sm text-gray-300">Total Leads</p>
+                  <p className="mt-2 text-xs text-mist">Total Leads</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* ================= USER MANAGEMENT ================= */}
-
-          <div className="mt-10 grid gap-8 xl:grid-cols-[420px_1fr]">
+          {/* USER MANAGEMENT */}
+          <div className="mt-8 grid gap-3 xl:grid-cols-[380px_1fr]">
             {/* CREATE USER */}
-
-            <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
+            <div className="rounded-2xl bg-bone p-8">
               <div className="flex items-center gap-3">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-black text-white">
-                  <UserPlus size={26} />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-obsidian text-vellum">
+                  <UserPlus size={22} />
                 </div>
-
                 <div>
-                  <h2 className="text-2xl font-extrabold text-black">
+                  <h2 className="text-lg font-semibold text-graphite">
                     Create User
                   </h2>
-
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-slate">
                     Add students and teachers
                   </p>
                 </div>
               </div>
 
-              {/* FORM */}
-
-              <form onSubmit={submitHandler} className="mt-8 space-y-5">
-                {/* NAME */}
-
+              <form onSubmit={submitHandler} className="mt-8 space-y-4">
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">
+                  <label className="mb-2 block text-sm font-medium text-graphite">
                     Full Name
                   </label>
-
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none focus:border-black"
+                    className={inputClass}
                   />
                 </div>
-
-                {/* EMAIL */}
-
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">
+                  <label className="mb-2 block text-sm font-medium text-graphite">
                     Email
                   </label>
-
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none focus:border-black"
+                    className={inputClass}
                   />
                 </div>
-
-                {/* PASSWORD */}
-
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">
+                  <label className="mb-2 block text-sm font-medium text-graphite">
                     Password
                   </label>
-
                   <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none focus:border-black"
+                    className={inputClass}
                   />
                 </div>
-
-                {/* ROLE */}
-
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">
+                  <label className="mb-2 block text-sm font-medium text-graphite">
                     Role
                   </label>
-
                   <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none focus:border-black"
+                    className={inputClass}
                   >
                     <option value="student">Student</option>
-
                     <option value="teacher">Teacher</option>
-
                     <option value="admin">Admin</option>
                   </select>
                 </div>
 
-                {/* BUTTON */}
-
                 <button
                   type="submit"
-                  className="w-full rounded-2xl bg-black py-4 font-semibold text-white transition hover:bg-gray-800"
+                  className="w-full rounded-[600px] bg-ember-orange py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95"
                 >
                   Create User
                 </button>
@@ -552,61 +386,43 @@ const AdminDashboard = () => {
             </div>
 
             {/* USERS TABLE */}
+            <div className="rounded-2xl bg-bone p-8">
+              <h2 className="text-lg font-semibold text-graphite">
+                Platform Users
+              </h2>
+              <p className="mt-1 text-sm text-slate">
+                Manage teachers, students and admins.
+              </p>
 
-            <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-extrabold text-black">
-                    Platform Users
-                  </h2>
-
-                  <p className="mt-2 text-sm text-gray-500">
-                    Manage teachers, students and admins.
-                  </p>
-                </div>
-              </div>
-
-              {/* USERS */}
-
-              <div className="mt-8 space-y-5">
+              <div className="mt-6 space-y-3">
                 {users.map((user) => (
                   <div
                     key={user._id}
-                    className="flex flex-col gap-5 rounded-3xl border border-gray-200 p-6 lg:flex-row lg:items-center lg:justify-between"
+                    className="flex flex-col gap-5 rounded-2xl border border-pebble bg-vellum p-5 lg:flex-row lg:items-center lg:justify-between"
                   >
-                    {/* LEFT */}
-
                     <div className="flex items-center gap-4">
                       <img
                         src={user.profilePic}
                         alt="profile"
-                        className="h-16 w-16 rounded-full border object-cover"
+                        className="h-14 w-14 rounded-full border border-pebble object-cover"
                       />
-
                       <div>
-                        <h3 className="text-xl font-bold text-black">
+                        <h3 className="text-base font-semibold text-graphite">
                           {user.name}
                         </h3>
-
-                        <p className="mt-1 text-sm text-gray-500">
-                          {user.email}
-                        </p>
+                        <p className="mt-1 text-sm text-slate">{user.email}</p>
 
                         <div className="mt-3 flex flex-wrap gap-2">
-                          {/* ROLE */}
-
-                          <span className="inline-block rounded-full bg-black px-4 py-2 text-xs font-bold uppercase tracking-wider text-white">
+                          <span className="inline-block rounded-[600px] bg-obsidian px-3 py-1 font-mono text-[11px] uppercase text-vellum">
                             {user.role}
                           </span>
 
-                          {/* STATUS */}
-
                           {user.status === "pending" ? (
-                            <span className="inline-block rounded-full bg-yellow-100 px-4 py-2 text-xs font-bold uppercase tracking-wider text-yellow-700">
+                            <span className="inline-block rounded-[600px] border border-pebble px-3 py-1 font-mono text-[11px] uppercase text-slate">
                               Pending Verification
                             </span>
                           ) : (
-                            <span className="inline-block rounded-full bg-green-100 px-4 py-2 text-xs font-bold uppercase tracking-wider text-green-700">
+                            <span className="inline-block rounded-[600px] bg-ember-orange/15 px-3 py-1 font-mono text-[11px] uppercase text-ember-orange">
                               Verified
                             </span>
                           )}
@@ -614,62 +430,47 @@ const AdminDashboard = () => {
                       </div>
                     </div>
 
-                    {/* ACTIONS */}
-
-                    {/* ACTIONS */}
-
-                    <div className="flex flex-wrap gap-3">
-                      {/* PENDING USER */}
-
+                    <div className="flex flex-wrap gap-2">
                       {user.status === "pending" ? (
                         <>
-                          <div className="rounded-2xl bg-yellow-100 px-5 py-3 text-sm font-semibold text-yellow-700">
-                            Waiting For Email Verification
+                          <div className="rounded-xl border border-pebble px-4 py-2.5 text-sm text-slate">
+                            Waiting For Verification
                           </div>
-
-                          {/* DELETE PENDING USER */}
-
                           <button
                             onClick={() => deleteHandler(user._id, user.status)}
-                            className="flex items-center gap-2 rounded-2xl border border-red-300 px-5 py-3 text-sm font-semibold text-red-500 transition hover:bg-red-500 hover:text-white"
+                            className="flex items-center gap-2 rounded-xl border border-red-300 px-4 py-2.5 text-sm font-medium text-red-500 transition hover:bg-red-500 hover:text-white"
                           >
-                            <Trash2 size={16} />
+                            <Trash2 size={15} />
                             Delete Invite
                           </button>
                         </>
                       ) : (
                         <>
-                          {/* MAKE TEACHER */}
-
                           {user.role !== "teacher" && (
                             <button
                               onClick={() => roleHandler(user._id, "teacher")}
-                              className="flex items-center gap-2 rounded-2xl border border-green-300 px-5 py-3 text-sm font-semibold text-green-600 transition hover:bg-green-500 hover:text-white"
+                              className="flex items-center gap-2 rounded-xl border border-pebble px-4 py-2.5 text-sm font-medium text-graphite transition hover:bg-obsidian hover:text-vellum"
                             >
-                              <GraduationCap size={16} />
+                              <GraduationCap size={15} />
                               Make Teacher
                             </button>
                           )}
 
-                          {/* MAKE ADMIN */}
-
                           {user.role !== "admin" && (
                             <button
                               onClick={() => roleHandler(user._id, "admin")}
-                              className="flex items-center gap-2 rounded-2xl border border-black px-5 py-3 text-sm font-semibold text-black transition hover:bg-black hover:text-white"
+                              className="flex items-center gap-2 rounded-xl border border-pebble px-4 py-2.5 text-sm font-medium text-graphite transition hover:bg-ember-orange hover:text-black"
                             >
-                              <Crown size={16} />
+                              <Crown size={15} />
                               Make Admin
                             </button>
                           )}
 
-                          {/* DELETE VERIFIED USER */}
-
                           <button
                             onClick={() => deleteHandler(user._id, user.status)}
-                            className="flex items-center gap-2 rounded-2xl border border-red-300 px-5 py-3 text-sm font-semibold text-red-500 transition hover:bg-red-500 hover:text-white"
+                            className="flex items-center gap-2 rounded-xl border border-red-300 px-4 py-2.5 text-sm font-medium text-red-500 transition hover:bg-red-500 hover:text-white"
                           >
-                            <Trash2 size={16} />
+                            <Trash2 size={15} />
                             Delete
                           </button>
                         </>
@@ -681,99 +482,96 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className="mt-10 grid gap-8 xl:grid-cols-[420px_1fr]">
-            {/* CREATE WEBINAR */}
-
-            <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
+          {/* WEBINARS */}
+          <div className="mt-8 grid gap-3 xl:grid-cols-[380px_1fr]">
+            <div className="rounded-2xl bg-bone p-8">
               <div className="flex items-center gap-3">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-black text-white">
-                  <Video size={26} />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-obsidian text-vellum">
+                  <Video size={22} />
                 </div>
-
                 <div>
-                  <h2 className="text-2xl font-extrabold text-black">
+                  <h2 className="text-lg font-semibold text-graphite">
                     Create Webinar
                   </h2>
-
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-slate">
                     Schedule a Google Meet session
                   </p>
                 </div>
               </div>
 
-              <form onSubmit={webinarSubmitHandler} className="mt-8 space-y-5">
+              <form onSubmit={webinarSubmitHandler} className="mt-8 space-y-4">
                 <input
                   type="text"
                   placeholder="Webinar Title"
                   value={webinarTitle}
                   onChange={(e) => setWebinarTitle(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-300 px-5 py-4"
+                  className={inputClass}
                 />
-
                 <textarea
                   placeholder="Description"
                   value={webinarDescription}
                   onChange={(e) => setWebinarDescription(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-300 px-5 py-4"
+                  className={inputClass}
                 />
-
                 <input
                   type="datetime-local"
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-300 px-5 py-4"
+                  className={inputClass}
                 />
-
                 <input
                   type="number"
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-300 px-5 py-4"
+                  className={inputClass}
                 />
 
                 <button
                   type="submit"
-                  className="w-full rounded-2xl bg-black py-4 font-semibold text-white"
+                  className="w-full rounded-[600px] bg-obsidian py-3.5 font-mono text-sm font-semibold text-vellum transition hover:bg-ember-orange hover:text-black"
                 >
                   Create Webinar
                 </button>
               </form>
             </div>
 
-            {/* WEBINAR LIST */}
+            <div className="rounded-2xl bg-bone p-8">
+              <h2 className="text-lg font-semibold text-graphite">
+                Scheduled Webinars
+              </h2>
 
-            <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
-              <h2 className="text-2xl font-extrabold">Scheduled Webinars</h2>
-
-              <div className="mt-8 space-y-4">
+              <div className="mt-6 space-y-3">
                 {webinars.map((webinar) => (
                   <div
                     key={webinar._id}
-                    className="rounded-2xl border border-gray-200 p-5"
+                    className="rounded-2xl border border-pebble bg-vellum p-5"
                   >
-                    <h3 className="text-lg font-bold">{webinar.title}</h3>
-
-                    <p className="mt-2 text-gray-500">{webinar.description}</p>
-
-                    <p className="mt-3 text-sm text-gray-500">
+                    <h3 className="text-base font-semibold text-graphite">
+                      {webinar.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-slate">
+                      {webinar.description}
+                    </p>
+                    <p className="mt-3 text-xs text-slate">
                       {new Date(webinar.startTime).toLocaleString()}
                     </p>
 
-                    <a
-                      href={webinar.meetLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-4 inline-block rounded-xl bg-black px-5 py-3 text-white"
-                    >
-                      Open Meet Link
-                    </a>
-
-                    <button
-                      onClick={() => deleteWebinarHandler(webinar._id)}
-                      className="rounded-xl border border-red-300 px-5 py-3 mx-4 text-red-500 transition hover:bg-red-500 hover:text-white"
-                    >
-                      Delete
-                    </button>
+                    <div className="mt-4 flex items-center gap-3">
+                      <a
+                        href={webinar.meetLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-block rounded-[600px] bg-obsidian px-5 py-2.5 font-mono text-xs font-medium text-vellum"
+                      >
+                        Open Meet Link
+                      </a>
+                      <button
+                        onClick={() => deleteWebinarHandler(webinar._id)}
+                        className="rounded-[600px] border border-red-300 px-5 py-2.5 text-xs font-medium text-red-500 transition hover:bg-red-500 hover:text-white"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import fetchWithAuth from "../../utils/fetchWithAuth";
 import toast from "react-hot-toast";
 import { API_URL } from "../../config/api";
+
+const inputClass =
+  "rounded-xl border border-pebble bg-vellum px-4 py-3 text-sm outline-none focus:border-obsidian";
 
 const Payments = () => {
   const dispatch = useDispatch();
@@ -18,28 +20,21 @@ const Payments = () => {
     remarks: "",
   });
 
-  // ================= FETCH STUDENTS =================
-
   const fetchStudents = async () => {
     try {
       const data = await fetchWithAuth(dispatch, `${API_URL}/api/admin/users`);
-
       const studentUsers = data.users.filter(
         (user) => user.role === "student" && user.isVerified,
       );
-
       setStudents(studentUsers);
     } catch (error) {
       toast.error(error.message);
     }
   };
 
-  // ================= FETCH PAYMENTS =================
-
   const fetchPayments = async () => {
     try {
       const data = await fetchWithAuth(dispatch, `${API_URL}/api/payments`);
-
       setPayments(data.payments);
     } catch (error) {
       toast.error(error.message);
@@ -50,52 +45,32 @@ const Payments = () => {
 
   useEffect(() => {
     if (!userInfo) return;
-
     fetchStudents();
-
     fetchPayments();
   }, [userInfo]);
 
-  // ================= HANDLE INPUT =================
-
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
-  // ================= CREATE PAYMENT =================
 
   const createPayment = async (e) => {
     e.preventDefault();
-
     setLoading(true);
 
     try {
-      const data = await fetchWithAuth(
-        dispatch,
-        `${API_URL}/api/payments/offline`,
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify(formData),
-        },
-      );
+      await fetchWithAuth(dispatch, `${API_URL}/api/payments/offline`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
       toast.success("Payment recorded successfully");
-
       setFormData({
         studentId: "",
         amount: "",
         referenceNumber: "",
         remarks: "",
       });
-
       fetchPayments();
     } catch (error) {
       toast.error(error.message);
@@ -118,21 +93,13 @@ const Payments = () => {
       }
 
       const blob = await response.blob();
-
       const url = window.URL.createObjectURL(blob);
-
       const link = document.createElement("a");
-
       link.href = url;
-
       link.download = `${invoiceNumber}.pdf`;
-
       document.body.appendChild(link);
-
       link.click();
-
       link.remove();
-
       window.URL.revokeObjectURL(url);
 
       toast.success("Invoice downloaded");
@@ -141,24 +108,23 @@ const Payments = () => {
     }
   };
 
-  // ================= UI =================
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* HEADER */}
-
       <div>
-        <h1 className="text-2xl font-bold sm:text-3xl">Payment Management</h1>
-
-        <p className="mt-2 text-gray-500">
+        <h1 className="font-serif text-3xl leading-tight text-graphite">
+          Payment Management
+        </h1>
+        <p className="mt-2 text-sm text-slate">
           Record offline payments and manage invoices.
         </p>
       </div>
 
       {/* FORM CARD */}
-
-      <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-6 text-xl font-semibold">Record Offline Payment</h2>
+      <div className="rounded-2xl bg-bone p-6">
+        <h2 className="mb-6 text-lg font-semibold text-graphite">
+          Record Offline Payment
+        </h2>
 
         <form onSubmit={createPayment} className="grid gap-4 md:grid-cols-2">
           <select
@@ -166,10 +132,9 @@ const Payments = () => {
             value={formData.studentId}
             onChange={handleChange}
             required
-            className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+            className={inputClass}
           >
             <option value="">Select Student</option>
-
             {students.map((student) => (
               <option key={student._id} value={student._id}>
                 {student.name} ({student.email})
@@ -184,7 +149,7 @@ const Payments = () => {
             value={formData.amount}
             onChange={handleChange}
             required
-            className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+            className={inputClass}
           />
 
           <input
@@ -194,7 +159,7 @@ const Payments = () => {
             value={formData.referenceNumber}
             onChange={handleChange}
             required
-            className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+            className={inputClass}
           />
 
           <input
@@ -203,13 +168,13 @@ const Payments = () => {
             placeholder="Remarks"
             value={formData.remarks}
             onChange={handleChange}
-            className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+            className={inputClass}
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="rounded-xl bg-black py-3 font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-70 md:col-span-2"
+            className="rounded-[600px] bg-ember-orange py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-70 md:col-span-2"
           >
             {loading ? "Saving Payment..." : "Save Payment"}
           </button>
@@ -217,58 +182,81 @@ const Payments = () => {
       </div>
 
       {/* PAYMENTS TABLE */}
-
-      <div className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl bg-bone">
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="p-4 text-left">Invoice</th>
-                <th className="p-4 text-left">Student</th>
-                <th className="p-4 text-left">Email</th>
-                <th className="p-4 text-left">Amount</th>
-                <th className="p-4 text-left">Method</th>
-                <th className="p-4 text-left">Status</th>
-                <th className="p-4 text-left">Date</th>
-                <th className="p-4 text-left">Invoice PDF</th>
+              <tr className="border-b border-pebble">
+                <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                  Invoice
+                </th>
+                <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                  Student
+                </th>
+                <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                  Email
+                </th>
+                <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                  Amount
+                </th>
+                <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                  Method
+                </th>
+                <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                  Status
+                </th>
+                <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                  Date
+                </th>
+                <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
+                  Invoice PDF
+                </th>
               </tr>
             </thead>
 
             <tbody>
               {payments.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="p-8 text-center text-gray-500">
+                  <td
+                    colSpan="8"
+                    className="p-8 text-center text-sm text-slate"
+                  >
                     No payments found
                   </td>
                 </tr>
               ) : (
                 payments.map((payment) => (
-                  <tr key={payment._id} className="border-t border-gray-100">
-                    <td className="p-4 font-medium">{payment.invoiceNumber}</td>
-
-                    <td className="p-4">{payment.studentName}</td>
-
-                    <td className="p-4">{payment.email}</td>
-
-                    <td className="p-4 font-semibold">₹{payment.amount}</td>
-
-                    <td className="p-4 capitalize">{payment.paymentMethod}</td>
-
+                  <tr
+                    key={payment._id}
+                    className="border-b border-pebble last:border-0 hover:bg-vellum"
+                  >
+                    <td className="p-4 text-sm font-medium text-graphite">
+                      {payment.invoiceNumber}
+                    </td>
+                    <td className="p-4 text-sm text-graphite">
+                      {payment.studentName}
+                    </td>
+                    <td className="p-4 text-sm text-slate">{payment.email}</td>
+                    <td className="p-4 font-mono text-sm font-semibold text-graphite">
+                      ₹{payment.amount}
+                    </td>
+                    <td className="p-4 text-sm capitalize text-graphite">
+                      {payment.paymentMethod}
+                    </td>
                     <td className="p-4">
                       <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                        className={`rounded-[600px] px-3 py-1 font-mono text-[11px] font-medium ${
                           payment.paymentStatus === "paid"
-                            ? "bg-green-100 text-green-700"
+                            ? "bg-ember-orange/15 text-ember-orange"
                             : payment.paymentStatus === "pending"
-                              ? "bg-yellow-100 text-yellow-700"
+                              ? "border border-pebble text-slate"
                               : "bg-red-100 text-red-700"
                         }`}
                       >
                         {payment.paymentStatus}
                       </span>
                     </td>
-
-                    <td className="p-4">
+                    <td className="p-4 text-sm text-slate">
                       {new Date(payment.paidAt).toLocaleDateString()}
                     </td>
                     <td className="p-4">
@@ -276,7 +264,7 @@ const Payments = () => {
                         onClick={() =>
                           downloadInvoice(payment._id, payment.invoiceNumber)
                         }
-                        className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                        className="rounded-lg bg-obsidian px-3 py-2 text-xs font-medium text-vellum hover:bg-ember-orange hover:text-black"
                       >
                         Download
                       </button>

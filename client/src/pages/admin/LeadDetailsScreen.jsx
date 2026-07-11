@@ -14,22 +14,20 @@ import {
 } from "lucide-react";
 
 import { getLeadDetails, updateLead } from "../../actions/leadActions";
-
 import { LEAD_UPDATE_RESET } from "../../constants/leadConstants";
-
 import { toast } from "react-hot-toast";
+
+const inputClass =
+  "w-full rounded-xl border border-pebble bg-vellum px-4 py-3 text-sm outline-none focus:border-obsidian";
 
 const LeadDetailsScreen = () => {
   const { id } = useParams();
-
   const dispatch = useDispatch();
 
   const leadDetails = useSelector((state) => state.leadDetails);
-
   const { loading, error, lead = {} } = leadDetails;
 
   const leadUpdate = useSelector((state) => state.leadUpdate);
-
   const {
     loading: loadingUpdate,
     success: successUpdate,
@@ -58,7 +56,6 @@ const LeadDetailsScreen = () => {
           ? new Date(lead.followUpDate).toISOString().split("T")[0]
           : "",
       );
-
       setVisitDate(
         lead.visitDate
           ? new Date(lead.visitDate).toISOString().split("T")[0]
@@ -75,6 +72,7 @@ const LeadDetailsScreen = () => {
       dispatch({ type: LEAD_UPDATE_RESET });
     }
   }, [successUpdate, dispatch]);
+
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -92,129 +90,117 @@ const LeadDetailsScreen = () => {
 
   if (loading) {
     return (
-      <div className="rounded-3xl bg-white p-16 text-center shadow-sm">
-        <h2 className="text-2xl font-bold">Loading Lead...</h2>
+      <div className="rounded-2xl bg-bone p-16 text-center">
+        <h2 className="text-xl font-semibold text-graphite">Loading Lead...</h2>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-3xl bg-red-50 p-16 text-center shadow-sm">
-        <h2 className="text-xl font-bold text-red-600">{error}</h2>
+      <div className="rounded-2xl border border-red-200 bg-red-50 p-16 text-center">
+        <h2 className="text-lg font-semibold text-red-600">{error}</h2>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
-      {/* BACK */}
-
+    <div className="space-y-6">
       <Link
         to="/admin/dashboard/leads"
-        className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-5 py-3 text-sm font-semibold transition hover:bg-gray-100"
+        className="inline-flex items-center gap-2 rounded-xl border border-pebble bg-vellum px-5 py-3 text-sm font-medium text-graphite transition hover:bg-bone"
       >
-        <ArrowLeft size={18} />
+        <ArrowLeft size={16} />
         Back to Leads
       </Link>
 
-      {/* HEADER */}
-
-      <div className="rounded-3xl bg-linear-to-r from-black to-gray-800 p-8 text-white shadow-lg">
-        <h1 className="text-4xl font-extrabold">Lead Details</h1>
-
-        <p className="mt-3 text-gray-300">
+      <div className="rounded-2xl bg-obsidian p-8 text-vellum">
+        <h1 className="font-serif text-3xl leading-tight">Lead Details</h1>
+        <p className="mt-2 text-sm text-mist">
           View and manage this admission enquiry.
         </p>
       </div>
 
-      {/* INFORMATION */}
-
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-3 lg:grid-cols-2">
         {/* PERSONAL */}
+        <div className="rounded-2xl bg-bone p-8">
+          <h2 className="mb-5 text-lg font-semibold text-graphite">
+            Personal Information
+          </h2>
 
-        <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
-          <h2 className="mb-6 text-2xl font-bold">Personal Information</h2>
-
-          <div className="space-y-6">
+          <div className="space-y-5">
             <div className="flex items-center gap-4">
-              <User className="text-gray-500" />
+              <User size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Full Name</p>
-                <p className="font-semibold">{lead.name}</p>
+                <p className="text-xs text-slate">Full Name</p>
+                <p className="text-sm font-semibold text-graphite">
+                  {lead.name}
+                </p>
               </div>
             </div>
-
             <div className="flex items-center gap-4">
-              <Phone className="text-gray-500" />
+              <Phone size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Phone</p>
-
+                <p className="text-xs text-slate">Phone</p>
                 <a
                   href={`tel:${lead.phone}`}
-                  className="font-semibold hover:text-blue-600"
+                  className="text-sm font-semibold text-graphite hover:text-ember-orange"
                 >
                   {lead.phone}
                 </a>
               </div>
             </div>
-
             <div className="flex items-center gap-4">
-              <Mail className="text-gray-500" />
+              <Mail size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Email</p>
-
-                <p className="font-semibold">{lead.email || "-"}</p>
+                <p className="text-xs text-slate">Email</p>
+                <p className="text-sm font-semibold text-graphite">
+                  {lead.email || "-"}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
         {/* LEAD */}
+        <div className="rounded-2xl bg-bone p-8">
+          <h2 className="mb-5 text-lg font-semibold text-graphite">
+            Lead Information
+          </h2>
 
-        <div className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
-          <h2 className="mb-6 text-2xl font-bold">Lead Information</h2>
-
-          <div className="space-y-6">
+          <div className="space-y-5">
             <div className="flex items-center gap-4">
-              <BookOpen className="text-gray-500" />
-
+              <BookOpen size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Interested Course</p>
-
-                <p className="font-semibold">{lead.course || "-"}</p>
+                <p className="text-xs text-slate">Interested Course</p>
+                <p className="text-sm font-semibold text-graphite">
+                  {lead.course || "-"}
+                </p>
               </div>
             </div>
-
             <div className="flex items-center gap-4">
-              <Flag className="text-gray-500" />
-
+              <Flag size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Lead Source</p>
-
-                <p className="font-semibold">{lead.source}</p>
+                <p className="text-xs text-slate">Lead Source</p>
+                <p className="text-sm font-semibold text-graphite">
+                  {lead.source}
+                </p>
               </div>
             </div>
-
             <div className="flex items-center gap-4">
-              <Calendar className="text-gray-500" />
-
+              <Calendar size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Created</p>
-
-                <p className="font-semibold">
+                <p className="text-xs text-slate">Created</p>
+                <p className="text-sm font-semibold text-graphite">
                   {new Date(lead.createdAt).toLocaleDateString()}
                 </p>
               </div>
             </div>
-
             <div className="flex items-center gap-4">
-              <Clock className="text-gray-500" />
-
+              <Clock size={18} className="text-ember-orange" />
               <div>
-                <p className="text-sm text-gray-500">Last Updated</p>
-
-                <p className="font-semibold">
+                <p className="text-xs text-slate">Last Updated</p>
+                <p className="text-sm font-semibold text-graphite">
                   {new Date(lead.updatedAt).toLocaleDateString()}
                 </p>
               </div>
@@ -224,139 +210,115 @@ const LeadDetailsScreen = () => {
 
         <form
           onSubmit={submitHandler}
-          className="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm"
+          className="rounded-2xl bg-bone p-8 lg:col-span-2"
         >
           {successUpdate && (
-            <div className="mb-6 rounded-2xl bg-green-100 p-4 text-green-700">
+            <div className="mb-5 rounded-xl bg-ember-orange/10 p-4 text-sm text-ember-orange">
               Lead updated successfully.
             </div>
           )}
           {errorUpdate && (
-            <div className="mb-6 rounded-2xl bg-red-100 p-4 text-red-700">
+            <div className="mb-5 rounded-xl bg-red-50 p-4 text-sm text-red-700">
               {errorUpdate}
             </div>
           )}
-          <h2 className="mb-8 text-2xl font-bold">CRM Management</h2>
 
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* STATUS */}
+          <h2 className="mb-6 text-lg font-semibold text-graphite">
+            CRM Management
+          </h2>
 
+          <div className="grid gap-5 md:grid-cols-2">
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Lead Status
               </label>
-
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+                className={inputClass}
               >
                 <option value="new">New</option>
-
                 <option value="contacted">Contacted</option>
-
                 <option value="demo_booked">Demo Booked</option>
-
                 <option value="visit_scheduled">Visit Scheduled</option>
-
                 <option value="payment_pending">Payment Pending</option>
-
                 <option value="converted">Converted</option>
-
                 <option value="closed">Closed</option>
               </select>
             </div>
 
-            {/* PRIORITY */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Priority
               </label>
-
               <select
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+                className={inputClass}
               >
                 <option>Low</option>
-
                 <option>Medium</option>
-
                 <option>High</option>
               </select>
             </div>
 
-            {/* PAYMENT */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Payment Status
               </label>
-
               <select
                 value={paymentStatus}
                 onChange={(e) => setPaymentStatus(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+                className={inputClass}
               >
                 <option>Pending</option>
-
                 <option>Paid</option>
               </select>
             </div>
 
-            {/* FOLLOW UP */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Follow Up Date
               </label>
-
               <input
                 type="date"
                 value={followUpDate}
                 onChange={(e) => setFollowUpDate(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+                className={inputClass}
               />
             </div>
 
-            {/* VISIT */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Academy Visit Date
               </label>
-
               <input
                 type="date"
                 value={visitDate}
                 onChange={(e) => setVisitDate(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+                className={inputClass}
               />
             </div>
           </div>
 
-          {/* NOTES */}
-
-          <div className="mt-8">
-            <label className="mb-2 block text-sm font-semibold text-gray-700">
+          <div className="mt-6">
+            <label className="mb-2 block text-sm font-medium text-graphite">
               Counselor Notes
             </label>
-
             <textarea
               rows={7}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Write follow-up notes..."
-              className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
+              className={inputClass}
             />
           </div>
 
-          <div className="mt-8 flex justify-end">
+          <div className="mt-6 flex justify-end">
             <button
               type="submit"
               disabled={loadingUpdate}
-              className="rounded-2xl bg-black px-8 py-4 font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-[600px] bg-ember-orange px-8 py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loadingUpdate ? "Saving..." : "Save Changes"}
             </button>
