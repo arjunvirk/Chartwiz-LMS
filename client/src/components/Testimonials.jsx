@@ -150,7 +150,7 @@ const Testimonials = () => {
                   key={stat.label}
                   className="rounded-2xl border border-white/10 p-5 text-center"
                 >
-                  <h3 className="font-mono text-3xl font-medium text-vellum">
+                  <h3 className="font-mono text-xl font-medium text-vellum">
                     <CountUp
                       end={stat.value}
                       decimals={stat.decimals || 0}
