@@ -21,7 +21,7 @@ const Step = ({ number, text }) => (
 
 const AdmissionSuccessScreen = () => {
   return (
-    <div className="min-h-screen bg-vellum px-6 py-20">
+    <div className="min-h-screen bg-vellum px-6 py-20 mt-10">
       <div className="mx-auto max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}

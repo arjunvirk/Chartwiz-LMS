@@ -84,13 +84,13 @@ const HeroSection = () => {
         >
           <Link
             to="/admission"
-            className="inline-flex items-center justify-center rounded-[600px] bg-ember-orange px-7 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
+            className="inline-flex items-center justify-center rounded-pill bg-ember-orange px-7 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
           >
             Enroll in Next Batch
           </Link>
           <Link
             to="/courses"
-            className="inline-flex items-center justify-center rounded-[600px] border border-white/15 px-7 py-3.5 font-mono text-sm font-medium text-vellum transition hover:border-white/30"
+            className="inline-flex items-center justify-center rounded-pill border border-white/15 px-7 py-3.5 font-mono text-sm font-medium text-vellum transition hover:border-white/30"
           >
             View Curriculum
           </Link>

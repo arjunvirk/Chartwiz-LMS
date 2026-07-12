@@ -53,7 +53,7 @@ const cardVariant = {
 const Testimonials = () => {
   return (
     <section className="bg-vellum py-24">
-      <div className="mx-auto max-w-[1200px] px-6">
+      <div className="mx-auto max-w-300 px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -138,7 +138,7 @@ const Testimonials = () => {
               </p>
               <Link
                 to="/admission"
-                className="mt-8 inline-flex items-center justify-center rounded-[600px] bg-ember-orange px-8 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
+                className="mt-8 inline-flex items-center justify-center rounded-pill bg-ember-orange px-8 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
               >
                 Start Your Journey
               </Link>
