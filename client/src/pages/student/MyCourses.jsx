@@ -1,31 +1,29 @@
 import { useEffect } from "react";
-
 import { Link } from "react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
-
+import { motion } from "framer-motion";
 import { getMyCourses } from "../../actions/courseActions";
-
 import toast from "react-hot-toast";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
 
 const MyCourses = () => {
   const dispatch = useDispatch();
-
   const myCourses = useSelector((state) => state.myCourses);
-
   const { userInfo } = useSelector((state) => state.userLogin);
-
   const { loading, error, courses } = myCourses;
-
-  // ---------------- FETCH COURSES ----------------
 
   useEffect(() => {
     if (!userInfo) return;
-
     dispatch(getMyCourses());
   }, [dispatch, userInfo]);
-
-  // ---------------- ERROR TOAST ----------------
 
   useEffect(() => {
     if (error) {
@@ -37,43 +35,40 @@ const MyCourses = () => {
   return (
     <div>
       {/* TITLE */}
-
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">My Courses</h1>
-
-        <p className="mt-2 text-sm text-gray-500">
+        <h1 className="font-serif text-3xl leading-tight text-graphite">
+          My Courses
+        </h1>
+        <p className="mt-2 text-sm text-slate">
           Continue learning your enrolled premium trading courses.
         </p>
       </div>
 
-      {/* LOADING */}
-
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="h-14 w-14 animate-spin rounded-full border-4 border-black border-t-transparent"></div>
+          <div className="h-11 w-11 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
         </div>
       ) : courses?.length === 0 ? (
-        // EMPTY STATE
-
-        <div className="rounded-3xl border border-dashed border-gray-300 bg-gray-50 py-20 text-center">
-          <h2 className="text-2xl font-bold text-gray-700">No Courses Yet</h2>
-
-          <p className="mt-3 text-sm text-gray-500">
+        <div className="rounded-2xl border border-dashed border-pebble bg-bone py-20 text-center">
+          <h2 className="font-serif text-2xl text-graphite">No Courses Yet</h2>
+          <p className="mt-3 text-sm text-slate">
             You are not enrolled in any course.
           </p>
         </div>
       ) : (
-        // COURSE GRID
-
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {courses.map((course) => (
-            <div
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {courses.map((course, i) => (
+            <motion.div
               key={course._id}
-              className="overflow-hidden rounded-3xl bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              custom={i}
+              className="overflow-hidden rounded-2xl bg-bone transition duration-300 hover:-translate-y-1"
             >
               {/* THUMBNAIL */}
-
-              <div className="relative h-52 w-full overflow-hidden">
+              <div className="relative h-44 w-full overflow-hidden">
                 <img
                   src={course.thumbnail}
                   alt={course.title}
@@ -86,56 +81,42 @@ const MyCourses = () => {
               </div>
 
               {/* CONTENT */}
-
-              <div className="p-5">
-                {/* CATEGORY */}
-
-                <span className="rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
+              <div className="p-6">
+                <span className="rounded-[600px] bg-obsidian px-3 py-1 font-mono text-[11px] font-medium text-vellum">
                   {course.category}
                 </span>
 
-                {/* TITLE */}
-
-                <h2 className="mt-4 line-clamp-2 text-xl font-bold text-gray-800">
+                <h2 className="mt-4 line-clamp-2 text-lg font-semibold text-graphite">
                   {course.title}
                 </h2>
 
-                {/* DESCRIPTION */}
-
-                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-gray-500">
+                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-slate">
                   {course.description}
                 </p>
 
-                {/* INSTRUCTOR */}
-
-                <div className="mt-5 flex items-center justify-between">
+                <div className="mt-5 flex items-center justify-between border-t border-pebble pt-4">
                   <div>
-                    <p className="text-xs text-gray-400">Instructor</p>
-
-                    <h4 className="text-sm font-semibold text-gray-700">
+                    <p className="text-xs text-slate">Instructor</p>
+                    <h4 className="text-sm font-semibold text-graphite">
                       {course.instructor}
                     </h4>
                   </div>
-
                   <div className="text-right">
-                    <p className="text-xs text-gray-400">Lessons</p>
-
-                    <h4 className="text-sm font-semibold text-gray-700">
+                    <p className="text-xs text-slate">Lessons</p>
+                    <h4 className="text-sm font-semibold text-graphite">
                       {course.videos?.length || 0}
                     </h4>
                   </div>
                 </div>
 
-                {/* BUTTON */}
-
                 <Link
                   to={`/dashboard/courses/${course._id}`}
-                  className="mt-6 block rounded-2xl bg-black py-3 text-center text-sm font-semibold text-white transition hover:bg-gray-800"
+                  className="mt-6 block rounded-[600px] bg-ember-orange py-3 text-center font-mono text-sm font-semibold text-black transition hover:brightness-95"
                 >
                   Continue Learning
                 </Link>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       )}

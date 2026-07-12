@@ -2,11 +2,9 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import CountUpImport from "react-countup";
-import kajalPhoto from "../assets/kajal_kushwaha.jpeg";
 import anandMalhotra from "../assets/anand_malhotra.jpeg";
 import varunMalhotra from "../assets/varun_malhotra.jpeg";
 import lalitKumar from "../assets/lalit_kumar.jpeg";
-import sohail from "../assets/sohel.jpeg";
 
 const CountUp = CountUpImport.default ?? CountUpImport;
 
@@ -28,28 +26,12 @@ const TESTIMONIALS = [
       "The price action course is extremely practical and beginner friendly. I finally understand market structure and risk management properly.",
   },
   {
-    id: 3,
-    name: "Kajal Kushwaha",
-    role: "Full-Time Trader",
-    image: kajalPhoto,
-    review:
-      "Unlike random YouTube content, ChartWiz provides a complete roadmap. The lessons are premium quality and easy to follow.",
-  },
-  {
     id: 4,
     name: "Lalit Kumar",
     role: "Swing Trader",
     image: lalitKumar,
     review:
       "ChartWiz Academy is one of the best institutes for anyone looking to learn stock market trading and investing from scratch.",
-  },
-  {
-    id: 5,
-    name: "Sohail",
-    role: "Options Trader",
-    image: sohail,
-    review:
-      "ChartWiz Academy explains complex market concepts in a very simple and practical way. The live sessions and structured lessons make it easy to stay consistent.",
   },
 ];
 

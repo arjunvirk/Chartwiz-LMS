@@ -1,44 +1,33 @@
 import { useState, useEffect } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
-
 import toast from "react-hot-toast";
 
 import { updateUserProfile } from "../../actions/userActions";
-
 import { USER_UPDATE_PROFILE_RESET } from "../../constants/userConstants";
+
+const inputClass =
+  "w-full rounded-xl border border-pebble bg-vellum px-5 py-3.5 text-sm outline-none transition focus:border-obsidian";
 
 const StudentProfile = () => {
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
-
   const { userInfo } = userLogin;
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-
   const { loading, error, success } = userUpdateProfile;
 
   const [name, setName] = useState(userInfo?.user?.name || "");
-
   const [email] = useState(userInfo?.user?.email || "");
-
   const [password, setPassword] = useState("");
-
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  // ---------------- SUBMIT ----------------
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    // NAME CHECK
-
     if (!name.trim()) {
       return toast.error("Name is required");
     }
-
-    // PASSWORD CHECK
 
     if (password !== confirmPassword) {
       return toast.error("Passwords do not match");
@@ -47,12 +36,8 @@ const StudentProfile = () => {
     if (password && password.length < 6) {
       return toast.error("Password must be at least 6 characters");
     }
-    // DISPATCH ACTION
 
-    const updateData = {
-      name,
-    };
-
+    const updateData = { name };
     if (password.trim()) {
       updateData.password = password;
     }
@@ -66,22 +51,14 @@ const StudentProfile = () => {
     }
   }, [userInfo]);
 
-  // ---------------- SUCCESS TOAST ----------------
-
   useEffect(() => {
     if (success) {
       toast.success("Profile updated successfully");
-
       setPassword("");
       setConfirmPassword("");
-
-      dispatch({
-        type: USER_UPDATE_PROFILE_RESET,
-      });
+      dispatch({ type: USER_UPDATE_PROFILE_RESET });
     }
   }, [success, dispatch]);
-
-  // ---------------- ERROR TOAST ----------------
 
   useEffect(() => {
     if (error) {
@@ -93,138 +70,108 @@ const StudentProfile = () => {
   return (
     <div>
       {/* HEADER */}
-
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Student Profile</h1>
-
-        <p className="mt-2 text-sm text-gray-500">
+        <h1 className="font-serif text-3xl leading-tight text-graphite">
+          Student Profile
+        </h1>
+        <p className="mt-2 text-sm text-slate">
           Manage your personal account information and profile settings.
         </p>
       </div>
 
       {/* PROFILE CARD */}
-
-      <div className="grid gap-8 lg:grid-cols-[300px_1fr]">
+      <div className="grid gap-3 lg:grid-cols-[300px_1fr]">
         {/* LEFT */}
-
-        <div className="rounded-3xl bg-linear-to-br from-black to-gray-800 p-8 text-center text-white shadow-lg">
-          {/* PROFILE IMAGE */}
-
+        <div className="rounded-2xl bg-obsidian p-8 text-center text-vellum">
           <img
             src={
               userInfo?.user?.profilePic ||
               "https://cdn-icons-png.flaticon.com/512/149/149071.png"
             }
             alt="profile"
-            className="mx-auto h-32 w-32 rounded-full border-4 border-white object-cover"
+            className="mx-auto h-28 w-28 rounded-full border border-white/15 object-cover"
           />
 
-          {/* NAME */}
+          <h2 className="mt-6 text-xl font-semibold">{userInfo?.user?.name}</h2>
 
-          <h2 className="mt-6 text-2xl font-bold">{userInfo?.user?.name}</h2>
-
-          {/* ROLE */}
-
-          <p className="mt-2 text-sm capitalize text-gray-300">
+          <p className="mt-2 font-mono text-xs uppercase tracking-[-0.02em] text-mist">
             {userInfo?.user?.role}
           </p>
 
-          {/* VERIFIED */}
-
-          <div className="mt-6 inline-flex items-center rounded-full bg-green-500/20 px-4 py-2 text-sm font-medium text-green-300">
+          <div className="mt-6 inline-flex items-center rounded-[600px] bg-ember-orange/15 px-4 py-2 font-mono text-xs font-medium text-ember-orange">
             Verified Account
           </div>
         </div>
 
         {/* RIGHT */}
-
-        <div className="rounded-3xl bg-white p-8 shadow-sm">
-          {/* FORM */}
-
-          <form onSubmit={submitHandler} className="space-y-6">
-            {/* NAME */}
-
+        <div className="rounded-2xl bg-bone p-8">
+          <form onSubmit={submitHandler} className="space-y-5">
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Full Name
               </label>
-
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
+                className={inputClass}
               />
             </div>
 
-            {/* EMAIL */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Email Address
               </label>
-
               <input
                 type="email"
                 value={email}
                 disabled
-                className="w-full cursor-not-allowed rounded-2xl border border-gray-300 bg-gray-100 px-5 py-4 text-gray-500 outline-none"
+                className="w-full cursor-not-allowed rounded-xl border border-pebble bg-white/40 px-5 py-3.5 text-sm text-slate outline-none"
               />
             </div>
 
-            {/* ROLE */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Account Role
               </label>
-
               <input
                 type="text"
                 value={userInfo?.user?.role}
                 disabled
-                className="w-full cursor-not-allowed rounded-2xl border border-gray-300 bg-gray-100 px-5 py-4 capitalize text-gray-500 outline-none"
+                className="w-full cursor-not-allowed rounded-xl border border-pebble bg-white/40 px-5 py-3.5 text-sm capitalize text-slate outline-none"
               />
             </div>
 
-            {/* NEW PASSWORD */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 New Password
               </label>
-
               <input
                 type="password"
                 placeholder="Enter new password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
+                className={inputClass}
               />
             </div>
 
-            {/* CONFIRM PASSWORD */}
-
             <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-graphite">
                 Confirm Password
               </label>
-
               <input
                 type="password"
                 placeholder="Confirm new password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
+                className={inputClass}
               />
             </div>
-
-            {/* BUTTON */}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-2xl bg-black py-4 text-sm font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-70"
+              className="w-full rounded-pill bg-ember-orange py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {loading ? "Updating..." : "Update Profile"}
             </button>
