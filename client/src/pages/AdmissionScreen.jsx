@@ -7,7 +7,7 @@ import { createAdmission } from "../actions/admissionActions";
 import { ADMISSION_CREATE_RESET } from "../constants/admissionConstants";
 
 const inputClass =
-  "w-full rounded-xl border border-pebble px-4 py-3 text-sm outline-none transition focus:border-obsidian";
+  "w-full rounded-xl border border-mist/50 bg-vellum px-4 py-3 text-sm text-graphite outline-none transition focus:border-obsidian";
 
 const AdmissionScreen = () => {
   const dispatch = useDispatch();
@@ -58,13 +58,13 @@ const AdmissionScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-vellum py-16">
-      <div className="mx-auto max-w-3xl rounded-3xl bg-bone p-10 mt-15">
+    <div className="min-h-screen bg-vellum px-4 py-16 sm:px-6">
+      <div className="mx-auto max-w-3xl rounded-3xl bg-bone p-6 mt-15 sm:p-10">
         <div className="mb-10 text-center">
           <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
             Apply Now
           </span>
-          <h1 className="mt-4 font-serif text-4xl leading-tight text-graphite">
+          <h1 className="mt-4 font-serif text-3xl leading-tight text-graphite sm:text-4xl">
             Admission Application
           </h1>
           <p className="mt-3 text-sm text-slate">

@@ -1,65 +1,49 @@
+const SECTIONS = [
+  {
+    title: "Educational Purpose",
+    body: "All content provided by ChartWiz Academy is strictly for educational purposes only. We do not guarantee profits or financial returns.",
+  },
+  {
+    title: "User Responsibilities",
+    body: "Users are responsible for protecting their account credentials and using the platform lawfully.",
+  },
+  {
+    title: "Payments & Refunds",
+    body: "Course access is granted after successful payment confirmation. Refund requests are subject to approval according to company policy.",
+  },
+  {
+    title: "Limitation of Liability",
+    body: "ChartWiz Academy is not responsible for trading losses, investment decisions or market-related risks.",
+  },
+  {
+    title: "Contact Us",
+    body: "chartwizacademy@gmail.com",
+  },
+];
+
 const TermsConditions = () => {
   return (
-    <div className="min-h-screen bg-white px-6 py-20">
-      <div className="mx-auto max-w-5xl">
-        <h1 className="text-5xl font-extrabold text-black">
+    <div className="min-h-screen bg-vellum px-6 py-20">
+      <div className="mx-auto max-w-3xl">
+        <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
+          Legal
+        </span>
+        <h1 className="mt-4 font-serif text-4xl leading-tight text-graphite md:text-5xl">
           Terms & Conditions
         </h1>
+        <p className="mt-4 text-sm text-slate">Last Updated: May 2026</p>
 
-        <p className="mt-4 text-gray-500">Last Updated: May 2026</p>
-
-        <div className="mt-12 space-y-10 text-gray-700">
-          <div>
-            <h2 className="text-2xl font-bold text-black">
-              Educational Purpose
-            </h2>
-
-            <p className="mt-4 leading-relaxed">
-              All content provided by ChartWiz Academy is strictly for
-              educational purposes only. We do not guarantee profits or
-              financial returns.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-2xl font-bold text-black">
-              User Responsibilities
-            </h2>
-
-            <p className="mt-4 leading-relaxed">
-              Users are responsible for protecting their account credentials and
-              using the platform lawfully.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-2xl font-bold text-black">
-              Payments & Refunds
-            </h2>
-
-            <p className="mt-4 leading-relaxed">
-              Course access is granted after successful payment confirmation.
-              Refund requests are subject to approval according to company
-              policy.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-2xl font-bold text-black">
-              Limitation of Liability
-            </h2>
-
-            <p className="mt-4 leading-relaxed">
-              ChartWiz Academy is not responsible for trading losses, investment
-              decisions or market-related risks.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-2xl font-bold text-black">Contact Us</h2>
-
-            <p className="mt-4 leading-relaxed">chartwizacademy@gmail.com</p>
-          </div>
+        <div className="mt-12 space-y-3">
+          {SECTIONS.map((section) => (
+            <div key={section.title} className="rounded-2xl bg-bone p-8">
+              <h2 className="text-xl font-semibold text-graphite">
+                {section.title}
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate">
+                {section.body}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
