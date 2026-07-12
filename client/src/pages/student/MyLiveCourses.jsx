@@ -101,7 +101,7 @@ const MyLiveCourses = () => {
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-slate">Status</span>
-                  <span className={`rounded-[600px] px-3 py-1 font-mono text-[11px] font-medium ${statusBadge(course.status)}`}>
+                  <span className={`rounded-pill px-3 py-1 font-mono text-[11px] font-medium ${statusBadge(course.status)}`}>
                     {course.status}
                   </span>
                 </div>
@@ -112,16 +112,16 @@ const MyLiveCourses = () => {
                   href={course.meetLink?.startsWith("http") ? course.meetLink : `https://${course.meetLink}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-6 block rounded-[600px] bg-ember-orange py-3 text-center font-mono text-sm font-semibold text-black transition hover:brightness-95"
+                  className="mt-6 block rounded-pill bg-ember-orange py-3 text-center font-mono text-sm font-semibold text-black transition hover:brightness-95"
                 >
                   Join Google Meet
                 </a>
               ) : course.status === "completed" ? (
-                <div className="mt-6 rounded-[600px] bg-red-50 py-3 text-center text-sm font-semibold text-red-600">
+                <div className="mt-6 rounded-pill bg-red-50 py-3 text-center text-sm font-semibold text-red-600">
                   Session Completed
                 </div>
               ) : (
-                <div className="mt-6 rounded-[600px] border border-pebble py-3 text-center text-sm font-semibold text-slate">
+                <div className="mt-6 rounded-pill border border-pebble py-3 text-center text-sm font-semibold text-slate">
                   Class Not Started Yet
                 </div>
               )}

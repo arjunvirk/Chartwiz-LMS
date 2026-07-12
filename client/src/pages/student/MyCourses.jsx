@@ -82,7 +82,7 @@ const MyCourses = () => {
 
               {/* CONTENT */}
               <div className="p-6">
-                <span className="rounded-[600px] bg-obsidian px-3 py-1 font-mono text-[11px] font-medium text-vellum">
+                <span className="rounded-pill bg-obsidian px-3 py-1 font-mono text-[11px] font-medium text-vellum">
                   {course.category}
                 </span>
 
@@ -111,7 +111,7 @@ const MyCourses = () => {
 
                 <Link
                   to={`/dashboard/courses/${course._id}`}
-                  className="mt-6 block rounded-[600px] bg-ember-orange py-3 text-center font-mono text-sm font-semibold text-black transition hover:brightness-95"
+                  className="mt-6 block rounded-pill bg-ember-orange py-3 text-center font-mono text-sm font-semibold text-black transition hover:brightness-95"
                 >
                   Continue Learning
                 </Link>

@@ -196,7 +196,7 @@ const AdmissionScreen = () => {
 
           <button
             disabled={loading}
-            className="w-full rounded-[600px] bg-ember-orange py-4 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:opacity-60"
+            className="w-full rounded-pill bg-ember-orange py-4 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:opacity-60"
           >
             {loading ? "Submitting..." : "Submit Admission"}
           </button>

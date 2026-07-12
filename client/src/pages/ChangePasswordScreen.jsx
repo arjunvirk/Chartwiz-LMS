@@ -4,19 +4,18 @@ import { changePassword, checkAuth } from "../actions/userActions";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
+const inputClass =
+  "w-full rounded-xl border border-pebble bg-vellum px-5 py-4 text-sm outline-none transition focus:border-obsidian";
+
 const ChangePasswordScreen = () => {
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const [currentPassword, setCurrentPassword] = useState("");
-
   const [newPassword, setNewPassword] = useState("");
-
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const userChangePassword = useSelector((state) => state.userChangePassword);
-
   const { loading, success, error } = userChangePassword;
 
   const submitHandler = (e) => {
@@ -34,25 +33,17 @@ const ChangePasswordScreen = () => {
       if (success) {
         toast.success("Password changed successfully");
 
-        // Refresh latest user data
         await dispatch(checkAuth());
 
         const updatedUser = JSON.parse(localStorage.getItem("userInfo"));
-
         const role = updatedUser?.user?.role;
 
         if (role === "admin") {
-          navigate("/admin/dashboard", {
-            replace: true,
-          });
+          navigate("/admin/dashboard", { replace: true });
         } else if (role === "teacher") {
-          navigate("/teacher/dashboard", {
-            replace: true,
-          });
+          navigate("/teacher/dashboard", { replace: true });
         } else {
-          navigate("/dashboard", {
-            replace: true,
-          });
+          navigate("/dashboard", { replace: true });
         }
       }
 
@@ -65,21 +56,25 @@ const ChangePasswordScreen = () => {
   }, [success, error, dispatch, navigate]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-xl">
-        <h1 className="text-center text-3xl font-bold">Change Password</h1>
-
-        <p className="mt-2 text-center text-gray-500">
+    <div className="flex min-h-screen items-center justify-center bg-vellum px-4">
+      <div className="w-full max-w-md rounded-3xl bg-bone p-8">
+        <span className="block text-center font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
+          Security
+        </span>
+        <h1 className="mt-4 text-center font-serif text-3xl leading-tight text-graphite">
+          Change Password
+        </h1>
+        <p className="mt-2 text-center text-sm text-slate">
           You must change your temporary password before continuing.
         </p>
 
-        <form onSubmit={submitHandler} className="mt-8 space-y-5">
+        <form onSubmit={submitHandler} className="mt-8 space-y-4">
           <input
             type="password"
             placeholder="Current Password"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
-            className="w-full rounded-xl border p-4"
+            className={inputClass}
           />
 
           <input
@@ -87,7 +82,7 @@ const ChangePasswordScreen = () => {
             placeholder="New Password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="w-full rounded-xl border p-4"
+            className={inputClass}
           />
 
           <input
@@ -95,12 +90,12 @@ const ChangePasswordScreen = () => {
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full rounded-xl border p-4"
+            className={inputClass}
           />
 
           <button
             disabled={loading}
-            className="w-full rounded-xl bg-green-500 py-4 font-bold text-black transition hover:bg-green-400 disabled:opacity-60"
+            className="w-full rounded-pill bg-ember-orange py-4 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:opacity-60"
           >
             {loading ? "Updating..." : "Update Password"}
           </button>
