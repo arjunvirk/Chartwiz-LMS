@@ -42,7 +42,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-obsidian">
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-5">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-2">
         {/* LOGO */}
         <Link
           to={
@@ -59,7 +59,7 @@ const Navbar = () => {
           <img
             src={logo}
             alt="ChartWiz Academy"
-            className="h-20 w-auto object-contain"
+            className="h-16 w-auto object-contain"
           />
         </Link>
 
