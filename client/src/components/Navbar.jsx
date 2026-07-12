@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { logout } from "../actions/userActions";
+import logo from "../assets/chartwiz_logo.png";
 
 const NAV_LINKS = [
   { to: "/courses", label: "Courses" },
@@ -55,7 +56,11 @@ const Navbar = () => {
           }
           className="text-xl font-semibold tracking-tight text-vellum"
         >
-          ChartWiz
+          <img
+            src={logo}
+            alt="ChartWiz Academy"
+            className="h-20 w-auto object-contain"
+          />
         </Link>
 
         {/* CENTER STATUS LABELS */}
