@@ -112,20 +112,14 @@ const DashboardLayout = () => {
 
             {!isTeacher && !isAdmin && (
               <>
-                <Link
+                {/* <Link
                   to={exploreCoursesPath}
                   onClick={() => setSidebarOpen(false)}
                   className={navLinkClass}
                 >
                   Courses
-                </Link>
-                <Link
-                  to={liveCoursesPath}
-                  onClick={() => setSidebarOpen(false)}
-                  className={navLinkClass}
-                >
-                  Live Mentorship
-                </Link>
+                </Link> */}
+                
                 <Link
                   to={coursesPath}
                   onClick={() => setSidebarOpen(false)}
@@ -266,18 +260,6 @@ const DashboardLayout = () => {
 
           {!isTeacher && !isAdmin && (
             <>
-              <Link
-                to={exploreCoursesPath}
-                className={`${navLinkClass} ${desktopSidebarOpen ? "text-left" : "text-center"}`}
-              >
-                {desktopSidebarOpen ? "Courses" : "C"}
-              </Link>
-              <Link
-                to={liveCoursesPath}
-                className={`${navLinkClass} ${desktopSidebarOpen ? "text-left" : "text-center"}`}
-              >
-                {desktopSidebarOpen ? "Live Mentorship" : "L"}
-              </Link>
               <Link
                 to={coursesPath}
                 className={`${navLinkClass} ${desktopSidebarOpen ? "text-left" : "text-center"}`}
