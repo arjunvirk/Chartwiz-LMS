@@ -66,11 +66,11 @@ const StudentMarketAnalysisDetailsScreen = () => {
 
         <div className="p-8">
           <div className="mb-5 flex flex-wrap gap-2">
-            <span className="rounded-[600px] bg-ember-orange/15 px-4 py-1.5 font-mono text-xs font-medium text-ember-orange">
+            <span className="rounded-pill bg-ember-orange/15 px-4 py-1.5 font-mono text-xs font-medium text-ember-orange">
               {analysis.market}
             </span>
             {analysis.featured && (
-              <span className="rounded-[600px] border border-pebble px-4 py-1.5 font-mono text-xs font-medium text-slate">
+              <span className="rounded-pill border border-pebble px-4 py-1.5 font-mono text-xs font-medium text-slate">
                 Featured
               </span>
             )}

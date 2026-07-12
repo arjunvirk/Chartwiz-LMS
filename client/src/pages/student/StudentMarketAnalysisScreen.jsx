@@ -51,7 +51,7 @@ const StudentMarketAnalysisScreen = () => {
           <button
             key={market}
             onClick={() => setMarketFilter(market)}
-            className={`rounded-[600px] px-5 py-2 font-mono text-sm font-medium transition ${
+            className={`rounded-pill px-5 py-2 font-mono text-sm font-medium transition ${
               marketFilter === market
                 ? "bg-ember-orange text-black"
                 : "border border-pebble bg-vellum text-slate hover:bg-bone"
@@ -112,11 +112,11 @@ const StudentMarketAnalysisScreen = () => {
 
               <div className="p-6">
                 <div className="flex items-center justify-between">
-                  <span className="rounded-[600px] bg-ember-orange/15 px-3 py-1 font-mono text-[11px] font-medium text-ember-orange">
+                  <span className="rounded-pill bg-ember-orange/15 px-3 py-1 font-mono text-[11px] font-medium text-ember-orange">
                     {analysis.market}
                   </span>
                   {analysis.featured && (
-                    <span className="rounded-[600px] border border-pebble px-3 py-1 font-mono text-[11px] font-medium text-slate">
+                    <span className="rounded-pill border border-pebble px-3 py-1 font-mono text-[11px] font-medium text-slate">
                       Featured
                     </span>
                   )}
@@ -142,7 +142,7 @@ const StudentMarketAnalysisScreen = () => {
 
                   <Link
                     to={`/dashboard/market-analysis/${analysis._id}`}
-                    className="rounded-[600px] bg-obsidian px-4 py-2 font-mono text-xs font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
+                    className="rounded-pill bg-obsidian px-4 py-2 font-mono text-xs font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
                   >
                     Read
                   </Link>

@@ -114,13 +114,13 @@ const StudentDashboard = () => {
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
             to="/dashboard/courses"
-            className="rounded-[600px] bg-ember-orange px-5 py-3 font-mono text-sm font-semibold text-black transition hover:brightness-95"
+            className="rounded-pill bg-ember-orange px-5 py-3 font-mono text-sm font-semibold text-black transition hover:brightness-95"
           >
             My Courses
           </Link>
           <Link
             to="/dashboard/live-courses"
-            className="rounded-[600px] border border-white/20 px-5 py-3 font-mono text-sm font-semibold text-vellum transition hover:border-white/40"
+            className="rounded-pill border border-white/20 px-5 py-3 font-mono text-sm font-semibold text-vellum transition hover:border-white/40"
           >
             Live Classes
           </Link>
@@ -168,11 +168,11 @@ const StudentDashboard = () => {
 
                 <div className="p-5">
                   <div className="flex items-center justify-between">
-                    <span className="rounded-[600px] bg-ember-orange/15 px-3 py-1 font-mono text-[11px] font-medium text-ember-orange">
+                    <span className="rounded-pill bg-ember-orange/15 px-3 py-1 font-mono text-[11px] font-medium text-ember-orange">
                       {analysis.market}
                     </span>
                     {analysis.featured && (
-                      <span className="rounded-[600px] border border-pebble px-3 py-1 font-mono text-[11px] font-medium text-slate">
+                      <span className="rounded-pill border border-pebble px-3 py-1 font-mono text-[11px] font-medium text-slate">
                         Featured
                       </span>
                     )}
@@ -192,7 +192,7 @@ const StudentDashboard = () => {
 
                   <Link
                     to={`/dashboard/market-analysis/${analysis._id}`}
-                    className="mt-5 inline-block rounded-[600px] bg-obsidian px-4 py-2 font-mono text-xs font-medium text-vellum"
+                    className="mt-5 inline-block rounded-pill bg-obsidian px-4 py-2 font-mono text-xs font-medium text-vellum"
                   >
                     Read Analysis
                   </Link>
@@ -280,7 +280,7 @@ const StudentDashboard = () => {
                   <p className="mt-1 text-sm text-slate">{course.instructor}</p>
                 </div>
                 <div className="mt-3 md:mt-0">
-                  <span className="rounded-[600px] bg-obsidian px-4 py-2 font-mono text-[11px] font-medium text-vellum">
+                  <span className="rounded-pill bg-obsidian px-4 py-2 font-mono text-[11px] font-medium text-vellum">
                     {course.status}
                   </span>
                 </div>
@@ -332,13 +332,13 @@ const StudentDashboard = () => {
                         href={webinar.meetLink}
                         target="_blank"
                         rel="noreferrer"
-                        className="rounded-[600px] bg-ember-orange px-5 py-2.5 font-mono text-xs font-semibold text-black"
+                        className="rounded-pill bg-ember-orange px-5 py-2.5 font-mono text-xs font-semibold text-black"
                       >
                         Join Webinar
                       </a>
                     ) : (
                       <span
-                        className={`rounded-[600px] px-5 py-2.5 font-mono text-xs font-semibold ${status.color}`}
+                        className={`rounded-pill px-5 py-2.5 font-mono text-xs font-semibold ${status.color}`}
                       >
                         {status.label}
                       </span>

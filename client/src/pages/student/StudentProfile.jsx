@@ -98,7 +98,7 @@ const StudentProfile = () => {
             {userInfo?.user?.role}
           </p>
 
-          <div className="mt-6 inline-flex items-center rounded-[600px] bg-ember-orange/15 px-4 py-2 font-mono text-xs font-medium text-ember-orange">
+          <div className="mt-6 inline-flex items-center rounded-pill bg-ember-orange/15 px-4 py-2 font-mono text-xs font-medium text-ember-orange">
             Verified Account
           </div>
         </div>
