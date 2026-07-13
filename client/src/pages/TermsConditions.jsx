@@ -24,7 +24,7 @@ const SECTIONS = [
 const TermsConditions = () => {
   return (
     <div className="min-h-screen bg-vellum px-6 py-20">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl mt-10">
         <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
           Legal
         </span>

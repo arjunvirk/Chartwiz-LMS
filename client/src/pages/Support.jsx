@@ -83,7 +83,7 @@ const Support = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center"
+          className="text-center mt-10"
         >
           <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
             We're Here to Help
