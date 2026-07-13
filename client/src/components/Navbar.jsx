@@ -54,9 +54,13 @@ const Navbar = () => {
                   : "/dashboard"
               : "/"
           }
-          className="text-xl font-semibold tracking-tight text-vellum py-5"
+          className="text-xl font-semibold tracking-tight text-vellum"
         >
-          Chartwiz
+          <img
+            src={logo}
+            alt="ChartWiz Academy"
+            className="h-16 w-auto object-contain"
+          />
         </Link>
 
         {/* CENTER STATUS LABELS */}
