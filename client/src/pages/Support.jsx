@@ -8,14 +8,27 @@ import { createSupportRequest } from "../actions/supportActions";
 import { SUPPORT_CREATE_RESET } from "../constants/supportConstants";
 
 const INFO_CARDS = [
-  { icon: Mail, title: "Email Support", value: "support@chartwizacademy.com" },
-  { icon: Phone, title: "Call Us", value: "+91 XXXXX XXXXX" },
+  {
+    icon: Mail,
+    title: "Email Support",
+    value: "chartwizacademy@gmail.com",
+  },
+  {
+    icon: Phone,
+    title: "Call Us",
+    value: "9306935404",
+  },
   {
     icon: MessageSquare,
-    title: "WhatsApp",
-    value: "Quick responses from our team",
+    title: "WhatsApp Channel",
+    value: "Join our official ChartWiz channel",
+    link: "https://whatsapp.com/channel/0029Vb8p0Ae9xVJdzQ9Oqy1s",
   },
-  { icon: Clock, title: "Response Time", value: "Within 24 Hours" },
+  {
+    icon: Clock,
+    title: "Response Time",
+    value: "Within 24 Hours",
+  },
 ];
 
 const fadeUp = {
@@ -86,25 +99,46 @@ const Support = () => {
 
         {/* INFO CARDS */}
         <div className="mt-14 grid gap-3 md:grid-cols-4">
-          {INFO_CARDS.map((card, i) => (
-            <motion.div
-              key={card.title}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              custom={i}
-              className="rounded-2xl bg-bone p-7"
-            >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-obsidian text-vellum">
-                <card.icon size={20} />
-              </div>
-              <h3 className="mt-5 text-base font-semibold text-graphite">
-                {card.title}
-              </h3>
-              <p className="mt-2 text-sm text-slate">{card.value}</p>
-            </motion.div>
-          ))}
+          {INFO_CARDS.map((card, i) => {
+            const CardContent = (
+              <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                custom={i}
+                className={`rounded-2xl bg-bone p-7 transition-all duration-300 ${
+                  card.link
+                    ? "cursor-pointer hover:-translate-y-1 hover:shadow-lg"
+                    : ""
+                }`}
+              >
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-obsidian text-vellum">
+                  <card.icon size={20} />
+                </div>
+
+                <h3 className="mt-5 text-base font-semibold text-graphite">
+                  {card.title}
+                </h3>
+
+                <p className="mt-2 text-sm text-slate">{card.value}</p>
+              </motion.div>
+            );
+
+            return card.link ? (
+              <a
+                key={card.title}
+                href={card.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                {CardContent}
+              </a>
+            ) : (
+              <div key={card.title}>{CardContent}</div>
+            );
+          })}
         </div>
 
         {/* CONTACT FORM */}
