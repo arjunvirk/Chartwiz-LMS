@@ -1,3 +1,4 @@
+import MetaPixelTracker from "./components/MetaPixelTracker";
 import { useEffect } from "react";
 
 import { Routes, Route } from "react-router-dom";
@@ -80,6 +81,8 @@ const App = () => {
       {/* NAVBAR */}
 
       <Navbar />
+
+      <MetaPixelTracker />
 
       <LeadPopup />
 

@@ -36,7 +36,6 @@ const HeroSection = () => {
   console.log("CountUp:", CountUp);
   return (
     <section className="relative flex min-h-[85vh] flex-col justify-end overflow-hidden bg-obsidian text-vellum">
-
       <div className="relative mx-auto w-full max-w-300 px-6 pb-16 pt-40">
         {/* KICKER */}
         <motion.span
@@ -58,7 +57,6 @@ const HeroSection = () => {
           className="mt-6 max-w-3xl font-serif text-5xl leading-[0.95] tracking-[-0.02em] text-vellum sm:text-6xl md:text-7xl"
         >
           Become a consistent trader with expert mentorship{" "}
-
         </motion.h1>
 
         {/* SUB */}
@@ -92,7 +90,7 @@ const HeroSection = () => {
             to="/courses"
             className="inline-flex items-center justify-center rounded-pill border border-white/15 px-7 py-3.5 font-mono text-sm font-medium text-vellum transition hover:border-white/30"
           >
-            View Curriculum
+            View Courses
           </Link>
         </motion.div>
 

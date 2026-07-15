@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { API_URL } from "../config/api";
+import { trackLead } from "../utils/metaPixel";
 
 const LeadPopup = () => {
   const [open, setOpen] = useState(false);
@@ -65,6 +66,9 @@ const LeadPopup = () => {
       }
 
       toast.success(data.message, { duration: 3000 });
+
+      trackLead();
+
       setOpen(false);
       setName("");
       setEmail("");
