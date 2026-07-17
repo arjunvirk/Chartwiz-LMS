@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import { createAdmission } from "../actions/admissionActions";
 import { ADMISSION_CREATE_RESET } from "../constants/admissionConstants";
 
+import { trackCompleteRegistration } from "../utils/metaPixel";
+
 const inputClass =
   "w-full rounded-xl border border-mist/50 bg-vellum px-4 py-3 text-sm text-graphite outline-none transition focus:border-obsidian";
 
@@ -28,8 +30,12 @@ const AdmissionScreen = () => {
 
   useEffect(() => {
     if (success) {
+      trackCompleteRegistration(course);
+
       toast.success("Admission submitted successfully", { duration: 3000 });
+
       dispatch({ type: ADMISSION_CREATE_RESET });
+
       navigate("/admission/success", { replace: true });
     }
 
