@@ -16,7 +16,7 @@ const INFO_CARDS = [
   {
     icon: Phone,
     title: "Call Us",
-    value: "9306935404",
+    value: "9217222356",
   },
   {
     icon: MessageSquare,

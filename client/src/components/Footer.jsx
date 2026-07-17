@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin } from "lucide-react";
-import { FaInstagram, FaYoutube, FaXTwitter } from "react-icons/fa6";
+import { FaWhatsapp } from "react-icons/fa6";
 
 const QUICK_LINKS = [
   { to: "/", label: "Home" },
@@ -10,9 +10,10 @@ const QUICK_LINKS = [
 ];
 const COURSES = ["The Forex Program", "The Forex Program with Indian Market"];
 const SOCIALS = [
-  { icon: FaInstagram, href: "#" },
-  { icon: FaYoutube, href: "#" },
-  { icon: FaXTwitter, href: "#" },
+  {
+    icon: FaWhatsapp,
+    href: "https://whatsapp.com/channel/0029Vb8p0Ae9xVJdzQ9Oqy1s",
+  },
 ];
 
 const fadeUp = {
