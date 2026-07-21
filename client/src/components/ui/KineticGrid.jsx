@@ -7,14 +7,16 @@ import { useRef, useEffect } from "react";
  * radius, with a trail line that follows the mouse as it moves.
  */
 export default function KineticGrid({
-  background = "#000000",
-  dotColor = "#FFFFFF",
-  lineColor = "#80ACFF",
-  trailColor = "#2664EB",
+  background = "#050505",
+  dotColor = "#8a3a12",
+  lineColor = "#5c2a0e",
+  trailColor = "#b8460f",
   spacing = 30,
   radius = 400,
   strength = 4,
   trail = true,
+  glow = true,
+  glowStrength = 14,
   style = {},
 }) {
   const hostRef = useRef(null);
@@ -159,18 +161,26 @@ export default function KineticGrid({
               )
             : 0;
           if (right) {
-            ctx.globalAlpha = 0.06 + prox * 0.7;
+            ctx.globalAlpha = 0.14 + prox * 0.86;
             ctx.strokeStyle = lineColor;
-            ctx.lineWidth = 0.5 + prox * 1.5;
+            ctx.lineWidth = 0.7 + prox * 1.8;
+            if (glow) {
+              ctx.shadowColor = lineColor;
+              ctx.shadowBlur = glowStrength * (0.25 + prox);
+            }
             ctx.beginPath();
             ctx.moveTo(d.x, d.y);
             ctx.lineTo(right.x, right.y);
             ctx.stroke();
           }
           if (down) {
-            ctx.globalAlpha = 0.06 + prox * 0.7;
+            ctx.globalAlpha = 0.14 + prox * 0.86;
             ctx.strokeStyle = lineColor;
-            ctx.lineWidth = 0.5 + prox * 1.5;
+            ctx.lineWidth = 0.7 + prox * 1.8;
+            if (glow) {
+              ctx.shadowColor = lineColor;
+              ctx.shadowBlur = glowStrength * (0.25 + prox);
+            }
             ctx.beginPath();
             ctx.moveTo(d.x, d.y);
             ctx.lineTo(down.x, down.y);
@@ -178,18 +188,24 @@ export default function KineticGrid({
           }
         }
       }
+      if (glow) ctx.shadowBlur = 0;
 
       // Dots.
       for (const d of dots) {
         const prox = m.active
           ? Math.max(0, 1 - Math.sqrt((m.x - d.x) ** 2 + (m.y - d.y) ** 2) / R)
           : 0;
-        ctx.globalAlpha = 0.22 + prox * 0.78;
+        ctx.globalAlpha = 0.38 + prox * 0.62;
         ctx.fillStyle = dotColor;
+        if (glow) {
+          ctx.shadowColor = dotColor;
+          ctx.shadowBlur = glowStrength * (0.4 + prox * 1.2);
+        }
         ctx.beginPath();
-        ctx.arc(d.x, d.y, 0.8 + prox * 2.2, 0, 2 * Math.PI);
+        ctx.arc(d.x, d.y, 1 + prox * 2.4, 0, 2 * Math.PI);
         ctx.fill();
       }
+      if (glow) ctx.shadowBlur = 0;
 
       // Cursor trail line — visible on plain mouse move, fades out.
       if (trail) {
@@ -234,6 +250,8 @@ export default function KineticGrid({
     radius,
     strength,
     trail,
+    glow,
+    glowStrength,
   ]);
 
   return (

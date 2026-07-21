@@ -57,13 +57,15 @@ const HeroSection = () => {
       {/* Interactive Background */}
       <KineticGrid
         background="#090909"
-        dotColor="rgba(255,255,255,0.18)"
-        lineColor="rgba(234,118,38,0.25)"
+        dotColor="rgba(234,118,38,0.55)"
+        lineColor="rgba(234,118,38,0.4)"
         trailColor="#EA7626"
         spacing={36}
         radius={320}
         strength={5}
         trail={true}
+        glow={true}
+        glowStrength={16}
       />
 
       {/* Orange Glow */}
@@ -71,7 +73,7 @@ const HeroSection = () => {
         className="absolute inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(circle at top center, rgba(234,118,38,.14), transparent 40%), rgba(0,0,0,.72)",
+            "radial-gradient(circle at top center, rgba(234,118,38,.14), transparent 40%), rgba(0,0,0,.55)",
         }}
       />
 
