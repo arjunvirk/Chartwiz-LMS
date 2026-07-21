@@ -44,7 +44,7 @@ export default function KineticGrid({
       const r = host.getBoundingClientRect();
       W = Math.max(1, Math.floor(mw ?? r.width));
       H = Math.max(1, Math.floor(mh ?? r.height));
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.floor(W * dpr);
       canvas.height = Math.floor(H * dpr);
       canvas.style.width = W + "px";
@@ -124,7 +124,13 @@ export default function KineticGrid({
     window.addEventListener("touchend", onLeave);
 
     let raf = 0;
-    const frame = () => {
+    let lastT = performance.now();
+    const frame = (now) => {
+      // Delta-time normalized to a 60fps baseline, clamped so a dropped
+      // frame or tab-switch doesn't cause a physics jump when it resumes.
+      const dt = Math.min(2.5, Math.max(0.1, (now - lastT) / (1000 / 60)));
+      lastT = now;
+
       const m = mouseRef.current;
       ctx.clearRect(0, 0, W, H);
 
@@ -142,70 +148,101 @@ export default function KineticGrid({
             ay += (dy / dist) * f;
           }
         }
-        d.vx = (d.vx + ax) * 0.82;
-        d.vy = (d.vy + ay) * 0.82;
-        d.x += d.vx;
-        d.y += d.vy;
+        d.vx = (d.vx + ax * dt) * Math.pow(0.82, dt);
+        d.vy = (d.vy + ay * dt) * Math.pow(0.82, dt);
+        d.x += d.vx * dt;
+        d.y += d.vy * dt;
       }
 
-      // Grid mesh lines (brighten near the cursor).
+      // --- Grid mesh lines ---
+      // Pass 1: every segment batched into ONE path at a flat low alpha,
+      // ONE stroke() call, no glow. This is the expensive part (thousands
+      // of segments) so it must be as cheap as possible per-frame.
+      ctx.globalAlpha = 0.14;
+      ctx.strokeStyle = lineColor;
+      ctx.lineWidth = 0.7;
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
       for (let c = 0; c < cols.length; c++) {
         for (let rIdx = 0; rIdx < cols[c].length; rIdx++) {
           const d = cols[c][rIdx];
           const right = cols[c + 1]?.[rIdx];
           const down = cols[c]?.[rIdx + 1];
-          const prox = m.active
-            ? Math.max(
-                0,
-                1 - Math.sqrt((m.x - d.x) ** 2 + (m.y - d.y) ** 2) / R,
-              )
-            : 0;
           if (right) {
-            ctx.globalAlpha = 0.14 + prox * 0.86;
-            ctx.strokeStyle = lineColor;
-            ctx.lineWidth = 0.7 + prox * 1.8;
-            if (glow) {
-              ctx.shadowColor = lineColor;
-              ctx.shadowBlur = glowStrength * (0.25 + prox);
-            }
-            ctx.beginPath();
             ctx.moveTo(d.x, d.y);
             ctx.lineTo(right.x, right.y);
-            ctx.stroke();
           }
           if (down) {
-            ctx.globalAlpha = 0.14 + prox * 0.86;
-            ctx.strokeStyle = lineColor;
-            ctx.lineWidth = 0.7 + prox * 1.8;
-            if (glow) {
-              ctx.shadowColor = lineColor;
-              ctx.shadowBlur = glowStrength * (0.25 + prox);
-            }
-            ctx.beginPath();
             ctx.moveTo(d.x, d.y);
             ctx.lineTo(down.x, down.y);
-            ctx.stroke();
           }
         }
       }
-      if (glow) ctx.shadowBlur = 0;
+      ctx.stroke();
 
-      // Dots.
-      for (const d of dots) {
-        const prox = m.active
-          ? Math.max(0, 1 - Math.sqrt((m.x - d.x) ** 2 + (m.y - d.y) ** 2) / R)
-          : 0;
-        ctx.globalAlpha = 0.38 + prox * 0.62;
-        ctx.fillStyle = dotColor;
+      // Pass 2: only segments actually near the cursor get the bright,
+      // glowing highlight treatment. Far fewer segments, so per-segment
+      // shadowBlur cost stays cheap.
+      if (m.active) {
         if (glow) {
-          ctx.shadowColor = dotColor;
-          ctx.shadowBlur = glowStrength * (0.4 + prox * 1.2);
+          ctx.shadowColor = lineColor;
+          ctx.shadowBlur = glowStrength;
         }
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, 1 + prox * 2.4, 0, 2 * Math.PI);
-        ctx.fill();
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 2.5;
+        for (let c = 0; c < cols.length; c++) {
+          for (let rIdx = 0; rIdx < cols[c].length; rIdx++) {
+            const d = cols[c][rIdx];
+            const distD = Math.sqrt((m.x - d.x) ** 2 + (m.y - d.y) ** 2);
+            if (distD > R) continue;
+            const prox = 1 - distD / R;
+            const right = cols[c + 1]?.[rIdx];
+            const down = cols[c]?.[rIdx + 1];
+            ctx.globalAlpha = prox * 0.86;
+            if (right) {
+              ctx.beginPath();
+              ctx.moveTo(d.x, d.y);
+              ctx.lineTo(right.x, right.y);
+              ctx.stroke();
+            }
+            if (down) {
+              ctx.beginPath();
+              ctx.moveTo(d.x, d.y);
+              ctx.lineTo(down.x, down.y);
+              ctx.stroke();
+            }
+          }
+        }
       }
-      if (glow) ctx.shadowBlur = 0;
+      ctx.shadowBlur = 0;
+
+      // --- Dots ---
+      // Pass 1: all dots batched into one path, one fill() call, no glow.
+      ctx.globalAlpha = 0.38;
+      ctx.fillStyle = dotColor;
+      ctx.beginPath();
+      for (const d of dots) {
+        ctx.moveTo(d.x + 1, d.y);
+        ctx.arc(d.x, d.y, 1, 0, 2 * Math.PI);
+      }
+      ctx.fill();
+
+      // Pass 2: dots near the cursor get individually sized + glowing.
+      if (m.active) {
+        if (glow) ctx.shadowColor = dotColor;
+        ctx.fillStyle = dotColor;
+        for (const d of dots) {
+          const distD = Math.sqrt((m.x - d.x) ** 2 + (m.y - d.y) ** 2);
+          if (distD > R) continue;
+          const prox = 1 - distD / R;
+          ctx.globalAlpha = 0.38 + prox * 0.62;
+          if (glow) ctx.shadowBlur = glowStrength * (0.4 + prox * 1.2);
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, 1 + prox * 2.4, 0, 2 * Math.PI);
+          ctx.fill();
+        }
+      }
+      ctx.shadowBlur = 0;
 
       // Cursor trail line — visible on plain mouse move, fades out.
       if (trail) {
