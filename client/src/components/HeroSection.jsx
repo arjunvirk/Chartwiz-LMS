@@ -111,9 +111,8 @@ const HeroSection = () => {
           custom={2}
           className="mt-8 max-w-2xl text-base leading-8 text-gray-300 md:text-lg"
         >
-          Master Forex, Price Action, Risk Management and Trading Psychology
-          through structured offline mentorship designed to help you become a
-          disciplined and confident trader.
+          Master Trading through structured offline mentorship designed to help
+          you become a disciplined and confident trader.
         </motion.p>
 
         {/* Buttons */}
@@ -195,8 +194,8 @@ const HeroSection = () => {
                   item.change.startsWith("+")
                     ? "font-semibold text-green-400"
                     : item.change.startsWith("-")
-                    ? "font-semibold text-red-400"
-                    : "font-semibold text-gray-500"
+                      ? "font-semibold text-red-400"
+                      : "font-semibold text-gray-500"
                 }
               >
                 {item.change}
