@@ -53,7 +53,7 @@ const fadeUp = {
 
 const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden bg-[#090909] text-white">
+    <section className="relative overflow-hidden bg-[#090909] text-white mt-5 md:mt-10">
       {/* Interactive Background */}
       <KineticGrid
         background="#050505"
