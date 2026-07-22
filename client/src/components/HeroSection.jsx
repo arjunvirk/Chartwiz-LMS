@@ -3,17 +3,10 @@ import { motion } from "framer-motion";
 import CountUpImport from "react-countup";
 import MarqueeImport from "react-fast-marquee";
 import KineticGrid from "../components/ui/KineticGrid";
+import { useMarketTicker } from "../hooks/useMarketTicker";
 
 const CountUp = CountUpImport.default ?? CountUpImport;
 const Marquee = MarqueeImport.default ?? MarqueeImport;
-
-const TICKER_DATA = [
-  { pair: "EUR/USD", price: "1.0842", change: "+0.24%" },
-  { pair: "BTC/USDT", price: "64,215", change: "+2.10%" },
-  { pair: "GBP/JPY", price: "198.34", change: "-0.11%" },
-  { pair: "XAU/USD", price: "2,381.6", change: "+0.87%" },
-  { pair: "USD/INR", price: "83.42", change: "-0.05%" },
-];
 
 const STATS = [
   {
@@ -52,6 +45,8 @@ const fadeUp = {
 };
 
 const HeroSection = () => {
+  const tickerData = useMarketTicker();
+
   return (
     <section className="relative overflow-hidden bg-[#090909] text-white mt-5 md:mt-10">
       {/* Interactive Background */}
@@ -186,7 +181,7 @@ const HeroSection = () => {
       {/* Live Market Ticker */}
       <div className="relative z-20 border-t border-white/10 bg-black/60 backdrop-blur-lg">
         <Marquee gradient={false} speed={35} pauseOnHover>
-          {TICKER_DATA.map((item, index) => (
+          {tickerData.map((item, index) => (
             <div
               key={index}
               className="mx-8 flex items-center gap-3 py-4 font-mono text-sm"
@@ -199,7 +194,9 @@ const HeroSection = () => {
                 className={
                   item.change.startsWith("+")
                     ? "font-semibold text-green-400"
-                    : "font-semibold text-red-400"
+                    : item.change.startsWith("-")
+                    ? "font-semibold text-red-400"
+                    : "font-semibold text-gray-500"
                 }
               >
                 {item.change}
