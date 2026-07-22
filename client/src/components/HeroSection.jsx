@@ -56,10 +56,10 @@ const HeroSection = () => {
     <section className="relative overflow-hidden bg-[#090909] text-white">
       {/* Interactive Background */}
       <KineticGrid
-        background="#090909"
-        dotColor="rgba(234,118,38,0.55)"
-        lineColor="rgba(234,118,38,0.4)"
-        trailColor="#EA7626"
+        background="#050505"
+        dotColor="#8a3a12"
+        lineColor="#5c2a0e"
+        trailColor="#b8460f"
         spacing={36}
         radius={320}
         strength={5}

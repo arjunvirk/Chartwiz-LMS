@@ -97,7 +97,10 @@ export default function KineticGrid({
       if (tr.length > 80) tr.shift();
     };
 
-    const onMove = (e) => setMouse(e.clientX, e.clientY);
+    const onMove = (e) => {
+      setMouse(e.clientX, e.clientY);
+      wake();
+    };
     const onLeave = () => {
       mouseRef.current.active = false;
       mouseRef.current.x = -9999;
@@ -105,7 +108,10 @@ export default function KineticGrid({
     };
     const onTouch = (e) => {
       const t = e.touches[0];
-      if (t) setMouse(t.clientX, t.clientY);
+      if (t) {
+        setMouse(t.clientX, t.clientY);
+        wake();
+      }
     };
 
     // Listen on window rather than the host div. The host is
@@ -125,6 +131,16 @@ export default function KineticGrid({
 
     let raf = 0;
     let lastT = performance.now();
+    let running = true;
+
+    const wake = () => {
+      if (!running) {
+        running = true;
+        lastT = performance.now();
+        raf = requestAnimationFrame(frame);
+      }
+    };
+
     const frame = (now) => {
       // Delta-time normalized to a 60fps baseline, clamped so a dropped
       // frame or tab-switch doesn't cause a physics jump when it resumes.
@@ -135,6 +151,7 @@ export default function KineticGrid({
       ctx.clearRect(0, 0, W, H);
 
       // Update dot physics: spring home + attraction toward cursor.
+      let energy = 0;
       for (const d of dots) {
         let ax = (d.hx - d.x) * 0.08;
         let ay = (d.hy - d.y) * 0.08;
@@ -152,6 +169,11 @@ export default function KineticGrid({
         d.vy = (d.vy + ay * dt) * Math.pow(0.82, dt);
         d.x += d.vx * dt;
         d.y += d.vy * dt;
+        energy +=
+          Math.abs(d.vx) +
+          Math.abs(d.vy) +
+          Math.abs(d.hx - d.x) +
+          Math.abs(d.hy - d.y);
       }
 
       // --- Grid mesh lines ---
@@ -245,16 +267,16 @@ export default function KineticGrid({
       ctx.shadowBlur = 0;
 
       // Cursor trail line — visible on plain mouse move, fades out.
-      if (trail) {
-        const now = performance.now();
-        const tr = trailRef.current;
+      const now2 = performance.now();
+      const tr = trailRef.current;
+      while (tr.length && now2 - tr[0].t > 260) tr.shift();
+      if (trail && tr.length > 1) {
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
         for (let i = 1; i < tr.length; i++) {
           const a = tr[i - 1];
           const b = tr[i];
-          const age = now - b.t;
-          if (age > 260) continue;
+          const age = now2 - b.t;
           ctx.globalAlpha = Math.max(0, 1 - age / 260) * 0.85;
           ctx.strokeStyle = trailColor;
           ctx.lineWidth = 2;
@@ -266,6 +288,14 @@ export default function KineticGrid({
       }
 
       ctx.globalAlpha = 1;
+
+      // Grid is visually indistinguishable from rest and the cursor isn't
+      // interacting — stop burning frames on a picture that isn't changing.
+      // onMove()/wake() restarts the loop the instant the mouse moves again.
+      if (!m.active && energy < 0.05 && trailRef.current.length === 0) {
+        running = false;
+        return;
+      }
       raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
