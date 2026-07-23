@@ -96,10 +96,10 @@ const HeroSection = () => {
           custom={1}
           className="max-w-5xl text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl xl:text-8xl"
         >
-          Learn Trading Like
+          Professional Trading Education for Beginners
           <br />
-          <span className="bg-gradient-to-r from-[#EA7626] to-[#ffb347] bg-clip-text text-transparent">
-            Professional Traders
+          <span className="bg-[#EA7626] bg-clip-text text-transparent">
+            & Aspiring Traders
           </span>
         </motion.h1>
 
