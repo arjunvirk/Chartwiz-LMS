@@ -313,12 +313,6 @@ const CoursesPage = () => {
                     </div>
 
                     <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-                      <div>
-                        <p className="text-xs text-slate">Course Price</p>
-                        <h3 className="mt-1 font-mono text-3xl font-medium text-ember-orange">
-                          ₹{course.price}
-                        </h3>
-                      </div>
 
                       <button
                         onClick={() => navigate("/admission")}
