@@ -89,7 +89,7 @@ const PrivacyPolicy = () => {
         <h1 className="mt-4 font-serif text-4xl leading-tight text-graphite md:text-5xl">
           Privacy Policy
         </h1>
-        <p className="mt-4 text-sm text-slate">Last Updated: May 2026</p>
+        <p className="mt-4 text-sm text-slate">Last Updated: July 2026</p>
 
         <div className="mt-12 space-y-3">
           {SECTIONS.map((section) => (

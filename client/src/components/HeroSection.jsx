@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import CountUpImport from "react-countup";
 import MarqueeImport from "react-fast-marquee";
-import KineticGrid from "../components/ui/KineticGrid";
+// import KineticGrid from "../components/ui/KineticGrid";
 import { useMarketTicker } from "../hooks/useMarketTicker";
 
 const CountUp = CountUpImport.default ?? CountUpImport;
@@ -49,7 +49,7 @@ const HeroSection = () => {
 
   return (
     <section className="relative overflow-hidden bg-[#090909] text-white mt-5 md:mt-10">
-      {/* Interactive Background */}
+      {/* Interactive Background
       <KineticGrid
         background="#050505"
         dotColor="#8a3a12"
@@ -61,7 +61,7 @@ const HeroSection = () => {
         trail={true}
         glow={true}
         glowStrength={16}
-      />
+      /> */}
 
       {/* Orange Glow */}
       <div
