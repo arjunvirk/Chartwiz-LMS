@@ -124,31 +124,7 @@ const TradingFeatures = () => {
           ))}
         </motion.div>
 
-        {/* BOTTOM STRIP — dark band */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-14 rounded-3xl bg-obsidian p-10"
-        >
-          <div className="grid gap-10 text-center md:grid-cols-3">
-            {BOTTOM_STATS.map((stat) => (
-              <div key={stat.label}>
-                <h3 className="font-mono text-4xl font-medium text-vellum">
-                  <CountUp
-                    end={stat.value}
-                    duration={2}
-                    enableScrollSpy
-                    scrollSpyOnce
-                  />
-                  {stat.suffix}
-                </h3>
-                <p className="mt-2 text-sm text-mist">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+        
       </div>
     </section>
   );

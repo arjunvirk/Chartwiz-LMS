@@ -124,45 +124,27 @@ const Testimonials = () => {
           transition={{ duration: 0.6 }}
           className="mt-14 overflow-hidden rounded-3xl bg-obsidian"
         >
-          <div className="grid items-center gap-10 p-10 lg:grid-cols-2 lg:p-14">
-            <div>
+          <div className="flex items-center justify-center p-10 lg:p-14">
+            <div className="mx-auto max-w-2xl text-center">
               <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
                 Join The Community
               </span>
+
               <h2 className="mt-4 font-serif text-3xl leading-[1.05] text-vellum md:text-4xl">
                 Become a confident & disciplined trader
               </h2>
-              <p className="mt-4 text-base leading-relaxed text-mist">
+
+              <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-mist">
                 Learn professional market strategies, trading psychology and
                 structured mentorship from ChartWiz Academy.
               </p>
+
               <Link
                 to="/admission"
                 className="mt-8 inline-flex items-center justify-center rounded-pill bg-ember-orange px-8 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
               >
                 Start Your Journey
               </Link>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              {STATS.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-2xl border border-white/10 p-5 text-center"
-                >
-                  <h3 className="font-mono text-xl font-medium text-vellum">
-                    <CountUp
-                      end={stat.value}
-                      decimals={stat.decimals || 0}
-                      duration={2}
-                      enableScrollSpy
-                      scrollSpyOnce
-                    />
-                    {stat.suffix}
-                  </h3>
-                  <p className="mt-2 text-xs text-mist">{stat.label}</p>
-                </div>
-              ))}
             </div>
           </div>
         </motion.div>

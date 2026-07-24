@@ -85,7 +85,7 @@ const CTA = () => {
                 <div>
                   <p className="text-sm text-mist">Student Growth</p>
                   <h3 className="mt-2 font-mono text-4xl font-medium text-vellum">
-                    +250%
+                    +95%
                   </h3>
                 </div>
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-ember-orange text-black">
@@ -135,27 +135,10 @@ const CTA = () => {
 
           {/* BOTTOM STRIP */}
           <div className="border-t border-white/10 px-5 py-8 sm:px-10">
-            <div className="flex flex-col items-center justify-between gap-6 lg:flex-row">
-              <h3 className="text-center font-serif text-xl leading-relaxed text-vellum lg:text-left">
-                Trusted by thousands of aspiring traders across India
+            <div className="text-center flex flex-col items-center justify-between gap-6 lg:flex-row">
+              <h3 className="font-serif text-xl leading-relaxed text-vellum">
+                Trusted by several students across DELHI NCR
               </h3>
-              <div className="flex flex-wrap items-center gap-8">
-                {BOTTOM_STATS.map((stat) => (
-                  <div key={stat.label} className="text-center">
-                    <h4 className="font-mono text-2xl font-medium text-vellum">
-                      <CountUp
-                        end={stat.value}
-                        decimals={stat.decimals || 0}
-                        duration={2}
-                        enableScrollSpy
-                        scrollSpyOnce
-                      />
-                      {stat.suffix}
-                    </h4>
-                    <p className="mt-1 text-xs text-mist">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </motion.div>

@@ -84,7 +84,7 @@ const HeroSection = () => {
         >
           <span className="mr-2 h-2 w-2 rounded-full bg-[#EA7626]" />
           <span className="font-mono text-xs uppercase tracking-[0.18em] text-[#EA7626]">
-            India's Professional Offline Trading Academy
+            Delhi NCR Professional Offline Trading Academy
           </span>
         </motion.div>
 
@@ -111,8 +111,8 @@ const HeroSection = () => {
           custom={2}
           className="mt-8 max-w-2xl text-base leading-8 text-gray-300 md:text-lg"
         >
-          Master Trading through structured offline mentorship designed to help
-          you become a disciplined and confident trader.
+          Learn market concepts through structured offline education covering
+          technical analysis, risk management and trading psychology.
         </motion.p>
 
         {/* Buttons */}
