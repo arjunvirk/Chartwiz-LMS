@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import { useSectionPin } from "../hooks/useSectionPin";
 
 const CHECKLIST = [
   {
@@ -27,8 +28,10 @@ const fadeUp = {
 };
 
 const ChooseUs = () => {
+  const chooseUsRef = useSectionPin();
+
   return (
-    <section className="bg-vellum py-24">
+    <section ref={chooseUsRef} className="bg-vellum py-24">
       <div className="mx-auto max-w-[1200px] px-6">
         {/* SECTION HEADING GROUP */}
         <motion.div

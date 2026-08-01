@@ -1,7 +1,7 @@
 import MetaPixelTracker from "./components/MetaPixelTracker";
 import { useEffect } from "react";
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 
@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import LeadPopup from "./components/LeadPopup";
 
 import { checkAuth } from "./actions/userActions";
+import { ScrollTrigger } from "./lib/gsap";
 
 import Login from "./pages/Login";
 
@@ -69,12 +70,20 @@ import AdmissionSuccessScreen from "./pages/AdmissionSuccessScreen";
 
 const App = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   // ================= CHECK AUTH ON APP LOAD =================
 
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
+
+  // ================= REFRESH SCROLLTRIGGER ON ROUTE CHANGE =================
+  // Prevents pinned sections from desyncing after client-side navigation
+
+  useEffect(() => {
+    ScrollTrigger.refresh();
+  }, [location.pathname]);
 
   return (
     <>

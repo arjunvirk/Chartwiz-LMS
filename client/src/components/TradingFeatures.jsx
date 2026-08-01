@@ -69,7 +69,7 @@ const cardVariant = {
 
 const TradingFeatures = () => {
   return (
-    <section className="bg-vellum py-24">
+    <section className="relative z-10 rounded-t-[2.5rem] bg-bone py-24">
       <div className="mx-auto max-w-[1200px] px-6">
         {/* HEADING */}
         <motion.div
@@ -103,7 +103,7 @@ const TradingFeatures = () => {
             <motion.div
               key={feature.id}
               variants={cardVariant}
-              className="rounded-3xl bg-bone p-8 transition duration-300 hover:-translate-y-1"
+              className="rounded-3xl bg-vellum p-8 transition duration-300 hover:-translate-y-1"
             >
               <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-obsidian text-2xl">
                 {feature.icon}
@@ -123,8 +123,6 @@ const TradingFeatures = () => {
             </motion.div>
           ))}
         </motion.div>
-
-        
       </div>
     </section>
   );

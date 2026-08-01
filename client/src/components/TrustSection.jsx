@@ -47,7 +47,7 @@ const cardVariant = {
 
 const TrustSection = () => {
   return (
-    <section className="bg-vellum py-24">
+    <section className="relative z-10 rounded-t-[2.5rem] bg-vellum py-24">
       <div className="mx-auto max-w-[1200px] px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
