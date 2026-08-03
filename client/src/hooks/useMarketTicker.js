@@ -31,7 +31,7 @@ function formatChange(pct) {
  *   includes a real 24h % change directly from the API.
  * - XAU/USD: gold-api.com. No key, CORS enabled, real-time spot price.
  */
-export function useMarketTicker(intervalMs = 5000) {
+export function useMarketTicker(intervalMs = 30000) {
   const [data, setData] = useState(
     PAIRS.map((pair) => ({ pair, price: "—", change: "—" })),
   );
