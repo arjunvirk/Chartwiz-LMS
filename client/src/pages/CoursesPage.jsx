@@ -298,18 +298,6 @@ const CoursesPage = () => {
                           {course.instructor}
                         </h4>
                       </div>
-                      <div>
-                        <p className="text-xs text-slate">Lessons</p>
-                        <h4 className="mt-1 font-semibold text-graphite">
-                          {course.videos?.length || 0}
-                        </h4>
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate">Students</p>
-                        <h4 className="mt-1 font-semibold text-graphite">
-                          {course.students?.length || 0}
-                        </h4>
-                      </div>
                     </div>
 
                     <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
