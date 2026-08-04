@@ -15,6 +15,43 @@ const fadeUp = {
   }),
 };
 
+// Fallback content used when the backend course doesn't provide
+// features / duration / badge yet. Keyed by course title so both
+// known programs still look intentional instead of empty.
+const COURSE_META = {
+  "The Forex Program": {
+    image: forexImage,
+    duration: "2 Months",
+    badge: "Admissions Open",
+    features: [
+      "Classroom Training",
+      "Live Market Analysis",
+      "Risk Management",
+      "Trading Psychology",
+      "Mentor Support",
+    ],
+  },
+  "The Forex Program with Indian Market": {
+    image: indianMarketImage,
+    duration: "3 Months",
+    badge: "Admissions Open",
+    features: [
+      "Forex + Indian Market",
+      "Technical Analysis",
+      "Live Practical Sessions",
+      "Trading Psychology",
+      "Professional Mentorship",
+    ],
+  },
+};
+
+const DEFAULT_META = {
+  image: forexImage,
+  duration: null,
+  badge: "Admissions Open",
+  features: [],
+};
+
 const CoursesPage = () => {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
@@ -110,131 +147,65 @@ const CoursesPage = () => {
                 </p>
               </motion.div>
 
-              {/* OFFLINE COURSES */}
+              {/* OFFLINE COURSES (static fallback — no courses from API yet) */}
               <div className="mt-14 grid gap-3 lg:grid-cols-2">
-                {/* COURSE 1 */}
-                <motion.div
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true }}
-                  custom={1}
-                  className="overflow-hidden rounded-3xl bg-bone transition duration-300 hover:-translate-y-1"
-                >
-                  <img
-                    src={forexImage}
-                    alt="The Forex Program"
-                    className="h-60 w-full object-cover"
-                  />
+                {Object.entries(COURSE_META).map(([title, meta], i) => (
+                  <motion.div
+                    key={title}
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                    custom={i + 1}
+                    className="overflow-hidden rounded-3xl bg-bone transition duration-300 hover:-translate-y-1"
+                  >
+                    <img
+                      src={meta.image}
+                      alt={title}
+                      className="h-60 w-full object-cover"
+                    />
 
-                  <div className="p-8">
-                    <div className="flex items-center justify-between">
-                      <span className="rounded-[600px] bg-ember-orange px-4 py-1.5 font-mono text-[11px] uppercase tracking-wide text-black">
-                        Admissions Open
-                      </span>
-                      <span className="rounded-[600px] bg-obsidian px-4 py-1.5 font-mono text-xs font-medium text-vellum">
-                        2 Months
-                      </span>
+                    <div className="p-8">
+                      <div className="flex items-center justify-between">
+                        <span className="rounded-[600px] bg-ember-orange px-4 py-1.5 font-mono text-[11px] uppercase tracking-wide text-black">
+                          {meta.badge}
+                        </span>
+                        <span className="rounded-[600px] bg-obsidian px-4 py-1.5 font-mono text-xs font-medium text-vellum">
+                          {meta.duration}
+                        </span>
+                      </div>
+
+                      <h3 className="mt-8 font-serif text-3xl leading-tight text-graphite">
+                        {title}
+                      </h3>
+
+                      <p className="mt-4 text-sm leading-relaxed text-slate">
+                        {title === "The Forex Program"
+                          ? "A complete classroom-based Forex trading program covering technical analysis, market structure, risk management, psychology and live market execution."
+                          : "Master both Forex and the Indian Stock Market with comprehensive classroom training, live trading sessions and professional mentorship."}
+                      </p>
+
+                      <div className="mt-8 grid gap-3">
+                        {meta.features.map((item) => (
+                          <div
+                            key={item}
+                            className="flex items-center gap-3 text-sm text-graphite"
+                          >
+                            <span className="text-ember-orange">✔</span>
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={() => navigate("/admission")}
+                        className="mt-10 w-full rounded-[600px] bg-obsidian py-4 font-mono text-sm font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
+                      >
+                        Apply for Admission
+                      </button>
                     </div>
-
-                    <h3 className="mt-8 font-serif text-3xl leading-tight text-graphite">
-                      The Forex Program
-                    </h3>
-
-                    <p className="mt-4 text-sm leading-relaxed text-slate">
-                      A complete classroom-based Forex trading program covering
-                      technical analysis, market structure, risk management,
-                      psychology and live market execution.
-                    </p>
-
-                    <div className="mt-8 grid gap-3">
-                      {[
-                        "Classroom Training",
-                        "Live Market Analysis",
-                        "Risk Management",
-                        "Trading Psychology",
-                        "Mentor Support",
-                      ].map((item) => (
-                        <div
-                          key={item}
-                          className="flex items-center gap-3 text-sm text-graphite"
-                        >
-                          <span className="text-ember-orange">✔</span>
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-
-                    <button
-                      onClick={() => navigate("/admission")}
-                      className="mt-10 w-full rounded-[600px] bg-obsidian py-4 font-mono text-sm font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
-                    >
-                      Apply for Admission
-                    </button>
-                  </div>
-                </motion.div>
-
-                {/* COURSE 2 */}
-                <motion.div
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true }}
-                  custom={2}
-                  className="overflow-hidden rounded-3xl bg-bone transition duration-300 hover:-translate-y-1"
-                >
-                  <img
-                    src={indianMarketImage}
-                    alt="The Forex Program with Indian Market"
-                    className="h-60 w-full object-cover"
-                  />
-
-                  <div className="p-8">
-                    <div className="flex items-center justify-between">
-                      <span className="rounded-[600px] bg-ember-orange px-4 py-1.5 font-mono text-[11px] uppercase tracking-wide text-black">
-                        Admissions Open
-                      </span>
-                      <span className="rounded-[600px] bg-obsidian px-4 py-1.5 font-mono text-xs font-medium text-vellum">
-                        3 Months
-                      </span>
-                    </div>
-
-                    <h3 className="mt-8 font-serif text-3xl leading-tight text-graphite">
-                      The Forex Program with Indian Market
-                    </h3>
-
-                    <p className="mt-4 text-sm leading-relaxed text-slate">
-                      Master both Forex and the Indian Stock Market with
-                      comprehensive classroom training, live trading sessions
-                      and professional mentorship.
-                    </p>
-
-                    <div className="mt-8 grid gap-3">
-                      {[
-                        "Forex + Indian Market",
-                        "Technical Analysis",
-                        "Live Practical Sessions",
-                        "Trading Psychology",
-                        "Professional Mentorship",
-                      ].map((item) => (
-                        <div
-                          key={item}
-                          className="flex items-center gap-3 text-sm text-graphite"
-                        >
-                          <span className="text-ember-orange">✔</span>
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-
-                    <button
-                      onClick={() => navigate("/admission")}
-                      className="mt-10 w-full rounded-[600px] bg-obsidian py-4 font-mono text-sm font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
-                    >
-                      Apply for Admission
-                    </button>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                ))}
               </div>
 
               {/* ONLINE COMING SOON */}
@@ -267,51 +238,71 @@ const CoursesPage = () => {
               </motion.div>
             </div>
           ) : (
-            <div className="mt-16 grid gap-3 lg:grid-cols-2">
-              {courses.map((course) => (
-                <div
-                  key={course._id}
-                  className="overflow-hidden rounded-3xl bg-bone transition duration-300 hover:-translate-y-1"
-                >
-                  <img
-                    src={
-                      course.title === "The Forex Program"
-                        ? forexImage
-                        : indianMarketImage
-                    }
-                    alt={course.title}
-                    className="h-64 w-full object-cover"
-                  />
-                  <div className="p-6 sm:p-8">
-                    <h3 className="font-serif text-3xl leading-tight text-graphite transition group-hover:text-ember-orange">
-                      {course.title}
-                    </h3>
+            // COURSES FROM API — now using the same rich card design
+            <div className="mt-14 grid gap-3 lg:grid-cols-2">
+              {courses.map((course, i) => {
+                const meta = COURSE_META[course.title] || DEFAULT_META;
 
-                    <p className="mt-4 text-sm leading-relaxed text-slate">
-                      {course.description}
-                    </p>
+                return (
+                  <motion.div
+                    key={course._id}
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                    custom={i + 1}
+                    className="overflow-hidden rounded-3xl bg-bone transition duration-300 hover:-translate-y-1"
+                  >
+                    <img
+                      src={meta.image}
+                      alt={course.title}
+                      className="h-60 w-full object-cover"
+                    />
 
-                    <div className="mt-8 grid gap-5 sm:grid-cols-3">
-                      <div>
-                        <p className="text-xs text-slate">Instructor</p>
-                        <h4 className="mt-1 font-semibold text-graphite">
-                          {course.instructor}
-                        </h4>
+                    <div className="p-8">
+                      <div className="flex items-center justify-between">
+                        <span className="rounded-[600px] bg-ember-orange px-4 py-1.5 font-mono text-[11px] uppercase tracking-wide text-black">
+                          {meta.badge}
+                        </span>
+                        {meta.duration && (
+                          <span className="rounded-[600px] bg-obsidian px-4 py-1.5 font-mono text-xs font-medium text-vellum">
+                            {meta.duration}
+                          </span>
+                        )}
                       </div>
-                    </div>
 
-                    <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                      <h3 className="mt-8 font-serif text-3xl leading-tight text-graphite">
+                        {course.title}
+                      </h3>
+
+                      <p className="mt-4 text-sm leading-relaxed text-slate">
+                        {course.description}
+                      </p>
+
+                      {meta.features.length > 0 && (
+                        <div className="mt-8 grid gap-3">
+                          {meta.features.map((item) => (
+                            <div
+                              key={item}
+                              className="flex items-center gap-3 text-sm text-graphite"
+                            >
+                              <span className="text-ember-orange">✔</span>
+                              {item}
+                            </div>
+                          ))}
+                        </div>
+                      )}
 
                       <button
                         onClick={() => navigate("/admission")}
-                        className="rounded-[600px] bg-obsidian px-8 py-3.5 font-mono text-sm font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
+                        className="mt-10 w-full rounded-[600px] bg-obsidian py-4 font-mono text-sm font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
                       >
                         Apply for Admission
                       </button>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           )}
         </div>
