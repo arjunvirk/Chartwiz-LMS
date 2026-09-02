@@ -12,7 +12,7 @@ const sendEmail = async (options) => {
   });
 
   const mailOptions = {
-    from: `ChartWiz Academy <${process.env.EMAIL_USER}>`,
+    from: `Alphira Capital <${process.env.EMAIL_USER}>`,
     to: options.email,
     subject: options.subject,
     html: options.message,
