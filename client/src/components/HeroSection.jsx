@@ -79,7 +79,7 @@ const HeroSection = () => {
     <>
       <section
         ref={heroRef}
-        className="relative mt-3 overflow-hidden bg-[#090909] text-white md:mt-6 lg:mt-10"
+        className="relative min-h-[calc(100dvh-134px)] overflow-hidden bg-[#090909] text-white"
       >
         {/* Main Orange Glow */}
         <div
@@ -101,8 +101,8 @@ const HeroSection = () => {
         />
 
         {/* Hero Content */}
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-24 md:px-8 md:pb-24 md:pt-28 lg:pt-32">
-          <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-10 xl:gap-16">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-134px)] w-full max-w-7xl items-center px-5 py-10 sm:px-6 sm:py-12 md:px-8 md:py-16 lg:py-43">
+          <div className="grid w-full items-center gap-12 lg:grid-cols-2 lg:gap-10 xl:gap-16">
             {/* ============ LEFT: CONTENT ============ */}
             <div className="mt-6 md:mt-0">
               {/* Badge */}
