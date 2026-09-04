@@ -79,7 +79,7 @@ const HeroSection = () => {
     <>
       <section
         ref={heroRef}
-        className="relative min-h-[calc(100dvh-134px)] overflow-hidden bg-[#090909] text-white"
+        className="relative min-h-[calc(100dvh-80px)] overflow-hidden pt-14 lg:pt-8 bg-[#090909] text-white"
       >
         {/* Main Orange Glow */}
         <div
@@ -101,10 +101,10 @@ const HeroSection = () => {
         />
 
         {/* Hero Content */}
-        <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-134px)] w-full max-w-7xl items-center px-5 py-10 sm:px-6 sm:py-12 md:px-8 md:py-16 lg:py-43">
+        <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-80px)] w-full max-w-7xl items-center px-5 py-10 sm:px-6 sm:py-12 md:px-8 md:py-14 lg:py-26">
           <div className="grid w-full items-center gap-12 lg:grid-cols-2 lg:gap-10 xl:gap-16">
             {/* ============ LEFT: CONTENT ============ */}
-            <div className="mt-6 md:mt-0">
+            <div>
               {/* Badge */}
               <motion.div
                 variants={fadeUp}
