@@ -187,7 +187,7 @@ const StudentDashboard = () => {
                   </p>
 
                   <p className="mt-3 text-xs text-slate">
-                    By {analysis.author?.name || "ChartWiz Academy"}
+                    By {analysis.author?.name || "Alphira Capital"}
                   </p>
 
                   <Link

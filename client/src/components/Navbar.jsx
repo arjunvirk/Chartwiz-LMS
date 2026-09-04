@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { logout } from "../actions/userActions";
-import logo from "../assets/chartwiz_logo.png";
+import logo from "../assets/alphira_logo.png";
 
 const NAV_LINKS = [
   { to: "/courses", label: "Courses" },
@@ -58,7 +58,7 @@ const Navbar = () => {
         >
           <img
             src={logo}
-            alt="ChartWiz Academy"
+            alt="Alphira Capital"
             className="h-16 w-auto object-contain"
           />
         </Link>

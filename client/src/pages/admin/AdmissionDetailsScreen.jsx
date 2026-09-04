@@ -292,9 +292,9 @@ const AdmissionDetailsScreen = () => {
                 className={inputClass}
               >
                 <option value="">Select Mentor</option>
-                <option>ChartWiz Faculty 1</option>
-                <option>ChartWiz Faculty 2</option>
-                <option>ChartWiz Faculty 3</option>
+                <option>Alphira Faculty 1</option>
+                <option>Alphira Faculty 2</option>
+                <option>Alphira Faculty 3</option>
               </select>
             </div>
           </div>

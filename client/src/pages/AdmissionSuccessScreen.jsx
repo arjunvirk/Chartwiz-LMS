@@ -4,7 +4,7 @@ import { CheckCircle2, ArrowRight, Home } from "lucide-react";
 
 const STEPS = [
   "Our admissions team reviews your application.",
-  "You will receive a phone call from ChartWiz Academy.",
+  "You will receive a phone call from Alphira Capital.",
   "Payment instructions will be shared with you.",
   "After payment confirmation, your student account will be created.",
   "Your login credentials will be sent to your registered email.",
@@ -44,7 +44,7 @@ const AdmissionSuccessScreen = () => {
           <p className="mx-auto mt-5 max-w-2xl text-center text-base leading-relaxed text-slate">
             Thank you for applying to{" "}
             <span className="font-semibold text-graphite">
-              ChartWiz Academy
+              Alphira Capital
             </span>
             .
             <br />

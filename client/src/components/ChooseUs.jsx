@@ -42,7 +42,7 @@ const ChooseUs = () => {
           className="max-w-2xl"
         >
           <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
-            Why Choose ChartWiz
+            Why Choose Alphira
           </span>
           <h2 className="mt-4 font-serif text-4xl leading-[1.05] tracking-[-0.02em] text-graphite md:text-5xl">
             Built for serious traders
@@ -128,14 +128,14 @@ const ChooseUs = () => {
                 Learn. Practice. Grow.
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-mist">
-                ChartWiz helps aspiring traders transform confusion into clarity
+                Alphira helps aspiring traders transform confusion into clarity
                 through professional mentorship.
               </p>
               <Link
                 to="/admission"
                 className="mt-6 inline-flex items-center justify-center rounded-[600px] bg-ember-orange px-6 py-3 font-mono text-xs font-medium text-black transition hover:brightness-95"
               >
-                Join ChartWiz Today
+                Join Alphira Today
               </Link>
             </motion.div>
           </div>

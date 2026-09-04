@@ -11,7 +11,7 @@ const INFO_CARDS = [
   {
     icon: Mail,
     title: "Email Support",
-    value: "chartwizacademy@gmail.com",
+    value: "contact.alphiracapital@gmail.com",
   },
   {
     icon: Phone,

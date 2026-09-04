@@ -57,7 +57,7 @@ const TrustSection = () => {
           className="mx-auto max-w-2xl text-center"
         >
           <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
-            Why Traders Trust ChartWiz
+            Why Traders Trust Alphira
           </span>
           <h2 className="mt-4 font-serif text-4xl leading-[1.05] tracking-[-0.02em] text-graphite md:text-5xl">
             Learn trading the smart way

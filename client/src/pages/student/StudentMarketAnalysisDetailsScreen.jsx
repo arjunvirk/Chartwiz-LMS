@@ -81,7 +81,7 @@ const StudentMarketAnalysisDetailsScreen = () => {
           </h1>
 
           <div className="mt-6 flex flex-wrap items-center gap-5 text-sm text-slate">
-            <span>👨‍🏫 {analysis.author?.name || "ChartWiz Academy"}</span>
+            <span>👨‍🏫 {analysis.author?.name || "Alphira Capital"}</span>
             <span>📅 {new Date(analysis.createdAt).toLocaleDateString()}</span>
           </div>
 

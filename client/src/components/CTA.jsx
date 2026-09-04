@@ -51,7 +51,7 @@ const CTA = () => {
                   to="/admission"
                   className="rounded-[600px] bg-ember-orange px-8 py-3.5 text-center font-mono text-sm font-medium text-black transition hover:brightness-95"
                 >
-                  Join ChartWiz Today
+                  Join Alphira Today
                 </Link>
                 <Link
                   to="/courses"

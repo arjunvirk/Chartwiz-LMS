@@ -168,15 +168,14 @@ const CoursesShowcase = () => {
 
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-gray-300">
             Join thousands of aspiring traders learning practical market skills,
-            discipline and profitable trading strategies through ChartWiz
-            Academy.
+            discipline and profitable trading strategies through Alphira.
           </p>
 
           <Link
             to="/admission"
             className="mt-10 inline-block rounded-2xl bg-green-500 px-10 py-5 text-sm font-bold text-black transition hover:scale-105 hover:bg-green-400"
           >
-            Join ChartWiz Today
+            Join Alphira Today
           </Link>
         </div>
       </div>

@@ -55,7 +55,7 @@ const DashboardLayout = () => {
           {/* MOBILE HEADER */}
           <div className="flex items-center justify-between border-b border-pebble p-5">
             <div>
-              <h2 className="text-xl font-semibold text-graphite">ChartWiz</h2>
+              <h2 className="text-xl font-semibold text-graphite">Alphira</h2>
               <p className="font-mono text-xs uppercase tracking-[-0.02em] text-slate">
                 {isAdmin ? "Admin" : isTeacher ? "Teacher" : "Student"}{" "}
                 Dashboard

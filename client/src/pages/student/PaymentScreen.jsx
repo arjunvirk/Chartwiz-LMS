@@ -16,7 +16,7 @@ const PaymentScreen = () => {
             Secure Checkout
           </span>
           <h1 className="mt-4 font-serif text-3xl leading-tight text-graphite">
-            ChartWiz Academy
+            Alphira Capital
           </h1>
           <p className="mt-2 text-sm text-slate">Scan & Pay Securely</p>
 

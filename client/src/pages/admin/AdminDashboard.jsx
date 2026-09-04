@@ -273,7 +273,7 @@ const AdminDashboard = () => {
 
             <div className="rounded-2xl bg-obsidian p-8 text-vellum">
               <h2 className="font-serif text-2xl leading-tight">
-                ChartWiz LMS
+                Alphira LMS
               </h2>
               <p className="mt-4 text-sm leading-relaxed text-mist">
                 Professional stock market learning management platform with

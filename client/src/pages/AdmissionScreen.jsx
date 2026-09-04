@@ -74,7 +74,7 @@ const AdmissionScreen = () => {
             Admission Application
           </h1>
           <p className="mt-3 text-sm text-slate">
-            Apply for the next ChartWiz Academy batch. Our admission counselor
+            Apply for the next Alphira Capital batch. Our admission counselor
             will contact you shortly.
           </p>
         </div>

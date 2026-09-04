@@ -1,7 +1,7 @@
 const SECTIONS = [
   {
     title: "1. Introduction",
-    body: `Welcome to ChartWiz Academy ("we", "our", or "us"). We respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, store, and protect your information when you access our website, enroll in our educational programs, or use our services.`,
+    body: `Welcome to Alphira Capital ("we", "our", or "us"). We respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, store, and protect your information when you access our website, enroll in our educational programs, or use our services.`,
   },
 
   {
@@ -73,9 +73,9 @@ const SECTIONS = [
     title: "15. Contact Us",
     body: `If you have any questions, concerns, or requests regarding this Privacy Policy or your personal information, please contact us.
 
-Email: chartwizacademy@gmail.com
+Email: contact.alphiracapital@gmail.com
 
-Website: https://www.chartwizacademy.com`,
+Website: https://www.alphiracapital.com`,
   },
 ];
 

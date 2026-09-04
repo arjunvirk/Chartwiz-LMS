@@ -133,7 +133,7 @@ const StudentMarketAnalysisScreen = () => {
                 <div className="mt-5 flex items-center justify-between border-t border-pebble pt-4">
                   <div>
                     <p className="text-xs font-semibold text-graphite">
-                      {analysis.author?.name || "ChartWiz Academy"}
+                      {analysis.author?.name || "Alphira Capital"}
                     </p>
                     <p className="text-xs text-slate">
                       {new Date(analysis.createdAt).toLocaleDateString()}

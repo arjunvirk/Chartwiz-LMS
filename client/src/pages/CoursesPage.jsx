@@ -321,7 +321,7 @@ const CoursesPage = () => {
           </h2>
 
           <p className="mx-auto mt-8 max-w-3xl text-base leading-relaxed text-mist sm:text-lg">
-            Join ChartWiz Academy and learn professional trading through
+            Join Alphira Capital and learn professional trading through
             structured mentorship, practical strategies and premium market
             education.
           </p>
@@ -331,7 +331,7 @@ const CoursesPage = () => {
               to="/admission"
               className="rounded-[600px] bg-ember-orange px-8 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
             >
-              Join ChartWiz Today
+              Join Alphira Capital Today
             </Link>
             <Link
               to="/login"

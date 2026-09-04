@@ -15,7 +15,7 @@ const TESTIMONIALS = [
     role: "Options Trader",
     image: anandMalhotra,
     review:
-      "ChartWiz completely changed the way I understand the market. The structured mentorship and psychology lessons helped me become far more disciplined in trading.",
+      "Alphira completely changed the way I understand the market. The structured mentorship and psychology lessons helped me become far more disciplined in trading.",
   },
   {
     id: 2,
@@ -31,7 +31,7 @@ const TESTIMONIALS = [
     role: "Swing Trader",
     image: lalitKumar,
     review:
-      "ChartWiz Academy is one of the best institutes for anyone looking to learn stock market trading and investing from scratch.",
+      "Alphira Capital is one of the best institutes for anyone looking to learn stock market trading and investing from scratch.",
   },
 ];
 
@@ -69,7 +69,7 @@ const Testimonials = () => {
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-slate">
             Thousands of students are learning professional trading skills
-            through ChartWiz Academy.
+            through Alphira Capital.
           </p>
         </motion.div>
 
@@ -136,7 +136,7 @@ const Testimonials = () => {
 
               <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-mist">
                 Learn professional market strategies, trading psychology and
-                structured mentorship from ChartWiz Academy.
+                structured mentorship from Alphira Capital.
               </p>
 
               <Link

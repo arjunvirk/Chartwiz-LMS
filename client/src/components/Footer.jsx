@@ -39,7 +39,7 @@ const Footer = () => {
             custom={0}
           >
             <Link to="/" className="text-2xl font-semibold tracking-tight">
-              ChartWiz
+              Alphira
             </Link>
             <p className="mt-5 max-w-md text-sm leading-relaxed text-mist">
               Professional stock market mentorship platform helping aspiring
@@ -120,7 +120,7 @@ const Footer = () => {
             <div className="mt-6 space-y-5">
               <div className="flex items-start gap-3">
                 <Mail size={15} className="mt-0.5 text-ember-orange" />
-                <p className="text-sm text-mist">chartwizacademy@gmail.com</p>
+                <p className="text-sm text-mist">contact.alphiracapital@gmail.com</p>
               </div>
               <div className="flex items-start gap-3">
                 <Phone size={15} className="mt-0.5 text-ember-orange" />
@@ -142,7 +142,7 @@ const Footer = () => {
 
         <div className="flex flex-col items-center justify-between gap-6 lg:flex-row">
           <p className="text-center text-xs text-mist lg:text-left">
-            © {new Date().getFullYear()} ChartWiz Academy. All rights reserved.
+            © {new Date().getFullYear()} Alphira Capital. All rights reserved.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-mist">
             <Link to="/privacy-policy" className="hover:text-ember-orange">

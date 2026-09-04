@@ -7,7 +7,7 @@ const FAQ_DATA = [
   {
     question: "Is this course beginner friendly?",
     answer:
-      "Yes. ChartWiz Academy is designed for complete beginners as well as intermediate traders. We start from the fundamentals and gradually move towards advanced trading concepts.",
+      "Yes. Alphira Capital is designed for complete beginners as well as intermediate traders. We start from the fundamentals and gradually move towards advanced trading concepts.",
   },
   {
     question: "Will I get lifetime access to the courses?",
@@ -22,7 +22,7 @@ const FAQ_DATA = [
   {
     question: "Can I watch the lessons on mobile?",
     answer:
-      "Absolutely. The ChartWiz LMS is fully responsive and works smoothly on desktop, tablet and mobile devices.",
+      "Absolutely. The Alphira LMS is fully responsive and works smoothly on desktop, tablet and mobile devices.",
   },
   {
     question: "Do you provide live trading sessions?",
@@ -122,14 +122,14 @@ const FAQ = () => {
             Still have questions?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-mist">
-            Join ChartWiz Academy and start your journey towards professional
+            Join Alphira Capital and start your journey towards professional
             trading with structured mentorship.
           </p>
           <Link
             to="/admission"
             className="mt-8 inline-flex items-center justify-center rounded-[600px] bg-ember-orange px-8 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
           >
-            Join ChartWiz Today
+            Join Alphira Today
           </Link>
         </motion.div>
       </div>

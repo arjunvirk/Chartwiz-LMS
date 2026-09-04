@@ -167,7 +167,7 @@ const Login = () => {
 
         <p className="mt-6 text-center text-sm text-slate">
           Student accounts are created after your admission is approved by
-          ChartWiz Academy.
+          Alphira Capital.
         </p>
 
         <div className="text-center">

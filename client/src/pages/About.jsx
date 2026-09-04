@@ -72,7 +72,7 @@ const About = () => {
             custom={0}
             className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange"
           >
-            About ChartWiz Academy
+            About Alphira Capital
           </motion.span>
 
           <motion.h1
@@ -93,7 +93,7 @@ const About = () => {
             custom={2}
             className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-mist"
           >
-            ChartWiz Academy is a modern trading education platform designed to
+            Alphira Capital is a modern trading education platform designed to
             help beginners and experienced traders build confidence, develop
             profitable trading habits, and understand the financial markets
             through structured mentorship and practical learning.
@@ -141,7 +141,7 @@ const About = () => {
             </p>
 
             <p className="mt-4 text-base leading-relaxed text-slate">
-              At ChartWiz Academy, we focus on practical learning, real-world
+              At Alphira Capital, we focus on practical learning, real-world
               trading concepts, and developing a professional trader mindset
               rather than chasing shortcuts.
             </p>
@@ -233,7 +233,7 @@ const About = () => {
           viewport={{ once: true }}
           className="text-center font-serif text-4xl leading-tight text-graphite md:text-5xl"
         >
-          Why choose ChartWiz Academy?
+          Why choose Alphira Capital?
         </motion.h2>
 
         <div className="mt-14 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
