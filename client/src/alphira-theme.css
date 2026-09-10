@@ -1,0 +1,72 @@
+/* Import after index.css. Fonts and Tailwind tokens are defined there. */
+:root {
+  --ac-background: #f8f7f3;
+  --ac-surface: #ffffff;
+  --ac-ink: #20251f;
+  --ac-muted: #656a61;
+  --ac-border: #e2e4dc;
+  --ac-accent: #dce8be;
+  --ac-positive: #35734d;
+  --ac-font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --ac-font-heading: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --ac-nav-height: 80px;
+}
+html { background: var(--ac-background); scroll-padding-top: calc(var(--ac-nav-height) + 24px); }
+body { margin: 0; background: var(--ac-background); color: var(--ac-ink); font-family: var(--ac-font-body); -webkit-font-smoothing: antialiased; }
+#root { min-height: 100vh; }
+.ac-app { min-height: 100vh; background: var(--ac-background); }
+.ac-app :where(h1,h2,h3,h4) { font-family: var(--ac-font-heading); letter-spacing: -.045em; font-weight: 700; }
+.ac-app :where(button,input,textarea,select) { font-family: inherit; }
+.ac-app :where(a,button,input,textarea,select):focus-visible { outline: 2px solid #53734d; outline-offset: 4px; }
+.ac-app ::selection { background: var(--ac-accent); color: var(--ac-ink); }
+/* Match original fixed header and retain existing page offsets. */
+.ac-header { position: fixed; inset: 0 0 auto; z-index: 50; background: rgba(248,247,243,.97); border-bottom: 1px solid var(--ac-border); backdrop-filter: blur(18px); color: var(--ac-ink); font-family: var(--ac-font-body); }
+.ac-header *, .ac-header *::before, .ac-header *::after { box-sizing: border-box; }
+.ac-header a { text-decoration: none; }
+.ac-navbar { max-width: 1320px; height: var(--ac-nav-height); margin: 0 auto; padding: 0 36px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+.ac-brand { display: inline-flex; align-items: center; gap: 11px; flex-shrink: 0; color: var(--ac-ink); }
+.ac-brand-mark { width: 40px; height: 44px; background: var(--ac-ink); color: #f8f7f3; display: grid; place-items: center; border-radius: 10px 10px 3px 10px; }
+.ac-brand-mark svg { width: 30px; height: 30px; }
+.ac-brand-name { font-family: var(--ac-font-heading); font-size: 28px; line-height: 1; font-weight: 800; letter-spacing: -.065em; }
+.ac-brand-caption { display: block; margin-top: 6px; font-family: var(--ac-font-body); font-size: 9px; font-weight: 600; letter-spacing: .32em; }
+.ac-desktop-links, .ac-desktop-actions { display: flex; align-items: center; gap: 24px; }
+.ac-desktop-actions { gap: 12px; }
+.ac-nav-link { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; color: var(--ac-muted); font-size: 13px; font-weight: 500; transition: color .18s, background .18s; white-space: nowrap; }
+.ac-nav-link:hover, .ac-nav-link.is-active { color: var(--ac-ink); }
+.ac-desktop-links .ac-nav-link.is-active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--ac-ink); }
+.ac-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ac-positive); flex-shrink: 0; }
+.ac-button { display: inline-flex; justify-content: center; align-items: center; gap: 12px; min-height: 44px; padding: 0 20px; border: 1px solid transparent; border-radius: 8px; font-family: var(--ac-font-body); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background .18s, border-color .18s; }
+.ac-button-primary { background: var(--ac-ink); color: #fff; }
+.ac-button-primary:hover { background: #3a4434; }
+.ac-button-secondary { background: transparent; color: var(--ac-ink); border-color: var(--ac-border); }
+.ac-button-secondary:hover { background: #eeeee7; border-color: #c8ccc0; }
+.ac-menu-toggle { display: none; align-items: center; justify-content: center; height: 44px; width: 44px; border: 1px solid var(--ac-border); border-radius: 8px; background: transparent; color: var(--ac-ink); cursor: pointer; }
+.ac-mobile-panel { display: none; }
+/* Opt-in building blocks for subsequent pages. */
+.ac-container { width: min(100% - 48px, 1248px); margin-inline: auto; }
+.ac-page { padding-block: calc(var(--ac-nav-height) + 64px) 80px; }
+.ac-eyebrow { color: var(--ac-muted); font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+.ac-display { margin: 20px 0; max-width: 950px; font-family: var(--ac-font-heading); font-size: clamp(40px, 6vw, 80px); font-weight: 800; line-height: 1.06; letter-spacing: -.06em; text-wrap: balance; }
+.ac-description { max-width: 600px; color: var(--ac-muted); font-size: 16px; line-height: 1.8; }
+.ac-card { background: var(--ac-surface); border: 1px solid var(--ac-border); border-radius: 16px; padding: 28px; }
+.ac-input { box-sizing: border-box; width: 100%; min-height: 48px; border: 1px solid #c8ccc0; border-radius: 8px; background: var(--ac-surface); color: var(--ac-ink); padding: 12px 14px; font-size: 14px; }
+.ac-input::placeholder { color: var(--ac-muted); }
+.ac-metric { font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
+@media (max-width: 1100px) {
+  .ac-desktop-links, .ac-desktop-actions { display: none; }
+  .ac-menu-toggle { display: inline-flex; }
+  .ac-mobile-panel:not([hidden]) { display: block; padding: 12px 24px 24px; border-top: 1px solid var(--ac-border); max-height: calc(100dvh - var(--ac-nav-height)); overflow-y: auto; overscroll-behavior: contain; }
+  .ac-mobile-links { display: flex; flex-direction: column; gap: 4px; }
+  .ac-mobile-links .ac-nav-link { justify-content: flex-start; padding: 12px; border-radius: 8px; font-size: 15px; }
+  .ac-mobile-links .is-active, .ac-mobile-links .ac-nav-link:hover { background: #eeeee7; }
+  .ac-mobile-actions { display: flex; gap: 12px; margin-top: 16px; padding-top: 20px; border-top: 1px solid var(--ac-border); }
+  .ac-mobile-actions > * { flex: 1; }
+}
+@media (max-width: 600px) {
+  .ac-navbar { padding-inline: 20px; }
+  .ac-container { width: calc(100% - 40px); }
+  .ac-page { padding-block: calc(var(--ac-nav-height) + 40px) 48px; }
+  .ac-card { padding: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { .ac-header * { transition: none; } }
+

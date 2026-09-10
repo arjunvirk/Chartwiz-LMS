@@ -1,10 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { logout } from "../actions/userActions";
-import logo from "../assets/alphira_logo.png";
 
 const NAV_LINKS = [
   { to: "/courses", label: "Courses" },
@@ -12,204 +10,68 @@ const NAV_LINKS = [
   { to: "/live-courses", label: "Live Classes" },
 ];
 
-const Navbar = () => {
+export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const toggleRef = useRef(null);
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const role = userInfo?.user?.role;
+  const dashboardPath = role === "admin" ? "/admin/dashboard" : role === "teacher" ? "/teacher/dashboard" : "/dashboard";
+  const profilePath = `${dashboardPath}/profile`;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  useEffect(() => { setMobileMenuOpen(false); }, [location.pathname]);
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setMobileMenuOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [mobileMenuOpen]);
 
-  const isTeacher = userInfo?.user?.role === "teacher";
-  const isAdmin = userInfo?.user?.role === "admin";
-
-  const dashboardPath = isAdmin
-    ? "/admin/dashboard"
-    : isTeacher
-      ? "/teacher/dashboard"
-      : "/dashboard";
-
-  const profilePath = isAdmin
-    ? "/admin/dashboard/profile"
-    : isTeacher
-      ? "/teacher/dashboard/profile"
-      : "/dashboard/profile";
-
+  const closeMenu = () => setMobileMenuOpen(false);
   const logoutHandler = async () => {
     await dispatch(logout());
+    closeMenu();
     navigate("/login", { replace: true });
   };
+  const navLinks = () => <>
+    {NAV_LINKS.map(({ to, label }) => (
+      <NavLink key={to} to={to} onClick={closeMenu} className={({ isActive }) => `ac-nav-link${isActive ? " is-active" : ""}`}>{label}</NavLink>
+    ))}
+    <NavLink to="/live" onClick={closeMenu} className={({ isActive }) => `ac-nav-link${isActive ? " is-active" : ""}`}><span className="ac-live-dot" aria-hidden="true" />Live</NavLink>
+    {userInfo && <NavLink to={profilePath} onClick={closeMenu} className={({ isActive }) => `ac-nav-link${isActive ? " is-active" : ""}`}>Profile</NavLink>}
+  </>;
+  const accountActions = () => userInfo ? <>
+    <Link to={dashboardPath} onClick={closeMenu} className="ac-button ac-button-primary">Dashboard <ArrowUpRight size={16} aria-hidden="true" /></Link>
+    <button type="button" onClick={logoutHandler} className="ac-button ac-button-secondary">Logout</button>
+  </> : <>
+    <Link to="/admission" onClick={closeMenu} className="ac-nav-link">Enroll</Link>
+    <Link to="/login" onClick={closeMenu} className="ac-button ac-button-primary">Login <ArrowUpRight size={16} aria-hidden="true" /></Link>
+  </>;
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-obsidian">
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-2">
-        {/* LOGO */}
-        <Link
-          to={
-            userInfo
-              ? userInfo?.user?.role === "admin"
-                ? "/admin/dashboard"
-                : userInfo?.user?.role === "teacher"
-                  ? "/teacher/dashboard"
-                  : "/dashboard"
-              : "/"
-          }
-          className="text-xl font-semibold tracking-tight text-vellum"
-        >
-          <img
-            src={logo}
-            alt="Alphira Capital"
-            className="h-16 w-auto object-contain"
-          />
+    <header className="ac-header">
+      <nav className="ac-navbar" aria-label="Main navigation">
+        <Link to={userInfo ? dashboardPath : "/"} onClick={closeMenu} className="ac-brand" aria-label="Alphira Capital home">
+          <span className="ac-brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M7 24 16 7l9 17M11 18h10" stroke="currentColor" strokeWidth="2.5" /></svg></span>
+          <span className="ac-brand-name">alphira<span className="ac-brand-caption">CAPITAL</span></span>
         </Link>
-
-        {/* CENTER STATUS LABELS */}
-        <div className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className="font-mono text-xs uppercase tracking-[-0.02em] text-mist transition hover:text-vellum"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link
-            to="/live"
-            className="flex items-center gap-2 font-mono text-xs uppercase tracking-[-0.02em] text-ember-orange"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-ember-orange" />
-            Live
-          </Link>
-          {userInfo && (
-            <Link
-              to={profilePath}
-              className="font-mono text-xs uppercase tracking-[-0.02em] text-mist transition hover:text-vellum"
-            >
-              Profile
-            </Link>
-          )}
-        </div>
-
-        {/* RIGHT */}
-        <div className="hidden items-center gap-3 md:flex">
-          {userInfo ? (
-            <>
-              <Link
-                to={dashboardPath}
-                className="rounded-[600px] bg-ember-orange px-5 py-2 font-mono text-xs font-medium text-black transition hover:brightness-95"
-              >
-                Dashboard
-              </Link>
-              <button
-                onClick={logoutHandler}
-                className="rounded-[600px] border border-white/15 px-5 py-2 font-mono text-xs font-medium text-vellum transition hover:border-white/30"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/admission"
-                className="font-mono text-xs uppercase tracking-[-0.02em] text-mist transition hover:text-vellum"
-              >
-                Enroll
-              </Link>
-              <Link
-                to="/login"
-                className="inline-flex items-center gap-2 rounded-[600px] bg-ember-orange px-5 py-2 font-mono text-xs font-medium text-black transition hover:brightness-95"
-              >
-                Login
-              </Link>
-            </>
-          )}
-        </div>
-
-        {/* MOBILE MENU BUTTON */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 text-vellum md:hidden"
-        >
-          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        <div className="ac-desktop-links">{navLinks()}</div>
+        <div className="ac-desktop-actions">{accountActions()}</div>
+        <button ref={toggleRef} type="button" className="ac-menu-toggle" aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"} aria-expanded={mobileMenuOpen} aria-controls="ac-mobile-navigation" onClick={() => setMobileMenuOpen((open) => !open)}>
+          {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
+      </nav>
+      <div id="ac-mobile-navigation" className="ac-mobile-panel" hidden={!mobileMenuOpen}>
+        <nav aria-label="Mobile navigation" className="ac-mobile-links">{navLinks()}</nav>
+        <div className="ac-mobile-actions">{accountActions()}</div>
       </div>
-
-      {/* MOBILE MENU */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="overflow-hidden border-t border-white/10 bg-obsidian md:hidden"
-          >
-            <div className="flex flex-col gap-2 px-6 py-6">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-lg px-4 py-3 font-mono text-xs uppercase tracking-[-0.02em] text-mist hover:bg-white/5 hover:text-vellum"
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <Link
-                to="/live"
-                onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg px-4 py-3 font-mono text-xs uppercase tracking-[-0.02em] text-ember-orange"
-              >
-                Live
-              </Link>
-              {userInfo ? (
-                <>
-                  <Link
-                    to={profilePath}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-lg px-4 py-3 font-mono text-xs uppercase tracking-[-0.02em] text-mist"
-                  >
-                    Profile
-                  </Link>
-                  <Link
-                    to={dashboardPath}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-[600px] bg-ember-orange px-4 py-3 text-center font-mono text-xs font-medium text-black"
-                  >
-                    Dashboard
-                  </Link>
-                  <button
-                    onClick={logoutHandler}
-                    className="rounded-[600px] border border-white/15 px-4 py-3 font-mono text-xs font-medium text-vellum"
-                  >
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to="/admission"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-lg px-4 py-3 font-mono text-xs uppercase tracking-[-0.02em] text-mist"
-                  >
-                    Enroll
-                  </Link>
-                  <Link
-                    to="/login"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-[600px] bg-ember-orange px-4 py-3 text-center font-mono text-xs font-medium text-black"
-                  >
-                    Login
-                  </Link>
-                </>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+    </header>
   );
-};
-
-export default Navbar;
+}

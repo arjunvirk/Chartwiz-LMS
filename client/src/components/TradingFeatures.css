@@ -1,0 +1,40 @@
+/* Save beside TradingFeatures.jsx. CSS only. */
+.af-section { position: relative; z-index: 10; padding: 100px 36px 104px; border-top: 1px solid #e2e4dc; background: #fff; color: #20251f; font-family: var(--ac-font-body, 'Inter', sans-serif); }
+.af-section *, .af-section *::before, .af-section *::after { box-sizing: border-box; }
+.af-container { max-width: 1248px; margin-inline: auto; }
+.af-heading { display: grid; grid-template-columns: 1.5fr 1fr; gap: 64px; align-items: end; margin-bottom: 48px; }
+.af-eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 22px; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; line-height: 1.6; color: #656a61; }
+.af-eyebrow > span { width: 20px; height: 1px; flex-shrink: 0; background: #66745b; }
+.af-section h2 { margin: 0; font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: clamp(36px, 4.1vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -.055em; }
+.af-section h2 > span { color: #66745b; }
+.af-intro { max-width: 355px; justify-self: end; margin: 0 0 4px; color: #656a61; font-size: 15px; line-height: 1.85; }
+.af-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: #e2e4dc; border: 1px solid #e2e4dc; border-radius: 14px; overflow: hidden; }
+.af-topic { min-width: 0; display: flex; flex-direction: column; padding: 34px; background: #fbfbf8; transition: background-color .22s; }
+.af-topic-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.af-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; background: #edf1e5; border: 1px solid #e0e6d5; color: #4c6540; }
+.af-number { font-family: var(--font-mono, monospace); font-size: 11px; letter-spacing: .04em; color: #767d70; }
+.af-section .af-topic h3 { font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: 21px; font-weight: 700; line-height: 1.3; letter-spacing: -.035em; margin: 28px 0 12px; }
+.af-description { margin: 0 0 28px; color: #656a61; font-size: 13px; line-height: 1.85; }
+.af-mentorship { display: flex; align-items: center; gap: 8px; margin-top: auto; color: #536348; font-size: 9px; font-weight: 500; letter-spacing: .1em; line-height: 1.6; text-transform: uppercase; }
+.af-mentorship > span { width: 5px; height: 5px; flex-shrink: 0; border-radius: 50%; background: #7b9368; }
+@media (hover: hover) and (pointer: fine) { .af-topic:hover { background: #f0f3e9; } }
+@media (max-width: 1050px) {
+  .af-heading { grid-template-columns: 1.3fr 1fr; gap: 32px; }
+  .af-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .af-section { padding: 64px 24px; }
+  .af-heading { grid-template-columns: 1fr; gap: 24px; margin-bottom: 32px; }
+  .af-intro { justify-self: start; max-width: 520px; margin: 0; font-size: 14px; }
+  .af-eyebrow { font-size: 9px; margin-bottom: 18px; }
+  .af-topic { padding: 26px; }
+}
+@media (max-width: 480px) {
+  .af-section { padding: 56px 20px; }
+  .af-grid { grid-template-columns: 1fr; }
+  .af-section h2 { font-size: 34px; }
+  .af-topic { padding: 28px 24px; }
+  .af-section .af-topic h3 { margin-top: 24px; }
+  .af-description { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .af-topic { transition: none; } }

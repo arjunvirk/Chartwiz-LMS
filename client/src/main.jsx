@@ -1,6 +1,6 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
+import "./alphira-theme.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -16,7 +16,24 @@ createRoot(document.getElementById("root")).render(
         <SmoothScroll>
           <App />
         </SmoothScroll>
-        <Toaster position="top-center" reverseOrder={false} />
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          toastOptions={{
+            style: {
+              background: "#ffffff",
+              color: "#20251f",
+              border: "1px solid #e2e4dc",
+              borderRadius: "12px",
+              padding: "14px 18px",
+              fontFamily: "var(--ac-font-body)",
+              fontSize: "14px",
+              boxShadow: "0 8px 32px rgba(32,37,31,0.08)",
+            },
+            success: { iconTheme: { primary: "#35734d", secondary: "#ffffff" } },
+            error: { iconTheme: { primary: "#b64040", secondary: "#ffffff" } },
+          }}
+        />
       </GoogleOAuthProvider>
     </Provider>
   </BrowserRouter>,

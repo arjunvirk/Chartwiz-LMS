@@ -86,7 +86,7 @@ const App = () => {
   }, [location.pathname]);
 
   return (
-    <>
+    <div className="ac-app">
       {/* NAVBAR */}
 
       <Navbar />
@@ -224,8 +224,9 @@ const App = () => {
 
         <Route path="/support" element={<Support />} />
       </Routes>
-    </>
+    </div>
   );
 };
 
 export default App;
+

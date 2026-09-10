@@ -1,156 +1,64 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Star } from "lucide-react";
-import CountUpImport from "react-countup";
+import { motion, useReducedMotion } from "framer-motion";
+import { Star, Quote, ArrowUpRight } from "lucide-react";
 import anandMalhotra from "../assets/anand_malhotra.jpeg";
 import varunMalhotra from "../assets/varun_malhotra.jpeg";
 import lalitKumar from "../assets/lalit_kumar.jpeg";
-
-const CountUp = CountUpImport.default ?? CountUpImport;
+import "./Testimonials.css";
 
 const TESTIMONIALS = [
-  {
-    id: 1,
-    name: "Anand Malhotra",
-    role: "Options Trader",
-    image: anandMalhotra,
-    review:
-      "Alphira completely changed the way I understand the market. The structured mentorship and psychology lessons helped me become far more disciplined in trading.",
-  },
-  {
-    id: 2,
-    name: "Varun Malhotra",
-    role: "Swing Trader",
-    image: varunMalhotra,
-    review:
-      "The price action course is extremely practical and beginner friendly. I finally understand market structure and risk management properly.",
-  },
-  {
-    id: 4,
-    name: "Lalit Kumar",
-    role: "Swing Trader",
-    image: lalitKumar,
-    review:
-      "Alphira Capital is one of the best institutes for anyone looking to learn stock market trading and investing from scratch.",
-  },
+  { id: 1, name: "Anand Malhotra", role: "Options Trader", image: anandMalhotra, review: "Alphira completely changed the way I understand the market. The structured mentorship and psychology lessons helped me become far more disciplined in trading." },
+  { id: 2, name: "Varun Malhotra", role: "Swing Trader", image: varunMalhotra, review: "The price action course is extremely practical and beginner friendly. I finally understand market structure and risk management properly." },
+  { id: 4, name: "Lalit Kumar", role: "Swing Trader", image: lalitKumar, review: "Alphira Capital is one of the best institutes for anyone looking to learn stock market trading and investing from scratch." },
 ];
 
-const STATS = [
-  { value: 500, suffix: "+", label: "Active Students" },
-  { value: 4.9, suffix: "★", label: "Student Satisfaction", decimals: 1 },
-  { value: 120, suffix: "+", label: "Premium Lessons" },
-];
+export default function Testimonials() {
+  const reducedMotion = useReducedMotion();
+  const reveal = (delay = 0) => ({
+    initial: reducedMotion ? false : { opacity: 0, y: 18 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.15 },
+    transition: { duration: reducedMotion ? 0 : 0.6, delay: reducedMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] },
+  });
 
-const cardVariant = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.07, duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-  }),
-};
-
-const Testimonials = () => {
   return (
-    <section className="bg-vellum py-24">
-      <div className="mx-auto max-w-300 px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-2xl"
-        >
-          <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
-            Student Testimonials
-          </span>
-          <h2 className="mt-4 font-serif text-4xl leading-[1.05] tracking-[-0.02em] text-graphite md:text-5xl">
-            Trusted by aspiring traders
-          </h2>
-          <p className="mt-4 text-lg leading-relaxed text-slate">
-            Thousands of students are learning professional trading skills
-            through Alphira Capital.
-          </p>
+    <section className="ar-section" aria-labelledby="ar-title">
+      <div className="ar-container">
+        <motion.div {...reveal()} className="ar-heading">
+          <div>
+            <p className="ar-eyebrow"><span aria-hidden="true" />Student Testimonials</p>
+            <h2 id="ar-title">Trusted by<br /><span>aspiring traders.</span></h2>
+          </div>
+          <p className="ar-intro">Thousands of students are learning professional trading skills through Alphira Capital.</p>
         </motion.div>
 
-        {/* GRID */}
-        <div className="mt-14 grid gap-3 lg:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
-            <motion.div
-              key={t.id}
-              variants={cardVariant}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              custom={i}
-              className="rounded-3xl bg-bone p-8"
-            >
-              <div className="flex items-center gap-1">
-                {Array.from({ length: 5 }).map((_, idx) => (
-                  <Star
-                    key={idx}
-                    size={14}
-                    className="fill-ember-orange text-ember-orange"
-                  />
-                ))}
-              </div>
-              <p className="mt-6 text-sm leading-relaxed text-slate">
-                &ldquo;{t.review}&rdquo;
-              </p>
-              <div className="mt-7 flex items-center gap-3 border-t border-pebble pt-5">
-                <img
-                  src={t.image}
-                  alt={t.name}
-                  className="h-11 w-11 rounded-full object-cover"
-                />
-                <div>
-                  <h3 className="text-sm font-semibold text-graphite">
-                    {t.name}
-                  </h3>
-                  <p className="font-mono text-xs text-ember-orange">
-                    {t.role}
-                  </p>
+        <div className="ar-grid">
+          {TESTIMONIALS.map((testimonial, index) => (
+            <motion.figure {...reveal(index * 0.07)} key={testimonial.id} className="ar-card">
+              <div className="ar-card-top">
+                <div className="ar-stars" role="img" aria-label="5 out of 5 stars">
+                  {Array.from({ length: 5 }, (_, starIndex) => <Star key={starIndex} size={13} strokeWidth={1.5} fill="currentColor" aria-hidden="true" />)}
                 </div>
+                <Quote size={27} strokeWidth={1.25} className="ar-quote-icon" aria-hidden="true" />
               </div>
-            </motion.div>
+              <blockquote><p>“{testimonial.review}”</p></blockquote>
+              <figcaption className="ar-person">
+                <img src={testimonial.image} alt={testimonial.name} width={48} height={48} loading="lazy" decoding="async" />
+                <div><span className="ar-name">{testimonial.name}</span><span className="ar-role">{testimonial.role}</span></div>
+              </figcaption>
+            </motion.figure>
           ))}
         </div>
 
-        {/* DARK CTA BAND */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-14 overflow-hidden rounded-3xl bg-obsidian"
-        >
-          <div className="flex items-center justify-center p-10 lg:p-14">
-            <div className="mx-auto max-w-2xl text-center">
-              <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
-                Join The Community
-              </span>
-
-              <h2 className="mt-4 font-serif text-3xl leading-[1.05] text-vellum md:text-4xl">
-                Become a confident & disciplined trader
-              </h2>
-
-              <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-mist">
-                Learn professional market strategies, trading psychology and
-                structured mentorship from Alphira Capital.
-              </p>
-
-              <Link
-                to="/admission"
-                className="mt-8 inline-flex items-center justify-center rounded-pill bg-ember-orange px-8 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
-              >
-                Start Your Journey
-              </Link>
-            </div>
+        <motion.div {...reveal()} className="ar-community">
+          <div className="ar-community-copy">
+            <p className="ar-eyebrow"><span aria-hidden="true" />Join The Community</p>
+            <h2>Become a confident<br />&amp; disciplined trader.</h2>
+            <p className="ar-community-description">Learn professional market strategies, trading psychology and structured mentorship from Alphira Capital.</p>
           </div>
+          <Link to="/admission" className="ar-join">Start Your Journey <ArrowUpRight size={19} aria-hidden="true" /></Link>
         </motion.div>
       </div>
     </section>
   );
-};
-
-export default Testimonials;
+}

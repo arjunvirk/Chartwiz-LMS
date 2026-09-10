@@ -1,101 +1,78 @@
-import { motion } from "framer-motion";
-import CountUpImport from "react-countup";
-
-const CountUp = CountUpImport.default ?? CountUpImport;
+import { motion, useReducedMotion } from "framer-motion";
+import { TrendingUp, Target, Brain, Infinity as InfinityIcon } from "lucide-react";
+import "./TrustSection.css";
 
 const TRUST_CARDS = [
   {
-    icon: "📈",
+    icon: TrendingUp,
     title: "Practical Strategies",
     desc: "Learn real market strategies based on price action, structure, trend analysis and professional risk management.",
   },
   {
-    icon: "🎯",
+    icon: Target,
     title: "Beginner Friendly",
     desc: "Structured lessons designed for complete beginners to advanced traders with step-by-step guidance.",
   },
   {
-    icon: "🧠",
+    icon: Brain,
     title: "Trading Psychology",
     desc: "Master emotional discipline, mindset control and risk handling to trade consistently.",
   },
   {
-    icon: "🚀",
+    icon: InfinityIcon,
     title: "Lifetime Access",
     desc: "Access premium recorded mentorship anytime from anywhere with continuous updates and future lessons.",
   },
 ];
 
-const STATS = [
-  { value: 500, suffix: "+", label: "Active Students Across India" },
-  { value: 120, suffix: "+", label: "Structured Trading Lessons" },
-  { value: 24, suffix: "/7", label: "Unlimited Learning Access" },
-];
+export default function TrustSection() {
+  const reducedMotion = useReducedMotion();
+  const cardVariant = {
+    hidden: { opacity: 0, y: 18 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.07 } },
-};
-const cardVariant = {
-  hidden: { opacity: 0, y: 20 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
-const TrustSection = () => {
   return (
-    <section className="relative z-10 rounded-t-[2.5rem] bg-vellum py-24">
-      <div className="mx-auto max-w-[1200px] px-6">
+    <section className="at-section" aria-labelledby="at-title">
+      <div className="at-container">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          className="at-heading"
+          initial={reducedMotion ? false : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mx-auto max-w-2xl text-center"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: reducedMotion ? 0 : 0.6 }}
         >
-          <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
-            Why Traders Trust Alphira
-          </span>
-          <h2 className="mt-4 font-serif text-4xl leading-[1.05] tracking-[-0.02em] text-graphite md:text-5xl">
-            Learn trading the smart way
-          </h2>
-          <p className="mt-4 text-lg leading-relaxed text-slate">
-            We focus on practical trading education, risk management and
-            psychology instead of fake promises and unrealistic income claims.
-          </p>
+          <div className="at-heading-main">
+            <p className="at-eyebrow"><span aria-hidden="true" />Why Traders Trust Alphira</p>
+            <h2 id="at-title">Learn trading<br /><span>the smart way.</span></h2>
+          </div>
+          <p className="at-intro">We focus on practical trading education, risk management and psychology instead of fake promises and unrealistic income claims.</p>
         </motion.div>
 
         <motion.div
-          variants={container}
-          initial="hidden"
+          className="at-grid"
+          variants={{ hidden: {}, show: { transition: { staggerChildren: reducedMotion ? 0 : 0.08 } } }}
+          initial={reducedMotion ? false : "hidden"}
           whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
-          className="mt-14 grid gap-3 md:grid-cols-2 xl:grid-cols-4"
+          viewport={{ once: true, amount: 0.1 }}
         >
-          {TRUST_CARDS.map((card) => (
-            <motion.div
-              key={card.title}
-              variants={cardVariant}
-              className="rounded-3xl bg-bone p-8"
-            >
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-obsidian text-2xl">
-                {card.icon}
+          {TRUST_CARDS.map(({ icon: Icon, title, desc }, index) => (
+            <motion.article key={title} className="at-card" variants={reducedMotion ? undefined : cardVariant}>
+              <div className="at-card-top">
+                <span className="at-icon" aria-hidden="true"><Icon size={25} strokeWidth={1.5} /></span>
+                <span className="at-number" aria-hidden="true">0{index + 1}</span>
               </div>
-              <h3 className="mt-6 text-lg font-semibold text-graphite">
-                {card.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate">
-                {card.desc}
-              </p>
-            </motion.div>
+              <h3>{title}</h3>
+              <p>{desc}</p>
+              <div className="at-card-rule" aria-hidden="true"><span /></div>
+            </motion.article>
           ))}
         </motion.div>
       </div>
     </section>
   );
-};
-
-export default TrustSection;
+}

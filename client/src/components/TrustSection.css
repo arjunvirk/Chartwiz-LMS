@@ -1,0 +1,52 @@
+/* Save beside TrustSection.jsx. This file contains CSS only. */
+.at-section {
+  position: relative;
+  z-index: 10;
+  padding: 100px 36px 104px;
+  background: #ffffff;
+  color: #20251f;
+  font-family: var(--ac-font-body, 'Inter', sans-serif);
+}
+.at-section *, .at-section *::before, .at-section *::after { box-sizing: border-box; }
+.at-container { max-width: 1248px; margin-inline: auto; }
+.at-heading { display: grid; grid-template-columns: 1.2fr 1fr; align-items: end; gap: 64px; }
+.at-eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 22px; font-size: 10px; font-weight: 600; line-height: 1.6; letter-spacing: .14em; text-transform: uppercase; color: #656a61; }
+.at-eyebrow > span { display: block; width: 20px; height: 1px; flex-shrink: 0; background: #66745b; }
+.at-section .at-heading h2 { margin: 0; font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: clamp(36px, 4.4vw, 58px); line-height: 1.09; font-weight: 800; letter-spacing: -.055em; }
+.at-heading h2 > span { color: #66745b; }
+.at-intro { max-width: 405px; justify-self: end; margin: 0 0 4px; color: #656a61; font-size: 15px; line-height: 1.85; }
+.at-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 48px; }
+.at-card { display: flex; flex-direction: column; min-width: 0; padding: 28px 24px 24px; background: #f8f7f3; border: 1px solid #e7e8e0; border-radius: 12px; transition: background-color .22s, border-color .22s; }
+.at-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.at-icon { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid #dfe4d4; border-radius: 12px; color: #4c6540; background: #eaf0df; }
+.at-number { padding-top: 3px; font-family: var(--font-mono, monospace); font-size: 10px; line-height: 1.5; letter-spacing: .05em; color: #767d70; }
+.at-section .at-card h3 { margin: 36px 0 12px; font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: 18px; font-weight: 700; line-height: 1.35; letter-spacing: -.035em; }
+.at-card > p { margin: 0 0 28px; color: #656a61; font-size: 13px; line-height: 1.85; }
+.at-card-rule { margin-top: auto; height: 1px; width: 100%; background: #dfe2d7; }
+.at-card-rule > span { display: block; width: 24px; height: 1px; background: #7b9368; transition: width .3s; }
+@media (hover: hover) and (pointer: fine) {
+  .at-card:hover { background: #f2f4ec; border-color: #cdd7c0; }
+  .at-card:hover .at-card-rule > span { width: 56px; }
+}
+@media (max-width: 1100px) {
+  .at-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .at-card { padding: 28px; }
+  .at-heading { gap: 36px; }
+}
+@media (max-width: 700px) {
+  .at-section { padding: 64px 24px; }
+  .at-heading { grid-template-columns: 1fr; gap: 24px; }
+  .at-intro { justify-self: start; max-width: 520px; margin: 0; font-size: 14px; }
+  .at-eyebrow { font-size: 9px; margin-bottom: 18px; }
+  .at-grid { margin-top: 32px; gap: 12px; }
+  .at-card { padding: 24px 20px; }
+}
+@media (max-width: 480px) {
+  .at-section { padding: 56px 20px; }
+  .at-grid { grid-template-columns: 1fr; }
+  .at-section .at-card h3 { margin-top: 24px; font-size: 20px; }
+  .at-card > p { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .at-card, .at-card-rule > span { transition: none; }
+}

@@ -1,0 +1,264 @@
+/* Save beside FAQ.jsx. CSS only. */
+.aq-section {
+  position: relative;
+  padding: 100px 36px 104px;
+  background: #fff;
+  color: #20251f;
+  border-top: 1px solid #e7e8e0;
+  font-family: var(--ac-font-body, "Inter", sans-serif);
+}
+.aq-section *,
+.aq-section *::before,
+.aq-section *::after {
+  box-sizing: border-box;
+}
+.aq-container {
+  max-width: 1040px;
+  margin-inline: auto;
+}
+.aq-heading {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.aq-eyebrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 22px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #656a61;
+}
+.aq-eyebrow > span {
+  width: 20px;
+  height: 1px;
+  background: #66745b;
+  flex-shrink: 0;
+}
+.aq-section h2 {
+  margin: 0;
+  font-family: var(--ac-font-heading, "Manrope", sans-serif);
+  font-size: clamp(36px, 4.4vw, 58px);
+  font-weight: 800;
+  line-height: 1.09;
+  letter-spacing: -0.055em;
+}
+.aq-heading h2 > span {
+  color: #66745b;
+}
+.aq-list {
+  border-top: 1px solid #e2e4dc;
+}
+.aq-item {
+  border-bottom: 1px solid #e2e4dc;
+  background: #fff;
+  transition: background-color 0.2s;
+}
+.aq-item.aq-open {
+  background: #f8f7f3;
+}
+.aq-section .aq-item h3 {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: normal;
+}
+.aq-trigger {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  width: 100%;
+  min-height: 88px;
+  padding: 22px 24px;
+  border: 0;
+  background: transparent;
+  color: #20251f;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+.aq-number {
+  flex-shrink: 0;
+  width: 22px;
+  color: #767d70;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+.aq-question {
+  flex: 1;
+  font-family: var(--ac-font-heading, "Manrope", sans-serif);
+  font-size: 17px;
+  line-height: 1.5;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.aq-toggle {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: #f3f5ee;
+  border: 1px solid #e0e6d5;
+  border-radius: 50%;
+  color: #536348;
+  transition:
+    background-color 0.2s,
+    transform 0.25s;
+}
+.aq-open .aq-toggle {
+  background: #e3ebd6;
+  transform: rotate(45deg);
+}
+.aq-trigger:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid #53734d;
+  outline-offset: -3px;
+  border-radius: 4px;
+}
+.aq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows 0.3s ease,
+    visibility 0.3s;
+}
+.aq-open .aq-answer {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+.aq-answer-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+.aq-answer p {
+  max-width: 850px;
+  margin: 0;
+  padding: 0 80px 26px 68px;
+  font-size: 14px;
+  line-height: 1.85;
+  color: #656a61;
+}
+.aq-invitation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 36px;
+  padding: 34px 36px;
+  margin-top: 40px;
+  border: 1px solid #dce4d0;
+  border-radius: 14px;
+  background: #eaf0df;
+}
+.aq-section .aq-invitation h2 {
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+.aq-invitation p {
+  max-width: 550px;
+  color: #536348;
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.85;
+}
+.aq-join {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 20px;
+  min-height: 50px;
+  padding: 13px 20px;
+  border: 1px solid #20251f;
+  border-radius: 7px;
+  background: #20251f;
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+.aq-join:hover {
+  background: #3a4434;
+}
+.aq-join:focus-visible {
+  outline: 2px solid #53734d;
+  outline-offset: 4px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .aq-trigger:hover {
+    background: #f8f9f4;
+  }
+}
+@media (max-width: 700px) {
+  .aq-section {
+    padding: 64px 24px;
+  }
+  .aq-heading {
+    margin-bottom: 32px;
+    text-align: left;
+  }
+  .aq-eyebrow {
+    justify-content: flex-start;
+    font-size: 9px;
+    margin-bottom: 18px;
+  }
+  .aq-trigger {
+    gap: 14px;
+    padding: 20px 14px;
+  }
+  .aq-question {
+    font-size: 15px;
+  }
+  .aq-answer p {
+    padding: 0 24px 24px 50px;
+  }
+  .aq-invitation {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px;
+    gap: 24px;
+  }
+}
+@media (max-width: 480px) {
+  .aq-section {
+    padding: 56px 20px;
+  }
+  .aq-number {
+    display: none;
+  }
+  .aq-trigger {
+    padding-inline: 12px;
+  }
+  .aq-answer p {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .aq-toggle {
+    width: 30px;
+    height: 30px;
+  }
+  .aq-invitation {
+    padding: 26px 24px;
+  }
+  .aq-join {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aq-item,
+  .aq-toggle,
+  .aq-answer,
+  .aq-join {
+    transition: none;
+  }
+}

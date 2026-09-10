@@ -1,0 +1,54 @@
+/* Save in src/components/ChooseUs.css beside ChooseUs.jsx. */
+.au-section { position: relative; background: #f8f7f3; color: #20251f; border-top: 1px solid #e7e8e0; padding: 96px 36px 104px; font-family: var(--ac-font-body, 'Inter', sans-serif); }
+.au-section *, .au-section *::before, .au-section *::after { box-sizing: border-box; }
+.au-container { max-width: 1248px; margin-inline: auto; }
+.au-heading { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: end; margin-bottom: 48px; }
+.au-eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 22px; color: #656a61; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; line-height: 1.6; }
+.au-eyebrow > span { width: 20px; height: 1px; background: #66745b; }
+.au-section h2 { margin: 0; font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: clamp(36px, 4.4vw, 58px); font-weight: 800; line-height: 1.09; letter-spacing: -.055em; }
+.au-section h2 > span { color: #66745b; }
+.au-intro { max-width: 405px; margin: 0 0 4px; justify-self: end; color: #656a61; font-size: 15px; line-height: 1.85; }
+.au-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; }
+.au-education, .au-lessons, .au-invitation { min-width: 0; border-radius: 14px; padding: 36px; border: 1px solid #e2e4dc; }
+.au-education, .au-lessons { background: #fff; }
+.au-card-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.au-icon { display: grid; place-items: center; width: 48px; height: 48px; flex-shrink: 0; border-radius: 12px; background: #edf1e5; color: #4c6540; border: 1px solid #e0e6d5; }
+.au-index { color: #767d70; font-family: var(--font-mono, monospace); font-size: 9px; letter-spacing: .08em; }
+.au-section h3 { font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: 25px; line-height: 1.25; font-weight: 700; letter-spacing: -.04em; margin: 24px 0 12px; }
+.au-education h3 { font-size: 30px; margin-top: 32px; }
+.au-description { margin: 0; color: #656a61; font-size: 14px; line-height: 1.85; }
+.au-checklist { padding: 0; margin: 30px 0 0; list-style: none; }
+.au-checklist li { display: flex; align-items: flex-start; gap: 14px; padding: 20px 0; border-top: 1px solid #e7e9e0; }
+.au-checklist li:last-child { padding-bottom: 0; }
+.au-check { flex-shrink: 0; display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid #dce3d0; border-radius: 50%; background: #f3f6ec; color: #4c6540; }
+.au-section .au-checklist h4 { font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: 14px; font-weight: 700; letter-spacing: -.02em; line-height: 1.5; margin: 0; }
+.au-checklist p { margin: 5px 0 0; color: #656a61; font-size: 13px; line-height: 1.75; }
+.au-side { display: grid; gap: 20px; }
+.au-invitation { background: #eaf0df; border-color: #dce4d0; }
+.au-process { display: flex; align-items: center; gap: 12px; max-width: 290px; color: #536348; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; }
+.au-process i { height: 1px; background: #bfcdaf; flex: 1; }
+.au-invitation .au-description { color: #536348; }
+.au-join { display: inline-flex; align-items: center; justify-content: center; gap: 24px; min-height: 48px; margin-top: 24px; padding: 12px 20px; background: #20251f; color: #fff; border: 1px solid #20251f; border-radius: 7px; text-decoration: none; font-size: 13px; font-weight: 600; transition: background-color .2s; }
+.au-join:hover { background: #3a4434; }
+.au-join:focus-visible { outline: 2px solid #53734d; outline-offset: 4px; }
+@media (max-width: 1000px) {
+  .au-heading { gap: 32px; }
+  .au-grid { grid-template-columns: 1fr; }
+  .au-side { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .au-lessons, .au-invitation { padding: 28px; }
+}
+@media (max-width: 700px) {
+  .au-section { padding: 64px 24px; }
+  .au-heading { grid-template-columns: 1fr; gap: 24px; margin-bottom: 32px; }
+  .au-intro { max-width: 520px; justify-self: start; margin: 0; font-size: 14px; }
+  .au-side { grid-template-columns: 1fr; }
+  .au-eyebrow { font-size: 9px; margin-bottom: 18px; }
+}
+@media (max-width: 480px) {
+  .au-section { padding: 56px 20px; }
+  .au-education, .au-lessons, .au-invitation { padding: 24px; }
+  .au-section h3 { font-size: 24px; }
+  .au-index { font-size: 8px; }
+  .au-join { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .au-join { transition: none; } }
