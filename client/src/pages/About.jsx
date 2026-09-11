@@ -51,7 +51,6 @@ export default function About() {
         <motion.div {...reveal()}><p className="alphira-story-eyebrow">02 / Our approach</p><h2 id="method-heading">Why choose<br /><span>Alphira Capital?</span></h2></motion.div>
         <div className="alphira-story-principles">{FEATURES.map((feature, i) => <motion.article {...reveal(i * .05)} key={feature.n}><span>{feature.n}</span><div><h3>{feature.title}</h3><p>{feature.desc}</p></div></motion.article>)}</div>
       </section>
-      <motion.section {...reveal()} className="alphira-story-stats" aria-label="Alphira in numbers">{STATS.map(stat => <div key={stat.label}><strong>{count(stat.value)}<span>{stat.suffix}</span></strong><p>{stat.label}</p></div>)}</motion.section>
     </div>
   </main>;
 }

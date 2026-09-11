@@ -64,10 +64,10 @@ export default function CTA() {
               <div className="aj-progress-fill" />
             </div>
             <div className="aj-stats">
-              {MINI_STATS.map((stat) => <div key={stat.label}>
+              {/* {MINI_STATS.map((stat) => <div key={stat.label}>
                 <strong>{reducedMotion ? stat.value : <CountUp end={stat.value} duration={2} enableScrollSpy scrollSpyOnce />}{stat.suffix}</strong>
                 <span>{stat.label}</span>
-              </div>)}
+              </div>)} */}
             </div>
           </motion.div>
         </div>

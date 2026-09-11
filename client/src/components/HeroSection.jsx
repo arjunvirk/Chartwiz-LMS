@@ -39,11 +39,6 @@ export default function HeroSection() {
             <Link to="/admission" className="ah-primary">Enroll in Next Batch <ArrowUpRight size={18} aria-hidden="true" /></Link>
             <Link to="/courses" className="ah-secondary">Explore Courses <ArrowRight size={17} aria-hidden="true" /></Link>
           </motion.div>
-          <motion.div {...reveal(0.32)} className="ah-stats">
-            <div><strong>{number(500)}+</strong><span>Students</span></div>
-            <div><strong>4.9<span className="ah-star" aria-label=" stars">★</span></strong><span>Avg Rating</span></div>
-            <div><strong>{number(15)}+</strong><span>Strategies Taught</span></div>
-          </motion.div>
         </div>
         <motion.div {...reveal(0.2)} className="ah-visual">
           <div className="ah-visual-label"><span>THE MARKET, IN FOCUS</span><span aria-hidden="true">01 / XAU</span></div>
