@@ -1,0 +1,72 @@
+/* Save beside CTA.jsx. CSS only. */
+.aj-section { padding: 96px 36px 64px; border-top: 1px solid #e2e4dc; background: #f8f7f3; color: #20251f; font-family: var(--ac-font-body, 'Inter', sans-serif); }
+.aj-section *, .aj-section *::before, .aj-section *::after { box-sizing: border-box; }
+.aj-container { max-width: 1248px; margin-inline: auto; }
+.aj-layout { display: grid; grid-template-columns: 1.35fr 1fr; align-items: center; gap: 80px; }
+.aj-eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 24px; color: #656a61; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; line-height: 1.6; }
+.aj-eyebrow > span { width: 20px; height: 1px; background: #66745b; }
+.aj-section h2 { margin: 0; font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: clamp(38px, 4.8vw, 64px); font-weight: 800; line-height: 1.08; letter-spacing: -.055em; }
+.aj-section h2 > span { color: #66745b; }
+.aj-description { max-width: 500px; margin: 24px 0 0; color: #656a61; font-size: 15px; line-height: 1.85; }
+.aj-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.aj-actions a { display: inline-flex; justify-content: center; align-items: center; gap: 16px; min-height: 52px; padding: 14px 20px; border-radius: 7px; font-size: 13px; font-weight: 600; text-decoration: none; transition: background-color .2s; }
+.aj-primary { background: #20251f; color: #fff; border: 1px solid #20251f; }
+.aj-primary:hover { background: #3a4434; }
+.aj-secondary { color: #20251f; border: 1px solid #d6d9ce; }
+.aj-secondary:hover { background: #eeeee7; }
+.aj-actions a svg { transition: transform .25s ease; }
+.aj-actions a:focus-visible { outline: 2px solid #53734d; outline-offset: 4px; }
+.aj-trust { display: flex; flex-wrap: wrap; gap: 12px 20px; padding: 0; margin: 26px 0 0; list-style: none; }
+.aj-trust li { display: flex; align-items: center; gap: 6px; color: #656a61; font-size: 10px; line-height: 1.6; }
+.aj-trust svg { color: #53734d; flex-shrink: 0; }
+.aj-card { padding: 34px; background: #fff; border: 1px solid #e2e4dc; border-radius: 16px; min-width: 0; box-shadow: 0 14px 32px -24px #20251f25; }
+.aj-card-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.aj-card-heading p { color: #656a61; font-size: 12px; margin: 0 0 8px; }
+.aj-card-heading strong { font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: 48px; line-height: 1.15; font-weight: 700; letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
+.aj-growth-icon { display: grid; place-items: center; width: 52px; height: 52px; border: 1px solid #dce4d0; border-radius: 12px; background: #edf1e5; color: #4c6540; }
+.aj-progress-label { display: flex; justify-content: space-between; gap: 14px; margin-top: 32px; color: #656a61; font-size: 11px; }
+.aj-progress-label > span:last-child { color: #20251f; font-variant-numeric: tabular-nums; }
+.aj-progress { height: 5px; margin-top: 12px; border-radius: 5px; background: #edf0e7; overflow: hidden; }
+.aj-progress-fill { height: 100%; width: 85%; background: #7b9368; border-radius: inherit; transform-origin: left; }
+.aj-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 30px; padding-top: 26px; border-top: 1px solid #e2e4dc; }
+.aj-stats > div { display: flex; flex-direction: column; gap: 7px; }
+.aj-stats > div + div { padding-left: 20px; border-left: 1px solid #e2e4dc; }
+.aj-stats strong { font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: 28px; line-height: 1.2; font-weight: 700; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.aj-stats > div > span { font-size: 10px; color: #656a61; }
+.aj-footer { display: flex; align-items: center; gap: 24px; margin-top: 64px; }
+.aj-footer > span { height: 1px; background: #dedfd6; flex: 1; }
+.aj-footer p { margin: 0; color: #656a61; font-size: 11px; line-height: 1.8; text-align: center; }
+.aj-footer strong { color: #536348; font-weight: 600; }
+@media (hover: hover) and (pointer: fine) {
+  .aj-primary:hover svg { transform: translate(2px, -2px); }
+  .aj-secondary:hover svg { transform: translateX(3px); }
+}
+@media (max-width: 1000px) { .aj-layout { gap: 36px; grid-template-columns: 1.2fr 1fr; } .aj-card { padding: 26px; } }
+@media (max-width: 760px) {
+  .aj-section { padding: 64px 24px 48px; }
+  .aj-layout { grid-template-columns: 1fr; gap: 36px; }
+  .aj-card { width: 100%; max-width: 520px; }
+  .aj-footer { margin-top: 40px; gap: 14px; }
+}
+@media (max-width: 480px) {
+  .aj-section { padding: 56px 20px 40px; }
+  .aj-eyebrow { font-size: 9px; }
+  .aj-actions { flex-direction: column; }
+  .aj-trust { gap: 10px 16px; }
+  .aj-footer p { max-width: 230px; }
+  .aj-description { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .aj-actions a, .aj-actions a svg { transition: none; } .aj-actions a:hover svg { transform: none; } }
+
+/* Replay the fill when the progress track enters the viewport. */
+@keyframes aj-fill-in {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.aj-progress-fill { transform: scaleX(0); }
+.aj-progress-visible .aj-progress-fill {
+  animation: aj-fill-in 1.8s cubic-bezier(.22,1,.36,1) .35s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-progress .aj-progress-fill { animation: none; transform: scaleX(1); }
+}

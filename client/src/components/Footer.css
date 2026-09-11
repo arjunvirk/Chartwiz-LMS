@@ -1,0 +1,47 @@
+/* Save beside Footer.jsx. CSS only. */
+.az-footer { position: relative; padding: 72px 36px 24px; border-top: 1px solid #dfe3d7; background: #f0f2e9; color: #20251f; font-family: var(--ac-font-body, 'Inter', sans-serif); }
+.az-footer *, .az-footer *::before, .az-footer *::after { box-sizing: border-box; }
+.az-container { max-width: 1248px; margin-inline: auto; }
+.az-grid { display: grid; grid-template-columns: 1.3fr .75fr 1fr 1.3fr; gap: 40px; }
+.az-grid > * { min-width: 0; }
+.az-footer a { text-decoration: none; }
+.az-brand { display: inline-flex; align-items: center; gap: 11px; color: #20251f; }
+.az-mark { display: grid; place-items: center; width: 40px; height: 44px; border-radius: 10px 10px 3px 10px; background: #20251f; color: #f8f7f3; }
+.az-mark svg { width: 30px; height: 30px; }
+.az-wordmark { font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: 28px; font-weight: 800; letter-spacing: -.065em; line-height: 1; }
+.az-wordmark > span { display: block; margin-top: 6px; font-family: var(--ac-font-body, 'Inter', sans-serif); font-size: 9px; font-weight: 600; letter-spacing: .32em; }
+.az-description { max-width: 300px; margin: 22px 0 20px; color: #656a61; font-size: 13px; line-height: 1.85; }
+.az-social { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 10px 13px; border: 1px solid #d7ddcd; border-radius: 7px; color: #4c6540; font-size: 11px; font-weight: 500; transition: background-color .2s; }
+.az-social:hover { background: #e4ead9; }
+.az-footer .az-column h2 { margin: 8px 0 22px; font-family: var(--ac-font-body, 'Inter', sans-serif); font-size: 10px; font-weight: 600; line-height: 1.6; letter-spacing: .12em; text-transform: uppercase; color: #536348; }
+.az-column ul { padding: 0; margin: 0; list-style: none; }
+.az-column li { color: #656a61; font-size: 13px; line-height: 1.8; }
+.az-column li + li { margin-top: 10px; }
+.az-column a { display: inline-flex; align-items: center; min-height: 32px; color: #656a61; transition: color .2s; }
+.az-column a:hover, .az-legal a:hover { color: #20251f; text-decoration: underline; text-underline-offset: 4px; }
+.az-courses li { padding-top: 4px; }
+.az-contact address { display: flex; flex-direction: column; gap: 17px; font-style: normal; }
+.az-contact address > div { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; line-height: 1.85; color: #656a61; }
+.az-contact svg { flex-shrink: 0; margin-top: 3px; color: #66745b; }
+.az-contact span { min-width: 0; overflow-wrap: anywhere; }
+.az-bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 56px; padding-top: 22px; border-top: 1px solid #dce1d3; }
+.az-bottom p { margin: 0; color: #656a61; font-size: 10px; line-height: 1.8; }
+.az-legal { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
+.az-legal a { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; color: #656a61; font-size: 10px; transition: color .2s; }
+.az-legal .az-portal { color: #20251f; font-weight: 600; border-left: 1px solid #d7ddcd; padding-left: 20px; }
+.az-footer a:focus-visible { outline: 2px solid #53734d; outline-offset: 4px; border-radius: 3px; }
+@media (max-width: 1100px) {
+  .az-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 48px; }
+  .az-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+@media (max-width: 600px) {
+  .az-footer { padding: 48px 20px 24px; }
+  .az-grid { gap: 30px 24px; }
+  .az-brand-column, .az-contact { grid-column: 1 / -1; }
+  .az-description { max-width: 420px; }
+  .az-footer .az-column h2 { margin-top: 0; margin-bottom: 14px; }
+  .az-bottom { margin-top: 36px; }
+  .az-legal { gap: 4px 16px; }
+  .az-legal .az-portal { border-left: 0; padding-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .az-footer a { transition: none; } }

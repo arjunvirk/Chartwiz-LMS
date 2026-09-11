@@ -1,23 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, Check, Clock, Monitor, ArrowRight } from "lucide-react";
 import { API_URL } from "../config/api";
-import forexImage from "../assets/images/forex.jpg";
-import indianMarketImage from "../assets/images/indianmarket.jpg";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-  }),
-};
-
-// Fallback content used when the backend course doesn't provide
-// features / duration / badge yet. Keyed by course title so both
-// known programs still look intentional instead of empty.
+import forexImage from "../assets/images/forex-art.png";
+import indianMarketImage from "../assets/images/indian-market-art.png";
+import "./CoursesPage.css";
 const COURSE_META = {
   "The Forex Program": {
     image: forexImage,
@@ -51,22 +40,11 @@ const DEFAULT_META = {
   badge: "Admissions Open",
   features: [],
 };
-
-const CoursesPage = () => {
+export default function CoursesPage() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const totalCourses = courses?.length || 0;
-  const totalStudents = courses?.reduce(
-    (total, course) => total + (course.students?.length || 0),
-    0,
-  );
-  const totalLessons = courses?.reduce(
-    (total, course) => total + (course.videos?.length || 0),
-    0,
-  );
-
+  const reducedMotion = useReducedMotion();
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -88,262 +66,83 @@ const CoursesPage = () => {
 
     fetchCourses();
   }, []);
+  const reveal = (delay = 0) => ({
+    initial: reducedMotion ? false : { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.08 },
+    transition: { duration: reducedMotion ? 0 : 0.6, delay: reducedMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] },
+  });
+  const isFallback = !loading && courses.length === 0;
+  const programs = isFallback
+    ? Object.entries(COURSE_META).map(([title, meta]) => ({
+        key: title, title, meta,
+        description: title === "The Forex Program"
+          ? "A complete classroom-based Forex trading program covering technical analysis, market structure, risk management, psychology and live market execution."
+          : "Master both Forex and the Indian Stock Market with comprehensive classroom training, live trading sessions and professional mentorship.",
+      }))
+    : courses.map((course) => ({ key: course._id, title: course.title, description: course.description, meta: COURSE_META[course.title] || DEFAULT_META }));
 
   return (
-    <section className="min-h-screen bg-vellum py-10">
-      <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
-        {/* COURSES */}
-        <div className="mt-20">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end"
-          >
-            <div>
-              <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
-                Our Courses
-              </span>
-              <h2 className="mt-4 font-serif text-4xl leading-[1.05] tracking-[-0.02em] text-graphite sm:text-5xl">
-                Learn trading like a professional
-              </h2>
-            </div>
-
-            <p className="max-w-2xl text-base leading-relaxed text-slate sm:text-lg">
-              Structured mentorship programs designed for aspiring traders who
-              want to build long-term market understanding and disciplined
-              execution.
-            </p>
-          </motion.div>
-
-          {/* GRID */}
-          {loading ? (
-            <div className="flex items-center justify-center py-20">
-              <div className="h-12 w-12 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
-            </div>
-          ) : courses.length === 0 ? (
-            <div className="mt-16">
-              {/* HERO CARD */}
-              <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                className="overflow-hidden rounded-3xl bg-obsidian px-8 py-16 text-center text-vellum"
-              >
-                <span className="inline-flex items-center rounded-[600px] border border-white/15 px-5 py-2 font-mono text-xs uppercase tracking-[-0.02em] text-ember-orange">
-                  Admissions Open
-                </span>
-
-                <h2 className="mt-6 font-serif text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">
-                  Offline{" "}
-                  <span className="text-ember-orange">Trading Programs</span>
-                </h2>
-
-                <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-mist">
-                  Learn directly from experienced mentors through classroom
-                  training, practical chart analysis, live market sessions and
-                  professional trading mentorship.
-                </p>
-              </motion.div>
-
-              {/* OFFLINE COURSES (static fallback — no courses from API yet) */}
-              <div className="mt-14 grid gap-3 lg:grid-cols-2">
-                {Object.entries(COURSE_META).map(([title, meta], i) => (
-                  <motion.div
-                    key={title}
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                    custom={i + 1}
-                    className="overflow-hidden rounded-3xl bg-bone transition duration-300 hover:-translate-y-1"
-                  >
-                    <img
-                      src={meta.image}
-                      alt={title}
-                      className="h-60 w-full object-cover"
-                    />
-
-                    <div className="p-8">
-                      <div className="flex items-center justify-between">
-                        <span className="rounded-[600px] bg-ember-orange px-4 py-1.5 font-mono text-[11px] uppercase tracking-wide text-black">
-                          {meta.badge}
-                        </span>
-                        <span className="rounded-[600px] bg-obsidian px-4 py-1.5 font-mono text-xs font-medium text-vellum">
-                          {meta.duration}
-                        </span>
-                      </div>
-
-                      <h3 className="mt-8 font-serif text-3xl leading-tight text-graphite">
-                        {title}
-                      </h3>
-
-                      <p className="mt-4 text-sm leading-relaxed text-slate">
-                        {title === "The Forex Program"
-                          ? "A complete classroom-based Forex trading program covering technical analysis, market structure, risk management, psychology and live market execution."
-                          : "Master both Forex and the Indian Stock Market with comprehensive classroom training, live trading sessions and professional mentorship."}
-                      </p>
-
-                      <div className="mt-8 grid gap-3">
-                        {meta.features.map((item) => (
-                          <div
-                            key={item}
-                            className="flex items-center gap-3 text-sm text-graphite"
-                          >
-                            <span className="text-ember-orange">✔</span>
-                            {item}
-                          </div>
-                        ))}
-                      </div>
-
-                      <button
-                        onClick={() => navigate("/admission")}
-                        className="mt-10 w-full rounded-[600px] bg-obsidian py-4 font-mono text-sm font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
-                      >
-                        Apply for Admission
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* ONLINE COMING SOON */}
-              <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                className="mt-14 rounded-3xl border border-dashed border-pebble bg-vellum p-10 text-center"
-              >
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-obsidian text-3xl">
-                  💻
-                </div>
-
-                <h3 className="mt-6 font-serif text-3xl leading-tight text-graphite sm:text-4xl">
-                  Online Courses{" "}
-                  <span className="text-ember-orange">Coming Soon</span>
-                </h3>
-
-                <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-slate">
-                  We're building a premium online learning experience featuring
-                  recorded video lessons, live webinars, quizzes, downloadable
-                  study materials and mentor support so you can learn from
-                  anywhere.
-                </p>
-
-                <div className="mt-8 inline-flex rounded-[600px] bg-bone px-6 py-3 font-mono text-sm font-medium text-ember-orange">
-                  🚀 Launching Soon
-                </div>
-              </motion.div>
-            </div>
-          ) : (
-            // COURSES FROM API — now using the same rich card design
-            <div className="mt-14 grid gap-3 lg:grid-cols-2">
-              {courses.map((course, i) => {
-                const meta = COURSE_META[course.title] || DEFAULT_META;
-
-                return (
-                  <motion.div
-                    key={course._id}
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                    custom={i + 1}
-                    className="overflow-hidden rounded-3xl bg-bone transition duration-300 hover:-translate-y-1"
-                  >
-                    <img
-                      src={meta.image}
-                      alt={course.title}
-                      className="h-60 w-full object-cover"
-                    />
-
-                    <div className="p-8">
-                      <div className="flex items-center justify-between">
-                        <span className="rounded-[600px] bg-ember-orange px-4 py-1.5 font-mono text-[11px] uppercase tracking-wide text-black">
-                          {meta.badge}
-                        </span>
-                        {meta.duration && (
-                          <span className="rounded-[600px] bg-obsidian px-4 py-1.5 font-mono text-xs font-medium text-vellum">
-                            {meta.duration}
-                          </span>
-                        )}
-                      </div>
-
-                      <h3 className="mt-8 font-serif text-3xl leading-tight text-graphite">
-                        {course.title}
-                      </h3>
-
-                      <p className="mt-4 text-sm leading-relaxed text-slate">
-                        {course.description}
-                      </p>
-
-                      {meta.features.length > 0 && (
-                        <div className="mt-8 grid gap-3">
-                          {meta.features.map((item) => (
-                            <div
-                              key={item}
-                              className="flex items-center gap-3 text-sm text-graphite"
-                            >
-                              <span className="text-ember-orange">✔</span>
-                              {item}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      <button
-                        onClick={() => navigate("/admission")}
-                        className="mt-10 w-full rounded-[600px] bg-obsidian py-4 font-mono text-sm font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
-                      >
-                        Apply for Admission
-                      </button>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* CTA */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="mt-24 overflow-hidden rounded-3xl bg-obsidian px-6 py-14 text-center text-vellum sm:px-10 lg:px-16 lg:py-20"
-        >
-          <h2 className="font-serif text-4xl leading-[1.05] sm:text-5xl lg:text-6xl">
-            Ready to start your{" "}
-            <span className="text-ember-orange">trading journey?</span>
-          </h2>
-
-          <p className="mx-auto mt-8 max-w-3xl text-base leading-relaxed text-mist sm:text-lg">
-            Join Alphira Capital and learn professional trading through
-            structured mentorship, practical strategies and premium market
-            education.
-          </p>
-
-          <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-            <Link
-              to="/admission"
-              className="rounded-[600px] bg-ember-orange px-8 py-3.5 font-mono text-sm font-medium text-black transition hover:brightness-95"
-            >
-              Join Alphira Capital Today
-            </Link>
-            <Link
-              to="/login"
-              className="rounded-[600px] border border-white/15 px-8 py-3.5 font-mono text-sm font-medium text-vellum transition hover:border-white/30"
-            >
-              Student Login
-            </Link>
+    <main className="alphira-catalog-page">
+      <div className="alphira-catalog-container">
+        <motion.header {...reveal()} className="alphira-catalog-header">
+          <p className="alphira-catalog-eyebrow"><span aria-hidden="true" />Our Courses</p>
+          <div className="alphira-catalog-heading-row">
+            <h1>Learn trading<br /><span>like a professional.</span></h1>
+            <p className="alphira-catalog-intro">Structured mentorship programs designed for aspiring traders who want to build long-term market understanding and disciplined execution.</p>
           </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
+        </motion.header>
 
-export default CoursesPage;
+        {loading ? (
+          <div className="alphira-catalog-loading" role="status" aria-live="polite">
+            <span className="alphira-catalog-loader" aria-hidden="true" />Loading courses…
+          </div>
+        ) : (
+          <>
+            {isFallback && (
+              <motion.div {...reveal()} className="alphira-catalog-offline">
+                <div><span className="alphira-catalog-status"><i aria-hidden="true" />Admissions Open</span><h2>Offline Trading Programs</h2></div>
+                <p>Learn directly from experienced mentors through classroom training, practical chart analysis, live market sessions and professional trading mentorship.</p>
+              </motion.div>
+            )}
+
+            <div className="alphira-catalog-programs">
+              {programs.map(({ key, title, description, meta }, index) => (
+                <motion.article {...reveal()} key={key} className="alphira-catalog-program">
+                  <div className="alphira-catalog-program-visual">
+                    <div className="alphira-catalog-image-wrap"><img src={meta.image} alt={title} loading="lazy" decoding="async" /></div>
+                    <span className="alphira-catalog-program-number">PROGRAM <span>{String(index + 1).padStart(2, "0")}</span></span>
+                  </div>
+                  <div className="alphira-catalog-program-content">
+                    <span className="alphira-catalog-status"><i aria-hidden="true" />{meta.badge}</span>
+                    <h2>{title}</h2>
+                    <p className="alphira-catalog-description">{description}</p>
+                    {meta.features.length > 0 && <ul className="alphira-catalog-features">{meta.features.map((feature) => <li key={feature}><Check size={14} strokeWidth={1.8} aria-hidden="true" /><span>{feature}</span></li>)}</ul>}
+                  </div>
+                  <div className="alphira-catalog-enrollment">
+                    {meta.duration && <div className="alphira-catalog-duration"><Clock size={18} strokeWidth={1.5} aria-hidden="true" /><div><span>Duration</span><strong>{meta.duration}</strong></div></div>}
+                    <button type="button" className="alphira-catalog-apply" onClick={() => navigate("/admission")}>Apply for Admission <ArrowUpRight size={18} aria-hidden="true" /></button>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+
+            {isFallback && (
+              <motion.aside {...reveal()} className="alphira-catalog-upcoming">
+                <span className="alphira-catalog-monitor" aria-hidden="true"><Monitor size={28} strokeWidth={1.4} /></span>
+                <div><p className="alphira-catalog-eyebrow">Launching Soon</p><h2>Online Courses <span>Coming Soon</span></h2><p className="alphira-catalog-description">We're building a premium online learning experience featuring recorded video lessons, live webinars, quizzes, downloadable study materials and mentor support so you can learn from anywhere.</p></div>
+              </motion.aside>
+            )}
+          </>
+        )}
+
+        <motion.section {...reveal()} className="alphira-catalog-cta" aria-labelledby="alphira-catalog-cta-title">
+          <div><h2 id="alphira-catalog-cta-title">Ready to start your<br /><span>trading journey?</span></h2><p>Join Alphira Capital and learn professional trading through structured mentorship, practical strategies and premium market education.</p></div>
+          <div className="alphira-catalog-cta-actions"><Link to="/admission" className="alphira-catalog-primary">Join Alphira Capital Today <ArrowUpRight size={18} aria-hidden="true" /></Link><Link to="/login" className="alphira-catalog-login">Student Login <ArrowRight size={16} aria-hidden="true" /></Link></div>
+        </motion.section>
+      </div>
+    </main>
+  );
+}
+
+

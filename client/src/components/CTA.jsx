@@ -1,150 +1,79 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import CountUpImport from "react-countup";
-import { Check, TrendingUp } from "lucide-react";
+import { Check, TrendingUp, ArrowUpRight, ArrowRight } from "lucide-react";
+import "./CTA.css";
 
 const CountUp = CountUpImport.default ?? CountUpImport;
-
-const TRUST_ITEMS = [
-  "Lifetime Access",
-  "Premium Lessons",
-  "Structured Mentorship",
-];
+const TRUST_ITEMS = ["Lifetime Access", "Premium Lessons", "Structured Mentorship"];
 const MINI_STATS = [
   { value: 500, suffix: "+", label: "Active Students" },
   { value: 120, suffix: "+", label: "Premium Lessons" },
 ];
-const BOTTOM_STATS = [
-  { value: 4.9, suffix: "★", label: "Student Rating", decimals: 1 },
-  { value: 24, suffix: "/7", label: "Lifetime Access" },
-  { value: 21, suffix: "+", label: "Trading Strategies" },
-];
 
-const CTA = () => {
+export default function CTA() {
+  const reducedMotion = useReducedMotion();
+  const progressRef = useRef(null);
+  const [progressVisible, setProgressVisible] = useState(false);
+
+  useEffect(() => {
+    const target = progressRef.current;
+    if (!target) return;
+    if (!("IntersectionObserver" in window)) {
+      setProgressVisible(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      setProgressVisible(entry.isIntersecting);
+    }, { threshold: 0 });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+  const reveal = (delay = 0) => ({
+    initial: reducedMotion ? false : { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.15 },
+    transition: { duration: reducedMotion ? 0 : 0.7, delay: reducedMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] },
+  });
+
   return (
-    <section className="bg-vellum py-16 sm:py-20 lg:py-24">
-      <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="overflow-hidden rounded-3xl bg-obsidian"
-        >
-          <div className="grid items-center gap-12 p-6 sm:p-8 lg:grid-cols-2 lg:gap-14 lg:p-16">
-            {/* LEFT */}
-            <div>
-              <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
-                Start Your Trading Journey
-              </span>
-              <h2 className="mt-4 font-serif text-4xl leading-[1.05] text-vellum sm:text-5xl">
-                Become a confident trader
-              </h2>
-              <p className="mt-5 max-w-2xl text-base leading-relaxed text-mist">
-                Learn practical trading strategies, market psychology, risk
-                management and professional chart analysis through structured
-                mentorship.
-              </p>
-
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                <Link
-                  to="/admission"
-                  className="rounded-[600px] bg-ember-orange px-8 py-3.5 text-center font-mono text-sm font-medium text-black transition hover:brightness-95"
-                >
-                  Join Alphira Today
-                </Link>
-                <Link
-                  to="/courses"
-                  className="rounded-[600px] border border-white/15 px-8 py-3.5 text-center font-mono text-sm font-medium text-vellum transition hover:border-white/30"
-                >
-                  Explore Courses
-                </Link>
-              </div>
-
-              <div className="mt-8 flex flex-col gap-3 text-sm text-mist sm:flex-row sm:flex-wrap sm:items-center sm:gap-6">
-                {TRUST_ITEMS.map((item) => (
-                  <div key={item} className="flex items-center gap-2">
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-ember-orange/15 text-ember-orange">
-                      <Check size={12} strokeWidth={3} />
-                    </span>
-                    {item}
-                  </div>
-                ))}
-              </div>
+    <section className="aj-section" aria-labelledby="aj-title">
+      <div className="aj-container">
+        <div className="aj-layout">
+          <motion.div {...reveal()} className="aj-copy">
+            <p className="aj-eyebrow"><span aria-hidden="true" />Start Your Trading Journey</p>
+            <h2 id="aj-title">Become a<br /><span>confident trader.</span></h2>
+            <p className="aj-description">Learn practical trading strategies, market psychology, risk management and professional chart analysis through structured mentorship.</p>
+            <div className="aj-actions">
+              <Link to="/admission" className="aj-primary">Join Alphira Today <ArrowUpRight size={18} aria-hidden="true" /></Link>
+              <Link to="/courses" className="aj-secondary">Explore Courses <ArrowRight size={17} aria-hidden="true" /></Link>
             </div>
+            <ul className="aj-trust">
+              {TRUST_ITEMS.map((item) => <li key={item}><Check size={14} strokeWidth={2} aria-hidden="true" />{item}</li>)}
+            </ul>
+          </motion.div>
 
-            {/* RIGHT */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="rounded-2xl border border-white/10 p-8"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-mist">Student Growth</p>
-                  <h3 className="mt-2 font-mono text-4xl font-medium text-vellum">
-                    +95%
-                  </h3>
-                </div>
-                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-ember-orange text-black">
-                  <TrendingUp size={24} />
-                </div>
-              </div>
-
-              <div className="mt-8">
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="text-xs text-mist">Learning Progress</span>
-                  <span className="font-mono text-xs font-medium text-vellum">
-                    85%
-                  </span>
-                </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: "85%" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-                    className="h-full rounded-full bg-ember-orange"
-                  />
-                </div>
-              </div>
-
-              <div className="mt-8 grid grid-cols-2 gap-3">
-                {MINI_STATS.map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="rounded-xl border border-white/10 p-5"
-                  >
-                    <h4 className="font-mono text-2xl font-medium text-vellum">
-                      <CountUp
-                        end={stat.value}
-                        duration={2}
-                        enableScrollSpy
-                        scrollSpyOnce
-                      />
-                      {stat.suffix}
-                    </h4>
-                    <p className="mt-1 text-xs text-mist">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* BOTTOM STRIP */}
-          <div className="border-t border-white/10 px-5 py-8 sm:px-10">
-            <div className="text-center flex flex-col items-center justify-between gap-6 lg:flex-row">
-              <h3 className="font-serif text-xl leading-relaxed text-vellum">
-                Trusted by several students across DELHI NCR
-              </h3>
+          <motion.div {...reveal(0.15)} className="aj-card">
+            <div className="aj-card-heading">
+              <div><p>Student Growth</p><strong>+95%</strong></div>
+              <span className="aj-growth-icon" aria-hidden="true"><TrendingUp size={26} strokeWidth={1.5} /></span>
             </div>
-          </div>
-        </motion.div>
+            <div className="aj-progress-label"><span id="aj-progress-label">Learning Progress</span><span>85%</span></div>
+            <div ref={progressRef} className={`aj-progress${progressVisible ? " aj-progress-visible" : ""}`} role="progressbar" aria-labelledby="aj-progress-label" aria-valuemin={0} aria-valuemax={100} aria-valuenow={85}>
+              <div className="aj-progress-fill" />
+            </div>
+            <div className="aj-stats">
+              {MINI_STATS.map((stat) => <div key={stat.label}>
+                <strong>{reducedMotion ? stat.value : <CountUp end={stat.value} duration={2} enableScrollSpy scrollSpyOnce />}{stat.suffix}</strong>
+                <span>{stat.label}</span>
+              </div>)}
+            </div>
+          </motion.div>
+        </div>
+        <motion.div {...reveal()} className="aj-footer"><span aria-hidden="true" /><p>Trusted by several students across <strong>DELHI NCR</strong></p><span aria-hidden="true" /></motion.div>
       </div>
     </section>
   );
-};
+}
 
-export default CTA;
