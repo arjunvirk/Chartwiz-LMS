@@ -1,0 +1,46 @@
+/* Place beside LiveCoursesPage.jsx. */
+.alphira-live-page { min-height: 100vh; background: #f8f7f3; color: #20251f; padding: 140px 36px 80px; font-family: var(--ac-font-body, 'Inter', sans-serif); }
+.alphira-live-page *, .alphira-live-page *::before, .alphira-live-page *::after { box-sizing: border-box; }
+.alphira-live-container { width: 100%; max-width: 1248px; margin-inline: auto; }
+.alphira-live-heading { padding-bottom: 48px; }
+.alphira-live-eyebrow { display: flex; align-items: center; gap: 10px; font-size: 10px; text-transform: uppercase; letter-spacing: .14em; color: #536348; margin: 0 0 26px; }
+.alphira-live-heading > div { display: grid; grid-template-columns: 1.3fr 1fr; align-items: end; gap: 60px; }
+.alphira-live-page h1 { font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-weight: 800; font-size: clamp(42px,5.5vw,72px); letter-spacing: -.06em; line-height: 1.06; margin: 0; }
+.alphira-live-page h1 span, .alphira-live-empty h2 span { color: #66745b; }
+.alphira-live-heading > div > p { margin: 0; max-width: 420px; justify-self: end; font-size: 14px; line-height: 1.9; color: #656a61; }
+.alphira-live-list { display: grid; gap: 22px; }
+.alphira-live-batch { display: grid; grid-template-columns: minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr); border: 1px solid #e2e4dc; border-radius: 12px; background: #fff; overflow: hidden; }
+.alphira-live-batch-main { padding: 30px; min-width: 0; }
+.alphira-live-batch-top { display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+.alphira-live-batch-number { font-size: 9px; letter-spacing: .13em; color: #767d70; font-family: var(--font-mono,monospace); }
+.alphira-live-status { display: inline-flex; gap: 6px; align-items: center; font-size: 9px; text-transform: uppercase; color: #656a61; }
+.alphira-live-status i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.alphira-live-status.is-live { color: #35734d; }
+.alphira-live-page .alphira-live-batch h2 { font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: 28px; font-weight: 700; line-height: 1.2; letter-spacing: -.04em; margin: 22px 0 14px; overflow-wrap: anywhere; }
+.alphira-live-batch-main > p { color: #656a61; font-size: 13px; line-height: 1.85; margin: 0; overflow-wrap: anywhere; }
+.alphira-live-teacher { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 24px; padding-top: 18px; border-top: 1px solid #e7e9e0; font-size: 11px; }
+.alphira-live-teacher > span { color: #656a61; }
+.alphira-live-teacher strong { font-weight: 600; overflow-wrap: anywhere; }
+.alphira-live-schedule { border-left: 1px solid #e7e9e0; padding: 30px; }
+.alphira-live-schedule-label { display: flex; gap: 9px; align-items: center; font-size: 11px; color: #536348; }
+.alphira-live-schedule dl { margin: 24px 0 0; display: grid; gap: 20px; }
+.alphira-live-schedule dt { font-size: 10px; color: #656a61; margin-bottom: 5px; }
+.alphira-live-schedule dd { font-size: 13px; font-weight: 500; margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.alphira-live-enroll { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; padding: 30px; background: #f0f3e9; border-left: 1px solid #e2e4dc; }
+.alphira-live-enroll > div > span { font-size: 10px; color: #656a61; }
+.alphira-live-enroll p { font-family: var(--ac-font-heading,sans-serif); font-size: 34px; font-weight: 700; letter-spacing: -.05em; margin: 8px 0 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.alphira-live-enroll button { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; min-height: 50px; padding: 13px 16px; background: #20251f; border: 1px solid #20251f; border-radius: 7px; color: #fff; font-family: inherit; font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; transition: background .2s; }
+.alphira-live-enroll button svg { flex-shrink: 0; }
+.alphira-live-enroll button:hover { background: #3a4434; }
+.alphira-live-enroll button:focus-visible { outline: 2px solid #53734d; outline-offset: 4px; }
+.alphira-live-empty { padding: 70px 24px; border-block: 1px solid #dfe3d7; text-align: center; background: #f0f3e9; }
+.alphira-live-empty-icon { display: grid; place-items: center; width: 76px; height: 76px; border: 1px solid #d3ddc6; border-radius: 50%; margin: 0 auto 24px; color: #66745b; }
+.alphira-live-page .alphira-live-empty h2 { font-family: var(--ac-font-heading,sans-serif); font-size: clamp(30px,3.5vw,44px); font-weight: 700; line-height: 1.15; letter-spacing: -.04em; margin: 0; }
+.alphira-live-empty p { font-size: 13px; line-height: 1.8; color: #656a61; margin: 20px 0 0; }
+.alphira-live-loading { min-height: 260px; display: flex; align-items: center; justify-content: center; gap: 12px; color: #656a61; font-size: 13px; border-top: 1px solid #dfe3d7; }
+.alphira-live-loading > span { width: 22px; height: 22px; border: 2px solid #dce4d0; border-top-color: #536348; border-radius: 50%; animation: alphira-live-spin .8s linear infinite; }
+@keyframes alphira-live-spin { to { transform: rotate(360deg); } }
+@media(max-width: 1050px) { .alphira-live-batch { grid-template-columns: 1.5fr 1fr; } .alphira-live-enroll { grid-column: 1 / -1; border-left: 0; border-top: 1px solid #e2e4dc; flex-direction: row; align-items: center; } .alphira-live-enroll button { width: auto; } }
+@media(max-width: 700px) { .alphira-live-page { padding: 116px 24px 56px; } .alphira-live-heading > div { grid-template-columns: 1fr; gap: 24px; } .alphira-live-heading > div > p { justify-self: start; } .alphira-live-batch { grid-template-columns: 1fr; } .alphira-live-schedule { border-left: 0; border-top: 1px solid #e7e9e0; } .alphira-live-schedule dl { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; } }
+@media(max-width: 420px) { .alphira-live-page { padding-inline: 20px; } .alphira-live-batch-main, .alphira-live-schedule, .alphira-live-enroll { padding: 24px; } .alphira-live-enroll { flex-direction: column; align-items: stretch; } .alphira-live-schedule dl { grid-template-columns: 1fr; } }
+@media(prefers-reduced-motion: reduce) { .alphira-live-loading > span { animation: none; } .alphira-live-enroll button { transition: none; } }

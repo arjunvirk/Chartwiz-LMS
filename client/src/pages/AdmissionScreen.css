@@ -1,0 +1,38 @@
+/* Place beside AdmissionScreen.jsx. */
+.alphira-admission-page { min-height: 100vh; padding: 136px 36px 72px; background: #f8f7f3; color: #20251f; font-family: var(--ac-font-body,'Inter',sans-serif); }
+.alphira-admission-page *, .alphira-admission-page *::before, .alphira-admission-page *::after { box-sizing: border-box; }
+.alphira-admission-layout { display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.3fr); gap: 72px; max-width: 1248px; width: 100%; margin-inline: auto; align-items: start; }
+.alphira-admission-intro { padding-top: 16px; }
+.alphira-admission-eyebrow { margin: 0 0 24px; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #536348; }
+.alphira-admission-page h1 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: clamp(36px,4.7vw,62px); line-height: 1.08; letter-spacing: -.055em; margin: 0; font-weight: 800; }
+.alphira-admission-page h1 span { color: #66745b; }
+.alphira-admission-description { max-width: 350px; margin: 26px 0 0; font-size: 14px; color: #656a61; line-height: 1.85; }
+.alphira-admission-note { display: flex; gap: 18px; align-items: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid #dfe3d7; max-width: 350px; }
+.alphira-admission-note > span { display: grid; place-items: center; height: 44px; width: 44px; border-radius: 50%; background: #eaf0df; color: #536348; font-size: 24px; }
+.alphira-admission-note p { margin: 0; color: #656a61; font-size: 12px; line-height: 1.9; }
+.alphira-admission-note a { color: #20251f; font-weight: 600; text-underline-offset: 4px; }
+.alphira-admission-form { padding: 36px; background: #fff; border: 1px solid #e2e4dc; border-radius: 12px; min-width: 0; }
+.alphira-admission-form fieldset { min-width: 0; border: 0; padding: 0; margin: 0; }
+.alphira-admission-form fieldset + fieldset { margin-top: 32px; }
+.alphira-admission-form legend { display: flex; align-items: center; gap: 12px; width: 100%; padding: 0 0 20px; margin-bottom: 22px; border-bottom: 1px solid #e7e9e0; font-family: var(--ac-font-heading,sans-serif); font-size: 17px; font-weight: 700; letter-spacing: -.025em; }
+.alphira-admission-form legend span { color: #7e8c72; font-family: var(--font-mono,monospace); font-size: 10px; font-weight: 400; }
+.alphira-admission-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.alphira-admission-full { grid-column: 1 / -1; }
+.alphira-admission-form label { display: flex; align-items: baseline; flex-wrap: wrap; gap: 5px; margin-bottom: 9px; font-size: 12px; font-weight: 500; color: #3d4537; }
+.alphira-admission-form label span { color: #66745b; }
+.alphira-admission-form label small { color: #73786d; font-size: 10px; font-weight: 400; margin-left: auto; }
+.alphira-admission-input { display: block; width: 100%; min-width: 0; min-height: 48px; padding: 12px 14px; font-family: inherit; font-size: 14px; line-height: 1.5; background: #fbfbf8; color: #20251f; border: 1px solid #dce0d4; border-radius: 6px; transition: border-color .2s, box-shadow .2s; }
+.alphira-admission-input:focus { outline: none; background: #fff; border-color: #7b9368; box-shadow: 0 0 0 3px #eaf0df; }
+.alphira-admission-input::placeholder { color: #797f72; }
+textarea.alphira-admission-input { resize: vertical; min-height: 110px; }
+.alphira-admission-submit-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-top: 28px; margin-top: 24px; border-top: 1px solid #e7e9e0; }
+.alphira-admission-submit-row p { font-size: 10px; color: #656a61; margin: 0; }
+.alphira-admission-submit-row button { display: flex; align-items: center; justify-content: center; gap: 24px; min-height: 50px; padding: 12px 22px; border: 1px solid #20251f; border-radius: 7px; background: #20251f; color: #fff; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; transition: background .2s; }
+.alphira-admission-submit-row button:hover:not(:disabled) { background: #3a4434; }
+.alphira-admission-submit-row button:disabled { opacity: .6; cursor: wait; }
+.alphira-admission-submit-row button span { font-size: 20px; }
+.alphira-admission-page :where(button,a):focus-visible { outline: 2px solid #53734d; outline-offset: 4px; }
+@media(max-width:1000px) { .alphira-admission-layout { gap: 36px; grid-template-columns: minmax(0,.8fr) minmax(0,1.3fr); } .alphira-admission-form { padding: 28px; } }
+@media(max-width:760px) { .alphira-admission-page { padding: 112px 24px 48px; } .alphira-admission-layout { grid-template-columns: 1fr; gap: 32px; } .alphira-admission-intro { padding-top: 0; } .alphira-admission-description { max-width: 520px; } .alphira-admission-note { margin-top: 24px; } }
+@media(max-width:480px) { .alphira-admission-page { padding-inline: 20px; } .alphira-admission-form { padding: 24px 20px; } .alphira-admission-fields { grid-template-columns: 1fr; } .alphira-admission-submit-row { flex-direction: column; align-items: stretch; gap: 16px; } .alphira-admission-input { font-size: 16px; } }
+@media(prefers-reduced-motion:reduce) { .alphira-admission-input, .alphira-admission-submit-row button { transition: none; } }

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { CheckCircle2, ArrowRight, Home } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, Home, Mail } from "lucide-react";
+import "./AdmissionSuccessScreen.css";
 
 const STEPS = [
   "Our admissions team reviews your application.",
@@ -9,95 +10,28 @@ const STEPS = [
   "After payment confirmation, your student account will be created.",
   "Your login credentials will be sent to your registered email.",
 ];
-
-const Step = ({ number, text }) => (
-  <div className="flex items-start gap-4">
-    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ember-orange font-mono text-sm font-semibold text-black">
-      {number}
-    </div>
-    <p className="pt-1.5 text-sm leading-relaxed text-graphite">{text}</p>
-  </div>
-);
-
-const AdmissionSuccessScreen = () => {
-  return (
-    <div className="min-h-screen bg-vellum px-6 py-20 mt-10">
-      <div className="mx-auto max-w-3xl">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="rounded-3xl bg-bone p-10"
-        >
-          {/* ICON */}
-          <div className="flex justify-center">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-ember-orange/15">
-              <CheckCircle2 className="h-11 w-11 text-ember-orange" />
-            </div>
-          </div>
-
-          {/* TITLE */}
-          <h1 className="mt-8 text-center font-serif text-4xl leading-tight text-graphite">
-            Admission Submitted Successfully
-          </h1>
-
-          <p className="mx-auto mt-5 max-w-2xl text-center text-base leading-relaxed text-slate">
-            Thank you for applying to{" "}
-            <span className="font-semibold text-graphite">
-              Alphira Capital
-            </span>
-            .
-            <br />
-            Your admission request has been received successfully.
-          </p>
-
-          {/* TIMELINE */}
-          <div className="mt-12 rounded-2xl bg-vellum p-8">
-            <h2 className="mb-8 text-center text-xl font-semibold text-graphite">
-              What Happens Next?
-            </h2>
-
-            <div className="space-y-6">
-              {STEPS.map((text, i) => (
-                <Step key={i} number={i + 1} text={text} />
-              ))}
-            </div>
-          </div>
-
-          {/* NOTICE */}
-          <div className="mt-8 rounded-2xl border border-ember-orange/25 bg-ember-orange/5 p-6">
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-[-0.02em] text-ember-orange">
-              Important Notice
-            </h3>
-            <p className="mt-3 text-sm leading-relaxed text-graphite">
-              Please keep checking your email inbox (and Spam folder). Once your
-              admission is approved and payment is confirmed, you will
-              automatically receive your Student Portal login credentials.
-            </p>
-          </div>
-
-          {/* BUTTONS */}
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <Link
-              to="/"
-              className="flex flex-1 items-center justify-center gap-2 rounded-pill bg-obsidian px-6 py-3.5 font-mono text-sm font-semibold text-vellum transition hover:bg-ember-orange hover:text-black"
-            >
-              <Home size={18} />
-              Back to Home
-            </Link>
-
-            <Link
-              to="/courses"
-              className="flex flex-1 items-center justify-center gap-2 rounded-pill border border-pebble px-6 py-3.5 font-mono text-sm font-semibold text-graphite transition hover:bg-vellum"
-            >
-              Browse Courses
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        </motion.div>
+export default function AdmissionSuccessScreen() {
+  const reduced = useReducedMotion();
+  return <main className="alphira-confirm-page">
+    <motion.div className="alphira-confirm-container" initial={reduced ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : .65 }}>
+      <header className="alphira-confirm-heading">
+        <div className="alphira-confirm-check" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><motion.path d="M13 24l8 8 15-16" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" initial={reduced ? false : { pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: reduced ? 0 : .65, delay: reduced ? 0 : .25 }} /></svg></div>
+        <p className="alphira-confirm-eyebrow">Alphira Capital / Admissions</p>
+        <h1>Admission submitted<br /><span>successfully.</span></h1>
+        <p className="alphira-confirm-description">Thank you for applying to <strong>Alphira Capital</strong>.<br />Your admission request has been received successfully.</p>
+      </header>
+      <div className="alphira-confirm-grid">
+        <section className="alphira-confirm-next" aria-labelledby="alphira-confirm-next-title">
+          <h2 id="alphira-confirm-next-title">What Happens Next?</h2>
+          <ol>{STEPS.map((text, index) => <li key={text}><span className="alphira-confirm-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><p>{text}</p></li>)}</ol>
+        </section>
+        <aside className="alphira-confirm-notice" aria-labelledby="alphira-confirm-notice-title">
+          <Mail size={24} strokeWidth={1.5} aria-hidden="true" />
+          <h2 id="alphira-confirm-notice-title">Important Notice</h2>
+          <p>Please keep checking your email inbox (and Spam folder). Once your admission is approved and payment is confirmed, you will automatically receive your Student Portal login credentials.</p>
+        </aside>
       </div>
-    </div>
-  );
-};
-
-export default AdmissionSuccessScreen;
+      <nav className="alphira-confirm-actions" aria-label="Continue browsing"><Link to="/" className="alphira-confirm-home"><Home size={17} aria-hidden="true" />Back to Home</Link><Link to="/courses" className="alphira-confirm-courses">Browse Courses <ArrowRight size={17} aria-hidden="true" /></Link></nav>
+    </motion.div>
+  </main>;
+}

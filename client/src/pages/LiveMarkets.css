@@ -1,0 +1,51 @@
+/* Place beside LiveMarkets.jsx. */
+.alphira-markets-page { min-height: 100vh; padding: 136px 0 64px; background: #f8f7f3; color: #20251f; font-family: var(--ac-font-body,'Inter',sans-serif); }
+.alphira-markets-page *, .alphira-markets-page *::before, .alphira-markets-page *::after { box-sizing: border-box; }
+.alphira-markets-container { width: calc(100% - 72px); max-width: 1320px; margin-inline: auto; min-width: 0; }
+.alphira-markets-heading { padding-bottom: 44px; }
+.alphira-markets-eyebrow { display: flex; align-items: center; gap: 9px; color: #536348; font-size: 10px; letter-spacing: .13em; text-transform: uppercase; margin: 0 0 24px; }
+.alphira-markets-heading > div { display: grid; grid-template-columns: minmax(0,1.6fr) minmax(0,1fr); gap: 48px; align-items: end; }
+.alphira-markets-page h1 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: clamp(36px,4.6vw,64px); font-weight: 800; letter-spacing: -.055em; line-height: 1.08; margin: 0; }
+.alphira-markets-page h1 span { color: #66745b; }
+.alphira-markets-heading > div > p { max-width: 400px; justify-self: end; color: #656a61; font-size: 14px; line-height: 1.85; margin: 0; }
+.alphira-markets-section-label { display: flex; justify-content: space-between; gap: 20px; padding: 32px 0 18px; color: #656a61; font-size: 9px; letter-spacing: .13em; }
+.alphira-markets-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.alphira-markets-chart { min-width: 0; background: #fff; border: 1px solid #e2e4dc; border-radius: 10px; overflow: hidden; }
+.alphira-markets-chart-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 24px; border-bottom: 1px solid #e7e9e0; }
+.alphira-markets-chart-heading > div { display: flex; align-items: center; gap: 14px; }
+.alphira-markets-number { font-family: var(--font-mono,monospace); font-size: 10px; color: #7e8c72; }
+.alphira-markets-page .alphira-markets-chart-heading h2 { font-family: var(--ac-font-heading,sans-serif); font-size: 18px; font-weight: 700; letter-spacing: -.03em; line-height: 1.3; margin: 0; }
+.alphira-markets-tag { font-size: 9px; letter-spacing: .09em; color: #536348; background: #edf1e5; padding: 6px 10px; border-radius: 4px; }
+.alphira-markets-widget { padding: 10px; min-width: 0; }
+.alphira-markets-widget iframe, .alphira-markets-analysis-widget iframe { max-width: 100%; }
+.alphira-markets-analysis { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.6fr); gap: 48px; align-items: center; margin-top: 40px; padding: 36px; border: 1px solid #e2e4dc; border-radius: 10px; background: #fff; }
+.alphira-markets-analysis-copy { padding: 12px; }
+.alphira-markets-page .alphira-markets-analysis h2 { font-family: var(--ac-font-heading,sans-serif); font-size: 40px; line-height: 1.1; letter-spacing: -.045em; margin: 0 0 24px; font-weight: 700; }
+.alphira-markets-analysis h2 span { color: #66745b; }
+.alphira-markets-analysis-pair { display: flex; flex-wrap: wrap; gap: 10px; font-size: 11px; font-weight: 600; }
+.alphira-markets-analysis-pair span { color: #656a61; font-weight: 400; }
+.alphira-markets-analysis-widget { min-width: 0; }
+@media(max-width: 1000px) { .alphira-markets-grid { grid-template-columns: 1fr; } .alphira-markets-heading > div { grid-template-columns: 1fr; gap: 24px; } .alphira-markets-heading > div > p { justify-self: start; max-width: 600px; } }
+@media(max-width: 700px) { .alphira-markets-page { padding-top: 116px; } .alphira-markets-container { width: calc(100% - 40px); } .alphira-markets-section-label > span:last-child { display: none; } .alphira-markets-chart-heading { padding: 18px; } .alphira-markets-widget { padding: 0; } .alphira-markets-analysis { grid-template-columns: 1fr; gap: 24px; padding: 20px; } .alphira-markets-analysis-copy { padding: 0; } }
+@media(max-width: 420px) { .alphira-markets-page h1 { font-size: 35px; } }
+
+.alphira-markets-chart-actions { display: flex; align-items: center; gap: 12px; }
+.alphira-markets-chart-actions button { display: grid; place-items: center; width: 40px; height: 40px; background: #fff; color: #536348; border: 1px solid #dfe3d7; border-radius: 7px; cursor: pointer; transition: background .2s, transform .2s; }
+.alphira-markets-chart-actions button:hover { background: #edf1e5; transform: scale(1.06); }
+.alphira-markets-chart-actions button:focus-visible, .alphira-chart-expanded-header button:focus-visible { outline: 2px solid #53734d; outline-offset: 3px; }
+.alphira-chart-dialog { position: fixed; inset: 0; width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 16px; border: 0; background: transparent; overflow: hidden; color: #20251f; font-family: var(--ac-font-body,'Inter',sans-serif); }
+.alphira-chart-dialog::backdrop { background: rgba(22,29,20,.48); backdrop-filter: blur(8px); }
+.alphira-chart-expanded { width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; background: #fff; border: 1px solid #dfe3d7; border-radius: 14px; box-shadow: 0 24px 80px #0003; }
+.alphira-chart-expanded-header { flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 20px; border-bottom: 1px solid #e2e4dc; background: #f8f7f3; }
+.alphira-chart-expanded-header > div { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
+.alphira-chart-expanded-header h2 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -.03em; }
+.alphira-chart-expanded-label { font-size: 11px; color: #656a61; }
+.alphira-chart-expanded-header button { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 12px; border: 1px solid #dfe3d7; border-radius: 7px; background: #fff; color: #20251f; cursor: pointer; font: inherit; font-size: 12px; }
+.alphira-chart-expanded-body { flex: 1; min-height: 0; position: relative; padding: 8px; }
+.alphira-chart-expanded-body > div { height: 100%; }
+.alphira-chart-preparing { color: #656a61; padding: 30px; font-size: 13px; }
+@media(max-width:600px) { .alphira-chart-dialog { padding: 0; } .alphira-chart-expanded { border-radius: 0; } .alphira-chart-expanded-header { padding: 10px 12px; } .alphira-chart-expanded-label { display: none; } .alphira-chart-expanded-body { padding: 0; } }
+@media(prefers-reduced-motion:reduce) { .alphira-markets-chart-actions button { transition: none; } .alphira-markets-chart-actions button:hover { transform: none; } }
+
+.alphira-markets-widget, .alphira-chart-expanded-body { background: #f8f7f3; }
+
