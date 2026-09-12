@@ -1,11 +1,12 @@
+import { LockKeyhole, ArrowRight } from "lucide-react";
+import "./ChangePasswordScreen.css";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changePassword, checkAuth } from "../actions/userActions";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-const inputClass =
-  "w-full rounded-xl border border-pebble bg-vellum px-5 py-4 text-sm outline-none transition focus:border-obsidian";
+const inputClass = "alphira-password-input";
 
 const ChangePasswordScreen = () => {
   const dispatch = useDispatch();
@@ -56,53 +57,23 @@ const ChangePasswordScreen = () => {
   }, [success, error, dispatch, navigate]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-vellum px-4">
-      <div className="w-full max-w-md rounded-3xl bg-bone p-8">
-        <span className="block text-center font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
-          Security
-        </span>
-        <h1 className="mt-4 text-center font-serif text-3xl leading-tight text-graphite">
-          Change Password
-        </h1>
-        <p className="mt-2 text-center text-sm text-slate">
-          You must change your temporary password before continuing.
-        </p>
-
-        <form onSubmit={submitHandler} className="mt-8 space-y-4">
-          <input
-            type="password"
-            placeholder="Current Password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            className={inputClass}
-          />
-
-          <input
-            type="password"
-            placeholder="New Password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            className={inputClass}
-          />
-
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className={inputClass}
-          />
-
-          <button
-            disabled={loading}
-            className="w-full rounded-pill bg-ember-orange py-4 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:opacity-60"
-          >
-            {loading ? "Updating..." : "Update Password"}
-          </button>
+    <main className="alphira-password-page">
+      <section className="alphira-password-card" aria-labelledby="alphira-password-title">
+        <header className="alphira-password-heading">
+          <span className="alphira-password-icon" aria-hidden="true"><LockKeyhole size={26} strokeWidth={1.5} /></span>
+          <p className="alphira-password-eyebrow">Security</p>
+          <h1 id="alphira-password-title">Change<br /><span>Password.</span></h1>
+          <p className="alphira-password-description">You must change your temporary password before continuing.</p>
+        </header>
+        <form onSubmit={submitHandler} className="alphira-password-form" aria-busy={!!loading}>
+          <div><label htmlFor="alphira-password-current">Current Password</label><input id="alphira-password-current" name="currentPassword" autoComplete="current-password" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className={inputClass} /></div>
+          <div className="alphira-password-divider" aria-hidden="true" />
+          <div><label htmlFor="alphira-password-new">New Password</label><input id="alphira-password-new" name="newPassword" autoComplete="new-password" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className={inputClass} /></div>
+          <div><label htmlFor="alphira-password-confirm">Confirm Password</label><input id="alphira-password-confirm" name="confirmPassword" autoComplete="new-password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className={inputClass} /></div>
+          <button type="submit" disabled={loading}>{loading ? "Updating..." : "Update Password"}<ArrowRight size={17} aria-hidden="true" /></button>
         </form>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
-
 export default ChangePasswordScreen;

@@ -9,6 +9,7 @@ import Testimonials from "../components/Testimonials";
 import FAQ from "../components/FAQ";
 import CTA from "../components/CTA";
 import Footer from "../components/Footer";
+import HomeOffer from "../components/HomeOffer";
 
 const HomeScreen = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
@@ -28,6 +29,7 @@ const HomeScreen = () => {
       <FAQ />
       <CTA />
       <Footer />
+      <HomeOffer />
     </div>
   );
 };

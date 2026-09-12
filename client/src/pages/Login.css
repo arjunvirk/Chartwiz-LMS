@@ -1,0 +1,40 @@
+/* Place beside Login.jsx. */
+.alphira-signin-page { min-height: 100vh; display: grid; align-items: center; background: #f8f7f3; color: #20251f; padding: 128px 36px 64px; font-family: var(--ac-font-body,'Inter',sans-serif); }
+.alphira-signin-page *, .alphira-signin-page *::before, .alphira-signin-page *::after { box-sizing: border-box; }
+.alphira-signin-layout { width: 100%; max-width: 1040px; margin-inline: auto; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 80px; align-items: center; }
+.alphira-signin-eyebrow { font-size: 10px; font-weight: 500; letter-spacing: .14em; line-height: 1.6; text-transform: uppercase; color: #656a61; margin: 0 0 20px; }
+.alphira-signin-page h1 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: clamp(56px,7vw,88px); line-height: 1.02; font-weight: 800; letter-spacing: -.065em; margin: 0; }
+.alphira-signin-page h1 span { color: #66745b; }
+.alphira-signin-portal { color: #656a61; font-size: 14px; margin: 22px 0 0; line-height: 1.8; }
+.alphira-signin-art { display: flex; align-items: flex-end; gap: 10px; height: 100px; padding-top: 20px; margin: 22px 0 28px; max-width: 260px; border-bottom: 1px solid #dce2d3; }
+.alphira-signin-art span { flex: 1; height: 32%; background: #e1e8d6; border-radius: 3px 3px 0 0; }
+.alphira-signin-art span:nth-child(2) { height: 60%; background: #c9d5b9; }
+.alphira-signin-art span:nth-child(3) { height: 46%; }
+.alphira-signin-art span:nth-child(4) { height: 78%; background: #a6b794; }
+.alphira-signin-art span:nth-child(5) { height: 100%; background: #7b9368; }
+.alphira-signin-admission { border-top: 1px solid #dfe3d7; padding-top: 24px; max-width: 370px; }
+.alphira-signin-admission p { font-size: 13px; color: #656a61; line-height: 1.85; margin: 0 0 12px; }
+.alphira-signin-admission a { display: inline-flex; align-items: center; gap: 20px; min-height: 44px; font-size: 12px; font-weight: 600; color: #20251f; text-decoration: none; }
+.alphira-signin-admission a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.alphira-signin-admission a span { font-size: 20px; }
+.alphira-signin-panel { padding: 40px; background: #fff; border: 1px solid #e2e4dc; border-radius: 14px; min-width: 0; }
+.alphira-signin-panel header { margin-bottom: 30px; padding-bottom: 26px; border-bottom: 1px solid #e7e9e0; }
+.alphira-signin-panel .alphira-signin-eyebrow { margin-bottom: 12px; }
+.alphira-signin-page h2 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: 36px; line-height: 1.15; font-weight: 700; letter-spacing: -.045em; margin: 0; }
+.alphira-signin-form { display: grid; gap: 24px; }
+.alphira-signin-form label { display: block; font-size: 12px; font-weight: 500; margin-bottom: 10px; }
+.alphira-signin-input { display: block; width: 100%; min-height: 50px; padding: 13px 14px; color: #20251f; background: #fbfbf8; border: 1px solid #dce0d4; border-radius: 6px; font-family: inherit; font-size: 16px; line-height: 1.5; transition: border-color .2s, box-shadow .2s; }
+.alphira-signin-input::placeholder { color: #797f72; font-size: 13px; }
+.alphira-signin-input:focus { outline: none; border-color: #7b9368; box-shadow: 0 0 0 3px #eaf0df; background: #fff; }
+.alphira-signin-password { position: relative; }
+.alphira-signin-password input { padding-right: 52px; }
+.alphira-signin-password button { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; display: grid; place-items: center; background: transparent; border: 0; color: #656a61; cursor: pointer; border-radius: 5px; }
+.alphira-signin-password button:hover { color: #20251f; background: #edf1e5; }
+.alphira-signin-submit { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 52px; padding: 13px 18px; margin-top: 8px; border: 1px solid #20251f; border-radius: 7px; background: #20251f; color: #fff; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s; }
+.alphira-signin-submit:hover { background: #3a4434; }
+.alphira-signin-submit > span { font-size: 20px; }
+.alphira-signin-page :where(a,button):focus-visible { outline: 2px solid #53734d; outline-offset: 3px; }
+@media(max-width:900px) { .alphira-signin-layout { gap: 36px; } .alphira-signin-panel { padding: 30px; } }
+@media(max-width:700px) { .alphira-signin-page { padding: 112px 24px 48px; } .alphira-signin-layout { grid-template-columns: 1fr; max-width: 480px; gap: 32px; } .alphira-signin-page h1 { font-size: 54px; } .alphira-signin-art { display: none; } .alphira-signin-admission { margin-top: 22px; max-width: none; } }
+@media(max-width:420px) { .alphira-signin-page { padding-inline: 20px; } .alphira-signin-panel { padding: 28px 24px; } }
+@media(prefers-reduced-motion:reduce) { .alphira-signin-input, .alphira-signin-submit { transition: none; } }

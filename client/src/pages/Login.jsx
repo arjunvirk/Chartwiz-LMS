@@ -1,3 +1,4 @@
+import "./Login.css";
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -88,99 +89,26 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-vellum px-4">
-      <div className="w-full max-w-md rounded-3xl bg-bone p-8 mt-15">
-        {/* TITLE */}
-        <div className="mb-6 text-center">
-          <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
-            Student & Staff Portal
-          </span>
-          <h2 className="mt-3 font-serif text-3xl leading-tight text-graphite">
-            Login
-          </h2>
-        </div>
-
-        {/* FORM */}
-        <form onSubmit={submitHandler} autoComplete="off" className="space-y-5">
-          {/* EMAIL */}
-          <div>
-            <label className="mb-2 block text-sm font-medium text-graphite">
-              Email
-            </label>
-            <input
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              autoComplete="email"
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-pebble bg-vellum px-4 py-3 text-sm outline-none transition focus:border-obsidian"
-            />
-          </div>
-
-          {/* PASSWORD */}
-          <div>
-            <label className="mb-2 block text-sm font-medium text-graphite">
-              Password
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter password"
-                value={password}
-                autoComplete="current-password"
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-xl border border-pebble bg-vellum px-4 py-3 pr-12 text-sm outline-none transition focus:border-obsidian"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate"
-              >
-                {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
-              </button>
-            </div>
-          </div>
-
-          {/* LOGIN BUTTON */}
-          <button
-            type="submit"
-            className="w-full rounded-[600px] bg-obsidian py-3 font-mono text-sm font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
-          >
-            {loading ? "Loading..." : "Login"}
-          </button>
-        </form>
-
-        {/* DIVIDER */}
-        <div className="my-6 flex items-center gap-3">
-          <div className="h-px flex-1 bg-pebble" />
-          <span className="font-mono text-xs text-slate">OR</span>
-          <div className="h-px flex-1 bg-pebble" />
-        </div>
-
-        {/* GOOGLE LOGIN */}
-        {/* <div className="flex justify-center">
-          <GoogleLogin
-            onSuccess={googleSuccess}
-            onError={() => toast.error("Google login failed")}
-          />
-        </div> */}
-
-        <p className="mt-6 text-center text-sm text-slate">
-          Student accounts are created after your admission is approved by
-          Alphira Capital.
-        </p>
-
-        <div className="text-center">
-          <Link
-            to="/admission"
-            className="mt-4 inline-block rounded-[600px] bg-ember-orange px-5 py-2 font-mono text-xs font-semibold text-black"
-          >
-            Apply for Admission
-          </Link>
-        </div>
+    <main className="alphira-signin-page">
+      <div className="alphira-signin-layout">
+        <section className="alphira-signin-intro" aria-labelledby="alphira-signin-welcome">
+          <p className="alphira-signin-eyebrow">Alphira Capital</p>
+          <h1 id="alphira-signin-welcome">Welcome<br /><span>back.</span></h1>
+          <p className="alphira-signin-portal">Student &amp; Staff Portal</p>
+          <div className="alphira-signin-art" aria-hidden="true"><span /><span /><span /><span /><span /></div>
+          <div className="alphira-signin-admission"><p>Student accounts are created after your admission is approved by Alphira Capital.</p><Link to="/admission">Apply for Admission <span aria-hidden="true">↗</span></Link></div>
+        </section>
+        <section className="alphira-signin-panel" aria-labelledby="alphira-signin-title">
+          <header><p className="alphira-signin-eyebrow">Your account</p><h2 id="alphira-signin-title">Login</h2></header>
+          <form onSubmit={submitHandler} autoComplete="off" className="alphira-signin-form" aria-busy={!!loading}>
+            <div><label htmlFor="alphira-signin-email">Email</label><input id="alphira-signin-email" name="email" type="email" placeholder="Enter email" value={email} autoComplete="email" onChange={(e) => setEmail(e.target.value)} className="alphira-signin-input" /></div>
+            <div><label htmlFor="alphira-signin-password">Password</label><div className="alphira-signin-password"><input id="alphira-signin-password" name="password" type={showPassword ? "text" : "password"} placeholder="Enter password" value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} className="alphira-signin-input" /><button type="button" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? "Hide password" : "Show password"} aria-pressed={showPassword}>{showPassword ? <FiEyeOff size={18} aria-hidden="true" /> : <FiEye size={18} aria-hidden="true" />}</button></div></div>
+            <button type="submit" className="alphira-signin-submit">{loading ? "Loading..." : "Login"}<span aria-hidden="true">↗</span></button>
+          </form>
+          {/* Google sign-in remains disabled, matching the original page. */}
+        </section>
       </div>
-    </div>
+    </main>
   );
 };
-
 export default Login;
