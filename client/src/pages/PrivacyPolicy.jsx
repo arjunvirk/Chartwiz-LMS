@@ -1,3 +1,5 @@
+import LegalLayout from "./LegalLayout";
+
 const SECTIONS = [
   {
     title: "1. Introduction",
@@ -79,33 +81,6 @@ Website: https://www.alphiracapital.com`,
   },
 ];
 
-const PrivacyPolicy = () => {
-  return (
-    <div className="min-h-screen bg-vellum px-6 py-20">
-      <div className="mx-auto max-w-3xl mt-10">
-        <span className="font-mono text-xs font-medium uppercase tracking-[-0.02em] text-ember-orange">
-          Legal
-        </span>
-        <h1 className="mt-4 font-serif text-4xl leading-tight text-graphite md:text-5xl">
-          Privacy Policy
-        </h1>
-        <p className="mt-4 text-sm text-slate">Last Updated: July 2026</p>
-
-        <div className="mt-12 space-y-3">
-          {SECTIONS.map((section) => (
-            <div key={section.title} className="rounded-2xl bg-bone p-8">
-              <h2 className="text-xl font-semibold text-graphite">
-                {section.title}
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-slate">
-                {section.body}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default PrivacyPolicy;
+export default function PrivacyPolicy() {
+  return <LegalLayout title="Privacy Policy" description="How your information is collected, used and protected." updated="July 2026" sections={SECTIONS} />;
+}

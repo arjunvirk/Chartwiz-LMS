@@ -1,0 +1,18 @@
+/* Brand-wide shape rule: square surfaces and controls, including older pages. */
+body :is(div, section, article, aside, header, footer, main, nav, dialog, form, fieldset, figure, img, a, button, input:not([type="radio"]), select, textarea, table, video, iframe) {
+  border-radius: 0 !important;
+}
+/* Keep circular status indicators and SVG/chart geometry independent of surfaces. */
+body .alphira-ac-logo {
+  display: block;
+  width: 48px;
+  height: 44px;
+  object-fit: contain;
+  flex: 0 0 auto;
+  background: transparent;
+}
+body .alphira-dash-brand { gap: 10px; margin-inline: 0; }
+body .alphira-dash-brand .alphira-ac-logo { width: 44px; height: 42px; }
+.alphira-drawer-brand { display: flex; align-items: center; gap: 10px; }
+body .alphira-drawer-brand .alphira-ac-logo { width: 38px; height: 36px; }
+@media(max-width:600px) { body .ac-brand .alphira-ac-logo { width: 40px; height: 38px; } }

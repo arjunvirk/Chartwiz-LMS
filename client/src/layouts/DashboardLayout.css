@@ -1,0 +1,52 @@
+.alphira-dash-shell { display: grid; grid-template-columns: 248px minmax(0,1fr); min-height: calc(100vh - 80px); margin-top: 80px; background: #f8f7f3; color: #20251f; font-family: var(--ac-font-body,'Inter',sans-serif); transition: grid-template-columns .25s ease; }
+.alphira-dash-shell.is-compact { grid-template-columns: 80px minmax(0,1fr); }
+.alphira-dash-sidebar, .alphira-dash-main, .alphira-dash-drawer, .alphira-dash-topbar, .alphira-dash-welcome, .alphira-dash-stats { box-sizing: border-box; }
+.alphira-dash-sidebar { position: sticky; top: 80px; height: calc(100dvh - 80px); display: flex; flex-direction: column; padding: 28px 16px 16px; background: #f0f1e9; border-right: 1px solid #dfe3d6; overflow-y: auto; }
+.alphira-dash-brand { display: flex; align-items: center; gap: 12px; margin: 0 6px 38px; }
+.alphira-dash-brand > span { display: grid; place-items: center; flex-shrink: 0; width: 36px; height: 40px; border-radius: 8px; background: #20251f; color: white; font-size: 25px; }
+.alphira-dash-brand > div { font-size: 25px; font-weight: 800; letter-spacing: -.06em; line-height: 1; }
+.alphira-dash-brand small { display: block; font-size: 8px; letter-spacing: .3em; margin-top: 7px; font-weight: 500; }
+.alphira-dash-caption { font-size: 9px; text-transform: uppercase; letter-spacing: .13em; color: #66745b; margin: 0 12px 16px; line-height: 1.6; }
+.alphira-dash-nav { display: grid; gap: 6px; }
+.alphira-dash-link { display: flex; align-items: center; gap: 12px; min-height: 46px; padding: 0 13px; color: #626b5a; font-size: 12px; font-weight: 500; text-decoration: none; border-radius: 8px; transition: background .18s, color .18s; }
+.alphira-dash-link svg { flex-shrink: 0; }
+.alphira-dash-link:hover { background: #e2e7d9; color: #20251f; }
+.alphira-dash-link.is-active { background: #20251f; color: #fff; }
+.alphira-dash-sidebar-bottom { margin-top: auto; padding-top: 28px; }
+.alphira-dash-identity { display: flex; gap: 11px; align-items: center; border-top: 1px solid #d7ddce; padding-top: 20px; }
+.alphira-dash-identity > div { min-width: 0; }
+.alphira-dash-identity strong { display: block; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.alphira-dash-identity small { display: block; margin-top: 5px; font-size: 10px; color: #66745b; }
+.alphira-dash-avatar { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; background: #dfe7d4; color: #526146; font-size: 15px; font-weight: 600; overflow: hidden; }
+.alphira-dash-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.alphira-dash-main { min-width: 0; }
+.alphira-dash-topbar { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 32px; border-bottom: 1px solid #e1e4da; }
+.alphira-dash-breadcrumb { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.alphira-dash-breadcrumb > span { font-size: 11px; color: #717969; }
+.alphira-dash-breadcrumb b { margin-inline: 10px; color: #b3bba9; font-weight: 400; }
+.alphira-dash-breadcrumb strong { color: #20251f; font-weight: 500; }
+.alphira-dash-icon-button { display: inline-grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; border: 1px solid #dce1d4; border-radius: 8px; background: transparent; color: #526146; cursor: pointer; }
+.alphira-dash-icon-button:hover { background: #e9eddf; }
+.alphira-dash-mobile-toggle { display: none; }
+.alphira-dash-content { padding: 36px 32px; }
+.alphira-dash-welcome { margin-bottom: 30px; }
+.alphira-dash-welcome .alphira-dash-caption { margin-left: 0; margin-bottom: 14px; }
+.alphira-dash-welcome h1 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-weight: 800; font-size: clamp(32px,3.5vw,48px); line-height: 1.1; letter-spacing: -.05em; margin: 0; }
+.alphira-dash-welcome h1 span { color: #829570; }
+.alphira-dash-welcome > p:last-child { color: #697260; font-size: 13px; line-height: 1.8; margin: 14px 0 0; }
+.alphira-dash-stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; margin-bottom: 28px; }
+.alphira-dash-stat { background: white; border: 1px solid #e1e5da; border-radius: 12px; padding: 22px; }
+.alphira-dash-stat > div { display: flex; justify-content: space-between; gap: 10px; color: #66745b; font-size: 11px; }
+.alphira-dash-stat strong { display: block; margin-top: 18px; font-size: 32px; line-height: 1; font-weight: 600; }
+.alphira-dash-outlet { min-width: 0; }
+.alphira-dash-drawer { padding: 0; margin: 0; width: min(300px,88vw); max-width: none; height: 100dvh; max-height: none; border: 0; background: #f0f1e9; color: #20251f; }
+.alphira-dash-drawer[open] { animation: alphira-drawer-in .25s ease-out; }
+.alphira-dash-drawer::backdrop { background: #20251f65; backdrop-filter: blur(3px); }
+.alphira-dash-drawer-content { display: flex; flex-direction: column; min-height: 100%; box-sizing: border-box; padding: 22px; }
+.alphira-dash-drawer-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 26px; }
+.alphira-dash-drawer-heading strong { font-size: 16px; }
+.alphira-dash-shell :is(a,button):focus-visible { outline: 2px solid #728961; outline-offset: 3px; }
+@keyframes alphira-drawer-in { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+@media(max-width:1023px) { .alphira-dash-shell, .alphira-dash-shell.is-compact { grid-template-columns: minmax(0,1fr); } .alphira-dash-sidebar, .alphira-dash-desktop-toggle { display: none; } .alphira-dash-mobile-toggle { display: inline-grid; } .alphira-dash-content { padding: 28px 22px; } .alphira-dash-topbar { padding-inline: 22px; } }
+@media(max-width:600px) { .alphira-dash-content { padding: 24px 16px; } .alphira-dash-topbar { padding-inline: 16px; } .alphira-dash-breadcrumb { gap: 10px; } .alphira-dash-breadcrumb > span { font-size: 10px; } .alphira-dash-stats { gap: 8px; } .alphira-dash-stat { padding: 14px 10px; } .alphira-dash-stat > div { font-size: 10px; line-height: 1.5; } .alphira-dash-stat svg { display: none; } .alphira-dash-stat strong { font-size: 26px; } }
+@media(prefers-reduced-motion:reduce) { .alphira-dash-shell, .alphira-dash-link { transition: none; } .alphira-dash-drawer[open] { animation: none; } }

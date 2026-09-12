@@ -117,8 +117,8 @@ export default function HomeOffer() {
             <button type="button" className="alphira-home-offer-close" onClick={dismiss} aria-label="Close course offer"><X size={18} /></button>
             <p className="alphira-home-offer-label">A little head start</p>
             <h2>Learn more.<br /><span>Pay 20% less.</span></h2>
-            <p className="alphira-home-offer-copy">Get 20% off courses. Call our team to ask about the offer and enrol.</p>
-            <a href="tel:+919217222356" className="alphira-home-offer-call"><span><small>Talk to admissions</small>+91 92172 22356</span><ArrowUpRight size={22} aria-hidden="true" /></a>
+            <p className="alphira-home-offer-copy">Get 20% off courses. Call our team to ask about the offer and enroll.</p>
+            <a href="tel:+919217222356" className="alphira-home-offer-call"><span><small>Contact Us</small>+91 92172 22356</span><ArrowUpRight size={22} aria-hidden="true" /></a>
           </motion.aside>
         )}
       </AnimatePresence>

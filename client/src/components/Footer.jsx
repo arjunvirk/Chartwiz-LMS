@@ -26,7 +26,7 @@ export default function Footer() {
         <div className="az-grid">
           <motion.div {...reveal()} className="az-brand-column">
             <Link to="/" className="az-brand" aria-label="Alphira Capital home">
-              <span className="az-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M7 24 16 7l9 17M11 18h10" stroke="currentColor" strokeWidth="2.5" /></svg></span>
+              <img className="alphira-ac-logo" src="/alphira-ac-logo.svg" alt="" aria-hidden="true" />
               <span className="az-wordmark">alphira<span>CAPITAL</span></span>
             </Link>
             <p className="az-description">Professional stock market mentorship platform helping aspiring traders learn price action, options trading, psychology and risk management.</p>

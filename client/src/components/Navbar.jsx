@@ -59,7 +59,7 @@ export default function Navbar() {
     <header className="ac-header">
       <nav className="ac-navbar" aria-label="Main navigation">
         <Link to={userInfo ? dashboardPath : "/"} onClick={closeMenu} className="ac-brand" aria-label="Alphira Capital home">
-          <span className="ac-brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M7 24 16 7l9 17M11 18h10" stroke="currentColor" strokeWidth="2.5" /></svg></span>
+          <img className="alphira-ac-logo" src="/alphira-ac-logo.svg" alt="" aria-hidden="true" />
           <span className="ac-brand-name">alphira<span className="ac-brand-caption">CAPITAL</span></span>
         </Link>
         <div className="ac-desktop-links">{navLinks()}</div>
