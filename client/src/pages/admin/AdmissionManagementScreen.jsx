@@ -1,3 +1,4 @@
+import "./AdmissionManagementScreen.css";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -53,24 +54,25 @@ const AdmissionManagementScreen = () => {
   const rejectedAdmissions = admissions.filter((a) => a.status === "Rejected").length;
 
   const getStatusBadge = (status) => {
-    if (status === "Approved") return "bg-ember-orange/15 text-ember-orange";
-    if (status === "Rejected") return "bg-red-100 text-red-700";
-    return "border border-pebble text-slate";
+    if (status === "Approved") return "is-approved";
+    if (status === "Rejected") return "is-rejected";
+    return "is-pending";
   };
 
   const STAT_CARDS = [
     { label: "Total Applications", value: totalAdmissions, accent: "text-graphite" },
     { label: "Pending", value: pendingAdmissions, accent: "text-slate" },
-    { label: "Approved", value: approvedAdmissions, accent: "text-ember-orange" },
+    { label: "Approved", value: approvedAdmissions, accent: "text-[#536c43]" },
     { label: "Rejected", value: rejectedAdmissions, accent: "text-red-600" },
   ];
 
   return (
-    <div>
+    <div className="alphira-admissions">
       {/* HEADER */}
-      <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="alphira-admissions-heading">
         <div>
-          <h1 className="font-serif text-3xl leading-tight text-graphite">
+          <p className="alphira-admissions-eyebrow">Administration / Student intake</p>
+          <h1>
             Admission Management
           </h1>
           <p className="mt-2 text-sm text-slate">
@@ -78,16 +80,13 @@ const AdmissionManagementScreen = () => {
           </p>
         </div>
 
-        <div className="rounded-2xl bg-obsidian px-6 py-4 text-vellum">
-          <p className="font-mono text-xs uppercase text-mist">Total Applications</p>
-          <h2 className="mt-1 text-xl font-semibold text-ember-orange">{totalAdmissions}</h2>
-        </div>
+
       </div>
 
       {/* STATS */}
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+      <div className="alphira-admissions-stats">
         {STAT_CARDS.map((card) => (
-          <div key={card.label} className="rounded-2xl bg-bone p-6">
+          <div key={card.label} className="alphira-admissions-stat">
             <p className="text-sm text-slate">{card.label}</p>
             <h2 className={`mt-3 font-mono text-3xl font-medium ${card.accent}`}>
               {card.value}
@@ -97,12 +96,13 @@ const AdmissionManagementScreen = () => {
       </div>
 
       {/* FILTERS */}
-      <div className="mt-8 rounded-2xl bg-bone p-6">
-        <div className="grid gap-4 lg:grid-cols-[1fr_250px]">
+      <div className="alphira-admissions-filters">
+        <div className="alphira-admissions-filter-grid">
           <div className="relative">
             <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate" />
             <input
-              type="text"
+              aria-label="Search admissions by name, phone or email"
+              type="search"
               placeholder="Search by name, phone or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -111,6 +111,7 @@ const AdmissionManagementScreen = () => {
           </div>
 
           <select
+            aria-label="Filter admissions by status"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className="rounded-xl border border-pebble bg-vellum px-5 py-3.5 text-sm outline-none focus:border-obsidian"
@@ -124,28 +125,29 @@ const AdmissionManagementScreen = () => {
       </div>
 
       {/* TABLE */}
-      <div className="mt-8 rounded-2xl bg-bone p-8">
-        <div className="mb-6 flex items-center gap-3">
+      <div className="alphira-admissions-results">
+        <div className="alphira-admissions-results-heading">
           <GraduationCap size={20} className="text-graphite" />
           <h2 className="text-lg font-semibold text-graphite">Admission Applications</h2>
+          {!loading && !error && <span className="alphira-admissions-count">{filteredAdmissions.length} results</span>}
         </div>
 
         {loading ? (
-          <div className="py-16 text-center">
-            <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
+          <div className="alphira-admissions-empty" role="status">
+            Loading applications…
           </div>
         ) : error ? (
-          <div className="rounded-xl bg-red-50 p-5 text-sm text-red-600">{error}</div>
+          <div className="alphira-admissions-error" role="alert">{error}</div>
         ) : filteredAdmissions.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-pebble py-16 text-center">
+          <div className="alphira-admissions-empty">
             <h2 className="text-lg font-semibold text-graphite">No Applications Found</h2>
             <p className="mt-2 text-sm text-slate">
               No admission application matches your filters.
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
+          <div className="alphira-admissions-table-scroll" tabIndex={0} role="region" aria-label="Admissions table, scroll horizontally on small screens">
+            <table className="alphira-admissions-table">
               <thead>
                 <tr className="border-b border-pebble">
                   <th className="px-4 py-3 text-left text-xs font-mono uppercase tracking-wide text-slate">Student</th>
@@ -172,7 +174,7 @@ const AdmissionManagementScreen = () => {
                     {/* STATUS */}
                     <td className="px-4 py-4">
                       <span
-                        className={`rounded-[600px] px-3 py-1 font-mono text-[11px] font-medium uppercase ${getStatusBadge(
+                        className={`alphira-admissions-badge ${getStatusBadge(
                           admission.status,
                         )}`}
                       >
@@ -193,15 +195,16 @@ const AdmissionManagementScreen = () => {
                       <div className="flex items-center gap-2">
                         <Link
                           to={`/admin/dashboard/admissions/${admission._id}`}
-                          className="flex items-center gap-2 rounded-lg bg-obsidian px-4 py-2 text-xs font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
+                          className="alphira-admissions-view" aria-label={`View admission for ${admission.name}`}
                         >
                           <Eye size={14} />
                           View
                         </Link>
 
                         <button
+                          type="button" aria-label={`Delete admission for ${admission.name}`}
                           onClick={() => deleteHandler(admission._id)}
-                          className="rounded-lg border border-red-300 px-4 py-2 text-xs font-medium text-red-600 transition hover:bg-red-500 hover:text-white"
+                          className="alphira-admissions-delete"
                         >
                           Delete
                         </button>

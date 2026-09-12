@@ -1,14 +1,12 @@
+import "./AdminProfile.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, ArrowRight, LockKeyhole } from "lucide-react";
 
 import { updateUserProfile } from "../../actions/userActions";
 import { USER_UPDATE_PROFILE_RESET } from "../../constants/userConstants";
 import { getAdminStats } from "../../actions/adminActions";
-
-const inputClass =
-  "w-full rounded-xl border border-pebble bg-vellum px-5 py-3.5 text-sm outline-none transition focus:border-obsidian";
 
 const AdminProfile = () => {
   const dispatch = useDispatch();
@@ -84,135 +82,40 @@ const AdminProfile = () => {
   ];
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="font-serif text-3xl leading-tight text-graphite">
-          Admin Profile
-        </h1>
-        <p className="mt-2 text-sm text-slate">
-          Manage your admin account and platform settings.
-        </p>
-      </div>
-
-      <div className="grid gap-3 xl:grid-cols-[320px_1fr]">
-        {/* LEFT CARD */}
-        <div className="rounded-2xl bg-obsidian p-8 text-vellum">
-          <img
-            src={
-              userInfo?.user?.profilePic ||
-              "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-            }
-            alt="profile"
-            className="mx-auto h-28 w-28 rounded-full border border-white/15 object-cover"
-          />
-
-          <h2 className="mt-6 text-center text-2xl font-semibold">
-            {userInfo?.user?.name}
-          </h2>
-
-          <p className="mt-2 text-center font-mono text-xs uppercase tracking-[-0.02em] text-mist">
-            {userInfo?.user?.role}
-          </p>
-
-          <div className="mt-6 flex justify-center">
-            <span className="flex items-center gap-2 rounded-[600px] bg-ember-orange/15 px-5 py-2 font-mono text-xs font-medium text-ember-orange">
-              <ShieldCheck size={16} />
-              Super Admin
-            </span>
+    <div className="alphira-admin-profile">
+      <header className="alphira-profile-heading"><p className="alphira-profile-eyebrow">Account / Administration</p><h1>Your profile<span>.</span></h1><p>Manage your personal details and account security.</p></header>
+      <div className="alphira-profile-layout">
+        <aside className="alphira-profile-identity">
+          <div className="alphira-profile-avatar">{userInfo?.user?.profilePic ? <img src={userInfo.user.profilePic} alt="Your profile" /> : <span>{(userInfo?.user?.name || "A").charAt(0).toUpperCase()}</span>}</div>
+          <h2>{userInfo?.user?.name || "Administrator"}</h2>
+          <p className="alphira-profile-role"><ShieldCheck size={16} aria-hidden="true" />{userInfo?.user?.role || "admin"}</p>
+          <div className="alphira-profile-account"><small>ACCOUNT EMAIL</small><p>{email}</p></div>
+          <div className="alphira-profile-stats" aria-label="Platform statistics" aria-busy={!!statsLoading}>
+            <p className="alphira-profile-eyebrow">Your platform at a glance</p>
+            <dl>{STATS.map((stat) => <div key={stat.label}><dt>{stat.label}</dt><dd>{statsLoading ? "..." : stat.value || 0}</dd></div>)}</dl>
           </div>
-
-          <div className="mt-8 grid gap-2">
-            {STATS.map((stat) => (
-              <div
-                key={stat.label}
-                className="flex items-center justify-between rounded-xl border border-white/10 p-4"
-              >
-                <span className="text-sm text-mist">{stat.label}</span>
-                <span className="font-mono text-base font-medium">
-                  {statsLoading ? "..." : stat.value || 0}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* RIGHT FORM */}
-        <div className="rounded-2xl bg-bone p-8">
-          <form onSubmit={submitHandler} className="space-y-5">
-            <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
-                Full Name
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className={inputClass}
-              />
+        </aside>
+        <form onSubmit={submitHandler} className="alphira-profile-form" aria-busy={!!loading}>
+          <section className="alphira-profile-section" aria-labelledby="profile-details-title">
+            <div className="alphira-profile-section-heading"><span>01</span><div><h2 id="profile-details-title">Personal details</h2><p>The details associated with your admin account.</p></div></div>
+            <div className="alphira-profile-fields">
+              <div className="alphira-profile-full"><label htmlFor="admin-profile-name">Full name</label><input id="admin-profile-name" name="name" autoComplete="name" type="text" value={name} onChange={(e) => setName(e.target.value)} /></div>
+              <div><label htmlFor="admin-profile-email">Email address</label><input id="admin-profile-email" type="email" value={email} disabled /></div>
+              <div><label htmlFor="admin-profile-role">Account role</label><input id="admin-profile-role" type="text" value={userInfo?.user?.role || ""} disabled /></div>
             </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={email}
-                disabled
-                className="w-full cursor-not-allowed rounded-xl border border-pebble bg-white/40 px-5 py-3.5 text-sm text-slate outline-none"
-              />
+          </section>
+          <section className="alphira-profile-section" aria-labelledby="profile-security-title">
+            <div className="alphira-profile-section-heading"><span>02</span><div><h2 id="profile-security-title">Account security</h2><p>Leave both fields empty to keep your current password.</p></div></div>
+            <div className="alphira-profile-fields">
+              <div><label htmlFor="admin-profile-password">New password</label><input id="admin-profile-password" name="new-password" autoComplete="new-password" aria-describedby="admin-profile-password-hint" type="password" placeholder="Enter new password" value={password} onChange={(e) => setPassword(e.target.value)} /></div>
+              <div><label htmlFor="admin-profile-confirm">Confirm password</label><input id="admin-profile-confirm" name="confirm-password" autoComplete="new-password" type="password" placeholder="Confirm new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} /></div>
             </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
-                Account Role
-              </label>
-              <input
-                type="text"
-                value={userInfo?.user?.role}
-                disabled
-                className="w-full cursor-not-allowed rounded-xl border border-pebble bg-white/40 px-5 py-3.5 text-sm capitalize text-slate outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
-                New Password
-              </label>
-              <input
-                type="password"
-                placeholder="Enter new password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={inputClass}
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                placeholder="Confirm new password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className={inputClass}
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-[600px] bg-ember-orange py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loading ? "Updating..." : "Update Admin Profile"}
-            </button>
-          </form>
-        </div>
+            <p className="alphira-profile-hint" id="admin-profile-password-hint"><LockKeyhole size={14} aria-hidden="true" />Use at least 6 characters for your new password.</p>
+          </section>
+          <div className="alphira-profile-form-footer"><p>Review your details before saving.</p><button type="submit" disabled={loading}>{loading ? "Updating..." : "Update Admin Profile"}<ArrowRight size={17} aria-hidden="true" /></button></div>
+        </form>
       </div>
     </div>
   );
 };
-
 export default AdminProfile;

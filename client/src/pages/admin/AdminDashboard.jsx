@@ -1,3 +1,4 @@
+import "./AdminDashboard.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -34,7 +35,7 @@ import {
 import toast from "react-hot-toast";
 
 const inputClass =
-  "w-full rounded-xl border border-pebble bg-vellum px-5 py-3.5 text-sm outline-none focus:border-obsidian";
+  "alphira-admin-input";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
@@ -174,29 +175,21 @@ const AdminDashboard = () => {
     setRole("student");
   };
 
-  const STAT_CARDS = [
-    { label: "Total Students", value: stats?.totalStudents },
-    { label: "Total Teachers", value: stats?.totalTeachers },
-    { label: "Total Courses", value: stats?.totalCourses },
-    { label: "Total Leads", value: stats?.totalLeads },
-    { label: "Total Enrollments", value: stats?.totalEnrollments },
-    { label: "New Students Today", value: stats?.newEnrollmentsToday },
-  ];
 
   return (
-    <div>
+    <div className="alphira-admin">
       {/* HEADER */}
-      <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="alphira-admin-heading">
         <div>
-          <h1 className="font-serif text-3xl leading-tight text-graphite">
-            Admin Dashboard
+          <h1 className="alphira-admin-title">
+            Platform overview
           </h1>
           <p className="mt-2 text-sm text-slate">
             Manage users, teachers and platform analytics from one place.
           </p>
         </div>
 
-        <div className="rounded-2xl bg-obsidian px-6 py-4 text-vellum">
+        <div className="alphira-admin-status">
           <p className="font-mono text-xs uppercase text-mist">
             LMS Platform Status
           </p>
@@ -207,63 +200,53 @@ const AdminDashboard = () => {
       </div>
 
       {loading ? (
-        <div className="flex h-60 items-center justify-center">
+        <div className="alphira-admin-loading" role="status">
+          <span>Loading platform overview…</span>
           <div className="h-10 w-10 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
         </div>
       ) : (
         <>
-          {/* STATS GRID */}
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-            {STAT_CARDS.map((card) => (
-              <div key={card.label} className="rounded-2xl bg-bone p-6">
-                <p className="text-sm font-medium text-slate">{card.label}</p>
-                <h2 className="mt-3 font-mono text-3xl font-medium text-graphite">
-                  {card.value || 0}
-                </h2>
-              </div>
-            ))}
-          </div>
-
           {/* PLATFORM OVERVIEW */}
-          <div className="mt-8 grid gap-3 xl:grid-cols-2">
-            <div className="rounded-2xl bg-bone p-8">
+          <div className="alphira-admin-overview">
+            <div className="alphira-admin-panel">
               <h2 className="text-xl font-semibold text-graphite">
                 Platform Growth Analytics
               </h2>
               <p className="mt-1 text-sm text-slate">
-                Monthly growth of students, teachers, leads and courses.
+                Students, teachers, leads and courses — month by month.
               </p>
 
-              <div className="mt-8 h-96">
+              {analytics.length === 0 && <p className="alphira-admin-empty">No growth data available yet.</p>}
+              <div className="alphira-admin-chart">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={analytics}>
                     <CartesianGrid stroke="#e5e7eb" strokeDasharray="3 3" />
-                    <XAxis dataKey="month" stroke="#71717a" fontSize={12} />
-                    <YAxis stroke="#71717a" fontSize={12} />
-                    <Tooltip />
+                    <XAxis dataKey="month" stroke="#8a7964" fontSize={12} />
+                    <YAxis stroke="#8a7964" fontSize={12} />
+                    <Tooltip contentStyle={{ background: "#fff", border: "1px solid #dce1d4", borderRadius: 0, fontSize: 12 }} />
                     <Legend />
                     <Line
                       type="monotone"
                       dataKey="students"
-                      stroke="#18181b"
+                      stroke="#20251f"
                       strokeWidth={2.5}
                     />
                     <Line
                       type="monotone"
                       dataKey="teachers"
-                      stroke="#ff7817"
+                      stroke="#66745b" strokeDasharray="6 3"
                       strokeWidth={2.5}
                     />
                     <Line
                       type="monotone"
                       dataKey="leads"
-                      stroke="#71717a"
+                      stroke="#8a7964"
                       strokeWidth={2}
                     />
                     <Line
                       type="monotone"
                       dataKey="courses"
-                      stroke="#a1a1aa"
+                      stroke="#899b94" strokeDasharray="2 3"
                       strokeWidth={2}
                     />
                   </LineChart>
@@ -271,7 +254,7 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            <div className="rounded-2xl bg-obsidian p-8 text-vellum">
+            <div className="alphira-admin-summary">
               <h2 className="font-serif text-2xl leading-tight">
                 Alphira LMS
               </h2>
@@ -280,26 +263,26 @@ const AdminDashboard = () => {
                 mentorship, trading education and live market analytics.
               </p>
 
-              <div className="mt-8 grid grid-cols-2 gap-3">
-                <div className="rounded-xl border border-white/10 p-5">
+              <div className="alphira-admin-summary-grid">
+                <div className="alphira-admin-summary-item">
                   <h3 className="font-mono text-2xl font-medium">
                     {stats?.totalStudents || 0}
                   </h3>
                   <p className="mt-2 text-xs text-mist">Active Students</p>
                 </div>
-                <div className="rounded-xl border border-white/10 p-5">
+                <div className="alphira-admin-summary-item">
                   <h3 className="font-mono text-2xl font-medium">
                     {stats?.totalTeachers || 0}
                   </h3>
                   <p className="mt-2 text-xs text-mist">Mentors</p>
                 </div>
-                <div className="rounded-xl border border-white/10 p-5">
+                <div className="alphira-admin-summary-item">
                   <h3 className="font-mono text-2xl font-medium">
                     {stats?.totalCourses || 0}
                   </h3>
                   <p className="mt-2 text-xs text-mist">Published Courses</p>
                 </div>
-                <div className="rounded-xl border border-white/10 p-5">
+                <div className="alphira-admin-summary-item">
                   <h3 className="font-mono text-2xl font-medium">
                     {stats?.totalLeads || 0}
                   </h3>
@@ -309,9 +292,9 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className="mt-8 grid gap-3 xl:grid-cols-[1fr]">
+          <div className="alphira-admin-users">
             {/* USERS TABLE */}
-            <div className="rounded-2xl bg-bone p-8">
+            <div className="alphira-admin-panel">
               <h2 className="text-lg font-semibold text-graphite">
                 Platform Users
               </h2>
@@ -320,12 +303,13 @@ const AdminDashboard = () => {
               </p>
 
               <div className="mt-6 space-y-3">
+                {users.length === 0 && <p className="alphira-admin-empty">No platform users to display.</p>}
                 {users.map((user) => (
                   <div
                     key={user._id}
-                    className="flex flex-col gap-5 rounded-2xl border border-pebble bg-vellum p-5 lg:flex-row lg:items-center lg:justify-between"
+                    className="alphira-admin-user-row"
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="alphira-admin-user-info">
                       <img
                         src={user.profilePic}
                         alt="profile"
@@ -355,7 +339,7 @@ const AdminDashboard = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
+                    <div className="alphira-admin-actions">
                       {user.status === "pending" ? (
                         <>
                           <div className="rounded-xl border border-pebble px-4 py-2.5 text-sm text-slate">
@@ -408,8 +392,8 @@ const AdminDashboard = () => {
           </div>
 
           {/* WEBINARS */}
-          <div className="mt-8 grid gap-3 xl:grid-cols-[380px_1fr]">
-            <div className="rounded-2xl bg-bone p-8">
+          <div className="alphira-admin-webinars">
+            <div className="alphira-admin-panel">
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-obsidian text-vellum">
                   <Video size={22} />
@@ -424,28 +408,32 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              <form onSubmit={webinarSubmitHandler} className="mt-8 space-y-4">
+              <form onSubmit={webinarSubmitHandler} className="alphira-admin-form">
+                <label htmlFor="admin-webinar-title">Session title</label>
                 <input
                   type="text"
-                  placeholder="Webinar Title"
+                  id="admin-webinar-title" placeholder="Webinar Title"
                   value={webinarTitle}
                   onChange={(e) => setWebinarTitle(e.target.value)}
                   className={inputClass}
                 />
+                <label htmlFor="admin-webinar-description">Description</label>
                 <textarea
-                  placeholder="Description"
+                  id="admin-webinar-description" placeholder="Description"
                   value={webinarDescription}
                   onChange={(e) => setWebinarDescription(e.target.value)}
                   className={inputClass}
                 />
+                <label htmlFor="admin-webinar-start">Start date &amp; time</label>
                 <input
-                  type="datetime-local"
+                  id="admin-webinar-start" type="datetime-local"
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
                   className={inputClass}
                 />
+                <label htmlFor="admin-webinar-duration">Duration in minutes</label>
                 <input
-                  type="number"
+                  id="admin-webinar-duration" type="number"
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
                   className={inputClass}
@@ -453,23 +441,24 @@ const AdminDashboard = () => {
 
                 <button
                   type="submit"
-                  className="w-full rounded-[600px] bg-obsidian py-3.5 font-mono text-sm font-semibold text-vellum transition hover:bg-ember-orange hover:text-black"
+                  className="alphira-admin-create-webinar"
                 >
                   Create Webinar
                 </button>
               </form>
             </div>
 
-            <div className="rounded-2xl bg-bone p-8">
+            <div className="alphira-admin-panel">
               <h2 className="text-lg font-semibold text-graphite">
                 Scheduled Webinars
               </h2>
 
               <div className="mt-6 space-y-3">
+                {webinars.length === 0 && <p className="alphira-admin-empty">No webinars scheduled yet. Create a session to get started.</p>}
                 {webinars.map((webinar) => (
                   <div
                     key={webinar._id}
-                    className="rounded-2xl border border-pebble bg-vellum p-5"
+                    className="alphira-admin-webinar-row"
                   >
                     <h3 className="text-base font-semibold text-graphite">
                       {webinar.title}
@@ -481,7 +470,7 @@ const AdminDashboard = () => {
                       {new Date(webinar.startTime).toLocaleString()}
                     </p>
 
-                    <div className="mt-4 flex items-center gap-3">
+                    <div className="alphira-admin-actions">
                       <a
                         href={webinar.meetLink}
                         target="_blank"

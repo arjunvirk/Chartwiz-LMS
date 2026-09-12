@@ -185,9 +185,9 @@ export const approveAdmission = async (req, res) => {
       });
     }
 
-    // Payment must be completed first
+    // Partial or full payment is sufficient for admission approval.
 
-    if (admission.paymentStatus !== "Paid") {
+    if (!["Paid", "Partially Paid"].includes(admission.paymentStatus)) {
       return res.status(400).json({
         success: false,
         message: "Payment is still pending.",

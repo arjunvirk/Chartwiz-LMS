@@ -1,0 +1,59 @@
+.alphira-admin { color: #20251f; font-family: var(--ac-font-body,'Inter',sans-serif); min-width: 0; }
+.alphira-admin *, .alphira-admin *::before, .alphira-admin *::after { box-sizing: border-box; }
+.alphira-admin-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #dce1d4; }
+.alphira-admin-title { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: 27px; font-weight: 750; letter-spacing: -.045em; line-height: 1.2; }
+.alphira-admin-status { flex-shrink: 0; border-left: 2px solid #66745b; padding: 4px 0 4px 16px; }
+.alphira-admin-status p { font: inherit; font-size: 9px; letter-spacing: .1em; color: #707968; }
+.alphira-admin-status h2 { font-size: 13px; color: #536c43; }
+.alphira-admin-metrics { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); border-top: 1px solid #dce1d4; border-left: 1px solid #dce1d4; }
+.alphira-admin-metric { padding: 24px; background: #fff; border-right: 1px solid #dce1d4; border-bottom: 1px solid #dce1d4; }
+.alphira-admin-metric:first-child { background: #e8eddf; }
+.alphira-admin-metric p { font-size: 11px; color: #697260; }
+.alphira-admin-metric h2 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: 38px; font-weight: 650; letter-spacing: -.055em; line-height: 1.1; }
+.alphira-admin-overview { display: grid; grid-template-columns: minmax(0,1.65fr) minmax(0,1fr); gap: 18px; margin-top: 24px; }
+.alphira-admin-panel { min-width: 0; padding: 28px; background: white; border: 1px solid #dce1d4; }
+.alphira-admin-panel > h2 { font-size: 18px; font-weight: 650; letter-spacing: -.03em; }
+.alphira-admin-panel p { line-height: 1.7; }
+.alphira-admin-chart { height: 300px; margin-top: 26px; width: 100%; min-width: 0; }
+.alphira-admin-summary { background: #171b16; border: 1px solid #171b16; padding: 28px; color: #ffffff; }
+.alphira-admin-summary h2 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: 25px; font-weight: 700; letter-spacing: -.04em; }
+.alphira-admin-summary p { color: #c5cfbb; font-size: 12px; line-height: 1.8; }
+.alphira-admin-summary-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px 14px; margin-top: 32px; }
+.alphira-admin-summary-item { padding-top: 16px; border-top: 1px solid #46503e; }
+.alphira-admin-summary-item h3 { font-family: inherit; font-size: 25px; }
+.alphira-admin-summary-item p { font-size: 10px; }
+.alphira-admin-users { margin-top: 24px; }
+.alphira-admin-user-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 0; border-top: 1px solid #e1e5da; }
+.alphira-admin-user-info { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.alphira-admin-user-info > div { min-width: 0; }
+.alphira-admin-user-info p { overflow-wrap: anywhere; font-size: 12px; }
+.alphira-admin-user-info h3 { font-size: 13px; }
+.alphira-admin-user-info img { width: 40px; height: 40px; flex-shrink: 0; background: #edf1e5; }
+.alphira-admin-user-info span { font-family: inherit; font-size: 9px; letter-spacing: .04em; padding: 4px 7px; }
+.alphira-admin-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.alphira-admin-actions button, .alphira-admin-actions a { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 10px 12px; font-family: inherit; font-size: 11px; }
+.alphira-admin button { cursor: pointer; }
+.alphira-admin-actions button:not([class*="red"]):hover { background: #e8eddf; color: #20251f; }
+.alphira-admin [class*="text-ember-orange"] { color: #536c43; }
+.alphira-admin [class*="bg-ember-orange"] { background-color: #e7edde; }
+.alphira-admin-webinars { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.4fr); gap: 18px; margin-top: 24px; }
+.alphira-admin-form { margin-top: 26px; display: grid; gap: 10px; }
+.alphira-admin-form label { font-size: 11px; color: #5c6753; margin-top: 6px; }
+.alphira-admin-input { width: 100%; min-width: 0; background: #fafbf7; color: #20251f; border: 1px solid #dce1d4; padding: 12px; font: inherit; font-size: 16px; }
+.alphira-admin-input::placeholder { font-size: 12px; color: #7a826f; }
+.alphira-admin-input:focus { outline: 2px solid #bdcdae; outline-offset: 1px; }
+.alphira-admin textarea { min-height: 90px; resize: vertical; }
+.alphira-admin-form button { margin-top: 12px; background: #20251f; color: white; font: inherit; font-size: 12px; min-height: 46px; }
+.alphira-admin-form button:hover { background: #48583b; color: white; }
+.alphira-admin-webinar-row { padding: 20px 0; border-top: 1px solid #e1e5da; }
+.alphira-admin-webinar-row h3 { font-size: 14px; }
+.alphira-admin-webinar-row p { font-size: 12px; overflow-wrap: anywhere; }
+.alphira-admin-empty { padding: 18px; background: #f5f7ef; color: #68725c; font-size: 12px; }
+.alphira-admin-loading { min-height: 220px; display: grid; place-content: center; gap: 18px; color: #66745b; font-size: 13px; }
+.alphira-admin :is(a,button):focus-visible { outline: 2px solid #66745b; outline-offset: 3px; }
+@media(max-width:1200px) { .alphira-admin-overview { grid-template-columns: minmax(0,1fr); } .alphira-admin-summary-grid { grid-template-columns: repeat(4,minmax(0,1fr)); } .alphira-admin-user-row { align-items: flex-start; flex-direction: column; } }
+@media(max-width:760px) { .alphira-admin-webinars { grid-template-columns: minmax(0,1fr); } .alphira-admin-panel, .alphira-admin-summary { padding: 20px; } .alphira-admin-metric { padding: 18px; } .alphira-admin-metric h2 { font-size: 30px; } .alphira-admin-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); } .alphira-admin-heading { align-items: flex-start; flex-direction: column; gap: 18px; } .alphira-admin-chart { height: 260px; } .alphira-admin-summary-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+
+.alphira-admin .alphira-admin-create-webinar { width: 100%; padding: 14px 18px; background: #20251f; color: #fff; border: 0; font-weight: 600; }
+.alphira-admin .alphira-admin-create-webinar:hover { background: #48583b; color: #fff; }
+.alphira-admin-summary h2, .alphira-admin-summary h3 { color: #fff; }

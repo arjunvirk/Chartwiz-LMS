@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { ADMISSION_UPDATE_RESET, ADMISSION_APPROVE_RESET } from "../../constants/admissionConstants";
+import "./AdmissionDetailsScreen.css";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,7 +11,6 @@ import {
   Mail,
   BookOpen,
   Calendar,
-  MapPin,
 } from "lucide-react";
 
 import toast from "react-hot-toast";
@@ -21,11 +22,12 @@ import {
 } from "../../actions/admissionActions";
 
 const inputClass =
-  "w-full rounded-xl border border-pebble bg-vellum px-4 py-3 text-sm outline-none focus:border-obsidian";
+  "alphira-admission-input";
 
 const AdmissionDetailsScreen = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const pendingOperation = useRef(null);
 
   const admissionDetails = useSelector((state) => state.admissionDetails);
   const { loading, error, admission = {} } = admissionDetails;
@@ -66,28 +68,42 @@ const AdmissionDetailsScreen = () => {
   }, [admission]);
 
   useEffect(() => {
-    if (successUpdate) {
-      toast.success("Admission updated successfully");
-      dispatch(getAdmissionDetails(id));
+    if (!successUpdate && !errorUpdate) return;
+    if (pendingOperation.current === "save") {
+      pendingOperation.current = null;
+      if (successUpdate) {
+        toast.success("Admission updated successfully", { id: `admission-save-${id}` });
+        dispatch(getAdmissionDetails(id));
+      } else {
+        toast.error(errorUpdate, { id: `admission-save-${id}` });
+      }
     }
+    dispatch({ type: ADMISSION_UPDATE_RESET });
+  }, [dispatch, id, successUpdate, errorUpdate]);
 
-    if (errorUpdate) {
-      toast.error(errorUpdate);
+  useEffect(() => {
+    if (!successApprove && !errorApprove) return;
+    if (pendingOperation.current === "approve") {
+      pendingOperation.current = null;
+      if (successApprove) {
+        toast.success("Admission approved successfully", { id: `admission-approve-${id}` });
+        dispatch(getAdmissionDetails(id));
+      } else {
+        toast.error(errorApprove, { id: `admission-approve-${id}` });
+      }
     }
+    dispatch({ type: ADMISSION_APPROVE_RESET });
+  }, [dispatch, id, successApprove, errorApprove]);
 
-    if (successApprove) {
-      toast.success("Admission approved successfully");
-      dispatch(getAdmissionDetails(id));
-    }
-
-    if (errorApprove) {
-      toast.error(errorApprove);
-    }
-  }, [dispatch, id, successUpdate, errorUpdate, successApprove, errorApprove]);
+  useEffect(() => {
+    pendingOperation.current = null;
+    dispatch({ type: ADMISSION_UPDATE_RESET });
+    dispatch({ type: ADMISSION_APPROVE_RESET });
+  }, [dispatch, id]);
 
   if (loading) {
     return (
-      <div className="rounded-2xl bg-bone p-16 text-center">
+      <div className="alphira-admission-feedback" role="status">
         <h2 className="text-xl font-semibold text-graphite">
           Loading Admission...
         </h2>
@@ -97,7 +113,7 @@ const AdmissionDetailsScreen = () => {
 
   if (error) {
     return (
-      <div className="rounded-2xl border border-red-200 bg-red-50 p-16 text-center">
+      <div className="alphira-admission-feedback is-error" role="alert">
         <h2 className="text-lg font-semibold text-red-600">{error}</h2>
       </div>
     );
@@ -105,6 +121,8 @@ const AdmissionDetailsScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (pendingOperation.current) return;
+    pendingOperation.current = "save";
 
     dispatch(
       updateAdmission(id, { status, paymentStatus, batch, mentor, notes }),
@@ -112,43 +130,47 @@ const AdmissionDetailsScreen = () => {
   };
 
   const approveHandler = () => {
+    if (pendingOperation.current || !["Paid", "Partially Paid"].includes(admission.paymentStatus)) return;
     if (
       window.confirm("Approve this admission and create the student account?")
     ) {
+      pendingOperation.current = "approve";
       dispatch(approveAdmission(id));
     }
   };
 
   return (
-    <form onSubmit={submitHandler} className="space-y-6">
+    <form onSubmit={submitHandler} className="alphira-admission-detail" aria-busy={!!loadingUpdate}>
       {/* BACK */}
       <Link
         to="/admin/dashboard/admissions"
-        className="inline-flex items-center gap-2 rounded-xl border border-pebble bg-vellum px-5 py-3 text-sm font-medium text-graphite transition hover:bg-bone"
+        className="alphira-admission-back"
       >
         <ArrowLeft size={16} />
         Back to Admissions
       </Link>
 
       {/* HEADER */}
-      <div className="rounded-2xl bg-obsidian p-8 text-vellum">
-        <h1 className="font-serif text-3xl leading-tight">Admission Details</h1>
+      <div className="alphira-admission-heading">
+        <p className="alphira-admission-eyebrow">Admissions / Application review</p>
+        <h1>Admission details<span>.</span></h1>
+        <div className="alphira-admission-applicant">{admission.name || "Applicant"}<span>{admission.status || "Pending"}</span></div>
         <p className="mt-2 text-sm text-mist">
           Review this application before approving student admission.
         </p>
       </div>
 
       {/* INFO */}
-      <div className="grid gap-3 lg:grid-cols-2">
+      <div className="alphira-admission-grid">
         {/* PERSONAL */}
-        <div className="rounded-2xl bg-bone p-8">
+        <div className="alphira-admission-info">
           <h2 className="mb-6 text-lg font-semibold text-graphite">
             Personal Information
           </h2>
 
           <div className="space-y-5">
-            <div className="flex items-center gap-4">
-              <User size={18} className="text-ember-orange" />
+            <div className="alphira-admission-info-row">
+              <User size={18} className="alphira-admission-sage" />
               <div>
                 <p className="text-xs text-slate">Full Name</p>
                 <p className="text-sm font-semibold text-graphite">
@@ -156,8 +178,8 @@ const AdmissionDetailsScreen = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Mail size={18} className="text-ember-orange" />
+            <div className="alphira-admission-info-row">
+              <Mail size={18} className="alphira-admission-sage" />
               <div>
                 <p className="text-xs text-slate">Email</p>
                 <p className="text-sm font-semibold text-graphite">
@@ -165,8 +187,8 @@ const AdmissionDetailsScreen = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Phone size={18} className="text-ember-orange" />
+            <div className="alphira-admission-info-row">
+              <Phone size={18} className="alphira-admission-sage" />
               <div>
                 <p className="text-xs text-slate">Phone</p>
                 <p className="text-sm font-semibold text-graphite">
@@ -174,27 +196,19 @@ const AdmissionDetailsScreen = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <MapPin size={18} className="text-ember-orange" />
-              <div>
-                <p className="text-xs text-slate">Address</p>
-                <p className="text-sm font-semibold text-graphite">
-                  {admission.address || "-"}
-                </p>
-              </div>
-            </div>
+
           </div>
         </div>
 
         {/* COURSE */}
-        <div className="rounded-2xl bg-bone p-8">
+        <div className="alphira-admission-info">
           <h2 className="mb-6 text-lg font-semibold text-graphite">
             Course Information
           </h2>
 
           <div className="space-y-5">
-            <div className="flex items-center gap-4">
-              <BookOpen size={18} className="text-ember-orange" />
+            <div className="alphira-admission-info-row">
+              <BookOpen size={18} className="alphira-admission-sage" />
               <div>
                 <p className="text-xs text-slate">Selected Course</p>
                 <p className="text-sm font-semibold text-graphite">
@@ -202,17 +216,17 @@ const AdmissionDetailsScreen = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Calendar size={18} className="text-ember-orange" />
+            <div className="alphira-admission-info-row">
+              <Calendar size={18} className="alphira-admission-sage" />
               <div>
                 <p className="text-xs text-slate">Applied On</p>
                 <p className="text-sm font-semibold text-graphite">
-                  {new Date(admission.createdAt).toLocaleDateString()}
+                  {admission.createdAt ? new Date(admission.createdAt).toLocaleDateString() : "-"}
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Calendar size={18} className="text-ember-orange" />
+            <div className="alphira-admission-info-row">
+              <Calendar size={18} className="alphira-admission-sage" />
               <div>
                 <p className="text-xs text-slate">Current Status</p>
                 <p className="text-sm font-semibold text-graphite">
@@ -224,14 +238,14 @@ const AdmissionDetailsScreen = () => {
         </div>
 
         {/* ADMISSION MANAGEMENT */}
-        <div className="rounded-2xl bg-bone p-8 lg:col-span-2">
+        <div className="alphira-admission-management">
           <h2 className="mb-6 text-lg font-semibold text-graphite">
             Admission Management
           </h2>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="alphira-admission-fields">
             <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
+              <label htmlFor="admission-status" className="mb-2 block text-sm font-medium text-graphite">
                 Admission Status
               </label>
               <select
@@ -239,10 +253,11 @@ const AdmissionDetailsScreen = () => {
                   admission.status === "Approved" ||
                   admission.status === "Rejected"
                 }
-                value={status}
+                id="admission-status" value={status}
                 onChange={(e) => setStatus(e.target.value)}
                 className={inputClass}
               >
+                {["Approved", "Rejected"].includes(status) && <option value={status}>{status}</option>}
                 <option value="Pending">Pending</option>
                 <option value="Contacted">Contacted</option>
                 <option value="Documents Pending">Documents Pending</option>
@@ -251,11 +266,11 @@ const AdmissionDetailsScreen = () => {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
+              <label htmlFor="admission-payment" className="mb-2 block text-sm font-medium text-graphite">
                 Payment Status
               </label>
               <select
-                value={paymentStatus}
+                id="admission-payment" value={paymentStatus}
                 onChange={(e) => setPaymentStatus(e.target.value)}
                 className={inputClass}
               >
@@ -266,11 +281,11 @@ const AdmissionDetailsScreen = () => {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
+              <label htmlFor="admission-batch" className="mb-2 block text-sm font-medium text-graphite">
                 Assign Batch
               </label>
               <select
-                value={batch}
+                id="admission-batch" value={batch}
                 onChange={(e) => setBatch(e.target.value)}
                 className={inputClass}
               >
@@ -283,11 +298,11 @@ const AdmissionDetailsScreen = () => {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
+              <label htmlFor="admission-mentor" className="mb-2 block text-sm font-medium text-graphite">
                 Assign Mentor
               </label>
               <select
-                value={mentor}
+                id="admission-mentor" value={mentor}
                 onChange={(e) => setMentor(e.target.value)}
                 className={inputClass}
               >
@@ -300,11 +315,11 @@ const AdmissionDetailsScreen = () => {
           </div>
 
           <div className="mt-6">
-            <label className="mb-2 block text-sm font-medium text-graphite">
+            <label htmlFor="admission-notes" className="mb-2 block text-sm font-medium text-graphite">
               Admission Notes
             </label>
             <textarea
-              rows={6}
+              id="admission-notes" rows={6}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Write internal notes..."
@@ -314,14 +329,14 @@ const AdmissionDetailsScreen = () => {
         </div>
 
         {/* TIMELINE */}
-        <div className="rounded-2xl bg-bone p-8 lg:col-span-2">
+        <div className="alphira-admission-history">
           <h2 className="mb-6 text-lg font-semibold text-graphite">
             Admission Timeline
           </h2>
 
-          <div className="space-y-7 border-l-2 border-pebble pl-8">
+          <div className="alphira-admission-timeline">
             <div className="relative">
-              <span className="absolute -left-[2.55rem] h-4 w-4 rounded-full bg-ember-orange" />
+              <span className="absolute -left-[2.55rem] h-4 w-4 rounded-full alphira-admission-marker" />
               <h3 className="text-sm font-semibold text-graphite">
                 Admission Submitted
               </h3>
@@ -359,19 +374,19 @@ const AdmissionDetailsScreen = () => {
         </div>
 
         {/* ACTIONS */}
-        <div className="rounded-2xl bg-bone p-8 lg:col-span-2">
+        <div className="alphira-admission-actions">
           <h2 className="mb-6 text-lg font-semibold text-graphite">
             Admission Actions
           </h2>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="alphira-admission-action-buttons">
             {admission.status !== "Approved" &&
               admission.status !== "Rejected" && (
                 <button
                   type="submit"
-                  className="rounded-[600px] bg-obsidian px-8 py-3.5 font-mono text-sm font-semibold text-vellum transition hover:bg-ember-orange hover:text-black"
+                  className="alphira-admission-save" disabled={loadingUpdate || loadingApprove}
                 >
-                  Save Changes
+                  {loadingUpdate ? "Saving..." : "Save Changes"}
                 </button>
               )}
 
@@ -379,26 +394,27 @@ const AdmissionDetailsScreen = () => {
               <button
                 type="button"
                 onClick={approveHandler}
-                disabled={paymentStatus !== "Paid" || loadingApprove}
-                className="rounded-[600px] bg-ember-orange px-8 py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={!["Paid", "Partially Paid"].includes(admission.paymentStatus) || loadingApprove || loadingUpdate}
+                className="alphira-admission-approve"
               >
                 {loadingApprove ? "Approving..." : "Approve Student"}
               </button>
             )}
 
             {admission.status === "Approved" && (
-              <div className="rounded-[600px] border border-ember-orange/30 bg-ember-orange/10 px-8 py-3.5 text-center text-sm font-semibold text-ember-orange">
-                ✅ Student Approved
+              <div className="rounded-[600px] border alphira-admission-approved-border alphira-admission-approved px-8 py-3.5 text-center text-sm font-semibold alphira-admission-sage">
+                Student Approved
               </div>
             )}
 
             {admission.status === "Rejected" && (
               <div className="rounded-[600px] border border-red-200 bg-red-50 px-8 py-3.5 text-center text-sm font-semibold text-red-700">
-                ❌ Admission Rejected
+                Admission Rejected
               </div>
             )}
           </div>
 
+          {paymentStatus !== admission.paymentStatus && <p className="mt-5 text-sm text-slate">Save your payment status change before approving. Partial or full payment allows approval.</p>}
           <p className="mt-5 text-sm text-slate">
             Approving this admission will automatically create the student
             account and enroll the student in the selected course.
