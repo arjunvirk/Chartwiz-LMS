@@ -1,71 +1,48 @@
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
+import { motion, useReducedMotion } from "framer-motion";
+import { Plus, ArrowUpRight, Trash2, X, Radio, Clock3 } from "lucide-react";
 import fetchWithAuth from "../../utils/fetchWithAuth";
-
-import {
-  getTeacherLiveCourses,
-  deleteLiveCourse,
-} from "../../actions/liveCourseActions";
-
+import { getTeacherLiveCourses, deleteLiveCourse } from "../../actions/liveCourseActions";
 import toast from "react-hot-toast";
 import { API_URL } from "../../config/api";
+import "../student/MyLiveCourses.css";
+import "./TeacherLiveCourses.css";
+
 const TeacherLiveCourses = () => {
   const [meetLink, setMeetLink] = useState("");
   const [publishing, setPublishing] = useState(false);
-
   const [selectedCourse, setSelectedCourse] = useState(null);
   const dispatch = useDispatch();
-
-  const teacherLiveCourses = useSelector((state) => state.teacherLiveCourses);
-
-  const { loading, error, liveCourses = [] } = teacherLiveCourses;
-
-  // ================= FETCH COURSES =================
-
+  const dialogRef = useRef(null);
+  const reducedMotion = useReducedMotion();
+  const { loading, error, liveCourses = [] } = useSelector((state) => state.teacherLiveCourses);
   const { userInfo } = useSelector((state) => state.userLogin);
 
   useEffect(() => {
-    if (!userInfo) return;
-
-    dispatch(getTeacherLiveCourses());
+    if (userInfo) dispatch(getTeacherLiveCourses());
   }, [dispatch, userInfo]);
 
-  // ================= ERROR =================
-
   useEffect(() => {
-    if (error) {
-      toast.dismiss();
-      toast.error(error);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (selectedCourse) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
+    const dialog = dialogRef.current;
+    if (!selectedCourse) return;
+    const previousFocus = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "auto";
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
     };
   }, [selectedCourse]);
 
-  // ================= DELETE =================
-
   const deleteHandler = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this live course?")) {
-      return;
-    }
-
+    if (!window.confirm("Are you sure you want to delete this live course?")) return;
     try {
       await dispatch(deleteLiveCourse(id));
-
       toast.success("Live course deleted successfully");
-
       dispatch(getTeacherLiveCourses());
     } catch (error) {
       toast.error(error.message);
@@ -73,37 +50,19 @@ const TeacherLiveCourses = () => {
   };
 
   const publishHandler = async () => {
+    if (publishing) return;
     try {
-      if (!meetLink.trim()) {
-        return toast.error("Google Meet link is required");
-      }
-
-      if (!meetLink.startsWith("https://meet.google.com")) {
-        return toast.error("Enter a valid Google Meet link");
-      }
-
+      if (!meetLink.trim()) return toast.error("Google Meet link is required");
+      if (!meetLink.startsWith("https://meet.google.com")) return toast.error("Enter a valid Google Meet link");
       setPublishing(true);
-
-      await fetchWithAuth(
-        dispatch,
-        `${API_URL}/api/live-courses/${selectedCourse}/publish`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            meetLink,
-          }),
-        },
-      );
-
+      await fetchWithAuth(dispatch, `${API_URL}/api/live-courses/${selectedCourse}/publish`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ meetLink }),
+      });
       toast.success("Session published successfully");
-
       setMeetLink("");
-
       setSelectedCourse(null);
-
       dispatch(getTeacherLiveCourses());
     } catch (error) {
       toast.error(error.message);
@@ -113,200 +72,29 @@ const TeacherLiveCourses = () => {
   };
 
   return (
-    <div>
-      {/* HEADER */}
-
-      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">Live Courses</h1>
-
-          <p className="mt-2 text-sm text-gray-500">
-            Manage your live mentorship batches and webinars.
-          </p>
-        </div>
-
-        <Link
-          to="/teacher/dashboard/create-live-course"
-          className="rounded-2xl bg-black px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-gray-800"
-        >
-          + Create Live Batch
-        </Link>
-      </div>
-
-      {/* LOADING */}
-
-      {loading ? (
-        <div className="flex justify-center py-20">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-black border-t-transparent"></div>
-        </div>
-      ) : liveCourses.length === 0 ? (
-        // EMPTY STATE
-
-        <div className="rounded-3xl border border-dashed border-gray-300 bg-gray-50 py-20 text-center">
-          <h2 className="text-2xl font-bold text-gray-700">
-            No Live Courses Yet
-          </h2>
-
-          <p className="mt-3 text-gray-500">
-            Create your first live mentorship batch.
-          </p>
-        </div>
-      ) : (
-        // COURSE GRID
-
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {liveCourses.map((course) => (
-            <div
-              key={course._id}
-              className={`rounded-3xl bg-white p-6 shadow-sm transition ${
-                !selectedCourse ? "hover:-translate-y-1 hover:shadow-lg" : ""
-              }`}
-            >
-              {/* TITLE */}
-
-              <h2 className="text-xl font-bold text-gray-800">
-                {course.title}
-              </h2>
-
-              {/* DESCRIPTION */}
-
-              <p className="mt-3 line-clamp-3 text-sm text-gray-500">
-                {course.description}
-              </p>
-
-              {/* DETAILS */}
-
-              <div className="mt-5 space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-400">Price</span>
-
-                  <span className="font-semibold">₹{course.price}</span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-400">Duration</span>
-
-                  <span className="font-semibold">
-                    {course.durationMonths} Months
-                  </span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-400">Start Date</span>
-
-                  <span className="font-semibold">
-                    {new Date(course.startDate).toLocaleDateString()}
-                  </span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-400">Class Time</span>
-
-                  <span className="font-semibold">{course.classTime}</span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-400">Status</span>
-
-                  <span
-                    className={`font-semibold ${
-                      course.status === "live"
-                        ? "text-green-600"
-                        : course.status === "completed"
-                          ? "text-red-500"
-                          : "text-yellow-600"
-                    }`}
-                  >
-                    {course.status.charAt(0).toUpperCase() +
-                      course.status.slice(1)}
-                  </span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-400">Students</span>
-
-                  <span className="font-semibold">
-                    {course.students?.length || 0}
-                  </span>
-                </div>
-              </div>
-
-              {/* GOOGLE MEET */}
-
-              {course.status !== "live" ? (
-                <button
-                  onClick={() => setSelectedCourse(course._id)}
-                  className="mt-6 w-full rounded-2xl bg-green-600 py-3 text-sm font-semibold text-white transition hover:bg-green-700"
-                >
-                  Publish Session
-                </button>
-              ) : (
-                <a
-                  href={course.meetLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-6 block rounded-2xl bg-black py-3 text-center text-sm font-semibold text-white"
-                >
-                  Open Google Meet
-                </a>
-              )}
-
-              {/* DELETE */}
-
-              <button
-                onClick={() => deleteHandler(course._id)}
-                className="mt-3 w-full rounded-2xl border border-red-500 py-3 text-sm font-semibold text-red-500 transition hover:bg-red-500 hover:text-white"
-              >
-                Delete Course
-              </button>
+    <section className="alphira-live-classes alphira-teacher-live" aria-labelledby="teacher-live-title">
+      <header className="alphira-live-heading"><div><span className="alphira-live-eyebrow">Teaching workspace / Live mentorship</span><h1 id="teacher-live-title">Bring your batch together.</h1><p>Manage your programs, publish sessions and connect with your students.</p></div><Link to="/teacher/dashboard/create-live-course" className="alphira-live-button"><Plus size={16} aria-hidden="true" />Create live batch</Link></header>
+      <div className="alphira-teacher-live-bar"><span><Radio size={19} aria-hidden="true" />MENTORSHIP BATCHES</span><strong>{loading ? "…" : error ? "—" : liveCourses.length}</strong></div>
+      {loading ? <div className="alphira-live-state" role="status"><span className="alphira-live-loading" aria-hidden="true" /><h2>Loading your batches</h2></div> : error ? <div className="alphira-live-state" role="alert"><h2>Unable to load live courses</h2><p>{error}</p><button type="button" className="alphira-live-button" onClick={() => dispatch(getTeacherLiveCourses())}>Try again</button></div> : liveCourses.length === 0 ? <div className="alphira-live-state"><Radio size={28} aria-hidden="true" /><h2>Your next batch starts here.</h2><p>Create your first live mentorship program using the button above.</p></div> : (
+        <div className="alphira-live-grid">{liveCourses.map((course, index) => {
+          const date = course.startDate ? new Date(course.startDate) : null;
+          return <motion.article key={course._id} className={`alphira-live-card${course.status === "live" ? " is-live" : ""}`} initial={reducedMotion ? false : { opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.45, delay: Math.min(index,4)*0.05 }}>
+            <div className="alphira-live-card-top"><span>BATCH / {String(index+1).padStart(2,"0")}</span><span className={`alphira-live-status ${course.status === "live" ? "is-live" : course.status === "completed" ? "is-completed" : ""}`}>{course.status || "Upcoming"}</span></div>
+            <div className="alphira-live-card-body"><h2>{course.title}</h2><p className="alphira-live-description">{course.description}</p><div className="alphira-live-schedule"><Clock3 size={20} aria-hidden="true" /><div><span>Class time</span><strong>{course.classTime || "To be announced"}</strong></div></div>
+              <dl className="alphira-live-details"><div><dt>Course fee</dt><dd>{new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:2}).format(Number(course.price)||0)}</dd></div><div><dt>Duration</dt><dd>{course.durationMonths} months</dd></div><div><dt>Start date</dt><dd>{date && !Number.isNaN(date.getTime()) ? date.toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}) : "To be announced"}</dd></div><div><dt>Students</dt><dd>{course.students?.length || 0}</dd></div></dl>
+              {course.status !== "live" ? <button type="button" onClick={() => { setMeetLink(""); setSelectedCourse(course._id); }} className="alphira-live-button"><Radio size={16} aria-hidden="true" />Publish session</button> : <a href={course.meetLink} target="_blank" rel="noreferrer" className="alphira-live-button">Open Google Meet <ArrowUpRight size={16} aria-hidden="true" /></a>}
+              <button type="button" onClick={() => deleteHandler(course._id)} className="alphira-teacher-live-delete" aria-label={`Delete live course: ${course.title}`}><Trash2 size={14} aria-hidden="true" />Delete course</button>
             </div>
-          ))}
-        </div>
+          </motion.article>;
+        })}</div>
       )}
-      {selectedCourse && (
-        <div
-          className="fixed inset-0 z-9999 flex items-center justify-center bg-black/60 p-4"
-          onClick={() => setSelectedCourse(null)}
-        >
-          <div
-            className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-xl font-bold text-gray-800">Publish Session</h2>
-
-            <p className="mt-2 text-sm text-gray-500">
-              Paste your Google Meet link below.
-            </p>
-
-            <input
-              type="text"
-              placeholder="https://meet.google.com/..."
-              value={meetLink}
-              onChange={(e) => setMeetLink(e.target.value)}
-              className="mt-4 w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-black"
-            />
-
-            <div className="mt-6 flex gap-3">
-              <button
-                disabled={publishing}
-                onClick={publishHandler}
-                className="flex-1 rounded-2xl bg-black py-3 font-semibold text-white disabled:opacity-50"
-              >
-                {publishing ? "Publishing..." : "Publish"}
-              </button>
-
-              <button
-                onClick={() => setSelectedCourse(null)}
-                className="flex-1 rounded-2xl border border-gray-300 py-3 font-semibold"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+      <dialog ref={dialogRef} className="alphira-teacher-live-dialog" aria-labelledby="publish-session-title" onCancel={(event) => { event.preventDefault(); if (!publishing) setSelectedCourse(null); }} onClick={(event) => { if (event.target === event.currentTarget && !publishing) { const box = event.currentTarget.getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) setSelectedCourse(null); } }}>
+        <div className="alphira-teacher-live-dialog-header"><span>ALPHIRA / SESSION ACCESS</span><button type="button" autoFocus aria-label="Close publish session" disabled={publishing} onClick={() => setSelectedCourse(null)}><X size={19} aria-hidden="true" /></button></div>
+        <form onSubmit={(event) => { event.preventDefault(); publishHandler(); }} aria-busy={publishing}><h2 id="publish-session-title">Ready to go live?</h2><p>{liveCourses.find((course) => course._id === selectedCourse)?.title || "Publish your session with a Google Meet link."}</p><label htmlFor="teacher-live-meet-link">Google Meet link</label><input id="teacher-live-meet-link" type="text" placeholder="https://meet.google.com/…" value={meetLink} onChange={(event) => setMeetLink(event.target.value)} /><small>Students can join using this link once the session is published.</small><div className="alphira-teacher-live-dialog-actions"><button type="button" disabled={publishing} onClick={() => setSelectedCourse(null)}>Cancel</button><button type="submit" className="alphira-live-button" disabled={publishing}>{publishing ? "Publishing…" : "Publish session"}<ArrowUpRight size={15} aria-hidden="true" /></button></div></form>
+      </dialog>
+    </section>
   );
 };
 
 export default TeacherLiveCourses;
+

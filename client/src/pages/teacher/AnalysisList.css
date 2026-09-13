@@ -1,0 +1,42 @@
+.alphira-analysis-manager { color: #20251f; font-family: var(--ac-font-body,'Inter',sans-serif); min-width: 0; }
+.alphira-analysis-manager * { box-sizing: border-box; border-radius: 0; }
+.alphira-analysis-manager-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+.alphira-analysis-manager-eyebrow { color: #738267; font-size: 9px; font-weight: 550; letter-spacing: .13em; text-transform: uppercase; }
+.alphira-analysis-manager-header h1 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: clamp(30px,3.5vw,44px); font-weight: 750; letter-spacing: -.045em; margin: 12px 0; line-height: 1.2; }
+.alphira-analysis-manager-header p { color: #737e69; font-size: 13px; line-height: 1.8; }
+.alphira-analysis-manager-create,.alphira-analysis-manager-state button,.alphira-analysis-manager-state a { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 46px; padding: 13px 18px; background: #20251f; border: 1px solid #20251f; color: #fff; font-size: 12px; text-decoration: none; cursor: pointer; flex-shrink: 0; transition: background .2s; }
+.alphira-analysis-manager-create:hover,.alphira-analysis-manager-state button:hover,.alphira-analysis-manager-state a:hover { background: #455b38; }
+.alphira-analysis-manager-library { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 28px; background: #20251f; color: #d8e5cb; }
+.alphira-analysis-manager-library > div { display: flex; align-items: center; gap: 14px; }
+.alphira-analysis-manager-library span { font-size: 9px; letter-spacing: .13em; }
+.alphira-analysis-manager-library p { display: flex; align-items: baseline; gap: 10px; font-size: 11px; }
+.alphira-analysis-manager-library strong { color: #fff; font-weight: 500; font-size: 28px; font-variant-numeric: tabular-nums; }
+.alphira-analysis-manager-list { border: 1px solid #dce2d3; border-top: 0; background: #fff; }
+.alphira-analysis-manager-row { display: grid; grid-template-columns: 32px minmax(0,1fr) auto; align-items: center; gap: 24px; padding: 28px; border-bottom: 1px solid #e3e7db; }
+.alphira-analysis-manager-row:last-child { border-bottom: 0; }
+.alphira-analysis-manager-number { color: #91a180; font-size: 11px; align-self: start; padding-top: 7px; font-variant-numeric: tabular-nums; }
+.alphira-analysis-manager-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.alphira-analysis-manager-tags span { padding: 6px 9px; background: #edf2e5; color: #597047; font-size: 9px; text-transform: capitalize; }
+.alphira-analysis-manager-tags .alphira-analysis-manager-status { background: #f0f1ed; color: #707966; }
+.alphira-analysis-manager-tags .alphira-analysis-manager-featured { background: #20251f; color: #dae7ce; }
+.alphira-analysis-manager-content h2 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: 21px; font-weight: 650; line-height: 1.45; letter-spacing: -.03em; margin: 12px 0 9px; overflow-wrap: anywhere; }
+.alphira-analysis-manager-content h2 a { color: inherit; text-decoration: none; }
+.alphira-analysis-manager-content h2 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.alphira-analysis-manager-content p { font-size: 11px; color: #7b856f; }
+.alphira-analysis-manager-actions { display: flex; gap: 8px; }
+.alphira-analysis-manager-actions a,.alphira-analysis-manager-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 12px 15px; font-size: 11px; text-decoration: none; border: 1px solid #d7dfce; background: #fff; color: #526847; cursor: pointer; transition: background .18s,color .18s; }
+.alphira-analysis-manager-actions a:hover { background: #edf2e5; }
+.alphira-analysis-manager-actions button { color: #82635f; border-color: #e5dcd8; }
+.alphira-analysis-manager-actions button:hover:not(:disabled) { background: #f5eae7; color: #8d3d33; }
+.alphira-analysis-manager-actions button:disabled { opacity: .5; cursor: wait; }
+.alphira-analysis-manager-error { padding: 18px 24px; background: #f7eeeb; color: #8a4c40; border: 1px solid #e8d6d0; font-size: 12px; overflow-wrap: anywhere; }
+.alphira-analysis-manager-state { padding: 60px 24px; border: 1px solid #dce2d3; background: #fff; display: flex; flex-direction: column; align-items: center; text-align: center; color: #718164; }
+.alphira-analysis-manager-state h2 { margin: 20px 0 10px; font-size: 22px; letter-spacing: -.03em; color: #20251f; }
+.alphira-analysis-manager-state p { font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+.alphira-analysis-manager-state button,.alphira-analysis-manager-state a { margin-top: 24px; }
+.alphira-analysis-manager-loader { width: 56px; height: 3px; background: #718164; animation: alphira-analysis-manager-pulse 1s ease-in-out infinite alternate; }
+@keyframes alphira-analysis-manager-pulse { from { opacity: .3; transform: scaleX(.5); } to { opacity: 1; transform: scaleX(1); } }
+.alphira-analysis-manager a:focus-visible,.alphira-analysis-manager button:focus-visible { outline: 2px solid #879e73; outline-offset: 4px; }
+@media(max-width:850px) { .alphira-analysis-manager-row { grid-template-columns: 24px minmax(0,1fr); gap: 18px; } .alphira-analysis-manager-actions { grid-column: 2; } }
+@media(max-width:600px) { .alphira-analysis-manager-header { flex-direction: column; align-items: flex-start; } .alphira-analysis-manager-library { padding: 20px; flex-wrap: wrap; } .alphira-analysis-manager-row { padding: 22px 18px; gap: 12px; } .alphira-analysis-manager-content h2 { font-size: 19px; } }
+@media(prefers-reduced-motion:reduce) { .alphira-analysis-manager-loader { animation: none; } .alphira-analysis-manager a,.alphira-analysis-manager button { transition: none; } }

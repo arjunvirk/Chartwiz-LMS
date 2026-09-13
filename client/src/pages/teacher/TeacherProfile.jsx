@@ -3,6 +3,10 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import toast from "react-hot-toast";
+import { motion, useReducedMotion } from "framer-motion";
+import "../student/StudentProfile.css";
+import "./TeacherProfile.css";
+const inputClass = "alphira-student-profile-input";
 
 import { updateUserProfile } from "../../actions/userActions";
 
@@ -12,6 +16,7 @@ import { getTeacherCourses } from "../../actions/courseActions";
 
 const TeacherProfile = () => {
   const dispatch = useDispatch();
+  const reducedMotion = useReducedMotion();
 
   const userLogin = useSelector((state) => state.userLogin);
 
@@ -19,7 +24,7 @@ const TeacherProfile = () => {
 
   const teacherCourses = useSelector((state) => state.teacherCourses);
 
-  const { courses = [] } = teacherCourses;
+  const { courses = [], loading: coursesLoading, error: coursesError } = teacherCourses;
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
 
@@ -43,6 +48,7 @@ const TeacherProfile = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (loading) return;
 
     if (!name.trim()) {
       return toast.error("Name is required");
@@ -104,173 +110,71 @@ const TeacherProfile = () => {
   }, [error]);
 
   return (
-    <div>
-      {/* HEADER */}
-
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Teacher Profile</h1>
-
-        <p className="mt-2 text-sm text-gray-500">
-          Manage your mentorship profile, account settings and teaching
-          information.
-        </p>
-      </div>
-
-      {/* PROFILE GRID */}
-
-      <div className="grid gap-8 lg:grid-cols-[320px_1fr]">
-        {/* LEFT CARD */}
-
-        <div className="rounded-3xl bg-linear-to-br from-black to-gray-800 p-8 text-white shadow-lg">
-          {/* PROFILE IMAGE */}
-
-          <img
-            src={
-              userInfo?.user?.profilePic ||
-              "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-            }
-            alt="profile"
-            onError={(e) => {
-              e.target.src =
-                "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-            }}
-            className="mx-auto h-36 w-36 rounded-full border-4 border-white object-cover"
-          />
-
-          {/* NAME */}
-
-          <h2 className="mt-6 text-center text-2xl font-bold">
-            {userInfo?.user?.name}
-          </h2>
-
-          {/* ROLE */}
-
-          <p className="mt-2 text-center text-sm capitalize text-gray-300">
-            {userInfo?.user?.role}
-          </p>
-
-          {/* VERIFIED */}
-
-          <div className="mt-6 flex justify-center">
-            <span className="rounded-full bg-green-500/20 px-4 py-2 text-sm font-medium text-green-300">
-              {userInfo?.user?.isVerified
-                ? "Verified Mentor"
-                : "Verification Pending"}
-            </span>
+    <motion.section
+      className="alphira-student-profile alphira-teacher-profile"
+      aria-labelledby="teacher-profile-title"
+      initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45 }}
+    >
+      <header className="alphira-student-profile-heading">
+        <span className="alphira-student-profile-eyebrow">Your account / Profile</span>
+        <h1 id="teacher-profile-title">Your teaching identity.</h1>
+        <p>Manage your mentor profile, personal details and account security.</p>
+      </header>
+      <div className="alphira-student-profile-layout">
+        <aside className="alphira-student-profile-identity" aria-label="Account summary">
+          <span className="alphira-student-profile-eyebrow">ALPHIRA CAPITAL</span>
+          <div className="alphira-student-profile-avatar">
+            <span aria-hidden="true">{(userInfo?.user?.name || "Teacher").trim().split(/\s+/).slice(0, 2).map((part) => part.charAt(0)).join("").toUpperCase()}</span>
+            {userInfo?.user?.profilePic && <img src={userInfo.user.profilePic} alt="" onError={(event) => { event.currentTarget.style.display = "none"; }} />}
           </div>
-
-          {/* STATS */}
-
-          <div className="mt-8 grid grid-cols-2 gap-4">
-            <div className="rounded-2xl bg-white/10 p-4 text-center">
-              <h3 className="text-2xl font-bold">{totalCourses}</h3>
-
-              <p className="mt-1 text-xs text-gray-300">Courses</p>
-            </div>
-
-            <div className="rounded-2xl bg-white/10 p-4 text-center">
-              <h3 className="text-2xl font-bold">{totalStudents}</h3>
-
-              <p className="mt-1 text-xs text-gray-300">Students</p>
-            </div>
+          <h2>{userInfo?.user?.name || "Teacher"}</h2>
+          <p className="alphira-student-profile-email">{userInfo?.user?.email}</p>
+          <span className="alphira-student-profile-badge">{userInfo?.user?.role || "Teacher"} account</span><p className="alphira-teacher-profile-verification">{userInfo?.user?.isVerified ? "Verified mentor" : "Verification pending"}</p><div className="alphira-teacher-profile-stats"><div><strong>{coursesLoading ? "…" : coursesError ? "—" : totalCourses}</strong><span>Assigned courses</span></div><div><strong>{coursesLoading ? "…" : coursesError ? "—" : totalStudents}</strong><span>Course enrollments</span></div></div>
+          <div className="alphira-student-profile-identity-note">
+            <span>YOUR MENTOR SPACE</span>
+            <p>Your profile connects your teaching programs and mentorship workspace.</p>
           </div>
-        </div>
-
-        {/* RIGHT FORM */}
-
-        <div className="rounded-3xl bg-white p-8 shadow-sm">
-          <form onSubmit={submitHandler} className="space-y-6">
-            {/* NAME */}
-
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
-                Full Name
-              </label>
-
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
-              />
+        </aside>
+        <form onSubmit={submitHandler} className="alphira-student-profile-form" aria-busy={!!loading}>
+          <section className="alphira-student-profile-section" aria-labelledby="profile-personal">
+            <div className="alphira-student-profile-section-heading"><span>01</span><div><h2 id="profile-personal">Personal information</h2><p>The details associated with your academy account.</p></div></div>
+            <div className="alphira-student-profile-fields">
+              <div className="alphira-student-profile-wide">
+                <label htmlFor="teacher-profile-name">Full name</label>
+                <input id="teacher-profile-name" autoComplete="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className={inputClass} />
+              </div>
+              <div>
+                <label htmlFor="teacher-profile-email">Email address <span>Read only</span></label>
+                <input id="teacher-profile-email" autoComplete="email" type="email" value={email} disabled className={inputClass} />
+              </div>
+              <div>
+                <label htmlFor="teacher-profile-role">Account role <span>Read only</span></label>
+                <input id="teacher-profile-role" type="text" value={userInfo?.user?.role || ""} disabled className={inputClass} />
+              </div>
             </div>
-
-            {/* EMAIL */}
-
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
-                Email Address
-              </label>
-
-              <input
-                type="email"
-                value={email}
-                disabled
-                className="w-full cursor-not-allowed rounded-2xl border border-gray-300 bg-gray-100 px-5 py-4 text-gray-500 outline-none"
-              />
+          </section>
+          <section className="alphira-student-profile-section" aria-labelledby="profile-security">
+            <div className="alphira-student-profile-section-heading"><span>02</span><div><h2 id="profile-security">Password & security</h2><p>Leave these fields empty to keep your current password.</p></div></div>
+            <div className="alphira-student-profile-fields">
+              <div>
+                <label htmlFor="teacher-profile-password">New password</label>
+                <input id="teacher-profile-password" autoComplete="new-password" aria-describedby="teacher-password-hint" type="password" placeholder="Enter a new password" value={password} onChange={(e) => setPassword(e.target.value)} className={inputClass} />
+              </div>
+              <div>
+                <label htmlFor="teacher-profile-confirm">Confirm password</label>
+                <input id="teacher-profile-confirm" autoComplete="new-password" type="password" placeholder="Re-enter your new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className={inputClass} />
+              </div>
             </div>
-
-            {/* ROLE */}
-
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
-                Account Role
-              </label>
-
-              <input
-                type="text"
-                value={userInfo?.user?.role}
-                disabled
-                className="w-full cursor-not-allowed rounded-2xl border border-gray-300 bg-gray-100 px-5 py-4 capitalize text-gray-500 outline-none"
-              />
-            </div>
-
-            {/* PASSWORD */}
-
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
-                New Password
-              </label>
-
-              <input
-                type="password"
-                placeholder="Enter new password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
-              />
-            </div>
-
-            {/* CONFIRM PASSWORD */}
-
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-gray-700">
-                Confirm Password
-              </label>
-
-              <input
-                type="password"
-                placeholder="Confirm new password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full rounded-2xl border border-gray-300 px-5 py-4 outline-none transition focus:border-black"
-              />
-            </div>
-
-            {/* BUTTON */}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-2xl bg-black py-4 text-sm font-semibold text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {loading ? "Updating..." : "Update Profile"}
-            </button>
-          </form>
-        </div>
+            <p id="teacher-password-hint" className="alphira-student-profile-hint">Use at least 6 characters for your new password.</p>
+          </section>
+          <footer className="alphira-student-profile-actions"><p>Save when you're ready.</p><button type="submit" disabled={loading}>{loading ? "Saving changes..." : "Save changes"}<span aria-hidden="true">↗</span></button></footer>
+        </form>
       </div>
-    </div>
+    </motion.section>
   );
 };
 
 export default TeacherProfile;
+

@@ -174,24 +174,22 @@ export const createCourse = async (req, res) => {
 
 export const getTeacherCourses = async (req, res) => {
   try {
-    const courses = await Course.find({
-      teacher: req.user.id,
-    });
+    const [courses, totalEnrolledStudents] = await Promise.all([
+      Course.find({ teacher: req.user.id }),
+      User.countDocuments({
+        role: "student",
+        $or: [
+          { "enrolledCourses.0": { $exists: true } },
+          { "liveCourses.0": { $exists: true } },
+        ],
+      }),
+    ]);
 
-    res.status(200).json({
-      success: true,
-
-      courses,
-    });
+    res.status(200).json({ success: true, courses, totalEnrolledStudents });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-
-      message: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
-
 // ================= DELETE COURSE =================
 
 export const deleteCourse = async (req, res) => {
@@ -231,3 +229,4 @@ export const deleteCourse = async (req, res) => {
     });
   }
 };
+

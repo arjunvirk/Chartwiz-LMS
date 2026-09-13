@@ -1,135 +1,74 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, Radio, CalendarDays, Clock3 } from "lucide-react";
 import { getMyLiveCourses } from "../../actions/liveCourseActions";
-import toast from "react-hot-toast";
+import "./MyLiveCourses.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-  }),
-};
-
-const statusBadge = (status) => {
-  if (status === "live") return "bg-ember-orange/15 text-ember-orange";
-  if (status === "completed") return "bg-red-100 text-red-600";
-  return "border border-pebble text-slate";
+const formatDate = (value) => {
+  if (!value) return "To be announced";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "To be announced" : date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 };
 
 const MyLiveCourses = () => {
   const dispatch = useDispatch();
-  const myLiveCourses = useSelector((state) => state.myLiveCourses);
+  const reducedMotion = useReducedMotion();
   const { userInfo } = useSelector((state) => state.userLogin);
-  const { loading, error, liveCourses = [] } = myLiveCourses;
+  const { loading, error, liveCourses = [] } = useSelector((state) => state.myLiveCourses);
 
   useEffect(() => {
-    if (!userInfo) return;
-    dispatch(getMyLiveCourses());
+    if (userInfo) dispatch(getMyLiveCourses());
   }, [dispatch, userInfo]);
 
-  useEffect(() => {
-    if (error) {
-      toast.dismiss();
-      toast.error(error);
-    }
-  }, [error]);
-
   return (
-    <div>
-      {/* HEADER */}
-      <div className="mb-8">
-        <h1 className="font-serif text-3xl leading-tight text-graphite">My Live Classes</h1>
-        <p className="mt-2 text-sm text-slate">
-          View your mentorship schedule, upcoming sessions and join live
-          classes when they become available.
-        </p>
-      </div>
+    <section className="alphira-live-classes" aria-labelledby="live-classes-title">
+      <header className="alphira-live-heading">
+        <div><span className="alphira-live-eyebrow">Your academy / Live mentorship</span><h1 id="live-classes-title">My live classes.</h1><p>Your mentors, your schedule and your next session—all in one place.</p></div>
+        <div className="alphira-live-count"><Radio size={20} aria-hidden="true" /><strong>{loading ? "…" : error ? "—" : liveCourses.length}</strong><span>Enrolled {liveCourses.length === 1 ? "batch" : "batches"}</span></div>
+      </header>
 
       {loading ? (
-        <div className="flex justify-center py-20">
-          <div className="h-11 w-11 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
-        </div>
+        <div className="alphira-live-state" role="status"><span className="alphira-live-loading" aria-hidden="true" /><h2>Loading your classes</h2><p>Getting your mentorship schedule ready.</p></div>
+      ) : error ? (
+        <div className="alphira-live-state" role="alert"><h2>Unable to load your classes</h2><p>{error}</p><button type="button" className="alphira-live-button" onClick={() => dispatch(getMyLiveCourses())}>Try again</button></div>
       ) : liveCourses.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-pebble bg-bone py-20 text-center">
-          <h2 className="font-serif text-2xl text-graphite">No Live Classes Yet</h2>
-          <p className="mt-3 text-sm text-slate">
-            You are not enrolled in any live mentorship batch.
-          </p>
-        </div>
+        <div className="alphira-live-state"><Radio size={28} aria-hidden="true" /><h2>Your next chapter starts here.</h2><p>You are not enrolled in a live mentorship batch yet. Your classes will appear here once you are enrolled.</p></div>
       ) : (
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {liveCourses?.map((course, i) => (
-            <motion.div
-              key={course._id}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              custom={i}
-              className="rounded-2xl bg-bone p-6 transition duration-300 hover:-translate-y-1"
-            >
-              <h2 className="text-lg font-semibold text-graphite">{course.title}</h2>
-              <p className="mt-3 line-clamp-3 text-sm text-slate">{course.description}</p>
-
-              <div className="mt-5 space-y-2.5 border-t border-pebble pt-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate">Instructor</span>
-                  <span className="font-semibold text-graphite">{course.instructor}</span>
+        <div className="alphira-live-grid">
+          {liveCourses.map((course, index) => {
+            const isLive = course.status === "live";
+            const completed = course.status === "completed";
+            const meetLink = course.meetLink?.trim();
+            return (
+              <motion.article
+                key={course._id}
+                className={`alphira-live-card${isLive ? " is-live" : ""}`}
+                initial={reducedMotion ? false : { opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.45, delay: Math.min(index, 4) * 0.06 }}
+              >
+                <div className="alphira-live-card-top"><span>MENTORSHIP / {String(index + 1).padStart(2, "0")}</span><span className={`alphira-live-status ${isLive ? "is-live" : completed ? "is-completed" : ""}`}>{isLive ? "Live now" : completed ? "Completed" : course.status || "Upcoming"}</span></div>
+                <div className="alphira-live-card-body">
+                  <h2>{course.title}</h2>
+                  <p className="alphira-live-description">{course.description}</p>
+                  <div className="alphira-live-schedule"><Clock3 size={20} aria-hidden="true" /><div><span>Class time</span><strong>{course.classTime || "To be announced"}</strong></div></div>
+                  <dl className="alphira-live-details">
+                    <div><dt>Instructor</dt><dd>{course.instructor || "To be announced"}</dd></div>
+                    <div><dt>Duration</dt><dd>{course.durationMonths ? `${course.durationMonths} ${Number(course.durationMonths) === 1 ? "month" : "months"}` : "To be announced"}</dd></div>
+                    <div><dt><CalendarDays size={14} aria-hidden="true" />Starts</dt><dd>{formatDate(course.startDate)}</dd></div>
+                  </dl>
+                  <div className="alphira-live-card-action">
+                    {isLive && meetLink ? <a href={meetLink.startsWith("http") ? meetLink : `https://${meetLink}`} target="_blank" rel="noreferrer" className="alphira-live-button">Join Google Meet <ArrowUpRight size={17} aria-hidden="true" /></a> : <p className="alphira-live-unavailable">{completed ? "Session completed" : isLive ? "Joining link will be available soon" : "Class not started yet"}</p>}
+                  </div>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate">Duration</span>
-                  <span className="font-semibold text-graphite">
-                    {course.durationMonths} Months
-                  </span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate">Start Date</span>
-                  <span className="font-semibold text-graphite">
-                    {new Date(course.startDate).toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate">Class Time</span>
-                  <span className="font-semibold text-graphite">{course.classTime}</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-slate">Status</span>
-                  <span className={`rounded-pill px-3 py-1 font-mono text-[11px] font-medium ${statusBadge(course.status)}`}>
-                    {course.status}
-                  </span>
-                </div>
-              </div>
-
-              {course.status === "live" ? (
-                <a
-                  href={course.meetLink?.startsWith("http") ? course.meetLink : `https://${course.meetLink}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-6 block rounded-pill bg-ember-orange py-3 text-center font-mono text-sm font-semibold text-black transition hover:brightness-95"
-                >
-                  Join Google Meet
-                </a>
-              ) : course.status === "completed" ? (
-                <div className="mt-6 rounded-pill bg-red-50 py-3 text-center text-sm font-semibold text-red-600">
-                  Session Completed
-                </div>
-              ) : (
-                <div className="mt-6 rounded-pill border border-pebble py-3 text-center text-sm font-semibold text-slate">
-                  Class Not Started Yet
-                </div>
-              )}
-            </motion.div>
-          ))}
+              </motion.article>
+            );
+          })}
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

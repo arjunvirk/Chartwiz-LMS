@@ -149,6 +149,7 @@ export const teacherCoursesReducer = (
         loading: false,
 
         courses: action.payload,
+        totalEnrolledStudents: action.totalEnrolledStudents,
       };
 
     case TEACHER_COURSES_FAIL:
@@ -228,3 +229,4 @@ export const deleteCourseReducer = (
       return state;
   }
 };
+

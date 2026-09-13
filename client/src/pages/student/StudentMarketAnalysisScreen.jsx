@@ -1,158 +1,62 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { motion } from "framer-motion";
-
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, BookOpen } from "lucide-react";
 import { getAnalyses } from "../../actions/marketAnalysisActions";
+import "./StudentMarketAnalysisScreen.css";
 
 const MARKETS = ["All", "Forex", "Gold", "Crypto", "Stocks", "Indices"];
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-  }),
+const formatDate = (value) => {
+  if (!value) return "";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 };
 
 const StudentMarketAnalysisScreen = () => {
   const dispatch = useDispatch();
-  const analysisList = useSelector((state) => state.analysisList);
-  const { analyses = [], loading, error } = analysisList;
-
+  const reducedMotion = useReducedMotion();
+  const { analyses = [], loading, error } = useSelector((state) => state.analysisList);
   const [marketFilter, setMarketFilter] = useState("All");
 
-  useEffect(() => {
-    dispatch(getAnalyses());
-  }, [dispatch]);
+  useEffect(() => { dispatch(getAnalyses()); }, [dispatch]);
 
-  const filteredAnalyses =
-    marketFilter === "All"
-      ? analyses
-      : analyses.filter((a) => a.market === marketFilter);
+  const filteredAnalyses = marketFilter === "All" ? analyses : analyses.filter((analysis) => analysis.market === marketFilter);
 
   return (
-    <div className="space-y-6">
-      {/* HEADER */}
-      <div className="rounded-2xl bg-obsidian p-8 text-vellum">
-        <h1 className="font-serif text-3xl leading-tight md:text-4xl">
-          Market Analysis
-        </h1>
-        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-mist">
-          Stay updated with daily Forex, Gold, Crypto, Stock and Indices
-          analysis published by our professional mentors.
-        </p>
+    <section className="alphira-analysis" aria-labelledby="analysis-page-title">
+      <header className="alphira-analysis-hero">
+        <div className="alphira-analysis-masthead"><span>ALPHIRA CAPITAL / RESEARCH</span><BookOpen size={20} aria-hidden="true" /></div>
+        <div className="alphira-analysis-hero-body"><div><span className="alphira-analysis-eyebrow">The mentor's perspective</span><h1 id="analysis-page-title">Market analysis.<br /><span>A clearer perspective.</span></h1></div><p>Explore market observations and analysis from your mentors. Build context across Forex, Gold, Crypto, Stocks and Indices.</p></div>
+      </header>
+
+      <div className="alphira-analysis-toolbar">
+        <div className="alphira-analysis-filters" role="group" aria-label="Filter analyses by market">
+          {MARKETS.map((market) => <button type="button" key={market} onClick={() => setMarketFilter(market)} aria-pressed={marketFilter === market} className={marketFilter === market ? "is-active" : ""}>{market}</button>)}
+        </div>
+        <p className="alphira-analysis-count" role="status">{loading ? "Loading insights…" : error ? "Insights unavailable" : `${filteredAnalyses.length} ${filteredAnalyses.length === 1 ? "insight" : "insights"}`}</p>
       </div>
 
-      {/* FILTERS */}
-      <div className="flex flex-wrap gap-2">
-        {MARKETS.map((market) => (
-          <button
-            key={market}
-            onClick={() => setMarketFilter(market)}
-            className={`rounded-pill px-5 py-2 font-mono text-sm font-medium transition ${
-              marketFilter === market
-                ? "bg-ember-orange text-black"
-                : "border border-pebble bg-vellum text-slate hover:bg-bone"
-            }`}
-          >
-            {market}
-          </button>
-        ))}
-      </div>
-
-      {loading && (
-        <div className="rounded-2xl bg-bone p-10 text-center text-sm text-slate">
-          Loading analyses...
-        </div>
-      )}
-
-      {error && (
-        <div className="rounded-2xl border border-red-200 bg-red-50 p-10 text-center text-sm text-red-600">
-          {error}
-        </div>
-      )}
-
-      {!loading && filteredAnalyses.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-pebble bg-bone py-16 text-center">
-          <h2 className="text-lg font-semibold text-graphite">
-            No Market Analysis Available
-          </h2>
-          <p className="mt-2 text-sm text-slate">
-            Your mentors haven't published any analysis yet.
-          </p>
-        </div>
-      )}
-
-      {!loading && filteredAnalyses.length > 0 && (
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {filteredAnalyses.map((analysis, i) => (
-            <motion.div
-              key={analysis._id}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              custom={i}
-              className="overflow-hidden rounded-2xl bg-bone transition duration-300 hover:-translate-y-1"
-            >
-              <img
-                src={
-                  analysis.image ||
-                  "https://via.placeholder.com/600x350?text=Market+Analysis"
-                }
-                alt={analysis.title}
-                className="h-44 w-full object-cover"
-                onError={(e) => {
-                  e.target.src =
-                    "https://via.placeholder.com/600x350?text=Market+Analysis";
-                }}
-              />
-
-              <div className="p-6">
-                <div className="flex items-center justify-between">
-                  <span className="rounded-pill bg-ember-orange/15 px-3 py-1 font-mono text-[11px] font-medium text-ember-orange">
-                    {analysis.market}
-                  </span>
-                  {analysis.featured && (
-                    <span className="rounded-pill border border-pebble px-3 py-1 font-mono text-[11px] font-medium text-slate">
-                      Featured
-                    </span>
-                  )}
-                </div>
-
-                <h2 className="mt-4 line-clamp-2 text-lg font-semibold text-graphite">
-                  {analysis.title}
-                </h2>
-
-                <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-slate">
-                  {analysis.content}
-                </p>
-
-                <div className="mt-5 flex items-center justify-between border-t border-pebble pt-4">
-                  <div>
-                    <p className="text-xs font-semibold text-graphite">
-                      {analysis.author?.name || "Alphira Capital"}
-                    </p>
-                    <p className="text-xs text-slate">
-                      {new Date(analysis.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-
-                  <Link
-                    to={`/dashboard/market-analysis/${analysis._id}`}
-                    className="rounded-pill bg-obsidian px-4 py-2 font-mono text-xs font-medium text-vellum transition hover:bg-ember-orange hover:text-black"
-                  >
-                    Read
-                  </Link>
-                </div>
+      {loading ? <div className="alphira-analysis-state" role="status"><span className="alphira-analysis-loader" aria-hidden="true" /><h2>Gathering your insights</h2><p>Loading the latest mentor analysis.</p></div> : error ? <div className="alphira-analysis-state" role="alert"><h2>Unable to load analyses</h2><p>{error}</p><button type="button" onClick={() => dispatch(getAnalyses())}>Try again</button></div> : filteredAnalyses.length === 0 ? <div className="alphira-analysis-state"><BookOpen size={28} aria-hidden="true" /><h2>{marketFilter === "All" ? "Insights are on their way." : `No ${marketFilter} analysis yet.`}</h2><p>{marketFilter === "All" ? "Your mentors haven't published any analysis yet. Their insights will appear here." : "Explore another market to see what your mentors have shared."}</p>{marketFilter !== "All" && <button type="button" onClick={() => setMarketFilter("All")}>View all markets</button>}</div> : (
+        <div className="alphira-analysis-grid">
+          {filteredAnalyses.map((analysis, index) => (
+            <motion.article key={analysis._id} className="alphira-analysis-card" initial={reducedMotion ? false : { opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.45, delay: Math.min(index, 4) * 0.05 }}>
+              <div className="alphira-analysis-image">
+                <div className="alphira-analysis-image-fallback" aria-hidden="true"><img src="/alphira-ac-logo.svg" alt="" /><span>ALPHIRA / MARKET NOTES</span></div>
+                {analysis.image && <img className="alphira-analysis-cover" src={analysis.image} alt={analysis.title} loading="lazy" onError={(event) => { event.currentTarget.style.display = "none"; }} />}
+                {analysis.featured && <span className="alphira-analysis-featured">Featured insight</span>}
               </div>
-            </motion.div>
+              <div className="alphira-analysis-card-body">
+                <div className="alphira-analysis-meta"><span>{analysis.market || "Market analysis"}</span><span>{formatDate(analysis.createdAt)}</span></div>
+                <h2><Link to={`/dashboard/market-analysis/${analysis._id}`}>{analysis.title}</Link></h2>
+                <p className="alphira-analysis-excerpt">{analysis.content}</p>
+                <footer className="alphira-analysis-card-footer"><div><span>MENTOR INSIGHT</span><strong>{analysis.author?.name || "Alphira Capital"}</strong></div><Link to={`/dashboard/market-analysis/${analysis._id}`} className="alphira-analysis-read" aria-label={`Read analysis: ${analysis.title}`}>Read <ArrowUpRight size={16} aria-hidden="true" /></Link></footer>
+              </div>
+            </motion.article>
           ))}
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

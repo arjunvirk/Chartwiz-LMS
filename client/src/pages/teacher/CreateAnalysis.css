@@ -1,0 +1,50 @@
+.alphira-analysis-editor { color: #20251f; min-width: 0; font-family: var(--ac-font-body,'Inter',sans-serif); }
+.alphira-analysis-editor * { box-sizing: border-box; border-radius: 0; }
+.alphira-analysis-editor-back { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: #637750; text-decoration: none; font-size: 11px; margin-bottom: 18px; }
+.alphira-analysis-editor-back:hover { text-decoration: underline; text-underline-offset: 4px; }
+.alphira-analysis-editor-eyebrow { font-size: 9px; letter-spacing: .12em; color: #76846a; text-transform: uppercase; }
+.alphira-analysis-editor-header { margin-bottom: 28px; }
+.alphira-analysis-editor-header h1 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: clamp(30px,3.4vw,44px); font-weight: 750; line-height: 1.2; letter-spacing: -.045em; margin: 12px 0; }
+.alphira-analysis-editor-header p { color: #738069; font-size: 13px; line-height: 1.8; }
+.alphira-analysis-editor-layout { display: grid; grid-template-columns: minmax(0,1fr) 310px; gap: 24px; align-items: start; }
+.alphira-analysis-editor-main { min-width: 0; background: #fff; border: 1px solid #dce2d3; }
+.alphira-analysis-editor-section { padding: 28px; }
+.alphira-analysis-editor-section + .alphira-analysis-editor-section { border-top: 1px solid #e2e7da; }
+.alphira-analysis-editor-section-title { display: flex; gap: 14px; margin-bottom: 28px; }
+.alphira-analysis-editor-section-title > span { font-size: 10px; color: #87977a; padding-top: 4px; }
+.alphira-analysis-editor-section-title h2 { font-size: 18px; font-weight: 650; letter-spacing: -.03em; }
+.alphira-analysis-editor-section-title p { font-size: 11px; line-height: 1.8; color: #7b8671; margin-top: 6px; }
+.alphira-analysis-editor label { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 12px; font-weight: 500; margin-bottom: 10px; }
+.alphira-analysis-editor-section label span { color: #88937e; font-size: 9px; font-weight: 400; }
+.alphira-analysis-editor input:not([type=checkbox]),.alphira-analysis-editor textarea,.alphira-analysis-editor select { width: 100%; min-height: 48px; padding: 13px 14px; border: 1px solid #dce2d3; background: #fcfcf9; color: #20251f; font: inherit; font-size: 13px; outline: none; transition: border-color .18s,box-shadow .18s; }
+.alphira-analysis-editor textarea { resize: vertical; min-height: 320px; line-height: 1.9; }
+.alphira-analysis-editor input::placeholder,.alphira-analysis-editor textarea::placeholder { color: #959e8c; }
+.alphira-analysis-editor input:not([type=checkbox]):focus,.alphira-analysis-editor textarea:focus,.alphira-analysis-editor select:focus { border-color: #7c936a; box-shadow: 0 0 0 3px #71846018; }
+.alphira-analysis-editor-content-label { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.alphira-analysis-editor-content-label > span { font-size: 10px; color: #8a957f; margin-bottom: 10px; }
+.alphira-analysis-editor-hint { font-size: 10px; color: #7d8971; line-height: 1.8; margin-top: 10px; }
+.alphira-analysis-editor-sidebar { min-width: 0; }
+.alphira-analysis-editor-publish { padding: 26px; background: #20251f; color: #fff; border-top: 3px solid #a9bd94; }
+.alphira-analysis-editor-publish .alphira-analysis-editor-eyebrow { color: #b5c5a7; font-size: 8px; }
+.alphira-analysis-editor-publish h2 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: 26px; line-height: 1.3; font-weight: 550; letter-spacing: -.035em; margin: 24px 0 12px; }
+.alphira-analysis-editor-publish > p { color: #b8c5ac; font-size: 12px; line-height: 1.9; }
+.alphira-analysis-editor-market { margin: 28px 0 24px; }
+.alphira-analysis-editor-market label { color: #dce6d3; }
+.alphira-analysis-editor .alphira-analysis-editor-featured { display: flex; align-items: flex-start; flex-wrap: nowrap; gap: 12px; padding: 20px 0; margin: 0; border-top: 1px solid #47543d; border-bottom: 1px solid #47543d; cursor: pointer; }
+.alphira-analysis-editor-featured input { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; accent-color: #b7cba4; }
+.alphira-analysis-editor-featured strong { font-size: 12px; font-weight: 500; }
+.alphira-analysis-editor-featured small { display: block; color: #b8c5ac; font-size: 10px; line-height: 1.8; margin-top: 6px; }
+.alphira-analysis-editor-publish button { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 48px; padding: 13px 10px; background: #dce9cf; border: 1px solid #dce9cf; color: #273621; font-size: 11px; font-weight: 550; margin-top: 26px; cursor: pointer; transition: background .2s; }
+.alphira-analysis-editor-publish button:hover:not(:disabled) { background: #c5dcb2; }
+.alphira-analysis-editor-publish button:disabled { opacity: .6; cursor: wait; }
+.alphira-analysis-editor-note { padding: 24px 6px; }
+.alphira-analysis-editor-note > span { font-size: 8px; letter-spacing: .12em; color: #829174; }
+.alphira-analysis-editor-note p { margin-top: 10px; color: #7b886e; font-size: 11px; line-height: 1.9; }
+.alphira-analysis-editor-feedback { margin-top: 18px; padding: 20px; background: #edf3e6; border: 1px solid #d2dfc6; font-size: 12px; color: #4e643e; overflow-wrap: anywhere; }
+.alphira-analysis-editor-feedback.is-error { background: #f7eeeb; border-color: #e7d6d0; color: #8a4c40; }
+.alphira-analysis-editor-feedback p { font-size: 11px; line-height: 1.8; margin-top: 8px; }
+.alphira-analysis-editor-feedback a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: inherit; font-size: 11px; }
+.alphira-analysis-editor a:focus-visible,.alphira-analysis-editor button:focus-visible,.alphira-analysis-editor input[type=checkbox]:focus-visible { outline: 2px solid #91aa7e; outline-offset: 4px; }
+@media(max-width:1050px) { .alphira-analysis-editor-layout { grid-template-columns: minmax(0,1fr); } }
+@media(max-width:600px) { .alphira-analysis-editor-section,.alphira-analysis-editor-publish { padding: 22px; } }
+@media(prefers-reduced-motion:reduce) { .alphira-analysis-editor input,.alphira-analysis-editor textarea,.alphira-analysis-editor select,.alphira-analysis-editor button { transition: none !important; } }

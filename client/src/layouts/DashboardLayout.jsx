@@ -2,7 +2,7 @@ import { getMyCourses } from "../actions/courseActions";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Menu, X, PanelLeftClose, PanelLeftOpen, LayoutGrid, BookOpen, Radio, CreditCard, Receipt, Users, ClipboardList, UserRound } from "lucide-react";
+import { Menu, X, PanelLeftClose, PanelLeftOpen, LayoutGrid, BookOpen, Radio, CreditCard, Receipt, Users, ClipboardList } from "lucide-react";
 import "./DashboardLayout.css";
 
 export default function DashboardLayout() {
@@ -25,11 +25,7 @@ export default function DashboardLayout() {
       ? "/teacher/dashboard"
       : "/dashboard";
 
-  const profilePath = isTeacher
-    ? "/teacher/dashboard/profile"
-    : "/dashboard/profile";
-
-  const coursesPath = isTeacher
+const coursesPath = isTeacher
     ? "/teacher/dashboard/courses"
     : "/dashboard/courses";
 
@@ -53,14 +49,13 @@ export default function DashboardLayout() {
     ] : isTeacher ? [
       { to: coursesPath, label: "Courses", icon: BookOpen },
       { to: teacherLiveCoursesPath, label: "Live Courses", icon: Radio },
-      { to: profilePath, label: "Profile", icon: UserRound },
     ] : [
       { to: coursesPath, label: "My Courses", icon: BookOpen },
       { to: myLiveCoursesPath, label: "My Live Classes", icon: Radio },
       { to: paymentPath, label: "Pay Fee", icon: CreditCard },
     ]),
   ];
-  const current = links.find((item) => item.end ? location.pathname === item.to : location.pathname === item.to || location.pathname.startsWith(item.to + "/"))?.label || (location.pathname === "/dashboard/profile" ? "Profile" : "Dashboard");
+  const current = links.find((item) => item.end ? location.pathname === item.to : location.pathname === item.to || location.pathname.startsWith(item.to + "/"))?.label || (["/dashboard/profile", "/teacher/dashboard/profile", "/admin/dashboard/profile"].includes(location.pathname) ? "Profile" : "Dashboard");
   useEffect(() => { setSidebarOpen(false); }, [location.pathname]);
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -119,4 +114,5 @@ export default function DashboardLayout() {
     </div>
   );
 }
+
 

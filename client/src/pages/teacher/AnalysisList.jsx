@@ -1,143 +1,55 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { TrendingUp, Plus, Trash2, Pencil } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { BookOpen, Plus, Trash2, Pencil } from "lucide-react";
+import { getAnalyses, deleteAnalysis } from "../../actions/marketAnalysisActions";
+import "./AnalysisList.css";
 
-import {
-  getAnalyses,
-  deleteAnalysis,
-} from "../../actions/marketAnalysisActions";
+const formatDate = (value) => {
+  const date = value ? new Date(value) : null;
+  return date && !Number.isNaN(date.getTime()) ? date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "Date unavailable";
+};
 
 const AnalysisList = () => {
   const dispatch = useDispatch();
+  const reducedMotion = useReducedMotion();
+  const [deletingId, setDeletingId] = useState(null);
   const { userInfo } = useSelector((state) => state.userLogin);
-
-  const analysisList = useSelector((state) => state.analysisList);
-  const { loading, error, analyses = [] } = analysisList;
-
-  const analysisDelete = useSelector((state) => state.analysisDelete);
-  const { success: successDelete } = analysisDelete;
+  const { loading, error, analyses = [] } = useSelector((state) => state.analysisList);
+  const { success: successDelete, loading: deleting, error: deleteError } = useSelector((state) => state.analysisDelete);
 
   useEffect(() => {
-    if (!userInfo) return;
-
-    dispatch(getAnalyses());
+    if (userInfo) dispatch(getAnalyses());
   }, [dispatch, successDelete, userInfo]);
 
   const deleteHandler = (id) => {
+    if (deleting) return;
     if (window.confirm("Delete this analysis?")) {
+      setDeletingId(id);
       dispatch(deleteAnalysis(id));
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center py-20">
-        <div className="h-14 w-14 animate-spin rounded-full border-4 border-black border-t-transparent"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="rounded-3xl bg-red-50 p-6 text-red-600">{error}</div>
-    );
-  }
-
   return (
-    <div>
-      {/* HEADER */}
+    <section className="alphira-analysis-manager" aria-labelledby="analysis-manager-title">
+      <header className="alphira-analysis-manager-header"><div><span className="alphira-analysis-manager-eyebrow">Teaching workspace / Research</span><h1 id="analysis-manager-title">Market analysis.</h1><p>Turn your market perspective into clear insights for your students.</p></div><Link to="/teacher/dashboard/analysis/create" className="alphira-analysis-manager-create"><Plus size={17} aria-hidden="true" />Create analysis</Link></header>
 
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <div className="flex items-center gap-3">
-            <TrendingUp size={30} />
-            <h1 className="text-4xl font-extrabold">Market Analysis</h1>
-          </div>
+      <div className="alphira-analysis-manager-library"><div><BookOpen size={20} aria-hidden="true" /><span>YOUR CONTENT LIBRARY</span></div><p><strong>{loading ? "…" : error ? "—" : analyses.length}</strong> {analyses.length === 1 ? "analysis" : "analyses"}</p></div>
+      {deleteError && deletingId && <p className="alphira-analysis-manager-error" role="alert">Unable to delete analysis: {deleteError}</p>}
 
-          <p className="mt-3 text-gray-500">
-            Manage all published market analyses.
-          </p>
+      {loading ? <div className="alphira-analysis-manager-state" role="status"><span className="alphira-analysis-manager-loader" aria-hidden="true" /><h2>Loading your library</h2><p>Getting your market analyses ready.</p></div> : error ? <div className="alphira-analysis-manager-state" role="alert"><h2>Unable to load analyses</h2><p>{error}</p><button type="button" onClick={() => dispatch(getAnalyses())}>Try again</button></div> : analyses.length === 0 ? <div className="alphira-analysis-manager-state"><BookOpen size={28} aria-hidden="true" /><h2>Your perspective belongs here.</h2><p>Publish your first market analysis to start your content library.</p><Link to="/teacher/dashboard/analysis/create">Create your first analysis</Link></div> : (
+        <div className="alphira-analysis-manager-list">
+          {analyses.map((analysis, index) => (
+            <motion.article key={analysis._id} className="alphira-analysis-manager-row" initial={reducedMotion ? false : { opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.4, delay: Math.min(index, 4) * 0.04 }}>
+              <span className="alphira-analysis-manager-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              <div className="alphira-analysis-manager-content"><div className="alphira-analysis-manager-tags"><span>{analysis.market || "Market analysis"}</span>{analysis.status && <span className="alphira-analysis-manager-status">{analysis.status}</span>}{analysis.featured && <span className="alphira-analysis-manager-featured">Featured</span>}</div><h2><Link to={`/teacher/dashboard/analysis/${analysis._id}/edit`}>{analysis.title}</Link></h2><p>Created {formatDate(analysis.createdAt)}</p></div>
+              <div className="alphira-analysis-manager-actions"><Link to={`/teacher/dashboard/analysis/${analysis._id}/edit`} aria-label={`Edit analysis: ${analysis.title}`}><Pencil size={15} aria-hidden="true" />Edit</Link><button type="button" onClick={() => deleteHandler(analysis._id)} disabled={deleting} aria-label={`Delete analysis: ${analysis.title}`}><Trash2 size={15} aria-hidden="true" />{deleting && deletingId === analysis._id ? "Deleting…" : "Delete"}</button></div>
+            </motion.article>
+          ))}
         </div>
-
-        <Link
-          to="/teacher/dashboard/analysis/create"
-          className="flex items-center gap-2 rounded-2xl bg-black px-6 py-4 font-semibold text-white"
-        >
-          <Plus size={18} />
-          Create Analysis
-        </Link>
-      </div>
-
-      {/* LIST */}
-
-      <div className="mt-10 space-y-5">
-        {analyses.length === 0 ? (
-          <div className="rounded-4xl border border-dashed border-gray-300 py-20 text-center">
-            <h2 className="text-2xl font-bold">No Analysis Found</h2>
-
-            <p className="mt-3 text-gray-500">
-              Publish your first market analysis.
-            </p>
-          </div>
-        ) : (
-          analyses.map((analysis) => (
-            <div
-              key={analysis._id}
-              className="rounded-4xl border border-gray-200 bg-white p-6 shadow-sm"
-            >
-              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-                {/* LEFT */}
-
-                <div>
-                  <h2 className="text-2xl font-bold">{analysis.title}</h2>
-
-                  <div className="mt-3 flex flex-wrap gap-3">
-                    <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-600">
-                      {analysis.market}
-                    </span>
-
-                    <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-semibold text-green-600">
-                      {analysis.status}
-                    </span>
-
-                    {analysis.featured && (
-                      <span className="rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-700">
-                        Featured
-                      </span>
-                    )}
-                  </div>
-
-                  <p className="mt-4 text-sm text-gray-500">
-                    Created: {new Date(analysis.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-
-                {/* RIGHT */}
-
-                <div className="flex gap-3">
-                  <Link
-                    to={`/teacher/dashboard/analysis/${analysis._id}/edit`}
-                    className="flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-2 font-semibold transition hover:border-black"
-                  >
-                    <Pencil size={16} />
-                    Edit
-                  </Link>
-
-                  <button
-                    onClick={() => deleteHandler(analysis._id)}
-                    className="flex items-center gap-2 rounded-xl bg-red-500 px-4 py-2 font-semibold text-white transition hover:bg-red-600"
-                  >
-                    <Trash2 size={16} />
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-    </div>
+      )}
+    </section>
   );
 };
 

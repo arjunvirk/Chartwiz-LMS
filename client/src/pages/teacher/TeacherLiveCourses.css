@@ -1,0 +1,29 @@
+.alphira-teacher-live .alphira-live-heading { align-items: center; }
+.alphira-teacher-live .alphira-live-heading > a { flex-shrink: 0; }
+.alphira-teacher-live-bar { display: flex; align-items: center; justify-content: space-between; gap: 24px; background: #20251f; color: #ccdfbc; padding: 22px 28px; margin-bottom: 24px; }
+.alphira-teacher-live-bar span { display: inline-flex; align-items: center; gap: 14px; font-size: 9px; letter-spacing: .13em; }
+.alphira-teacher-live-bar strong { font-size: 28px; font-weight: 500; color: #fff; }
+.alphira-teacher-live-delete { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; min-height: 44px; margin-top: 10px; border: 1px solid #e6dcd5; background: #fff; color: #8a6659; font-size: 11px; cursor: pointer; }
+.alphira-teacher-live-delete:hover { background: #f8eeea; }
+.alphira-teacher-live-dialog { position: fixed; inset: 0; margin: auto; width: min(460px,calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 1px solid #d6decd; background: white; color: #20251f; overflow-y: auto; }
+.alphira-teacher-live-dialog::backdrop { background: #151a15a8; backdrop-filter: blur(4px); }
+.alphira-teacher-live-dialog[open] { animation: alphira-teacher-dialog-enter .25s ease-out; }
+@keyframes alphira-teacher-dialog-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.alphira-teacher-live-dialog-header { display: flex; justify-content: space-between; align-items: center; gap: 18px; background: #20251f; color: #cfdfbf; padding: 14px 24px; }
+.alphira-teacher-live-dialog-header > span { font-size: 8px; letter-spacing: .12em; }
+.alphira-teacher-live-dialog-header button { display: grid; place-items: center; min-width: 44px; min-height: 44px; border: 1px solid #506042; background: transparent; color: white; cursor: pointer; }
+.alphira-teacher-live-dialog form { padding: 28px; }
+.alphira-teacher-live-dialog h2 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: 28px; font-weight: 650; letter-spacing: -.035em; }
+.alphira-teacher-live-dialog form > p { color: #78866c; font-size: 12px; line-height: 1.8; margin: 12px 0 26px; overflow-wrap: anywhere; }
+.alphira-teacher-live-dialog label { display: block; margin-bottom: 10px; font-size: 12px; font-weight: 500; }
+.alphira-teacher-live-dialog input { width: 100%; min-height: 48px; padding: 13px; border: 1px solid #d8e0cf; background: #fbfcf8; color: #20251f; font: inherit; font-size: 13px; outline: none; }
+.alphira-teacher-live-dialog input:focus { border-color: #849e6f; box-shadow: 0 0 0 3px #71846018; }
+.alphira-teacher-live-dialog small { display: block; margin-top: 12px; color: #78866c; font-size: 10px; line-height: 1.8; }
+.alphira-teacher-live-dialog-actions { display: flex; gap: 12px; margin-top: 28px; }
+.alphira-teacher-live-dialog-actions > button { flex: 1; min-height: 46px; font-size: 11px; cursor: pointer; }
+.alphira-teacher-live-dialog-actions > button:first-child { border: 1px solid #d8e0cf; background: white; color: #627750; }
+.alphira-teacher-live-dialog button:disabled { opacity: .5; cursor: wait; }
+.alphira-teacher-live button:focus-visible { outline: 2px solid #8ba776; outline-offset: 4px; }
+@media(max-width:760px) { .alphira-teacher-live .alphira-live-heading { align-items: flex-start; } }
+@media(max-width:400px) { .alphira-teacher-live-dialog form { padding: 22px; } .alphira-teacher-live-dialog-actions { flex-direction: column-reverse; } }
+@media(prefers-reduced-motion:reduce) { .alphira-teacher-live-dialog[open] { animation: none; } }

@@ -1,338 +1,64 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { BookOpen, Users, IndianRupee, TrendingUp, Video } from "lucide-react";
-
-import { getTeacherCourses } from "../../actions/courseActions";
-
+import { motion, useReducedMotion } from "framer-motion";
+import { BookOpen, Users, TrendingUp, Video, ArrowUpRight, Plus } from "lucide-react";
+import { getTeacherCourses, listCourses } from "../../actions/courseActions";
 import { listWebinars } from "../../actions/webinarActions";
-
 import { getAnalyses } from "../../actions/marketAnalysisActions";
+import "./TeacherDashboard.css";
 
 const TeacherDashboard = () => {
-  // ---------------- STATS ----------------
-
   const dispatch = useDispatch();
-
+  const reducedMotion = useReducedMotion();
+  const { courses: academyCourses = [], loading: academyLoading, error: academyError } = useSelector((state) => state.courseList);
   const { userInfo } = useSelector((state) => state.userLogin);
-
-  const teacherCourses = useSelector((state) => state.teacherCourses);
-
-  const { loading, error, courses = [] } = teacherCourses;
-
-  const webinarList = useSelector((state) => state.webinarList);
-
-  const { webinars = [] } = webinarList;
-
-  const analysisList = useSelector((state) => state.analysisList);
-  const { analyses = [] } = analysisList;
+  const { loading, error, courses = [], totalEnrolledStudents } = useSelector((state) => state.teacherCourses);
+  const { webinars = [], loading: webinarsLoading, error: webinarsError } = useSelector((state) => state.webinarList);
+  const { analyses = [], loading: analysesLoading, error: analysesError } = useSelector((state) => state.analysisList);
 
   useEffect(() => {
     if (!userInfo) return;
-
     dispatch(getTeacherCourses());
-
+    dispatch(listCourses());
     dispatch(listWebinars());
-
     dispatch(getAnalyses());
   }, [dispatch, userInfo]);
 
-  const totalCourses = courses.length;
-
-  const totalStudents = courses.reduce(
-    (total, course) => total + (course.students?.length || 0),
-    0,
-  );
-
-  const totalRevenue = courses.reduce(
-    (total, course) => total + (course.price || 0),
-    0,
-  );
   const stats = [
-    {
-      title: "Total Courses",
-      value: totalCourses,
-      icon: <BookOpen size={28} />,
-      bg: "bg-blue-100",
-      text: "text-blue-600",
-    },
-
-    {
-      title: "Total Students",
-      value: totalStudents,
-      icon: <Users size={28} />,
-      bg: "bg-green-100",
-      text: "text-green-600",
-    },
-
-    {
-      title: "Potential Revenue",
-      value: `₹${totalRevenue.toLocaleString()}`,
-      icon: <IndianRupee size={28} />,
-      bg: "bg-purple-100",
-      text: "text-purple-600",
-    },
-    {
-      title: "Market Analysis",
-      value: analyses.length,
-      icon: <TrendingUp size={28} />,
-      bg: "bg-orange-100",
-      text: "text-orange-600",
-    },
+    { title: "Total courses", value: academyLoading ? "…" : academyError ? "—" : academyCourses.length, icon: BookOpen, hint: academyError ? "Academy catalog unavailable" : "Academy programs", to: "/courses" },
+    { title: "Total enrolled students", value: loading ? "…" : error ? "—" : totalEnrolledStudents ?? "—", icon: Users, hint: "Across the academy · counted once" },
+    { title: "Market insights", value: analysesLoading ? "…" : analysesError ? "—" : analyses.length, icon: TrendingUp, hint: "Available analysis posts" },
   ];
 
-  if (loading) {
-    return (
-      <div className="flex justify-center py-20">
-        <div className="h-14 w-14 animate-spin rounded-full border-4 border-black border-t-transparent"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="rounded-3xl bg-red-50 p-6 text-red-600">{error}</div>
-    );
-  }
   return (
-    <div>
-      {/* HEADER */}
+    <motion.section className="alphira-teacher" aria-labelledby="teacher-dashboard-title" initial={reducedMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
+      <header className="alphira-teacher-heading"><div><span className="alphira-teacher-eyebrow">Teaching workspace / Overview</span><h1 id="teacher-dashboard-title">Teach with perspective.</h1><p>Your programs, market insights and mentor sessions, together in one place.</p></div><Link to="/teacher/dashboard/analysis/create" className="alphira-teacher-button"><Plus size={16} aria-hidden="true" />New analysis</Link></header>
 
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-black">
-            Teacher Dashboard
-          </h1>
+      <div className="alphira-teacher-stats">{stats.map(({ title, value, icon: Icon, hint, to }) => <div key={title}><div className="alphira-teacher-stat-top"><span>{title}</span><Icon size={18} aria-hidden="true" /></div><strong>{to ? <Link to={to} aria-label="View academy courses">{value}</Link> : value}</strong><p>{hint}</p></div>)}</div>
 
-          <p className="mt-3 text-base leading-relaxed text-gray-500">
-            Manage your courses, students, mentorship programs and academy
-            analytics from one professional dashboard.
-          </p>
+      <div className="alphira-teacher-grid">
+        <section className="alphira-teacher-panel alphira-teacher-courses" aria-labelledby="teacher-courses-title">
+          <div className="alphira-teacher-panel-heading"><div><span className="alphira-teacher-eyebrow">01 / Programs</span><h2 id="teacher-courses-title">Your courses</h2></div><Link to="/teacher/dashboard/courses" className="alphira-teacher-text-link">View all <ArrowUpRight size={15} aria-hidden="true" /></Link></div>
+          {loading ? <p className="alphira-teacher-state" role="status">Loading your courses…</p> : error ? <div className="alphira-teacher-state" role="alert"><p>{error}</p><button type="button" onClick={() => dispatch(getTeacherCourses())}>Try again</button></div> : courses.length === 0 ? <div className="alphira-teacher-state"><BookOpen size={25} aria-hidden="true" /><h3>Your next program starts here.</h3><p>Create your first course from the course management page.</p><Link to="/teacher/dashboard/courses" className="alphira-teacher-text-link">Manage courses <ArrowUpRight size={15} aria-hidden="true" /></Link></div> : <div>{courses.map((course, index) => <article key={course._id} className="alphira-teacher-course"><span className="alphira-teacher-course-number">{String(index + 1).padStart(2, "0")}</span><div><h3>{course.title}</h3><div className="alphira-teacher-course-meta"><span><Users size={13} aria-hidden="true" />{course.students?.length || 0} students</span><span><BookOpen size={13} aria-hidden="true" />{course.videos?.length || 0} lessons</span></div></div><Link to="/teacher/dashboard/courses" className="alphira-teacher-manage" aria-label={`Manage courses including ${course.title}`}>Manage <ArrowUpRight size={14} aria-hidden="true" /></Link></article>)}</div>}
+          <div className="alphira-teacher-course-footer"><Video size={18} aria-hidden="true" /><div><strong>Live mentorship</strong><p>Manage batches and scheduled classes.</p></div><Link to="/teacher/dashboard/live-courses" aria-label="Manage live courses"><ArrowUpRight size={19} aria-hidden="true" /></Link></div>
+        </section>
+
+        <div className="alphira-teacher-side">
+          <section className="alphira-teacher-panel" aria-labelledby="teacher-analysis-title"><div className="alphira-teacher-panel-heading"><div><span className="alphira-teacher-eyebrow">02 / Research</span><h2 id="teacher-analysis-title">Market insights</h2></div><Link to="/teacher/dashboard/analysis" className="alphira-teacher-text-link">View all <ArrowUpRight size={15} aria-hidden="true" /></Link></div>
+            {analysesLoading ? <p className="alphira-teacher-state" role="status">Loading analyses…</p> : analysesError ? <p className="alphira-teacher-state" role="alert">{analysesError}</p> : analyses.length === 0 ? <p className="alphira-teacher-state">No market analysis published yet.</p> : analyses.slice(0, 3).map((analysis) => <article key={analysis._id} className="alphira-teacher-insight"><span>{analysis.market}</span><h3>{analysis.title}</h3></article>)}
+            <Link to="/teacher/dashboard/analysis/create" className="alphira-teacher-compose"><Plus size={15} aria-hidden="true" />Publish a new perspective</Link>
+          </section>
+
+          <section className="alphira-teacher-panel" aria-labelledby="teacher-webinars-title"><div className="alphira-teacher-panel-heading"><div><span className="alphira-teacher-eyebrow">03 / Sessions</span><h2 id="teacher-webinars-title">Webinars</h2></div><Video size={20} aria-hidden="true" /></div>
+            {webinarsLoading ? <p className="alphira-teacher-state" role="status">Loading webinars…</p> : webinarsError ? <p className="alphira-teacher-state" role="alert">{webinarsError}</p> : webinars.length === 0 ? <p className="alphira-teacher-state">No webinars scheduled.</p> : webinars.slice(0, 3).map((webinar) => { const date = webinar.startTime ? new Date(webinar.startTime) : null; return <article key={webinar._id} className="alphira-teacher-webinar"><h3>{webinar.title}</h3><p>{date && !Number.isNaN(date.getTime()) ? date.toLocaleString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" }) : "Schedule to be announced"}</p>{webinar.meetLink ? <a href={webinar.meetLink} target="_blank" rel="noreferrer" className="alphira-teacher-button">Open webinar <ArrowUpRight size={15} aria-hidden="true" /></a> : <span className="alphira-teacher-pending">Joining link not available yet</span>}</article>; })}
+          </section>
         </div>
       </div>
-
-      <div className="mt-8 rounded-4xl bg-black p-8 text-white">
-        <h2 className="text-3xl font-bold">Market Content Center</h2>
-
-        <p className="mt-3 text-gray-300">
-          Publish market analysis to keep students updated.
-        </p>
-      </div>
-
-      {/* STATS */}
-
-      <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {stats.map((item) => (
-          <div
-            key={item.title}
-            className="rounded-4xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-          >
-            {/* TOP */}
-
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-500">
-                  {item.title}
-                </p>
-
-                <h2 className="mt-3 text-4xl font-extrabold tracking-tight text-black">
-                  {item.value}
-                </h2>
-              </div>
-
-              <div
-                className={`flex h-16 w-16 items-center justify-center rounded-3xl ${item.bg} ${item.text}`}
-              >
-                {item.icon}
-              </div>
-            </div>
-
-            {/* BOTTOM */}
-
-            <div className="mt-6 flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-green-500"></div>
-
-              <span className="text-sm font-medium text-gray-500">
-                Updated Today
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* MAIN GRID */}
-
-      <div className="mt-10 grid gap-8 xl:grid-cols-[1.5fr_1fr]">
-        {/* COURSES */}
-
-        <div className="rounded-4xl border border-gray-200 bg-white p-6 shadow-sm">
-          {/* HEADER */}
-
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-extrabold text-black">
-                Your Courses
-              </h2>
-
-              <p className="mt-2 text-sm text-gray-500">
-                Manage and monitor your mentorship programs.
-              </p>
-            </div>
-
-            <Link
-              to="/teacher/courses"
-              className="rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
-            >
-              View All
-            </Link>
-          </div>
-
-          {/* COURSES LIST */}
-
-          {courses.length === 0 && (
-            <div className="rounded-3xl border border-dashed border-gray-300 py-20 text-center">
-              <h2 className="text-2xl font-bold">No Courses Yet</h2>
-
-              <p className="mt-3 text-sm text-gray-500">
-                Create your first course.
-              </p>
-            </div>
-          )}
-
-          <div className="mt-8 space-y-5">
-            {courses.map((course) => (
-              <div
-                key={course._id}
-                className="flex flex-col gap-5 rounded-3xl border border-gray-200 p-5 transition hover:border-black sm:flex-row sm:items-center sm:justify-between"
-              >
-                {/* LEFT */}
-
-                <div>
-                  <h3 className="text-xl font-bold text-black">
-                    {course.title}
-                  </h3>
-
-                  <div className="mt-3 flex flex-wrap gap-4 text-sm text-gray-500">
-                    <div className="flex items-center gap-2">
-                      <Users size={16} />
-                      {course.students?.length || 0} Students
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <BookOpen size={16} />
-                      {course.videos?.length || 0} Lessons
-                    </div>
-                  </div>
-                </div>
-
-                {/* RIGHT */}
-
-                <div className="flex items-center gap-3">
-                  <span className="rounded-full bg-green-100 px-4 py-2 text-xs font-bold text-green-600">
-                    Published
-                  </span>
-
-                  <button className="rounded-xl border border-gray-300 px-5 py-3 text-sm font-semibold text-gray-700 transition hover:border-black hover:text-black">
-                    Edit
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* RIGHT SIDEBAR */}
-
-        <div className="space-y-8">
-          {/* ANALYTICS */}
-
-          <div className="rounded-4xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-black">Market Analysis</h2>
-
-              <div className="flex gap-3">
-                <Link
-                  to="/teacher/dashboard/analysis/create"
-                  className="rounded-xl bg-black px-4 py-2 text-sm font-semibold text-white"
-                >
-                  New Analysis
-                </Link>
-
-                <Link
-                  to="/teacher/dashboard/analysis"
-                  className="text-sm font-semibold text-black"
-                >
-                  View All
-                </Link>
-              </div>
-            </div>
-
-            {analyses.length === 0 ? (
-              <p className="mt-4 text-sm text-gray-500">
-                No market analysis published yet.
-              </p>
-            ) : (
-              <div className="mt-5 space-y-3">
-                {analyses.slice(0, 3).map((analysis) => (
-                  <div
-                    key={analysis._id}
-                    className="rounded-2xl border border-gray-200 p-4"
-                  >
-                    <h3 className="font-bold">{analysis.title}</h3>
-
-                    <p className="mt-2 text-xs text-gray-500">
-                      {analysis.market}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* UPCOMING WEBINARS */}
-          <div className="rounded-4xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="flex items-center gap-3">
-              <Video size={22} />
-
-              <h2 className="text-2xl font-bold text-black">
-                Upcoming Webinars
-              </h2>
-            </div>
-
-            {webinars.length === 0 ? (
-              <p className="mt-4 text-sm text-gray-500">
-                No webinars scheduled.
-              </p>
-            ) : (
-              <div className="mt-5 space-y-4">
-                {webinars.slice(0, 3).map((webinar) => (
-                  <div
-                    key={webinar._id}
-                    className="rounded-2xl border border-gray-200 p-4"
-                  >
-                    <h3 className="font-bold">{webinar.title}</h3>
-
-                    <p className="mt-2 text-xs text-gray-500">
-                      {new Date(webinar.startTime).toLocaleString()}
-                    </p>
-
-                    <a
-                      href={webinar.meetLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-3 inline-block rounded-xl bg-black px-4 py-2 text-sm font-semibold text-white"
-                    >
-                      Open Webinar
-                    </a>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+    </motion.section>
   );
 };
 
 export default TeacherDashboard;
+
+

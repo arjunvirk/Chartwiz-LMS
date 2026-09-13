@@ -141,6 +141,7 @@ export const getTeacherCourses = () => async (dispatch) => {
     dispatch({
       type: TEACHER_COURSES_SUCCESS,
       payload: data.courses,
+      totalEnrolledStudents: data.totalEnrolledStudents,
     });
   } catch (error) {
     dispatch({
@@ -218,3 +219,4 @@ export const deleteCourse = (id) => async (dispatch) => {
     throw error;
   }
 };
+
