@@ -37,10 +37,11 @@
 .alphira-live-empty-icon { display: grid; place-items: center; width: 76px; height: 76px; border: 1px solid #d3ddc6; border-radius: 50%; margin: 0 auto 24px; color: #66745b; }
 .alphira-live-page .alphira-live-empty h2 { font-family: var(--ac-font-heading,sans-serif); font-size: clamp(30px,3.5vw,44px); font-weight: 700; line-height: 1.15; letter-spacing: -.04em; margin: 0; }
 .alphira-live-empty p { font-size: 13px; line-height: 1.8; color: #656a61; margin: 20px 0 0; }
-.alphira-live-loading { min-height: 260px; display: flex; align-items: center; justify-content: center; gap: 12px; color: #656a61; font-size: 13px; border-top: 1px solid #dfe3d7; }
-.alphira-live-loading > span { width: 22px; height: 22px; border: 2px solid #dce4d0; border-top-color: #536348; border-radius: 50%; animation: alphira-live-spin .8s linear infinite; }
-@keyframes alphira-live-spin { to { transform: rotate(360deg); } }
+.alphira-live-page-loading { min-height: 260px; display: flex; align-items: center; justify-content: center; gap: 12px; color: #656a61; font-size: 13px; border-top: 1px solid #dfe3d7; }
+.alphira-live-page-loading > span { display: block; flex-shrink: 0; width: 32px; height: 32px; border: 2px solid #dce4d0; border-top-color: #20251f; border-right-color: #66745b; border-radius: 0; animation: alphira-live-page-square-spin .8s linear infinite; }
+@keyframes alphira-live-page-square-spin { to { transform: rotate(360deg); } }
 @media(max-width: 1050px) { .alphira-live-batch { grid-template-columns: 1.5fr 1fr; } .alphira-live-enroll { grid-column: 1 / -1; border-left: 0; border-top: 1px solid #e2e4dc; flex-direction: row; align-items: center; } .alphira-live-enroll button { width: auto; } }
 @media(max-width: 700px) { .alphira-live-page { padding: 116px 24px 56px; } .alphira-live-heading > div { grid-template-columns: 1fr; gap: 24px; } .alphira-live-heading > div > p { justify-self: start; } .alphira-live-batch { grid-template-columns: 1fr; } .alphira-live-schedule { border-left: 0; border-top: 1px solid #e7e9e0; } .alphira-live-schedule dl { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; } }
 @media(max-width: 420px) { .alphira-live-page { padding-inline: 20px; } .alphira-live-batch-main, .alphira-live-schedule, .alphira-live-enroll { padding: 24px; } .alphira-live-enroll { flex-direction: column; align-items: stretch; } .alphira-live-schedule dl { grid-template-columns: 1fr; } }
-@media(prefers-reduced-motion: reduce) { .alphira-live-loading > span { animation: none; } .alphira-live-enroll button { transition: none; } }
+@media(prefers-reduced-motion: reduce) { .alphira-live-page-loading > span { animation: none; } .alphira-live-enroll button { transition: none; } }
+

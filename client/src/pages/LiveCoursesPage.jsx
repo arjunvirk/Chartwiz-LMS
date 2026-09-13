@@ -38,7 +38,7 @@ export default function LiveCoursesPage() {
         <p className="alphira-live-eyebrow"><Radio size={15} aria-hidden="true" />Live Mentorship</p>
         <div><h1>Live Mentorship<br /><span>Batches.</span></h1><p>Join professional live trading mentorship batches, market analysis sessions and webinars. Enroll now and access scheduled classes directly from your student dashboard.</p></div>
       </motion.header>
-      {loading ? <div className="alphira-live-loading" role="status"><span aria-hidden="true" />Loading mentorship batches…</div> : liveCourses.length === 0 ? (
+      {loading ? <div className="alphira-live-page-loading" role="status"><span aria-hidden="true" />Loading mentorship batches…</div> : liveCourses.length === 0 ? (
         <motion.section {...reveal()} className="alphira-live-empty">
           <span className="alphira-live-empty-icon" aria-hidden="true"><CalendarDays size={36} strokeWidth={1.3} /></span>
           <h2>Live Courses<br /><span>Coming Soon</span></h2>
@@ -61,3 +61,4 @@ export default function LiveCoursesPage() {
     </div>
   </main>;
 }
+
