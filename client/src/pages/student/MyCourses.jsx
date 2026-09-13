@@ -1,8 +1,10 @@
+import forexImage from "../../assets/images/forex-art.png";
+import indianMarketImage from "../../assets/images/indian-market-art.png";
+import "./MyCourses.css";
+import { BookOpen } from "lucide-react";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { motion } from "framer-motion";
-import { getMyCourses } from "../../actions/courseActions";
+import { useSelector } from "react-redux";
+import { motion, useReducedMotion } from "framer-motion";
 import toast from "react-hot-toast";
 
 const fadeUp = {
@@ -15,15 +17,10 @@ const fadeUp = {
 };
 
 const MyCourses = () => {
-  const dispatch = useDispatch();
+  const reducedMotion = useReducedMotion();
   const myCourses = useSelector((state) => state.myCourses);
-  const { userInfo } = useSelector((state) => state.userLogin);
-  const { loading, error, courses } = myCourses;
+  const { loading, error, courses = [] } = myCourses;
 
-  useEffect(() => {
-    if (!userInfo) return;
-    dispatch(getMyCourses());
-  }, [dispatch, userInfo]);
 
   useEffect(() => {
     if (error) {
@@ -33,88 +30,73 @@ const MyCourses = () => {
   }, [error]);
 
   return (
-    <div>
+    <div className="alphira-my-courses">
       {/* TITLE */}
-      <div className="mb-8">
-        <h1 className="font-serif text-3xl leading-tight text-graphite">
+      <div className="alphira-my-courses-heading">
+        <p className="alphira-my-courses-eyebrow">Your academy / Enrollment</p>
+        <h1>
           My Courses
         </h1>
         <p className="mt-2 text-sm text-slate">
-          Continue learning your enrolled premium trading courses.
+          Your enrolled programs at Alphira Capital. Classes take place at the academy.
         </p>
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="h-11 w-11 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
+        <div className="alphira-my-courses-state" role="status">
+          Loading your courses…
         </div>
-      ) : courses?.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-pebble bg-bone py-20 text-center">
-          <h2 className="font-serif text-2xl text-graphite">No Courses Yet</h2>
+      ) : error ? <div className="alphira-my-courses-state is-error" role="alert">{error}</div> : courses?.length === 0 ? (
+        <div className="alphira-my-courses-state">
+          <BookOpen size={30} aria-hidden="true" /><h2>No courses yet</h2>
           <p className="mt-3 text-sm text-slate">
             You are not enrolled in any course.
           </p>
         </div>
       ) : (
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <div className="alphira-my-courses-grid">
           {courses.map((course, i) => (
             <motion.div
               key={course._id}
               variants={fadeUp}
-              initial="hidden"
+              initial={reducedMotion ? false : "hidden"}
               whileInView="show"
               viewport={{ once: true }}
               custom={i}
-              className="overflow-hidden rounded-2xl bg-bone transition duration-300 hover:-translate-y-1"
+              className="alphira-my-course-card"
             >
               {/* THUMBNAIL */}
-              <div className="relative h-44 w-full overflow-hidden">
+              <div className="alphira-my-course-image">
+                <img className="alphira-my-course-fallback" src="/alphira-ac-logo.svg" alt="" aria-hidden="true" />
                 <img
-                  src={course.thumbnail}
-                  alt={course.title}
+                  src={/indian|india/i.test(course.title || "") ? indianMarketImage : /forex/i.test(course.title || "") ? forexImage : course.thumbnail}
+                  alt={`${course.title} program`} key={course.thumbnail}
                   onError={(e) => {
-                    e.target.src =
-                      "https://via.placeholder.com/600x400?text=Course";
+                    e.currentTarget.style.display = "none";
                   }}
                   className="h-full w-full object-cover"
                 />
               </div>
 
               {/* CONTENT */}
-              <div className="p-6">
-                <span className="rounded-pill bg-obsidian px-3 py-1 font-mono text-[11px] font-medium text-vellum">
-                  {course.category}
+              <div className="alphira-my-course-body">
+                <span className="alphira-my-course-category">
+                  {course.category || "Trading education"}
                 </span>
 
-                <h2 className="mt-4 line-clamp-2 text-lg font-semibold text-graphite">
+                <h2 className="alphira-my-course-title">
                   {course.title}
                 </h2>
 
-                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-slate">
+                <p className="alphira-my-course-description">
                   {course.description}
                 </p>
 
-                <div className="mt-5 flex items-center justify-between border-t border-pebble pt-4">
-                  <div>
-                    <p className="text-xs text-slate">Instructor</p>
-                    <h4 className="text-sm font-semibold text-graphite">
-                      {course.instructor}
-                    </h4>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-slate">Lessons</p>
-                    <h4 className="text-sm font-semibold text-graphite">
-                      {course.videos?.length || 0}
-                    </h4>
-                  </div>
+                <div className="alphira-my-course-meta">
+                  <div><p>Enrollment</p><h4>Enrolled</h4></div>
+                  <div><p>Learning format</p><h4>Offline · In person</h4></div>
                 </div>
-
-                <Link
-                  to={`/dashboard/courses/${course._id}`}
-                  className="mt-6 block rounded-pill bg-ember-orange py-3 text-center font-mono text-sm font-semibold text-black transition hover:brightness-95"
-                >
-                  Continue Learning
-                </Link>
+                <div className="alphira-my-course-academy">Alphira Capital<span>Academy program</span></div>
               </div>
             </motion.div>
           ))}

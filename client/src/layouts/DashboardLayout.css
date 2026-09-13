@@ -50,3 +50,8 @@
 @media(max-width:1023px) { .alphira-dash-shell, .alphira-dash-shell.is-compact { grid-template-columns: minmax(0,1fr); } .alphira-dash-sidebar, .alphira-dash-desktop-toggle { display: none; } .alphira-dash-mobile-toggle { display: inline-grid; } .alphira-dash-content { padding: 28px 22px; } .alphira-dash-topbar { padding-inline: 22px; } }
 @media(max-width:600px) { .alphira-dash-content { padding: 24px 16px; } .alphira-dash-topbar { padding-inline: 16px; } .alphira-dash-breadcrumb { gap: 10px; } .alphira-dash-breadcrumb > span { font-size: 10px; } .alphira-dash-stats { gap: 8px; } .alphira-dash-stat { padding: 14px 10px; } .alphira-dash-stat > div { font-size: 10px; line-height: 1.5; } .alphira-dash-stat svg { display: none; } .alphira-dash-stat strong { font-size: 26px; } }
 @media(prefers-reduced-motion:reduce) { .alphira-dash-shell, .alphira-dash-link { transition: none; } .alphira-dash-drawer[open] { animation: none; } }
+
+.alphira-dash-enrollment { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; padding: 20px; margin-bottom: 28px; background: #20251f; color: white; }
+.alphira-dash-enrollment > span { font-size: 12px; }
+.alphira-dash-enrollment strong { font-size: 26px; line-height: 1; }
+.alphira-dash-enrollment small { color: #c2cfb4; margin-left: auto; font-size: 10px; }

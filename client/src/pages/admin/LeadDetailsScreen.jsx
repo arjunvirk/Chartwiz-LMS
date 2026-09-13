@@ -1,3 +1,4 @@
+import "./LeadDetailsScreen.css";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +19,7 @@ import { LEAD_UPDATE_RESET } from "../../constants/leadConstants";
 import { toast } from "react-hot-toast";
 
 const inputClass =
-  "w-full rounded-xl border border-pebble bg-vellum px-4 py-3 text-sm outline-none focus:border-obsidian";
+  "alphira-lead-input";
 
 const LeadDetailsScreen = () => {
   const { id } = useParams();
@@ -90,7 +91,7 @@ const LeadDetailsScreen = () => {
 
   if (loading) {
     return (
-      <div className="rounded-2xl bg-bone p-16 text-center">
+      <div className="alphira-lead-feedback" role="status">
         <h2 className="text-xl font-semibold text-graphite">Loading Lead...</h2>
       </div>
     );
@@ -98,39 +99,40 @@ const LeadDetailsScreen = () => {
 
   if (error) {
     return (
-      <div className="rounded-2xl border border-red-200 bg-red-50 p-16 text-center">
+      <div className="alphira-lead-feedback is-error" role="alert">
         <h2 className="text-lg font-semibold text-red-600">{error}</h2>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="alphira-lead-detail">
       <Link
         to="/admin/dashboard/leads"
-        className="inline-flex items-center gap-2 rounded-xl border border-pebble bg-vellum px-5 py-3 text-sm font-medium text-graphite transition hover:bg-bone"
+        className="alphira-lead-back"
       >
         <ArrowLeft size={16} />
         Back to Leads
       </Link>
 
-      <div className="rounded-2xl bg-obsidian p-8 text-vellum">
-        <h1 className="font-serif text-3xl leading-tight">Lead Details</h1>
+      <div className="alphira-lead-heading">
+        <p className="alphira-lead-eyebrow">Enquiries / Lead record</p><h1>Lead details<span>.</span></h1>
+        <div className="alphira-lead-name">{lead.name || "Enquiry"}<span>{(lead.status || "new").replaceAll("_", " ")}</span></div>
         <p className="mt-2 text-sm text-mist">
           View and manage this admission enquiry.
         </p>
       </div>
 
-      <div className="grid gap-3 lg:grid-cols-2">
+      <div className="alphira-lead-grid">
         {/* PERSONAL */}
-        <div className="rounded-2xl bg-bone p-8">
+        <div className="alphira-lead-info">
           <h2 className="mb-5 text-lg font-semibold text-graphite">
             Personal Information
           </h2>
 
           <div className="space-y-5">
-            <div className="flex items-center gap-4">
-              <User size={18} className="text-ember-orange" />
+            <div className="alphira-lead-info-row">
+              <User size={18} className="alphira-lead-icon" />
               <div>
                 <p className="text-xs text-slate">Full Name</p>
                 <p className="text-sm font-semibold text-graphite">
@@ -138,20 +140,20 @@ const LeadDetailsScreen = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Phone size={18} className="text-ember-orange" />
+            <div className="alphira-lead-info-row">
+              <Phone size={18} className="alphira-lead-icon" />
               <div>
                 <p className="text-xs text-slate">Phone</p>
                 <a
                   href={`tel:${lead.phone}`}
-                  className="text-sm font-semibold text-graphite hover:text-ember-orange"
+                  className="alphira-lead-phone"
                 >
                   {lead.phone}
                 </a>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Mail size={18} className="text-ember-orange" />
+            <div className="alphira-lead-info-row">
+              <Mail size={18} className="alphira-lead-icon" />
               <div>
                 <p className="text-xs text-slate">Email</p>
                 <p className="text-sm font-semibold text-graphite">
@@ -163,14 +165,14 @@ const LeadDetailsScreen = () => {
         </div>
 
         {/* LEAD */}
-        <div className="rounded-2xl bg-bone p-8">
+        <div className="alphira-lead-info">
           <h2 className="mb-5 text-lg font-semibold text-graphite">
             Lead Information
           </h2>
 
           <div className="space-y-5">
-            <div className="flex items-center gap-4">
-              <BookOpen size={18} className="text-ember-orange" />
+            <div className="alphira-lead-info-row">
+              <BookOpen size={18} className="alphira-lead-icon" />
               <div>
                 <p className="text-xs text-slate">Interested Course</p>
                 <p className="text-sm font-semibold text-graphite">
@@ -178,8 +180,8 @@ const LeadDetailsScreen = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Flag size={18} className="text-ember-orange" />
+            <div className="alphira-lead-info-row">
+              <Flag size={18} className="alphira-lead-icon" />
               <div>
                 <p className="text-xs text-slate">Lead Source</p>
                 <p className="text-sm font-semibold text-graphite">
@@ -187,8 +189,8 @@ const LeadDetailsScreen = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Calendar size={18} className="text-ember-orange" />
+            <div className="alphira-lead-info-row">
+              <Calendar size={18} className="alphira-lead-icon" />
               <div>
                 <p className="text-xs text-slate">Created</p>
                 <p className="text-sm font-semibold text-graphite">
@@ -196,8 +198,8 @@ const LeadDetailsScreen = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Clock size={18} className="text-ember-orange" />
+            <div className="alphira-lead-info-row">
+              <Clock size={18} className="alphira-lead-icon" />
               <div>
                 <p className="text-xs text-slate">Last Updated</p>
                 <p className="text-sm font-semibold text-graphite">
@@ -210,10 +212,10 @@ const LeadDetailsScreen = () => {
 
         <form
           onSubmit={submitHandler}
-          className="rounded-2xl bg-bone p-8 lg:col-span-2"
+          className="alphira-lead-form" aria-busy={!!loadingUpdate}
         >
           {successUpdate && (
-            <div className="mb-5 rounded-xl bg-ember-orange/10 p-4 text-sm text-ember-orange">
+            <div className="alphira-lead-success">
               Lead updated successfully.
             </div>
           )}
@@ -227,13 +229,13 @@ const LeadDetailsScreen = () => {
             CRM Management
           </h2>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="alphira-lead-fields">
             <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
+              <label htmlFor="lead-status" className="mb-2 block text-sm font-medium text-graphite">
                 Lead Status
               </label>
               <select
-                value={status}
+                id="lead-status" value={status}
                 onChange={(e) => setStatus(e.target.value)}
                 className={inputClass}
               >
@@ -248,11 +250,11 @@ const LeadDetailsScreen = () => {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
+              <label htmlFor="lead-priority" className="mb-2 block text-sm font-medium text-graphite">
                 Priority
               </label>
               <select
-                value={priority}
+                id="lead-priority" value={priority}
                 onChange={(e) => setPriority(e.target.value)}
                 className={inputClass}
               >
@@ -263,11 +265,11 @@ const LeadDetailsScreen = () => {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
+              <label htmlFor="lead-paymentStatus" className="mb-2 block text-sm font-medium text-graphite">
                 Payment Status
               </label>
               <select
-                value={paymentStatus}
+                id="lead-paymentStatus" value={paymentStatus}
                 onChange={(e) => setPaymentStatus(e.target.value)}
                 className={inputClass}
               >
@@ -277,24 +279,24 @@ const LeadDetailsScreen = () => {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
+              <label htmlFor="lead-followUpDate" className="mb-2 block text-sm font-medium text-graphite">
                 Follow Up Date
               </label>
               <input
                 type="date"
-                value={followUpDate}
+                id="lead-followUpDate" value={followUpDate}
                 onChange={(e) => setFollowUpDate(e.target.value)}
                 className={inputClass}
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
+              <label htmlFor="lead-visitDate" className="mb-2 block text-sm font-medium text-graphite">
                 Academy Visit Date
               </label>
               <input
                 type="date"
-                value={visitDate}
+                id="lead-visitDate" value={visitDate}
                 onChange={(e) => setVisitDate(e.target.value)}
                 className={inputClass}
               />
@@ -302,23 +304,23 @@ const LeadDetailsScreen = () => {
           </div>
 
           <div className="mt-6">
-            <label className="mb-2 block text-sm font-medium text-graphite">
+            <label htmlFor="lead-notes" className="mb-2 block text-sm font-medium text-graphite">
               Counselor Notes
             </label>
             <textarea
               rows={7}
-              value={notes}
+              id="lead-notes" value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Write follow-up notes..."
               className={inputClass}
             />
           </div>
 
-          <div className="mt-6 flex justify-end">
+          <div className="alphira-lead-savebar">
             <button
               type="submit"
               disabled={loadingUpdate}
-              className="rounded-[600px] bg-ember-orange px-8 py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
+              className="alphira-lead-save"
             >
               {loadingUpdate ? "Saving..." : "Save Changes"}
             </button>

@@ -1,3 +1,5 @@
+import "./Payments.css";
+import { Download, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import fetchWithAuth from "../../utils/fetchWithAuth";
@@ -5,7 +7,7 @@ import toast from "react-hot-toast";
 import { API_URL } from "../../config/api";
 
 const inputClass =
-  "rounded-xl border border-pebble bg-vellum px-4 py-3 text-sm outline-none focus:border-obsidian";
+  "alphira-payments-input";
 
 const Payments = () => {
   const dispatch = useDispatch();
@@ -109,10 +111,11 @@ const Payments = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="alphira-payments">
       {/* HEADER */}
-      <div>
-        <h1 className="font-serif text-3xl leading-tight text-graphite">
+      <div className="alphira-payments-heading">
+        <p className="alphira-payments-eyebrow">Administration / Payments</p>
+        <h1 className="alphira-payments-title">
           Payment Management
         </h1>
         <p className="mt-2 text-sm text-slate">
@@ -121,14 +124,12 @@ const Payments = () => {
       </div>
 
       {/* FORM CARD */}
-      <div className="rounded-2xl bg-bone p-6">
-        <h2 className="mb-6 text-lg font-semibold text-graphite">
-          Record Offline Payment
-        </h2>
+      <div className="alphira-payments-entry">
+        <div className="alphira-payments-intro"><span className="alphira-payments-eyebrow">01 / Record a payment</span><h2>Offline payment.</h2><p>Add a payment received outside the platform to a verified student’s account.</p><small>Student, amount and reference number are required.</small></div>
 
-        <form onSubmit={createPayment} className="grid gap-4 md:grid-cols-2">
-          <select
-            name="studentId"
+        <form onSubmit={createPayment} className="alphira-payments-form" aria-busy={loading}>
+          <div className="alphira-payments-field"><label htmlFor="payment-student">Student</label><select
+            id="payment-student" name="studentId"
             value={formData.studentId}
             onChange={handleChange}
             required
@@ -140,51 +141,52 @@ const Payments = () => {
                 {student.name} ({student.email})
               </option>
             ))}
-          </select>
+          </select></div>
 
-          <input
+          <div className="alphira-payments-field"><label htmlFor="payment-amount">Amount (INR)</label><input
             type="number"
-            name="amount"
+            id="payment-amount" name="amount"
             placeholder="Amount"
             value={formData.amount}
             onChange={handleChange}
             required
             className={inputClass}
-          />
+          /></div>
 
-          <input
+          <div className="alphira-payments-field"><label htmlFor="payment-referenceNumber">Reference number</label><input
             type="text"
-            name="referenceNumber"
+            id="payment-referenceNumber" name="referenceNumber"
             placeholder="Reference Number"
             value={formData.referenceNumber}
             onChange={handleChange}
             required
             className={inputClass}
-          />
+          /></div>
 
-          <input
+          <div className="alphira-payments-field"><label htmlFor="payment-remarks">Remarks (optional)</label><input
             type="text"
-            name="remarks"
+            id="payment-remarks" name="remarks"
             placeholder="Remarks"
             value={formData.remarks}
             onChange={handleChange}
             className={inputClass}
-          />
+          /></div>
 
           <button
             type="submit"
             disabled={loading}
-            className="rounded-[600px] bg-ember-orange py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-70 md:col-span-2"
+            className="alphira-payments-save"
           >
-            {loading ? "Saving Payment..." : "Save Payment"}
+            {loading ? "Saving Payment..." : "Save Payment"}<ArrowRight size={17} aria-hidden="true" />
           </button>
         </form>
       </div>
 
       {/* PAYMENTS TABLE */}
-      <div className="overflow-hidden rounded-2xl bg-bone">
-        <div className="overflow-x-auto">
-          <table className="min-w-full">
+      <div className="alphira-payments-ledger">
+        <div className="alphira-payments-ledger-heading"><h2>Payment records</h2><span>Invoices &amp; receipts</span></div>
+        <div className="alphira-payments-scroll" tabIndex={0} role="region" aria-label="Payment records; scroll horizontally on smaller screens">
+          <table className="alphira-payments-table">
             <thead>
               <tr className="border-b border-pebble">
                 <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
@@ -238,35 +240,35 @@ const Payments = () => {
                     </td>
                     <td className="p-4 text-sm text-slate">{payment.email}</td>
                     <td className="p-4 font-mono text-sm font-semibold text-graphite">
-                      ₹{payment.amount}
+                      {Number.isFinite(Number(payment.amount)) && payment.amount != null ? new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(Number(payment.amount)) : "—"}
                     </td>
                     <td className="p-4 text-sm capitalize text-graphite">
                       {payment.paymentMethod}
                     </td>
                     <td className="p-4">
                       <span
-                        className={`rounded-[600px] px-3 py-1 font-mono text-[11px] font-medium ${
+                        className={`alphira-payments-status ${
                           payment.paymentStatus === "paid"
-                            ? "bg-ember-orange/15 text-ember-orange"
+                            ? "is-paid"
                             : payment.paymentStatus === "pending"
-                              ? "border border-pebble text-slate"
-                              : "bg-red-100 text-red-700"
+                              ? "is-pending"
+                              : "is-error"
                         }`}
                       >
                         {payment.paymentStatus}
                       </span>
                     </td>
                     <td className="p-4 text-sm text-slate">
-                      {new Date(payment.paidAt).toLocaleDateString()}
+                      {payment.paidAt && !Number.isNaN(new Date(payment.paidAt).getTime()) ? new Date(payment.paidAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—"}
                     </td>
                     <td className="p-4">
                       <button
                         onClick={() =>
                           downloadInvoice(payment._id, payment.invoiceNumber)
                         }
-                        className="rounded-lg bg-obsidian px-3 py-2 text-xs font-medium text-vellum hover:bg-ember-orange hover:text-black"
+                        className="alphira-payments-download" type="button" aria-label={`Download invoice ${payment.invoiceNumber}`}
                       >
-                        Download
+                        <Download size={14} aria-hidden="true" /> PDF
                       </button>
                     </td>
                   </tr>

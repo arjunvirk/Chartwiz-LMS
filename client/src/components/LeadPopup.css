@@ -1,0 +1,23 @@
+.alphira-enquiry-dialog { margin: auto; padding: 0; width: min(460px,calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px); overflow-y: auto; border: 1px solid #dce1d4; border-radius: 0; background: #f8f7f3; color: #20251f; font-family: var(--ac-font-body,'Inter',sans-serif); }
+.alphira-enquiry-dialog::backdrop { background: #20251f99; backdrop-filter: blur(4px); }
+.alphira-enquiry-dialog[open] { animation: alphira-enquiry-enter .25s ease-out; }
+.alphira-enquiry-panel { position: relative; padding: 30px; }
+.alphira-enquiry-panel *, .alphira-enquiry-panel *::before, .alphira-enquiry-panel *::after { box-sizing: border-box; border-radius: 0; }
+.alphira-enquiry-close { position: absolute; right: 10px; top: 10px; display: grid; place-items: center; width: 44px; height: 44px; border: 0; color: #627353; background: transparent; cursor: pointer; }
+.alphira-enquiry-close:hover { background: #e8eddf; }
+.alphira-enquiry-logo { width: 42px; height: 38px; object-fit: contain; margin-bottom: 18px; }
+.alphira-enquiry-eyebrow { color: #66745b; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 12px; }
+.alphira-enquiry-heading h2 { font-family: var(--ac-font-heading,'Manrope',sans-serif); margin: 0; font-size: 29px; font-weight: 800; line-height: 1.15; letter-spacing: -.045em; }
+.alphira-enquiry-heading h2 span { color: #66745b; }
+.alphira-enquiry-heading > p:last-child { margin: 14px 0 22px; font-size: 12px; line-height: 1.8; color: #6a765f; }
+.alphira-enquiry-form { display: grid; gap: 14px; }
+.alphira-enquiry-form label { display: block; font-size: 10px; color: #5c6c50; margin-bottom: 7px; }
+.alphira-enquiry-form input, .alphira-enquiry-form select { width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid #dce1d4; background: white; color: #20251f; font: inherit; font-size: 16px; }
+.alphira-enquiry-form input::placeholder { color: #7e8873; font-size: 12px; }
+.alphira-enquiry-form input:focus, .alphira-enquiry-form select:focus { outline: 2px solid #c2d2b1; outline-offset: 1px; border-color: #66745b; }
+.alphira-enquiry-submit { display: flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; min-height: 48px; padding: 13px 16px; margin-top: 6px; border: 0; background: #20251f; color: #fff; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+.alphira-enquiry-submit:hover { background: #455b39; }
+.alphira-enquiry-panel button:focus-visible { outline: 2px solid #829a6e; outline-offset: 3px; }
+@keyframes alphira-enquiry-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@media(max-width:600px) { .alphira-enquiry-dialog { width: min(380px,calc(100vw - 24px)); max-height: calc(100dvh - 24px); } .alphira-enquiry-panel { padding: 24px; } .alphira-enquiry-heading h2 { font-size: 25px; } .alphira-enquiry-logo { width: 36px; height: 32px; margin-bottom: 14px; } }
+@media(prefers-reduced-motion:reduce) { .alphira-enquiry-dialog[open] { animation: none; } }

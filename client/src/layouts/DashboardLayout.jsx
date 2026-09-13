@@ -1,7 +1,8 @@
+import { getMyCourses } from "../actions/courseActions";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { Menu, X, PanelLeftClose, PanelLeftOpen, LayoutGrid, BookOpen, Radio, CreditCard, Receipt, Users, ClipboardList, UserRound, GraduationCap, Award } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Menu, X, PanelLeftClose, PanelLeftOpen, LayoutGrid, BookOpen, Radio, CreditCard, Receipt, Users, ClipboardList, UserRound } from "lucide-react";
 import "./DashboardLayout.css";
 
 export default function DashboardLayout() {
@@ -11,6 +12,11 @@ export default function DashboardLayout() {
   const menuRef = useRef(null);
   const location = useLocation();
   const { userInfo } = useSelector((state) => state.userLogin);
+  const dispatch = useDispatch();
+  const { courses: enrolledCourses = [], loading: coursesLoading, error: coursesError } = useSelector((state) => state.myCourses);
+  useEffect(() => {
+    if (userInfo?.user?.role === "student") dispatch(getMyCourses());
+  }, [dispatch, userInfo?.user?._id, userInfo?.user?.role]);
   const isTeacher = userInfo?.user?.role === "teacher";
   const isAdmin = userInfo?.user?.role === "admin";
   const dashboardPath = isAdmin
@@ -52,10 +58,9 @@ export default function DashboardLayout() {
       { to: coursesPath, label: "My Courses", icon: BookOpen },
       { to: myLiveCoursesPath, label: "My Live Classes", icon: Radio },
       { to: paymentPath, label: "Pay Fee", icon: CreditCard },
-      { to: profilePath, label: "Profile", icon: UserRound },
     ]),
   ];
-  const current = links.find((item) => item.end ? location.pathname === item.to : location.pathname === item.to || location.pathname.startsWith(item.to + "/"))?.label || "Dashboard";
+  const current = links.find((item) => item.end ? location.pathname === item.to : location.pathname === item.to || location.pathname.startsWith(item.to + "/"))?.label || (location.pathname === "/dashboard/profile" ? "Profile" : "Dashboard");
   useEffect(() => { setSidebarOpen(false); }, [location.pathname]);
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -105,12 +110,13 @@ export default function DashboardLayout() {
           <section className="alphira-dash-welcome">
             <p className="alphira-dash-caption">A L P H I R A &nbsp; / &nbsp; {role}</p>
             <h1>Welcome back<span>.</span></h1>
-            <p>{isAdmin ? "Manage your LMS platform and users." : isTeacher ? "Manage mentorship programs and students." : "Continue learning and mastering trading strategies."}</p>
+            <p>{isAdmin ? "Manage your LMS platform and users." : isTeacher ? "Manage mentorship programs and students." : "Your academy enrollment and account, in one place."}</p>
           </section>
-          {!isTeacher && !isAdmin && <div className="alphira-dash-stats">{[{label:"Enrolled Courses",icon:BookOpen},{label:"Completed Lessons",icon:GraduationCap},{label:"Certificates",icon:Award}].map(({label,icon:Icon}) => <div className="alphira-dash-stat" key={label}><div><span>{label}</span><Icon size={18} aria-hidden="true" /></div><strong>0</strong></div>)}</div>}
+          {!isTeacher && !isAdmin && <div className="alphira-dash-enrollment"><BookOpen size={20} aria-hidden="true" /><span>Enrolled courses</span><strong>{coursesLoading ? "…" : coursesError ? "—" : enrolledCourses.length}</strong><small>Offline academy</small></div>}
           <div className="alphira-dash-outlet"><Outlet /></div>
         </div>
       </main>
     </div>
   );
 }
+

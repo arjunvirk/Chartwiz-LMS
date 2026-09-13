@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import "./LeadPopup.css";
+import { X, ArrowRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { API_URL } from "../config/api";
 import { trackLead } from "../utils/metaPixel";
 
 const LeadPopup = () => {
   const [open, setOpen] = useState(false);
+  const dialogRef = useRef(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -78,80 +81,39 @@ const LeadPopup = () => {
     }
   };
 
-  if (!open) return null;
-
-  const inputClass =
-    "w-full rounded-xl border border-pebble bg-vellum px-5 py-3.5 text-sm outline-none transition focus:border-obsidian";
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!open) { if (dialog.open) dialog.close(); return; }
+    const previousFocus = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      if (previousFocus instanceof HTMLElement && previousFocus.isConnected) previousFocus.focus();
+    };
+  }, [open]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-obsidian/70 px-4 backdrop-blur-sm">
-      <div className="relative w-full max-w-md overflow-hidden rounded-3xl bg-bone p-8">
-        {/* CLOSE */}
-        <button
-          onClick={() => setOpen(false)}
-          className="absolute right-5 top-5 text-2xl font-medium text-slate transition hover:text-graphite"
-        >
-          ×
-        </button>
-
-        {/* HEADER */}
-        <div className="text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-obsidian text-3xl">
-            📈
-          </div>
-
-          <h2 className="mt-6 font-serif text-3xl leading-tight text-graphite">
-            Want to become a profitable trader?
-          </h2>
-
-          <p className="mt-4 text-sm leading-relaxed text-slate">
-            Learn Forex, Stock Market, Risk Management and Professional Trading
-            Strategies from expert mentors.
-          </p>
-        </div>
-
-        {/* FORM */}
-        <form onSubmit={submitHandler} className="mt-8 space-y-4">
-          <input
-            type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className={inputClass}
-          />
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={inputClass}
-          />
-          <input
-            type="text"
-            placeholder="Enter mobile number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className={inputClass}
-          />
-          <select
-            value={course}
-            onChange={(e) => setCourse(e.target.value)}
-            className={inputClass}
-          >
-            <option>The Forex Program</option>
-            <option>The Forex Program with Indian Market</option>
-          </select>
-
-          <button
-            type="submit"
-            className="w-full rounded-[600px] bg-ember-orange py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95"
-          >
-            Yes, I Want To Learn
-          </button>
+    <dialog ref={dialogRef} className="alphira-enquiry-dialog" aria-labelledby="alphira-enquiry-title" onCancel={(event) => { event.preventDefault(); setOpen(false); }}>
+      <div className="alphira-enquiry-panel">
+        <button type="button" autoFocus onClick={() => setOpen(false)} className="alphira-enquiry-close" aria-label="Close enquiry form"><X size={18} /></button>
+        <header className="alphira-enquiry-heading">
+          <img src="/alphira-ac-logo.svg" alt="Alphira Capital" className="alphira-enquiry-logo" />
+          <p className="alphira-enquiry-eyebrow">Your next chapter</p>
+          <h2 id="alphira-enquiry-title">Build your knowledge.<br /><span>Find your direction.</span></h2>
+          <p>Learn Forex, stock markets, risk management and trading strategies with expert mentors.</p>
+        </header>
+        <form onSubmit={submitHandler} className="alphira-enquiry-form">
+          <div><label htmlFor="enquiry-name">Your name</label><input id="enquiry-name" name="name" type="text" autoComplete="name" placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} /></div>
+          <div><label htmlFor="enquiry-email">Email address</label><input id="enquiry-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
+          <div><label htmlFor="enquiry-phone">Mobile number</label><input id="enquiry-phone" name="phone" type="tel" autoComplete="tel" placeholder="Enter mobile number" value={phone} onChange={(e) => setPhone(e.target.value)} /></div>
+          <div><label htmlFor="enquiry-course">Interested in</label><select id="enquiry-course" value={course} onChange={(e) => setCourse(e.target.value)}><option>The Forex Program</option><option>The Forex Program with Indian Market</option></select></div>
+          <button type="submit" className="alphira-enquiry-submit">Yes, I Want To Learn<ArrowRight size={17} aria-hidden="true" /></button>
         </form>
       </div>
-    </div>
+    </dialog>
   );
 };
-
 export default LeadPopup;

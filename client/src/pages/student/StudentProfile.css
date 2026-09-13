@@ -1,0 +1,42 @@
+.alphira-student-profile { max-width: 1200px; margin: 0 auto; color: #20251f; font-family: var(--ac-font-body, 'Inter', sans-serif); min-width: 0; }
+.alphira-student-profile * { box-sizing: border-box; border-radius: 0; }
+.alphira-student-profile-heading { margin-bottom: 28px; }
+.alphira-student-profile-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #68765f; }
+.alphira-student-profile-heading h1 { font-family: var(--ac-font-heading, 'Manrope', sans-serif); margin: 12px 0; font-size: clamp(30px,3.3vw,44px); font-weight: 750; letter-spacing: -.05em; line-height: 1.2; }
+.alphira-student-profile-heading p { color: #73796e; font-size: 13px; line-height: 1.8; }
+.alphira-student-profile-layout { display: grid; grid-template-columns: minmax(230px,.75fr) minmax(0,2fr); gap: 24px; align-items: start; }
+.alphira-student-profile-identity { padding: 30px; background: #20251f; color: #fff; border-top: 3px solid #a6b895; min-width: 0; }
+.alphira-student-profile-identity .alphira-student-profile-eyebrow { color: #becdb0; }
+.alphira-student-profile-avatar { width: 88px; height: 88px; margin: 36px 0 24px; position: relative; background: #dce6d2; color: #33412a; display: grid; place-items: center; font-size: 28px; font-weight: 600; }
+.alphira-student-profile-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.alphira-student-profile-identity h2 { font-family: var(--ac-font-heading, 'Manrope', sans-serif); font-size: 23px; font-weight: 600; letter-spacing: -.035em; line-height: 1.4; overflow-wrap: anywhere; }
+.alphira-student-profile-email { font-size: 12px; color: #bdc6b5; overflow-wrap: anywhere; margin: 10px 0 22px; line-height: 1.8; }
+.alphira-student-profile-badge { display: inline-block; border: 1px solid #56644a; color: #d5e4c7; padding: 8px 12px; font-size: 10px; text-transform: capitalize; }
+.alphira-student-profile-identity-note { margin-top: 44px; padding-top: 24px; border-top: 1px solid #424d39; }
+.alphira-student-profile-identity-note span { font-size: 9px; letter-spacing: .12em; color: #b7c9a5; }
+.alphira-student-profile-identity-note p { margin-top: 10px; color: #bdc6b5; font-size: 12px; line-height: 1.8; }
+.alphira-student-profile-form { border: 1px solid #dce1d4; background: #fff; min-width: 0; }
+.alphira-student-profile-section { padding: 30px; }
+.alphira-student-profile-section + .alphira-student-profile-section { border-top: 1px solid #e4e7de; }
+.alphira-student-profile-section-heading { display: flex; gap: 14px; margin-bottom: 26px; }
+.alphira-student-profile-section-heading > span { color: #738267; font-size: 11px; padding-top: 4px; }
+.alphira-student-profile-section-heading h2 { font-size: 17px; font-weight: 650; letter-spacing: -.025em; }
+.alphira-student-profile-section-heading p { margin-top: 6px; font-size: 12px; color: #73796e; line-height: 1.8; }
+.alphira-student-profile-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px 18px; }
+.alphira-student-profile-wide { grid-column: 1 / -1; }
+.alphira-student-profile-fields label { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 9px; font-size: 12px; font-weight: 500; }
+.alphira-student-profile-fields label span { font-size: 9px; font-weight: 400; color: #73796e; }
+.alphira-student-profile-input { width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #dce1d4; background: #fcfcf9; color: #20251f; font: inherit; font-size: 13px; outline: none; transition: border-color .18s, box-shadow .18s; }
+.alphira-student-profile-input::placeholder { color: #92998b; }
+.alphira-student-profile-input:focus { border-color: #718460; box-shadow: 0 0 0 3px #71846018; }
+.alphira-student-profile-input:disabled { background: #f1f3ed; color: #70796a; cursor: not-allowed; }
+.alphira-student-profile-hint { font-size: 11px; color: #73796e; margin-top: 15px; }
+.alphira-student-profile-actions { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 22px 30px; background: #f7f8f2; border-top: 1px solid #e4e7de; }
+.alphira-student-profile-actions p { font-size: 11px; color: #73796e; }
+.alphira-student-profile-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 26px; padding: 14px 22px; min-height: 48px; background: #20251f; color: #fff; border: 1px solid #20251f; font-size: 12px; font-weight: 500; cursor: pointer; transition: background .18s, transform .18s; }
+.alphira-student-profile-actions button:hover:not(:disabled) { background: #44563a; transform: translateY(-1px); }
+.alphira-student-profile-actions button:focus-visible { outline: 2px solid #718460; outline-offset: 4px; }
+.alphira-student-profile-actions button:disabled { opacity: .65; cursor: wait; }
+@media(max-width:1000px) { .alphira-student-profile-layout { grid-template-columns: minmax(0,1fr); } }
+@media(max-width:600px) { .alphira-student-profile-fields { grid-template-columns: minmax(0,1fr); } .alphira-student-profile-section,.alphira-student-profile-identity { padding: 22px; } .alphira-student-profile-actions { padding: 22px; align-items: stretch; flex-direction: column; } }
+@media(prefers-reduced-motion:reduce) { .alphira-student-profile-input,.alphira-student-profile-actions button { transition: none; transform: none !important; } }

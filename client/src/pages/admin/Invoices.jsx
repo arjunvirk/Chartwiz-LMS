@@ -1,3 +1,5 @@
+import "./Invoices.css";
+import { ReceiptText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,14 +12,16 @@ const Invoices = () => {
 
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const fetchInvoices = async () => {
     try {
       setLoading(true);
+      setError("");
       const data = await fetchWithAuth(dispatch, `${API_URL}/api/payments`);
-      setPayments(data.payments);
+      setPayments(data.payments || []);
     } catch (error) {
-      console.log(error.message);
+      setError(error.message || "Unable to load invoices.");
     } finally {
       setLoading(false);
     }
@@ -28,91 +32,40 @@ const Invoices = () => {
     fetchInvoices();
   }, [userInfo]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="h-10 w-10 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
-      </div>
-    );
-  }
-
-  if (!payments.length) {
-    return (
-      <div>
-        <h1 className="mb-6 font-serif text-3xl leading-tight text-graphite">
-          Invoices
-        </h1>
-        <div className="rounded-2xl bg-bone p-10 text-center">
-          <p className="text-sm text-slate">No invoices found.</p>
-        </div>
-      </div>
-    );
-  }
-
+  const formatAmount = (amount) => {
+    if (amount == null || amount === "" || !Number.isFinite(Number(amount))) return "—";
+    return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", minimumFractionDigits: 2 }).format(Number(amount));
+  };
+  const formatDate = (value) => {
+    if (!value) return "—";
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? "—" : date.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+  };
   return (
-    <div>
-      <h1 className="mb-6 font-serif text-3xl leading-tight text-graphite">
-        Invoices
-      </h1>
-
-      <div className="overflow-x-auto rounded-2xl bg-bone">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-pebble">
-              <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
-                Invoice No
-              </th>
-              <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
-                Student
-              </th>
-              <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
-                Amount
-              </th>
-              <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
-                Status
-              </th>
-              <th className="p-4 text-left text-xs font-mono uppercase tracking-wide text-slate">
-                Date
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {payments.map((payment) => (
-              <tr
-                key={payment._id}
-                className="border-b border-pebble last:border-0 hover:bg-vellum"
-              >
-                <td className="p-4 text-sm font-medium text-graphite">
-                  {payment.invoiceNumber}
-                </td>
-                <td className="p-4 text-sm text-graphite">
-                  {payment.studentName}
-                </td>
-                <td className="p-4 font-mono text-sm font-medium text-graphite">
-                  ₹{payment.amount}
-                </td>
-                <td className="p-4">
-                  <span
-                    className={`rounded-[600px] px-3 py-1 font-mono text-[11px] font-medium capitalize ${
-                      payment.paymentStatus === "paid"
-                        ? "bg-ember-orange/15 text-ember-orange"
-                        : "border border-pebble text-slate"
-                    }`}
-                  >
-                    {payment.paymentStatus}
-                  </span>
-                </td>
-                <td className="p-4 text-sm text-slate">
-                  {new Date(payment.paidAt).toLocaleDateString()}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <section className="alphira-invoices" aria-labelledby="alphira-invoices-title">
+      <header className="alphira-invoices-heading">
+        <div><p className="alphira-invoices-eyebrow">Administration / Billing records</p><h1 id="alphira-invoices-title">Invoices<span>.</span></h1><p>Student payments, clearly documented.</p></div>
+        <div className="alphira-invoices-count"><ReceiptText size={22} aria-hidden="true" /><div><small>Invoice records</small><strong>{loading ? "…" : error ? "—" : payments.length}</strong></div></div>
+      </header>
+      <div className="alphira-invoices-ledger" aria-busy={loading}>
+        <div className="alphira-invoices-ledger-heading"><h2>Payment ledger</h2><span>Currency · INR</span></div>
+        {loading ? <div className="alphira-invoices-state" role="status">Loading invoices…</div>
+          : error ? <div className="alphira-invoices-state is-error" role="alert"><h2>Invoices couldn’t be loaded</h2><p>{error}</p></div>
+          : !payments.length ? <div className="alphira-invoices-state"><ReceiptText size={32} aria-hidden="true" /><h2>No invoices yet</h2><p>Your invoice records will appear here when available.</p></div>
+          : <div className="alphira-invoices-scroll" tabIndex={0} role="region" aria-label="Invoice records; scroll horizontally on smaller screens">
+            <table className="alphira-invoices-table">
+              <thead><tr><th scope="col">Invoice number</th><th scope="col">Student</th><th scope="col" className="alphira-invoices-amount">Amount</th><th scope="col">Status</th><th scope="col">Payment date</th></tr></thead>
+              <tbody>{payments.map((payment) => <tr key={payment._id}>
+                <td><span className="alphira-invoices-reference">{payment.invoiceNumber || "—"}</span></td>
+                <td>{payment.studentName || "—"}</td>
+                <td className="alphira-invoices-amount">{formatAmount(payment.amount)}</td>
+                <td><span className={`alphira-invoices-status ${String(payment.paymentStatus).toLowerCase() === "paid" ? "is-paid" : ""}`}>{payment.paymentStatus || "—"}</span></td>
+                <td className="alphira-invoices-date">{formatDate(payment.paidAt)}</td>
+              </tr>)}</tbody>
+            </table>
+          </div>}
       </div>
-    </div>
+    </section>
   );
 };
-
 export default Invoices;

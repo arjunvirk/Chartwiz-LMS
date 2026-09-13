@@ -1,9 +1,11 @@
+import "./StudentDashboard.css";
+import forexImage from "../../assets/images/forex-art.png";
+import indianMarketImage from "../../assets/images/indian-market-art.png";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
-import { getMyCourses } from "../../actions/courseActions";
 import { getMyLiveCourses } from "../../actions/liveCourseActions";
 import { listWebinars } from "../../actions/webinarActions";
 import { getAnalyses } from "../../actions/marketAnalysisActions";
@@ -19,6 +21,7 @@ const fadeUp = {
 
 const StudentDashboard = () => {
   const dispatch = useDispatch();
+  const reducedMotion = useReducedMotion();
 
   const { userInfo } = useSelector((state) => state.userLogin);
   const { courses = [] } = useSelector((state) => state.myCourses);
@@ -50,7 +53,7 @@ const StudentDashboard = () => {
       return {
         label: "Join Webinar",
         canJoin: true,
-        color: "bg-ember-orange text-black",
+        color: "alphira-student-ready",
       };
     }
 
@@ -61,7 +64,7 @@ const StudentDashboard = () => {
       return {
         label: `Starts in ${diffMinutes}m`,
         canJoin: false,
-        color: "bg-ember-orange/15 text-ember-orange",
+        color: "alphira-student-waiting",
       };
     }
 
@@ -71,7 +74,7 @@ const StudentDashboard = () => {
       return {
         label: `Starts in ${diffHours}h`,
         canJoin: false,
-        color: "bg-ember-orange/15 text-ember-orange",
+        color: "alphira-student-waiting",
       };
     }
 
@@ -80,87 +83,133 @@ const StudentDashboard = () => {
     return {
       label: `Starts in ${diffDays} day${diffDays > 1 ? "s" : ""}`,
       canJoin: false,
-      color: "bg-ember-orange/15 text-ember-orange",
+      color: "alphira-student-waiting",
     };
   };
 
   useEffect(() => {
     if (!userInfo) return;
 
-    dispatch(getMyCourses());
     dispatch(getMyLiveCourses());
     dispatch(listWebinars());
     dispatch(getAnalyses());
   }, [dispatch, userInfo]);
 
   return (
-    <div className="space-y-3">
+    <div className="alphira-student-home">
       {/* HERO */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={reducedMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="rounded-2xl bg-obsidian p-8 text-vellum"
+        className="alphira-student-hero"
       >
         <h1 className="font-serif text-3xl leading-tight md:text-4xl">
-          Welcome, {userInfo?.user?.name}
+          Your academy, {userInfo?.user?.name?.split(" ")[0] || "your space"}
         </h1>
 
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-mist">
-          Continue your trading journey with premium mentorship, live sessions
-          and structured market education.
+          Your academy programs, mentor insights and scheduled sessions,
+          together in one place.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
             to="/dashboard/courses"
-            className="rounded-pill bg-ember-orange px-5 py-3 font-mono text-sm font-semibold text-black transition hover:brightness-95"
+            className="alphira-student-primary"
           >
             My Courses
           </Link>
           <Link
             to="/dashboard/live-courses"
-            className="rounded-pill border border-white/20 px-5 py-3 font-mono text-sm font-semibold text-vellum transition hover:border-white/40"
+            className="alphira-student-secondary"
           >
             Live Classes
           </Link>
         </div>
       </motion.div>
 
+      {/* RECENT COURSES */}
+      <div className="alphira-student-section">
+        <div className="alphira-student-section-heading">
+          <h2 className="text-xl font-semibold text-graphite">My Courses</h2>
+          <Link
+            to="/dashboard/courses"
+            className="alphira-student-view"
+          >
+            View All
+          </Link>
+        </div>
+
+        {courses.length === 0 ? (
+          <div className="alphira-student-empty">
+            <p className="text-sm text-slate">No enrolled courses yet.</p>
+          </div>
+        ) : (
+          <div className="alphira-student-card-grid">
+            {courses.slice(0, 3).map((course) => (
+              <div
+                key={course._id}
+                className="alphira-student-card"
+              >
+                <img
+                  src={/indian|india/i.test(course.title || "") ? indianMarketImage : /forex/i.test(course.title || "") ? forexImage : course.thumbnail}
+                  alt={course.title}
+                  className="h-40 w-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/alphira-ac-logo.svg";
+                  }}
+                />
+                <div className="p-5">
+                  <h3 className="line-clamp-2 text-base font-semibold text-graphite">
+                    {course.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-slate">{course.instructor}</p>
+                  <p className="mt-1 font-mono text-xs uppercase text-slate">
+                    Offline course
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* MARKET ANALYSIS */}
-      <div className="rounded-2xl bg-bone p-6">
-        <div className="mb-6 flex items-center justify-between">
+      <div className="alphira-student-section">
+        <div className="alphira-student-section-heading">
           <h2 className="text-xl font-semibold text-graphite">
             Latest Market Analysis
           </h2>
           <Link
             to="/dashboard/market-analysis"
-            className="text-sm font-medium text-ember-orange hover:brightness-90"
+            className="alphira-student-view"
           >
             View All
           </Link>
         </div>
 
         {analyses.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-pebble py-12 text-center">
+          <div className="alphira-student-empty">
             <p className="text-sm text-slate">No market analysis available.</p>
           </div>
         ) : (
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          <div className="alphira-student-card-grid">
             {analyses.slice(0, 3).map((analysis, i) => (
               <motion.div
                 key={analysis._id}
                 variants={fadeUp}
-                initial="hidden"
+                initial={reducedMotion ? false : "hidden"}
                 whileInView="show"
                 viewport={{ once: true }}
                 custom={i}
-                className="overflow-hidden rounded-2xl bg-vellum transition duration-300 hover:-translate-y-1"
+                className="alphira-student-card"
               >
                 <img
                   src={
                     analysis.image ||
-                    "https://via.placeholder.com/600x400?text=Market+Analysis"
+                    "/alphira-ac-logo.svg"
                   }
                   alt={analysis.title}
                   className="h-40 w-full object-cover"
@@ -168,7 +217,7 @@ const StudentDashboard = () => {
 
                 <div className="p-5">
                   <div className="flex items-center justify-between">
-                    <span className="rounded-pill bg-ember-orange/15 px-3 py-1 font-mono text-[11px] font-medium text-ember-orange">
+                    <span className="alphira-student-badge">
                       {analysis.market}
                     </span>
                     {analysis.featured && (
@@ -192,7 +241,7 @@ const StudentDashboard = () => {
 
                   <Link
                     to={`/dashboard/market-analysis/${analysis._id}`}
-                    className="mt-5 inline-block rounded-pill bg-obsidian px-4 py-2 font-mono text-xs font-medium text-vellum"
+                    className="alphira-student-read"
                   >
                     Read Analysis
                   </Link>
@@ -203,67 +252,20 @@ const StudentDashboard = () => {
         )}
       </div>
 
-      {/* RECENT COURSES */}
-      <div className="rounded-2xl bg-bone p-6">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-graphite">My Courses</h2>
-          <Link
-            to="/dashboard/courses"
-            className="text-sm font-medium text-ember-orange hover:brightness-90"
-          >
-            View All
-          </Link>
-        </div>
-
-        {courses.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-pebble py-12 text-center">
-            <p className="text-sm text-slate">No enrolled courses yet.</p>
-          </div>
-        ) : (
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-            {courses.slice(0, 3).map((course) => (
-              <div
-                key={course._id}
-                className="overflow-hidden rounded-2xl bg-vellum"
-              >
-                <img
-                  src={course.thumbnail}
-                  alt={course.title}
-                  className="h-40 w-full object-cover"
-                  onError={(e) => {
-                    e.target.src =
-                      "https://via.placeholder.com/600x400?text=Course";
-                  }}
-                />
-                <div className="p-5">
-                  <h3 className="line-clamp-2 text-base font-semibold text-graphite">
-                    {course.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-slate">{course.instructor}</p>
-                  <p className="mt-1 font-mono text-xs uppercase text-slate">
-                    Offline course
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
       {/* LIVE COURSES */}
-      <div className="rounded-2xl bg-bone p-6">
-        <div className="mb-6 flex items-center justify-between">
+      <div className="alphira-student-section">
+        <div className="alphira-student-section-heading">
           <h2 className="text-xl font-semibold text-graphite">Live Classes</h2>
           <Link
             to="/dashboard/live-courses"
-            className="text-sm font-medium text-ember-orange hover:brightness-90"
+            className="alphira-student-view"
           >
             View All
           </Link>
         </div>
 
         {liveCourses.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-pebble py-12 text-center">
+          <div className="alphira-student-empty">
             <p className="text-sm text-slate">No live courses enrolled yet.</p>
           </div>
         ) : (
@@ -271,7 +273,7 @@ const StudentDashboard = () => {
             {liveCourses.slice(0, 3).map((course) => (
               <div
                 key={course._id}
-                className="flex flex-col justify-between rounded-2xl bg-vellum p-5 md:flex-row md:items-center"
+                className="alphira-student-session"
               >
                 <div>
                   <h3 className="text-sm font-semibold text-graphite">
@@ -291,15 +293,15 @@ const StudentDashboard = () => {
       </div>
 
       {/* UPCOMING WEBINARS */}
-      <div className="rounded-2xl bg-bone p-6">
-        <div className="mb-6 flex items-center justify-between">
+      <div className="alphira-student-section">
+        <div className="alphira-student-section-heading">
           <h2 className="text-xl font-semibold text-graphite">
             Upcoming Webinars
           </h2>
         </div>
 
         {webinars.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-pebble py-12 text-center">
+          <div className="alphira-student-empty">
             <p className="text-sm text-slate">
               No upcoming webinars available.
             </p>
@@ -312,7 +314,7 @@ const StudentDashboard = () => {
               return (
                 <div
                   key={webinar._id}
-                  className="flex flex-col justify-between rounded-2xl bg-vellum p-5 md:flex-row md:items-center"
+                  className="alphira-student-session"
                 >
                   <div>
                     <h3 className="text-sm font-semibold text-graphite">
@@ -332,7 +334,7 @@ const StudentDashboard = () => {
                         href={webinar.meetLink}
                         target="_blank"
                         rel="noreferrer"
-                        className="rounded-pill bg-ember-orange px-5 py-2.5 font-mono text-xs font-semibold text-black"
+                        className="alphira-student-join"
                       >
                         Join Webinar
                       </a>

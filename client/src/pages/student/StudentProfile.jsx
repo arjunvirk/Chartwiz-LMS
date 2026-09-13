@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { motion, useReducedMotion } from "framer-motion";
+import "./StudentProfile.css";
 
 import { updateUserProfile } from "../../actions/userActions";
 import { USER_UPDATE_PROFILE_RESET } from "../../constants/userConstants";
 
-const inputClass =
-  "w-full rounded-xl border border-pebble bg-vellum px-5 py-3.5 text-sm outline-none transition focus:border-obsidian";
+const inputClass = "alphira-student-profile-input";
 
 const StudentProfile = () => {
   const dispatch = useDispatch();
+  const reducedMotion = useReducedMotion();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -68,117 +70,69 @@ const StudentProfile = () => {
   }, [error]);
 
   return (
-    <div>
-      {/* HEADER */}
-      <div className="mb-8">
-        <h1 className="font-serif text-3xl leading-tight text-graphite">
-          Student Profile
-        </h1>
-        <p className="mt-2 text-sm text-slate">
-          Manage your personal account information and profile settings.
-        </p>
-      </div>
-
-      {/* PROFILE CARD */}
-      <div className="grid gap-3 lg:grid-cols-[300px_1fr]">
-        {/* LEFT */}
-        <div className="rounded-2xl bg-obsidian p-8 text-center text-vellum">
-          <img
-            src={
-              userInfo?.user?.profilePic ||
-              "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-            }
-            alt="profile"
-            className="mx-auto h-28 w-28 rounded-full border border-white/15 object-cover"
-          />
-
-          <h2 className="mt-6 text-xl font-semibold">{userInfo?.user?.name}</h2>
-
-          <p className="mt-2 font-mono text-xs uppercase tracking-[-0.02em] text-mist">
-            {userInfo?.user?.role}
-          </p>
-
-          <div className="mt-6 inline-flex items-center rounded-pill bg-ember-orange/15 px-4 py-2 font-mono text-xs font-medium text-ember-orange">
-            Verified Account
+    <motion.section
+      className="alphira-student-profile"
+      aria-labelledby="student-profile-title"
+      initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45 }}
+    >
+      <header className="alphira-student-profile-heading">
+        <span className="alphira-student-profile-eyebrow">Your account / Profile</span>
+        <h1 id="student-profile-title">Make it yours.</h1>
+        <p>Keep your personal details current and your account secure.</p>
+      </header>
+      <div className="alphira-student-profile-layout">
+        <aside className="alphira-student-profile-identity" aria-label="Account summary">
+          <span className="alphira-student-profile-eyebrow">ALPHIRA CAPITAL</span>
+          <div className="alphira-student-profile-avatar">
+            <span aria-hidden="true">{(userInfo?.user?.name || "Student").trim().split(/\s+/).slice(0, 2).map((part) => part.charAt(0)).join("").toUpperCase()}</span>
+            {userInfo?.user?.profilePic && <img src={userInfo.user.profilePic} alt="" onError={(event) => { event.currentTarget.style.display = "none"; }} />}
           </div>
-        </div>
-
-        {/* RIGHT */}
-        <div className="rounded-2xl bg-bone p-8">
-          <form onSubmit={submitHandler} className="space-y-5">
-            <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
-                Full Name
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className={inputClass}
-              />
+          <h2>{userInfo?.user?.name || "Student"}</h2>
+          <p className="alphira-student-profile-email">{userInfo?.user?.email}</p>
+          <span className="alphira-student-profile-badge">{userInfo?.user?.role || "Student"} account</span>
+          <div className="alphira-student-profile-identity-note">
+            <span>YOUR LEARNING SPACE</span>
+            <p>One account for your academy enrollment, sessions and payments.</p>
+          </div>
+        </aside>
+        <form onSubmit={submitHandler} className="alphira-student-profile-form" aria-busy={!!loading}>
+          <section className="alphira-student-profile-section" aria-labelledby="profile-personal">
+            <div className="alphira-student-profile-section-heading"><span>01</span><div><h2 id="profile-personal">Personal information</h2><p>The details associated with your academy account.</p></div></div>
+            <div className="alphira-student-profile-fields">
+              <div className="alphira-student-profile-wide">
+                <label htmlFor="student-profile-name">Full name</label>
+                <input id="student-profile-name" autoComplete="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className={inputClass} />
+              </div>
+              <div>
+                <label htmlFor="student-profile-email">Email address <span>Read only</span></label>
+                <input id="student-profile-email" autoComplete="email" type="email" value={email} disabled className={inputClass} />
+              </div>
+              <div>
+                <label htmlFor="student-profile-role">Account role <span>Read only</span></label>
+                <input id="student-profile-role" type="text" value={userInfo?.user?.role || ""} disabled className={inputClass} />
+              </div>
             </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={email}
-                disabled
-                className="w-full cursor-not-allowed rounded-xl border border-pebble bg-white/40 px-5 py-3.5 text-sm text-slate outline-none"
-              />
+          </section>
+          <section className="alphira-student-profile-section" aria-labelledby="profile-security">
+            <div className="alphira-student-profile-section-heading"><span>02</span><div><h2 id="profile-security">Password & security</h2><p>Leave these fields empty to keep your current password.</p></div></div>
+            <div className="alphira-student-profile-fields">
+              <div>
+                <label htmlFor="student-profile-password">New password</label>
+                <input id="student-profile-password" autoComplete="new-password" aria-describedby="student-password-hint" type="password" placeholder="Enter a new password" value={password} onChange={(e) => setPassword(e.target.value)} className={inputClass} />
+              </div>
+              <div>
+                <label htmlFor="student-profile-confirm">Confirm password</label>
+                <input id="student-profile-confirm" autoComplete="new-password" type="password" placeholder="Re-enter your new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className={inputClass} />
+              </div>
             </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
-                Account Role
-              </label>
-              <input
-                type="text"
-                value={userInfo?.user?.role}
-                disabled
-                className="w-full cursor-not-allowed rounded-xl border border-pebble bg-white/40 px-5 py-3.5 text-sm capitalize text-slate outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
-                New Password
-              </label>
-              <input
-                type="password"
-                placeholder="Enter new password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={inputClass}
-              />
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-graphite">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                placeholder="Confirm new password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className={inputClass}
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-pill bg-ember-orange py-3.5 font-mono text-sm font-semibold text-black transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {loading ? "Updating..." : "Update Profile"}
-            </button>
-          </form>
-        </div>
+            <p id="student-password-hint" className="alphira-student-profile-hint">Use at least 6 characters for your new password.</p>
+          </section>
+          <footer className="alphira-student-profile-actions"><p>Save when you're ready.</p><button type="submit" disabled={loading}>{loading ? "Saving changes..." : "Save changes"}<span aria-hidden="true">↗</span></button></footer>
+        </form>
       </div>
-    </div>
+    </motion.section>
   );
 };
 

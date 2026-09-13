@@ -1,3 +1,4 @@
+import "./LeadManagementScreen.css";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -63,15 +64,15 @@ const LeadManagementScreen = () => {
   ).length;
 
   const getStatusBadge = (status) => {
-    if (status === "converted") return "bg-ember-orange/15 text-ember-orange";
-    if (status === "closed") return "bg-red-100 text-red-700";
-    return "border border-pebble text-slate";
+    if (status === "converted") return "is-positive";
+    if (status === "closed") return "is-alert";
+    return "is-neutral";
   };
 
   const getPriorityBadge = (priority) => {
-    if (priority === "High") return "bg-red-100 text-red-700";
-    if (priority === "Medium") return "bg-ember-orange/15 text-ember-orange";
-    return "border border-pebble text-slate";
+    if (priority === "High") return "is-alert";
+    if (priority === "Medium") return "is-positive";
+    return "is-neutral";
   };
 
   const STAT_CARDS = [
@@ -84,11 +85,12 @@ const LeadManagementScreen = () => {
   ];
 
   return (
-    <div>
+    <div className="alphira-leads">
       {/* HEADER */}
-      <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="alphira-leads-heading">
         <div>
-          <h1 className="font-serif text-3xl leading-tight text-graphite">
+          <p className="alphira-leads-eyebrow">Administration / Enquiries</p>
+          <h1>
             Lead Management
           </h1>
           <p className="mt-2 text-sm text-slate">
@@ -96,20 +98,13 @@ const LeadManagementScreen = () => {
           </p>
         </div>
 
-        <div className="rounded-2xl bg-obsidian px-6 py-4 text-vellum">
-          <p className="font-mono text-xs uppercase text-mist">
-            Total Active Leads
-          </p>
-          <h2 className="mt-1 text-xl font-semibold text-ember-orange">
-            {totalLeads}
-          </h2>
-        </div>
+
       </div>
 
       {/* STATS */}
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+      <div className="alphira-leads-stats">
         {STAT_CARDS.map((card) => (
-          <div key={card.label} className="rounded-2xl bg-bone p-6">
+          <div key={card.label} className="alphira-leads-stat">
             <p className="text-sm font-medium text-slate">{card.label}</p>
             <h2 className="mt-3 font-mono text-3xl font-medium text-graphite">
               {card.value}
@@ -119,15 +114,15 @@ const LeadManagementScreen = () => {
       </div>
 
       {/* FILTERS */}
-      <div className="mt-8 rounded-2xl bg-bone p-6">
-        <div className="grid gap-4 lg:grid-cols-[1fr_250px]">
+      <div className="alphira-leads-filters">
+        <div className="alphira-leads-filter-grid">
           <div className="relative">
             <Search
               size={16}
               className="absolute left-4 top-1/2 -translate-y-1/2 text-slate"
             />
             <input
-              type="text"
+              aria-label="Search leads by name or phone" type="search"
               placeholder="Search by name or phone..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -136,6 +131,7 @@ const LeadManagementScreen = () => {
           </div>
 
           <select
+            aria-label="Filter leads by status"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className="rounded-xl border border-pebble bg-vellum px-5 py-3.5 text-sm outline-none focus:border-obsidian"
@@ -153,22 +149,23 @@ const LeadManagementScreen = () => {
       </div>
 
       {/* TABLE */}
-      <div className="mt-8 rounded-2xl bg-bone p-8">
-        <div className="flex items-center gap-3">
+      <div className="alphira-leads-results">
+        <div className="alphira-leads-results-heading">
           <Users size={20} className="text-graphite" />
           <h2 className="text-lg font-semibold text-graphite">Lead Database</h2>
+          {!loading && !error && <span className="alphira-leads-count">{filteredLeads.length} results</span>}
         </div>
 
         {loading ? (
-          <div className="py-16 text-center">
-            <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
+          <div className="alphira-leads-empty">
+            <p role="status">Loading leads…</p>
           </div>
         ) : error ? (
-          <div className="mt-6 rounded-xl bg-red-50 p-5 text-sm text-red-600">
+          <div className="alphira-leads-error" role="alert">
             {error}
           </div>
         ) : filteredLeads.length === 0 ? (
-          <div className="mt-8 rounded-2xl border border-dashed border-pebble py-16 text-center">
+          <div className="alphira-leads-empty">
             <h2 className="text-lg font-semibold text-graphite">
               No Leads Found
             </h2>
@@ -177,8 +174,8 @@ const LeadManagementScreen = () => {
             </p>
           </div>
         ) : (
-          <div className="mt-6 overflow-x-auto">
-            <table className="min-w-full">
+          <div className="alphira-leads-table-scroll" tabIndex={0} role="region" aria-label="Lead records; scroll horizontally on smaller screens">
+            <table className="alphira-leads-table">
               <thead>
                 <tr className="border-b border-pebble">
                   <th className="px-4 py-3 text-left text-xs font-mono uppercase tracking-wide text-slate">
@@ -223,7 +220,7 @@ const LeadManagementScreen = () => {
                         <Phone size={14} className="text-slate" />
                         <a
                           href={`tel:${lead.phone}`}
-                          className="hover:text-ember-orange"
+                          className="alphira-leads-phone"
                         >
                           {lead.phone}
                         </a>
@@ -239,7 +236,7 @@ const LeadManagementScreen = () => {
 
                     <td className="px-4 py-4">
                       <span
-                        className={`rounded-[600px] px-3 py-1 font-mono text-[11px] font-medium ${getPriorityBadge(lead.priority)}`}
+                        className={`alphira-leads-badge ${getPriorityBadge(lead.priority)}`}
                       >
                         {lead.priority}
                       </span>
@@ -247,9 +244,9 @@ const LeadManagementScreen = () => {
 
                     <td className="px-4 py-4">
                       <span
-                        className={`rounded-[600px] px-3 py-1 font-mono text-[11px] font-medium uppercase ${getStatusBadge(lead.status)}`}
+                        className={`alphira-leads-badge ${getStatusBadge(lead.status)}`}
                       >
-                        {lead.status.replace("_", " ")}
+                        {(lead.status || "Not set").replaceAll("_", " ")}
                       </span>
                     </td>
 
@@ -268,13 +265,14 @@ const LeadManagementScreen = () => {
                       <div className="flex gap-2">
                         <Link
                           to={`/admin/dashboard/leads/${lead._id}`}
-                          className="rounded-lg bg-obsidian px-4 py-2 text-xs font-medium text-vellum"
+                          className="alphira-leads-view" aria-label={`View lead ${lead.name}`}
                         >
                           View
                         </Link>
                         <button
+                          type="button" aria-label={`Delete lead ${lead.name}`}
                           onClick={() => deleteHandler(lead._id)}
-                          className="rounded-lg border border-red-300 px-4 py-2 text-xs font-medium text-red-500 hover:bg-red-500 hover:text-white"
+                          className="alphira-leads-delete"
                         >
                           Delete
                         </button>
