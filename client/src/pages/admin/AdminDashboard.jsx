@@ -53,7 +53,7 @@ const AdminDashboard = () => {
   const { webinars = [] } = webinarList;
 
   const webinarCreate = useSelector((state) => state.webinarCreate);
-  const { success: webinarCreated } = webinarCreate;
+  const { loading: webinarCreating, error: webinarError } = webinarCreate;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -62,7 +62,9 @@ const AdminDashboard = () => {
 
   const [webinarTitle, setWebinarTitle] = useState("");
   const [webinarDescription, setWebinarDescription] = useState("");
-  const [startTime, setStartTime] = useState("");
+  const [webinarDate, setWebinarDate] = useState("");
+  const [webinarTime, setWebinarTime] = useState("");
+  const startTime = webinarDate && webinarTime ? `${webinarDate}T${webinarTime}` : "";
   const [duration, setDuration] = useState(60);
 
   const { userInfo } = useSelector((state) => state.userLogin);
@@ -76,12 +78,7 @@ const AdminDashboard = () => {
     dispatch(listWebinars());
   }, [dispatch, userInfo]);
 
-  useEffect(() => {
-    if (webinarCreated) {
-      dispatch(listWebinars());
-      toast.success("Webinar created successfully");
-    }
-  }, [webinarCreated, dispatch]);
+
 
   useEffect(() => {
     if (error) {
@@ -89,24 +86,31 @@ const AdminDashboard = () => {
     }
   }, [error]);
 
-  const webinarSubmitHandler = (e) => {
+  const webinarSubmitHandler = async (e) => {
     e.preventDefault();
-
-    dispatch(
-      createWebinar({
-        title: webinarTitle,
+    if (webinarCreating) return;
+    if (!webinarTitle.trim() || !startTime || !Number.isFinite(Number(duration)) || Number(duration) <= 0) {
+      toast.error("Enter a session title, start time and a valid duration", { id: "webinar-create" });
+      return;
+    }
+    try {
+      await dispatch(createWebinar({
+        title: webinarTitle.trim(),
         description: webinarDescription,
         startTime,
-        duration,
-      }),
-    );
-
-    setWebinarTitle("");
-    setWebinarDescription("");
-    setStartTime("");
-    setDuration(60);
+        duration: Number(duration),
+      }));
+      toast.success("Webinar created successfully", { id: "webinar-create" });
+      setWebinarTitle("");
+      setWebinarDescription("");
+      setWebinarDate("");
+      setWebinarTime("");
+      setDuration(60);
+      dispatch(listWebinars());
+    } catch (error) {
+      toast.error(error.message || "Unable to create webinar", { id: "webinar-create" });
+    }
   };
-
   const deleteHandler = async (id, status) => {
     if (!window.confirm("Delete this user?")) {
       return;
@@ -408,7 +412,8 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              <form onSubmit={webinarSubmitHandler} className="alphira-admin-form">
+              <form onSubmit={webinarSubmitHandler} className="alphira-admin-form" aria-busy={!!webinarCreating}>
+                {webinarError && <p role="alert" className="alphira-admin-empty">Could not create webinar: {webinarError}</p>}
                 <label htmlFor="admin-webinar-title">Session title</label>
                 <input
                   type="text"
@@ -424,26 +429,23 @@ const AdminDashboard = () => {
                   onChange={(e) => setWebinarDescription(e.target.value)}
                   className={inputClass}
                 />
-                <label htmlFor="admin-webinar-start">Start date &amp; time</label>
-                <input
-                  id="admin-webinar-start" type="datetime-local"
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                  className={inputClass}
-                />
-                <label htmlFor="admin-webinar-duration">Duration in minutes</label>
-                <input
-                  id="admin-webinar-duration" type="number"
-                  value={duration}
-                  onChange={(e) => setDuration(e.target.value)}
-                  className={inputClass}
-                />
-
+                <fieldset className="alphira-webinar-schedule">
+                  <legend>Session schedule</legend>
+                  <div className="alphira-webinar-zone"><span>PLAN YOUR SESSION</span><span>IST · UTC +05:30</span></div>
+                  <div className="alphira-webinar-date-time">
+                    <div><label htmlFor="admin-webinar-date">Date</label><input id="admin-webinar-date" type="date" value={webinarDate} onChange={(event) => setWebinarDate(event.target.value)} required /></div>
+                    <div><label htmlFor="admin-webinar-time">Start time</label><input id="admin-webinar-time" type="time" value={webinarTime} onChange={(event) => setWebinarTime(event.target.value)} required /><small>India Standard Time</small></div>
+                  </div>
+                  <div className="alphira-webinar-duration-heading"><label htmlFor="admin-webinar-duration">Session length</label><span>Choose a preset or enter minutes</span></div>
+                  <div className="alphira-webinar-duration-presets" role="group" aria-label="Duration presets">{[30, 45, 60, 90].map((minutes) => <button key={minutes} type="button" aria-pressed={Number(duration) === minutes} onClick={() => setDuration(minutes)}>{minutes}<span>min</span></button>)}</div>
+                  <div className="alphira-webinar-duration-input"><input id="admin-webinar-duration" type="number" min="1" step="1" required value={duration} onChange={(event) => setDuration(event.target.value)} /><span aria-hidden="true">minutes</span></div>
+                </fieldset>
                 <button
                   type="submit"
                   className="alphira-admin-create-webinar"
+                  disabled={webinarCreating}
                 >
-                  Create Webinar
+                  {webinarCreating ? "Creating webinar…" : "Create Webinar"}
                 </button>
               </form>
             </div>
@@ -498,3 +500,5 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
+

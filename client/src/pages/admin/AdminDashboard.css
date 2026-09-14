@@ -57,3 +57,25 @@
 .alphira-admin .alphira-admin-create-webinar { width: 100%; padding: 14px 18px; background: #20251f; color: #fff; border: 0; font-weight: 600; }
 .alphira-admin .alphira-admin-create-webinar:hover { background: #48583b; color: #fff; }
 .alphira-admin-summary h2, .alphira-admin-summary h3 { color: #fff; }
+
+.alphira-admin .alphira-webinar-schedule { min-width: 0; margin: 12px 0 4px; padding: 20px; border: 1px solid #dce3d3; background: #f7f9f2; }
+.alphira-webinar-schedule legend { padding: 0 8px; font-size: 12px; font-weight: 600; color: #293722; }
+.alphira-webinar-zone { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-bottom: 22px; font-size: 8px; letter-spacing: .08em; color: #788b67; }
+.alphira-webinar-zone span:last-child { color: #526c42; letter-spacing: 0; }
+.alphira-webinar-date-time { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap: 14px; }
+.alphira-webinar-date-time > div { min-width: 0; }
+.alphira-admin .alphira-webinar-schedule label { display: block; color: #425438; margin-bottom: 9px; font-size: 11px; }
+.alphira-admin .alphira-webinar-schedule input { display: block; width: 100%; min-width: 0; max-width: 100%; min-height: 48px; padding: 12px; border: 1px solid #d6dfcc; background: white; color: #20251f; font-family: inherit; font-size: 13px; border-radius: 0; outline: none; color-scheme: light; }
+.alphira-admin .alphira-webinar-schedule input:focus { border-color: #7c9767; box-shadow: 0 0 0 3px #71846018; }
+.alphira-webinar-date-time small { display: block; margin-top: 7px; color: #829475; font-size: 9px; }
+.alphira-webinar-duration-heading { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.alphira-webinar-duration-heading > span { font-size: 9px; color: #829475; }
+.alphira-webinar-duration-presets { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 7px; margin: 4px 0 12px; }
+.alphira-admin .alphira-webinar-duration-presets button { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px; min-height: 44px; padding: 10px 5px; border: 1px solid #d5dfca; background: #fff; color: #536d42; font-size: 13px; cursor: pointer; transition: background .15s,color .15s; }
+.alphira-webinar-duration-presets button span { font-size: 9px; }
+.alphira-admin .alphira-webinar-duration-presets button[aria-pressed="true"] { background: #20251f; border-color: #20251f; color: #fff; }
+.alphira-webinar-duration-input { position: relative; }
+.alphira-admin .alphira-webinar-duration-input input { padding-right: 78px; }
+.alphira-webinar-duration-input > span { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 10px; color: #819371; }
+@media(max-width:500px) { .alphira-webinar-date-time { grid-template-columns: minmax(0,1fr); } .alphira-admin .alphira-webinar-schedule { padding: 16px; } }
+@media(prefers-reduced-motion:reduce) { .alphira-admin .alphira-webinar-duration-presets button { transition: none; } }

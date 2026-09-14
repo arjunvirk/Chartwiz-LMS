@@ -40,9 +40,7 @@ export const createWebinar = async (req, res) => {
         message: "Google account not connected",
       });
     }
-    console.log("MEET_CLIENT_ID:", process.env.GOOGLE_MEET_CLIENT_ID);
-
-    console.log("MEET_CLIENT_SECRET:", process.env.GOOGLE_MEET_CLIENT_SECRET);
+console.log("MEET_CLIENT_SECRET:", process.env.GOOGLE_MEET_CLIENT_SECRET);
 
     console.log("MEET_REDIRECT_URI:", process.env.GOOGLE_MEET_REDIRECT_URI);
     googleMeetOAuth.setCredentials({
@@ -200,3 +198,4 @@ export const deleteWebinar = async (req, res) => {
     });
   }
 };
+
