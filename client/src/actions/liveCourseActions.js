@@ -176,32 +176,14 @@ export const enrollLiveCourse = (id) => async (dispatch) => {
 // ================= DELETE LIVE COURSE =================
 
 export const deleteLiveCourse = (id) => async (dispatch) => {
+  dispatch({ type: LIVE_COURSE_DELETE_REQUEST });
   try {
-    dispatch({
-      type: LIVE_COURSE_DELETE_REQUEST,
-    });
-
-    const response = await fetch(`${API_URL}/api/live-courses/${id}`, {
-      method: "DELETE",
-
-      credentials: "include",
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
-
-    dispatch({
-      type: LIVE_COURSE_DELETE_SUCCESS,
-    });
+    const data = await fetchWithAuth(dispatch, `${API_URL}/api/live-courses/${id}`, { method: "DELETE" });
+    dispatch({ type: LIVE_COURSE_DELETE_SUCCESS });
+    return data;
   } catch (error) {
-    dispatch({
-      type: LIVE_COURSE_DELETE_FAIL,
-
-      payload: error.message,
-    });
+    dispatch({ type: LIVE_COURSE_DELETE_FAIL, payload: error.message });
+    throw error;
   }
 };
 

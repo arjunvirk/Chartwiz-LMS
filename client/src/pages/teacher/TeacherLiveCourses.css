@@ -27,3 +27,6 @@
 @media(max-width:760px) { .alphira-teacher-live .alphira-live-heading { align-items: flex-start; } }
 @media(max-width:400px) { .alphira-teacher-live-dialog form { padding: 22px; } .alphira-teacher-live-dialog-actions { flex-direction: column-reverse; } }
 @media(prefers-reduced-motion:reduce) { .alphira-teacher-live-dialog[open] { animation: none; } }
+
+.alphira-teacher-live-delete-error { padding: 18px 22px; margin-bottom: 20px; border: 1px solid #e6d7cf; background: #f9efea; color: #8a5144; font-size: 12px; line-height: 1.8; overflow-wrap: anywhere; }
+.alphira-teacher-live-delete:disabled { opacity: .5; cursor: wait; }

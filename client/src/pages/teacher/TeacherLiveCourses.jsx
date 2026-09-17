@@ -17,6 +17,9 @@ const TeacherLiveCourses = () => {
   const [sessionTime, setSessionTime] = useState("");
   const [sessionDuration, setSessionDuration] = useState(60);
   const [sessionBusy, setSessionBusy] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
+  const deleteLock = useRef(false);
   const requestId = useRef(null);
   const requestPayload = useRef(null);
   const saveLock = useRef(false);
@@ -47,16 +50,24 @@ const TeacherLiveCourses = () => {
   }, [selectedCourse]);
 
   const deleteHandler = async (id) => {
+    if (deleteLock.current) return;
     if (!window.confirm("Are you sure you want to delete this live course?")) return;
+    deleteLock.current = true;
+    setDeletingId(id);
+    setDeleteError("");
     try {
-      await dispatch(deleteLiveCourse(id));
-      toast.success("Live course deleted successfully");
+      const data = await dispatch(deleteLiveCourse(id));
+      toast.success(data?.message || "Live course deleted successfully", { id: "live-course-delete" });
       dispatch(getTeacherLiveCourses());
     } catch (error) {
-      toast.error(error.message);
+      const message = error.message || "Unable to delete this batch.";
+      setDeleteError(message);
+      toast.error(message, { id: "live-course-delete" });
+    } finally {
+      deleteLock.current = false;
+      setDeletingId(null);
     }
   };
-
   const openSchedule = (course) => {
     requestId.current = crypto.randomUUID();
     requestPayload.current = null;
@@ -102,6 +113,7 @@ const TeacherLiveCourses = () => {
     <section className="alphira-live-classes alphira-teacher-live" aria-labelledby="teacher-live-title">
       <header className="alphira-live-heading"><div><span className="alphira-live-eyebrow">Teaching workspace / Live mentorship</span><h1 id="teacher-live-title">Bring your batch together.</h1><p>Manage your programs, publish sessions and connect with your students.</p></div><Link to="/teacher/dashboard/create-live-course" className="alphira-live-button"><Plus size={16} aria-hidden="true" />Create live batch</Link></header>
       <div className="alphira-teacher-live-bar"><span><Radio size={19} aria-hidden="true" />MENTORSHIP BATCHES</span><strong>{loading ? "…" : error ? "—" : liveCourses.length}</strong></div>
+      {deleteError && <p role="alert" className="alphira-teacher-live-delete-error">{deleteError}</p>}
       {loading ? <div className="alphira-live-state" role="status"><span className="alphira-live-loading" aria-hidden="true" /><h2>Loading your batches</h2></div> : error ? <div className="alphira-live-state" role="alert"><h2>Unable to load live courses</h2><p>{error}</p><button type="button" className="alphira-live-button" onClick={() => dispatch(getTeacherLiveCourses())}>Try again</button></div> : liveCourses.length === 0 ? <div className="alphira-live-state"><Radio size={28} aria-hidden="true" /><h2>Your next batch starts here.</h2><p>Create your first live mentorship program using the button above.</p></div> : (
         <div className="alphira-live-grid">{liveCourses.map((course, index) => {
           const date = course.startDate ? new Date(course.startDate) : null;
@@ -112,7 +124,7 @@ const TeacherLiveCourses = () => {
               <LiveSessionList sessions={course.sessions} busy={sessionBusy} onCancel={(session) => manageSession(course._id, session, true)} onRefresh={(session) => manageSession(course._id, session)} />
               <button type="button" onClick={() => openSchedule(course)} className="alphira-live-button"><Plus size={16} aria-hidden="true" />Schedule class</button>
               {course.status === "live" && course.meetLink && <a href={course.meetLink} target="_blank" rel="noreferrer" className="alphira-teacher-live-delete">Open existing batch Meet link ↗</a>}
-              <button type="button" onClick={() => deleteHandler(course._id)} className="alphira-teacher-live-delete" aria-label={`Delete live course: ${course.title}`}><Trash2 size={14} aria-hidden="true" />Delete course</button>
+              <button type="button" onClick={() => deleteHandler(course._id)} disabled={!!deletingId} className="alphira-teacher-live-delete" aria-label={`Delete live course: ${course.title}`}><Trash2 size={14} aria-hidden="true" />{deletingId === course._id ? "Deleting…" : "Delete course"}</button>
             </div>
           </motion.article>;
         })}</div>
@@ -136,5 +148,6 @@ const TeacherLiveCourses = () => {
 };
 
 export default TeacherLiveCourses;
+
 
 
