@@ -1,3 +1,4 @@
+import LiveSessionList from "../../components/LiveSessionList";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, useReducedMotion } from "framer-motion";
@@ -59,8 +60,9 @@ const MyLiveCourses = () => {
                     <div><dt>Duration</dt><dd>{course.durationMonths ? `${course.durationMonths} ${Number(course.durationMonths) === 1 ? "month" : "months"}` : "To be announced"}</dd></div>
                     <div><dt><CalendarDays size={14} aria-hidden="true" />Starts</dt><dd>{formatDate(course.startDate)}</dd></div>
                   </dl>
+                  <LiveSessionList sessions={course.sessions} />
                   <div className="alphira-live-card-action">
-                    {isLive && meetLink ? <a href={meetLink.startsWith("http") ? meetLink : `https://${meetLink}`} target="_blank" rel="noreferrer" className="alphira-live-button">Join Google Meet <ArrowUpRight size={17} aria-hidden="true" /></a> : <p className="alphira-live-unavailable">{completed ? "Session completed" : isLive ? "Joining link will be available soon" : "Class not started yet"}</p>}
+                    {!course.sessions?.length && (isLive && meetLink ? <a href={meetLink.startsWith("http") ? meetLink : `https://${meetLink}`} target="_blank" rel="noreferrer" className="alphira-live-button">Join Google Meet <ArrowUpRight size={17} aria-hidden="true" /></a> : <p className="alphira-live-unavailable">{completed ? "Session completed" : isLive ? "Joining link will be available soon" : "Class not started yet"}</p>)}
                   </div>
                 </div>
               </motion.article>
@@ -73,3 +75,4 @@ const MyLiveCourses = () => {
 };
 
 export default MyLiveCourses;
+

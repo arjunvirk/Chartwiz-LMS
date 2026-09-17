@@ -1,0 +1,16 @@
+.ac-session-list { margin: 22px 0; min-width: 0; }
+.ac-session-list > h3 { font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+.ac-session-list > h3 span { color: #748366; font-size: 10px; margin-left: 8px; }
+.ac-session { border: 1px solid #dce3d3; background: #f7f9f3; padding: 16px; margin-top: 10px; }
+.ac-session-top { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+.ac-session-top strong { font-size: 13px; overflow-wrap: anywhere; }
+.ac-session-top > span { font-size: 9px; color: #597349; flex-shrink: 0; }
+.ac-session p,.ac-session-empty { color: #718065; font-size: 11px; line-height: 1.8; margin-top: 9px; }
+.ac-session-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
+.ac-session-actions a,.ac-session-actions button { min-height: 44px; padding: 11px 12px; background: #20251f; color: #fff; font-size: 11px; border: 1px solid #20251f; text-decoration: none; cursor: pointer; }
+.ac-session-actions button { background: #fff; color: #627452; border-color: #d4deca; }
+.ac-session-actions > span { font-size: 10px; color: #738368; }
+.ac-session-actions button:disabled { opacity: .5; cursor: wait; }
+.ac-session-actions :is(a,button):focus-visible { outline: 2px solid #819c6a; outline-offset: 3px; }
+.ac-schedule-fields { display: grid; gap: 16px; margin-top: 20px; }
+.ac-schedule-fields label { margin-bottom: 7px; }

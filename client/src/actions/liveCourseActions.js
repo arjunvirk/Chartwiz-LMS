@@ -1,3 +1,4 @@
+import fetchWithAuth from "../utils/fetchWithAuth";
 import {
   LIVE_COURSE_LIST_REQUEST,
   LIVE_COURSE_LIST_SUCCESS,
@@ -54,43 +55,18 @@ export const getLiveCourses = () => async (dispatch) => {
 // ================= CREATE LIVE COURSE =================
 
 export const createLiveCourse = (courseData) => async (dispatch) => {
+  dispatch({ type: LIVE_COURSE_CREATE_REQUEST });
   try {
-    dispatch({
-      type: LIVE_COURSE_CREATE_REQUEST,
+    const data = await fetchWithAuth(dispatch, `${API_URL}/api/live-courses`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(courseData),
     });
-
-    const response = await fetch(`${API_URL}/api/live-courses`, {
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      credentials: "include",
-
-      body: JSON.stringify(courseData),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message);
-    }
-
-    dispatch({
-      type: LIVE_COURSE_CREATE_SUCCESS,
-
-      payload: data.liveCourse,
-    });
+    dispatch({ type: LIVE_COURSE_CREATE_SUCCESS, payload: data.liveCourse });
+    return data;
   } catch (error) {
-    dispatch({
-      type: LIVE_COURSE_CREATE_FAIL,
-
-      payload: error.message,
-    });
+    dispatch({ type: LIVE_COURSE_CREATE_FAIL, payload: error.message });
+    throw error;
   }
 };
-
 // ================= MY LIVE COURSES =================
 
 export const getMyLiveCourses = () => async (dispatch) => {
@@ -228,3 +204,4 @@ export const deleteLiveCourse = (id) => async (dispatch) => {
     });
   }
 };
+

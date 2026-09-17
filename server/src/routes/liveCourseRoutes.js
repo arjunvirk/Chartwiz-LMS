@@ -1,3 +1,4 @@
+import { scheduleLiveSession, refreshLiveSession, cancelLiveSession } from "../controllers/liveSessionController.js";
 import express from "express";
 
 import {
@@ -52,4 +53,8 @@ router.delete("/:id", protect, teacherOrAdmin, deleteLiveCourse);
 
 router.put("/:id/publish", protect, teacherOrAdmin, publishLiveSession);
 
+router.post("/:id/sessions", protect, teacherOrAdmin, scheduleLiveSession);
+router.post("/:id/sessions/:sessionId/refresh", protect, teacherOrAdmin, refreshLiveSession);
+router.delete("/:id/sessions/:sessionId", protect, teacherOrAdmin, cancelLiveSession);
 export default router;
+

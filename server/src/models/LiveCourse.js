@@ -53,6 +53,17 @@ const liveCourseSchema = new mongoose.Schema(
       default: "",
     },
 
+    sessions: [{
+      title: { type: String, required: true },
+      startTime: { type: Date, required: true },
+      endTime: { type: Date, required: true },
+      duration: { type: Number, required: true },
+      requestId: { type: String, required: true },
+      eventId: { type: String, required: true },
+      meetLink: { type: String, default: "" },
+      status: { type: String, enum: ["scheduled", "cancelled"], default: "scheduled" },
+    }],
+
     students: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -68,3 +79,4 @@ const liveCourseSchema = new mongoose.Schema(
 const LiveCourse = mongoose.model("LiveCourse", liveCourseSchema);
 
 export default LiveCourse;
+

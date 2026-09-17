@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+import { validateSession, scheduleLiveSession } from "./liveSessionController.js";
 import LiveCourse from "../models/LiveCourse.js";
 import User from "../models/User.js";
 
@@ -5,59 +7,42 @@ import User from "../models/User.js";
 
 export const createLiveCourse = async (req, res) => {
   try {
-    const { title, description, price, durationMonths, startDate, classTime } =
-      req.body;
-
-    // VALIDATION
-
-    if (
-      !title ||
-      !description ||
-      !price ||
-      !durationMonths ||
-      !startDate ||
-      !classTime
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "Please fill all fields",
-      });
+    const { title, description, durationMonths, startDate, classTime, sessionDuration, requestId } = req.body;
+    if (!title?.trim() || !description?.trim() || !Number.isInteger(Number(durationMonths)) || Number(durationMonths) < 1) {
+      return res.status(400).json({ success: false, message: "Enter a title, description and valid batch duration." });
     }
-
-    const teacher = await User.findById(req.user.id);
-
-    const liveCourse = await LiveCourse.create({
-      title,
-      description,
-      instructor: teacher.name,
-      teacher: teacher._id,
-      price,
-      durationMonths,
-      startDate,
-      classTime,
+    if (!/^[a-zA-Z0-9-]{16,80}$/.test(requestId || "")) {
+      return res.status(400).json({ success: false, message: "Reopen the batch form and try again." });
+    }
+    const batchId = createHash("sha256").update(String(req.user.id) + ":" + requestId).digest("hex").slice(0,24);
+    let liveCourse = await LiveCourse.findById(batchId);
+    const sessionBody = { title: title.trim(), startTime: startDate + "T" + classTime, duration: sessionDuration, requestId };
+    if (!liveCourse) {
+      validateSession(sessionBody);
+      const teacher = await User.findById(req.user.id);
+      if (!teacher) return res.status(401).json({ success: false, message: "Please sign in again." });
+      liveCourse = await LiveCourse.findOneAndUpdate({ _id: batchId }, { $setOnInsert: {
+        title: title.trim(), description: description.trim(), instructor: teacher.name, teacher: teacher._id,
+        price: 0, durationMonths: Number(durationMonths), startDate, classTime,
+      } }, { upsert: true, new: true, runValidators: true });
+    }
+    // Reuse the original schedule on retries so a Calendar or network error cannot create a second batch.
+    const savedBody = { ...sessionBody, title: liveCourse.title, startTime: new Date(liveCourse.startDate).toISOString().slice(0,10) + "T" + liveCourse.classTime };
+    let result, status = 200;
+    await scheduleLiveSession({ ...req, params: { id: String(liveCourse._id) }, body: savedBody }, {
+      status(code) { status = code; return this; }, json(value) { result = value; return this; },
     });
-
-    res.status(201).json({
-      success: true,
-
-      message: "Live course created successfully",
-
-      liveCourse,
-    });
+    if (!result?.success) return res.status(status).json({ ...result, liveCourseId: liveCourse._id, message: "Batch saved, but its first class could not be scheduled. " + (result?.message || "Retry to finish scheduling.") });
+    res.status(201).json({ success: true, liveCourse: await LiveCourse.findById(batchId), message: "Batch created and first class scheduled." });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-
-      message: error.message,
-    });
+    res.status(error.status || 500).json({ success: false, message: error.message });
   }
 };
-
 // ================= GET ALL LIVE COURSES =================
 
 export const getLiveCourses = async (req, res) => {
   try {
-    const liveCourses = await LiveCourse.find().sort({
+    const liveCourses = await LiveCourse.find().select("-sessions -meetLink -students").sort({
       createdAt: -1,
     });
 
@@ -189,6 +174,9 @@ export const deleteLiveCourse = async (req, res) => {
       });
     }
 
+    if (liveCourse.sessions?.some((session) => session.status !== "cancelled" && new Date(session.endTime) > new Date())) {
+      return res.status(409).json({ success: false, message: "Cancel upcoming scheduled sessions before deleting this batch." });
+    }
     await liveCourse.deleteOne();
 
     res.status(200).json({
@@ -239,3 +227,5 @@ export const publishLiveSession = async (req, res) => {
     });
   }
 };
+
+

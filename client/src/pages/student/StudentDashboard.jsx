@@ -1,3 +1,4 @@
+import LiveSessionList from "../../components/LiveSessionList";
 import "./StudentDashboard.css";
 import forexImage from "../../assets/images/forex-art.png";
 import indianMarketImage from "../../assets/images/indian-market-art.png";
@@ -279,7 +280,7 @@ const StudentDashboard = () => {
                   <h3 className="text-sm font-semibold text-graphite">
                     {course.title}
                   </h3>
-                  <p className="mt-1 text-sm text-slate">{course.instructor}</p>
+                  <p className="mt-1 text-sm text-slate">{course.instructor}</p><LiveSessionList sessions={course.sessions} />
                 </div>
                 <div className="mt-3 md:mt-0">
                   <span className="rounded-pill bg-obsidian px-4 py-2 font-mono text-[11px] font-medium text-vellum">
@@ -357,3 +358,4 @@ const StudentDashboard = () => {
 };
 
 export default StudentDashboard;
+
