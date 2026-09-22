@@ -1,3 +1,4 @@
+import CookieConsent from "./components/CookieConsent";
 import MetaPixelTracker from "./components/MetaPixelTracker";
 import { useEffect } from "react";
 
@@ -92,6 +93,7 @@ const App = () => {
       <Navbar />
 
       <MetaPixelTracker />
+      <CookieConsent />
 
       <LeadPopup />
 

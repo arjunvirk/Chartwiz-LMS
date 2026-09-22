@@ -1,17 +1,20 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { initMetaPixel, trackPageView } from "../utils/metaPixel";
+import { syncMetaConsent, trackPageView } from "../utils/metaPixel";
+import { getCookieConsent, subscribeConsent } from "../utils/cookieConsent";
 
 export default function MetaPixelTracker() {
-  const location = useLocation();
-
+  const { pathname } = useLocation();
   useEffect(() => {
-    initMetaPixel();
-  }, []);
-
-  useEffect(() => {
-    trackPageView();
-  }, [location.pathname]);
-
+    let allowed = Boolean(getCookieConsent()?.marketing);
+    syncMetaConsent();
+    if (allowed) trackPageView();
+    return subscribeConsent(() => {
+      const next = Boolean(getCookieConsent()?.marketing);
+      syncMetaConsent();
+      if (next && !allowed) trackPageView();
+      allowed = next;
+    });
+  }, [pathname]);
   return null;
 }

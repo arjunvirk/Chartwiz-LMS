@@ -1,3 +1,4 @@
+import StudentClassNotices from "../components/StudentClassNotices";
 import { getMyCourses } from "../actions/courseActions";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
@@ -47,7 +48,6 @@ const coursesPath = isTeacher
       { to: adminAdmissionsPath, label: "Admissions", icon: ClipboardList },
       { to: adminInvoicesPath, label: "Invoices", icon: Receipt },
     ] : isTeacher ? [
-      { to: coursesPath, label: "Courses", icon: BookOpen },
       { to: teacherLiveCoursesPath, label: "Live Courses", icon: Radio },
     ] : [
       { to: coursesPath, label: "My Courses", icon: BookOpen },
@@ -108,11 +108,12 @@ const coursesPath = isTeacher
             <p>{isAdmin ? "Manage your LMS platform and users." : isTeacher ? "Manage mentorship programs and students." : "Your academy enrollment and account, in one place."}</p>
           </section>
           {!isTeacher && !isAdmin && <div className="alphira-dash-enrollment"><BookOpen size={20} aria-hidden="true" /><span>Enrolled courses</span><strong>{coursesLoading ? "…" : coursesError ? "—" : enrolledCourses.length}</strong><small>Offline academy</small></div>}
-          <div className="alphira-dash-outlet"><Outlet /></div>
+          <div className="alphira-dash-outlet">{userInfo?.user?.role === "student" && userInfo.user._id && <StudentClassNotices key={userInfo.user._id} userId={userInfo.user._id} />}<Outlet /></div>
         </div>
       </main>
     </div>
   );
 }
+
 
 

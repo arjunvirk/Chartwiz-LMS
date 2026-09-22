@@ -1,0 +1,14 @@
+.ac-class-notices { margin-bottom: 24px; padding: 22px; border: 1px solid #bacda9; background: #edf4e4; color: #293c21; }
+.ac-class-notices-heading { display: flex; align-items: center; gap: 14px; }
+.ac-class-notices-heading > svg { flex-shrink: 0; }
+.ac-class-notices-heading > div { flex: 1; min-width: 0; }
+.ac-class-notices strong { font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
+.ac-class-notices p { font-size: 11px; color: #647956; line-height: 1.8; margin-top: 4px; }
+.ac-class-notices button,.ac-class-notices a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 11px 14px; color: #fff; background: #20251f; border: 1px solid #20251f; font-size: 11px; text-decoration: none; cursor: pointer; flex-shrink: 0; }
+.ac-class-notice { display: flex; align-items: center; justify-content: space-between; gap: 18px; border-top: 1px solid #cddbc1; margin-top: 18px; padding-top: 18px; }
+.ac-class-notice > div { min-width: 0; }
+.ac-class-notice button { color: #536d42; border-color: #c0d3ae; background: transparent; }
+.ac-class-notices a { margin-top: 20px; }
+.ac-class-notices :is(a,button):focus-visible { outline: 2px solid #7a9566; outline-offset: 3px; }
+.ac-class-notices-error { font-size: 11px; color: #776954; margin-bottom: 18px; }
+@media(max-width:600px) { .ac-class-notices-heading { flex-wrap: wrap; } .ac-class-notices-heading > div { flex-basis: calc(100% - 40px); } .ac-class-notice { align-items: flex-start; flex-direction: column; } }

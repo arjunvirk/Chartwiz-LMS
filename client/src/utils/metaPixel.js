@@ -1,7 +1,9 @@
+import { getCookieConsent } from "./cookieConsent";
+
 const PIXEL_ID = "2862464450778233";
 
 export const initMetaPixel = () => {
-  if (window.fbq) return;
+  if (!getCookieConsent()?.marketing || window.fbq) return;
 
   !(function (f, b, e, v, n, t, s) {
     if (f.fbq) return;
@@ -24,27 +26,47 @@ export const initMetaPixel = () => {
 };
 
 export const trackPageView = () => {
-  if (window.fbq) {
+  if (getCookieConsent()?.marketing && window.fbq) {
     window.fbq("track", "PageView");
   }
 };
 
 export const trackLead = () => {
-  if (window.fbq) {
+  if (getCookieConsent()?.marketing && window.fbq) {
     window.fbq("track", "Lead");
   }
 };
 
 export const trackContact = () => {
-  if (window.fbq) {
+  if (getCookieConsent()?.marketing && window.fbq) {
     window.fbq("track", "Contact");
   }
 };
 
 export const trackCompleteRegistration = (course) => {
-  if (window.fbq) {
+  if (getCookieConsent()?.marketing && window.fbq) {
     window.fbq("track", "CompleteRegistration", {
       content_name: course,
     });
   }
 };
+
+export function syncMetaConsent() {
+  if (getCookieConsent()?.marketing) {
+    initMetaPixel();
+    window.fbq?.("consent", "grant");
+  } else {
+    // Discard events still waiting for the library, then revoke runtime consent.
+    if (Array.isArray(window.fbq?.queue)) {
+      window.fbq.queue = window.fbq.queue.filter((command) => !String(command[0]).startsWith("track"));
+    }
+    window.fbq?.("consent", "revoke");
+    const parts = window.location.hostname.split(".");
+    const domains = ["", ...parts.map((_, index) => parts.slice(index).join("."))];
+    for (const name of ["_fbp", "_fbc"]) {
+      for (const domain of domains) {
+        document.cookie = `${name}=; Max-Age=0; path=/;${domain ? ` domain=${domain};` : ""}`;
+      }
+    }
+  }
+}

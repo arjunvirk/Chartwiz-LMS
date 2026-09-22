@@ -18,7 +18,7 @@ const SECTIONS = [
 
   {
     title: "4. Cookies & Tracking Technologies",
-    body: `Our website may use cookies, authentication cookies, local storage, analytics tools, and similar technologies to improve website performance, remember your preferences, keep you signed in securely, and understand how users interact with our platform.`,
+    body: `We use essential authentication cookies to keep you signed in and browser local storage to remember your cookie preferences on this browser. Optional Meta Pixel marketing tracking loads only after you accept it. It measures page visits and actions such as inquiries and registrations to help evaluate advertising. You can accept, reject, or customize optional tracking, and change your choice at any time using Cookie settings. Withdrawing consent stops future Pixel events and removes accessible first-party Meta cookies; it does not undo information already sent. Your choice is remembered until you change it or clear your browser storage. Essential login and account functionality remains available when optional tracking is rejected.`,
   },
 
   {
