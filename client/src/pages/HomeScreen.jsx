@@ -1,3 +1,4 @@
+import CookieConsent from "../components/CookieConsent";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
@@ -30,6 +31,7 @@ const HomeScreen = () => {
       <CTA />
       <Footer />
       <HomeOffer />
+      <CookieConsent />
     </div>
   );
 };

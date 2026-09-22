@@ -1,6 +1,6 @@
 import { getCookieConsent } from "./cookieConsent";
 
-const PIXEL_ID = "2862464450778233";
+const PIXEL_ID = "3341231732746516";
 
 export const initMetaPixel = () => {
   if (!getCookieConsent()?.marketing || window.fbq) return;

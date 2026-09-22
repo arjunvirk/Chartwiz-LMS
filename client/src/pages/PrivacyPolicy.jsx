@@ -18,7 +18,7 @@ const SECTIONS = [
 
   {
     title: "4. Cookies & Tracking Technologies",
-    body: `We use essential authentication cookies to keep you signed in and browser local storage to remember your cookie preferences on this browser. Optional Meta Pixel marketing tracking loads only after you accept it. It measures page visits and actions such as inquiries and registrations to help evaluate advertising. You can accept, reject, or customize optional tracking, and change your choice at any time using Cookie settings. Withdrawing consent stops future Pixel events and removes accessible first-party Meta cookies; it does not undo information already sent. Your choice is remembered until you change it or clear your browser storage. Essential login and account functionality remains available when optional tracking is rejected.`,
+    body: `We use essential authentication cookies to keep you signed in and browser local storage to remember your cookie preferences on this browser. Optional Meta Pixel marketing tracking loads only after you accept it. It measures page visits and actions such as inquiries and registrations to help evaluate advertising. You can accept, reject, or customize optional tracking, and change your choice at any time using Cookie settings in the home page footer. Closing the initial prompt keeps optional tracking off and remembers that choice. Withdrawing consent stops future Pixel events and removes accessible first-party Meta cookies; it does not undo information already sent. Your choice is remembered until you change it or clear your browser storage. Essential login and account functionality remains available when optional tracking is rejected.`,
   },
 
   {

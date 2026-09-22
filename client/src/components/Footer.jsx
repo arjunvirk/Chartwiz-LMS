@@ -1,5 +1,5 @@
 import { openCookieSettings } from "../utils/cookieConsent";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -14,6 +14,7 @@ const COURSES = ["The Forex Program", "The Forex Program with Indian Market"];
 
 export default function Footer() {
   const reducedMotion = useReducedMotion();
+  const { pathname } = useLocation();
   const reveal = (delay = 0) => ({
     initial: reducedMotion ? false : { opacity: 0, y: 14 },
     whileInView: { opacity: 1, y: 0 },
@@ -55,10 +56,10 @@ export default function Footer() {
         </div>
 
         <div className="az-bottom">
-          <p>Â© {new Date().getFullYear()} Alphira Capital. All rights reserved.</p>
+          <p>Ã‚Â© {new Date().getFullYear()} Alphira Capital. All rights reserved.</p>
           <nav aria-label="Legal and account links" className="az-legal">
             <Link to="/privacy-policy">Privacy Policy</Link>
-            <button type="button" className="ac-cookie-link" onClick={openCookieSettings}>Cookie settings</button>
+            {pathname === "/" && <button type="button" className="ac-cookie-link" onClick={openCookieSettings}>Cookie settings</button>}
             <Link to="/terms-conditions">Terms &amp; Conditions</Link>
             <Link to="/support">Support</Link>
             <Link to="/login" className="az-portal">Student &amp; Staff Portal <ArrowUpRight size={14} aria-hidden="true" /></Link>
