@@ -22,7 +22,7 @@ export default function CookieConsent() {
       setMarketing(Boolean(getCookieConsent()?.marketing));
       setCustomize(true);
       setOpen(true);
-      requestAnimationFrame(() => heading.current?.focus());
+      requestAnimationFrame(() => heading.current?.focus({ preventScroll: true }));
     };
     window.addEventListener(SETTINGS_EVENT, show);
     return () => { unsubscribe(); window.removeEventListener(SETTINGS_EVENT, show); };
@@ -34,8 +34,8 @@ export default function CookieConsent() {
     setOpen(false);
     requestAnimationFrame(() => {
       const previous = restoreFocus.current;
-      if (previous?.isConnected && !heading.current?.contains(previous)) previous.focus();
-      else document.querySelector(".ac-cookie-link")?.focus();
+      if (previous?.isConnected) previous.focus({ preventScroll: true });
+      restoreFocus.current = null;
     });
   };
   const save = (enabled) => {
