@@ -1,3 +1,4 @@
+import orderFlowImage from "../../assets/images/order-flow-art.svg";
 import LiveSessionList from "../../components/LiveSessionList";
 import "./StudentDashboard.css";
 import forexImage from "../../assets/images/forex-art.png";
@@ -154,7 +155,7 @@ const StudentDashboard = () => {
                 className="alphira-student-card"
               >
                 <img
-                  src={/indian|india/i.test(course.title || "") ? indianMarketImage : /forex/i.test(course.title || "") ? forexImage : course.thumbnail}
+                  src={/order[\s-]*flow/i.test(course.title || "") ? orderFlowImage : /indian|india/i.test(course.title || "") ? indianMarketImage : /forex/i.test(course.title || "") ? forexImage : course.thumbnail}
                   alt={course.title}
                   className="h-40 w-full object-cover"
                   onError={(e) => {

@@ -23,7 +23,7 @@ const admissionSchema = new mongoose.Schema(
     course: {
       type: String,
       required: true,
-      enum: ["The Forex Program", "The Forex Program with Indian Market"],
+      enum: ["The Forex Program", "The Forex Program with Indian Market", "Advanced Order Flow Program"],
     },
 
     assignedCourse: {

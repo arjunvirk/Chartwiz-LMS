@@ -109,7 +109,7 @@ const LeadPopup = () => {
           <div><label htmlFor="enquiry-name">Your name</label><input id="enquiry-name" name="name" type="text" autoComplete="name" placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} /></div>
           <div><label htmlFor="enquiry-email">Email address</label><input id="enquiry-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
           <div><label htmlFor="enquiry-phone">Mobile number</label><input id="enquiry-phone" name="phone" type="tel" autoComplete="tel" placeholder="Enter mobile number" value={phone} onChange={(e) => setPhone(e.target.value)} /></div>
-          <div><label htmlFor="enquiry-course">Interested in</label><select id="enquiry-course" value={course} onChange={(e) => setCourse(e.target.value)}><option>The Forex Program</option><option>The Forex Program with Indian Market</option></select></div>
+          <div><label htmlFor="enquiry-course">Interested in</label><select id="enquiry-course" value={course} onChange={(e) => setCourse(e.target.value)}><option>The Forex Program</option><option>The Forex Program with Indian Market</option><option>Advanced Order Flow Program</option></select></div>
           <button type="submit" className="alphira-enquiry-submit">Yes, I Want To Learn<ArrowRight size={17} aria-hidden="true" /></button>
         </form>
       </div>

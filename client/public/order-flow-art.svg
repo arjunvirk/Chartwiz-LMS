@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="640" viewBox="0 0 800 640" fill="none">
+<rect width="800" height="640" fill="#e9ece2"/>
+<path d="M0 128H800M0 256H800M0 384H800M0 512H800M160 0V640M320 0V640M480 0V640M640 0V640" stroke="#d7ddce"/>
+<rect x="70" y="65" width="660" height="510" fill="#20251f"/>
+<text x="108" y="112" fill="#b8c6a5" font-family="Arial,sans-serif" font-size="13" letter-spacing="4">ALPHIRA CAPITAL / ADVANCED</text>
+<text x="108" y="181" fill="#faf9f5" font-family="Arial,sans-serif" font-size="48" font-weight="700" letter-spacing="-2">Order flow.</text>
+<text x="108" y="217" fill="#bbc1b5" font-family="Arial,sans-serif" font-size="16">A closer look at market activity.</text>
+<path d="M108 259H692M108 331H692M108 403H692M108 475H692" stroke="#3b4435"/>
+<path d="M208 296V476M335 267V421M462 306V490M589 277V449" stroke="#b8c6a5" stroke-width="2"/>
+<g fill="#66745b"><rect x="167" y="332" width="36" height="21"/><rect x="147" y="357" width="56" height="21"/><rect x="162" y="382" width="41" height="21"/><rect x="177" y="407" width="26" height="21"/><rect x="290" y="297" width="40" height="21"/><rect x="273" y="322" width="57" height="21"/><rect x="298" y="347" width="32" height="21"/><rect x="285" y="372" width="45" height="21"/><rect x="402" y="340" width="55" height="21"/><rect x="391" y="365" width="66" height="21"/><rect x="416" y="390" width="41" height="21"/><rect x="428" y="415" width="29" height="21"/><rect x="555" y="307" width="29" height="21"/><rect x="540" y="332" width="44" height="21"/><rect x="558" y="357" width="26" height="21"/><rect x="549" y="382" width="35" height="21"/></g>
+<g fill="#c4d2ac"><rect x="213" y="332" width="28" height="21"/><rect x="213" y="357" width="40" height="21"/><rect x="213" y="382" width="62" height="21"/><rect x="213" y="407" width="46" height="21"/><rect x="340" y="297" width="58" height="21"/><rect x="340" y="322" width="43" height="21"/><rect x="340" y="347" width="66" height="21"/><rect x="340" y="372" width="29" height="21"/><rect x="467" y="340" width="30" height="21"/><rect x="467" y="365" width="42" height="21"/><rect x="467" y="390" width="58" height="21"/><rect x="467" y="415" width="43" height="21"/><rect x="594" y="307" width="62" height="21"/><rect x="594" y="332" width="46" height="21"/><rect x="594" y="357" width="70" height="21"/><rect x="594" y="382" width="49" height="21"/></g>
+<text x="108" y="539" fill="#bbc1b5" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">BUYING / SELLING</text>
+<text x="510" y="539" fill="#bbc1b5" font-family="Arial,sans-serif" font-size="10" letter-spacing="1">CONCEPT ILLUSTRATION</text>
+</svg>

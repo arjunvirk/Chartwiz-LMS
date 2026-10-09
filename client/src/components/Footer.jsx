@@ -10,7 +10,7 @@ const QUICK_LINKS = [
   { to: "/courses", label: "Courses" },
   { to: "/admission", label: "Apply For Admission" },
 ];
-const COURSES = ["The Forex Program", "The Forex Program with Indian Market"];
+const COURSES = ["The Forex Program", "The Forex Program with Indian Market", "Advanced Order Flow Program"];
 
 export default function Footer() {
   const reducedMotion = useReducedMotion();

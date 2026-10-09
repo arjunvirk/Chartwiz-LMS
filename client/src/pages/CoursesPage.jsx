@@ -2,10 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, Check, Clock, Monitor, ArrowRight } from "lucide-react";
+import { ArrowUpRight, Check, Clock, Monitor, ArrowRight, GraduationCap } from "lucide-react";
 import { API_URL } from "../config/api";
 import forexImage from "../assets/images/forex-art.png";
 import indianMarketImage from "../assets/images/indian-market-art.png";
+import orderFlowImage from "../assets/images/order-flow-art.svg";
 import "./CoursesPage.css";
 const COURSE_META = {
   "The Forex Program": {
@@ -33,6 +34,19 @@ const COURSE_META = {
     ],
   },
 };
+
+const ORDER_FLOW_PROGRAM = {
+  key: "advanced-order-flow",
+  title: "Advanced Order Flow Program",
+  description: "Take your market understanding further with advanced order flow education. Learn to interpret buying and selling activity and bring greater context to your trading decisions through classroom mentorship.",
+  meta: {
+    image: orderFlowImage,
+    duration: null,
+    badge: "Advanced Course",
+    features: ["Order Flow Analysis", "Buying & Selling Activity", "Classroom Mentorship"],
+  },
+};
+const isOrderFlow = (title = "") => /order[\s-]*flow/i.test(title);
 
 const DEFAULT_META = {
   image: forexImage,
@@ -80,69 +94,58 @@ export default function CoursesPage() {
           ? "A complete classroom-based Forex trading program covering technical analysis, market structure, risk management, psychology and live market execution."
           : "Master both Forex and the Indian Stock Market with comprehensive classroom training, live trading sessions and professional mentorship.",
       }))
-    : courses.map((course) => ({ key: course._id, title: course.title, description: course.description, meta: COURSE_META[course.title] || DEFAULT_META }));
+    : courses.map((course) => ({ key: course._id, title: course.title, description: course.description, meta: isOrderFlow(course.title) ? ORDER_FLOW_PROGRAM.meta : COURSE_META[course.title] || DEFAULT_META }));
+
+  if (!programs.some((program) => isOrderFlow(program.title))) {
+    programs.push(ORDER_FLOW_PROGRAM);
+  }
 
   return (
-    <main className="alphira-catalog-page">
-      <div className="alphira-catalog-container">
-        <motion.header {...reveal()} className="alphira-catalog-header">
-          <p className="alphira-catalog-eyebrow"><span aria-hidden="true" />Our Courses</p>
-          <div className="alphira-catalog-heading-row">
-            <h1>Learn trading<br /><span>like a professional.</span></h1>
-            <p className="alphira-catalog-intro">Structured mentorship programs designed for aspiring traders who want to build long-term market understanding and disciplined execution.</p>
+    <main className="ac-programs">
+      <div className="ac-programs-shell">
+        <motion.header {...reveal()} className="ac-programs-hero">
+          <div className="ac-programs-hero-copy">
+            <p className="ac-programs-kicker"><span /> ALPHIRA CAPITAL / THE ACADEMY</p>
+            <h1>Understand the market.<br /><em>Build your edge.</em></h1>
+            <p className="ac-programs-lede">From your first chart to a deeper understanding of order flow. Learn through structured classroom education, practical analysis and mentorship.</p>
+            <a className="ac-programs-button" href="#academy-programs">Explore the programs <ArrowRight size={18} /></a>
+            <div className="ac-programs-hero-note"><GraduationCap size={18} strokeWidth={1.5} /><span>Classroom learning. Real market context.</span></div>
+          </div>
+          <div className="ac-programs-art" aria-hidden="true">
+            <div className="ac-programs-art-top"><span>THE LEARNING CURVE</span><span>AC / 01</span></div>
+            <svg viewBox="0 0 500 360" fill="none">
+              <path d="M30 60H470M30 120H470M30 180H470M30 240H470M30 300H470M80 35V325M165 35V325M250 35V325M335 35V325M420 35V325" stroke="#424b3c" />
+              <path d="M30 290L95 266L147 282L207 213L255 230L304 154L355 173L406 92L470 56" stroke="#cedcba" strokeWidth="3" className="ac-programs-curve" />
+              <path d="M30 290L95 266L147 282L207 213L255 230L304 154L355 173L406 92L470 56V325H30Z" fill="url(#ac-programs-shade)" />
+              <rect x="199" y="205" width="16" height="16" fill="#cedcba"/><rect x="398" y="84" width="16" height="16" fill="#cedcba"/>
+              <defs><linearGradient id="ac-programs-shade" x1="250" y1="56" x2="250" y2="325" gradientUnits="userSpaceOnUse"><stop stopColor="#cedcba" stopOpacity=".15"/><stop offset="1" stopColor="#cedcba" stopOpacity="0"/></linearGradient></defs>
+            </svg>
+            <div className="ac-programs-art-bottom"><strong>Knowledge.<br />Perspective.<br /><span>Discipline.</span></strong><span>LEARNING, NOT<br />A PERFORMANCE CHART</span></div>
           </div>
         </motion.header>
-
-        {loading ? (
-          <div className="alphira-catalog-loading" role="status" aria-live="polite">
-            <span className="alphira-catalog-loader" aria-hidden="true" />Loading courses…
-          </div>
-        ) : (
-          <>
-            {isFallback && (
-              <motion.div {...reveal()} className="alphira-catalog-offline">
-                <div><span className="alphira-catalog-status"><i aria-hidden="true" />Admissions Open</span><h2>Offline Trading Programs</h2></div>
-                <p>Learn directly from experienced mentors through classroom training, practical chart analysis, live market sessions and professional trading mentorship.</p>
-              </motion.div>
-            )}
-
-            <div className="alphira-catalog-programs">
-              {programs.map(({ key, title, description, meta }, index) => (
-                <motion.article {...reveal()} key={key} className="alphira-catalog-program">
-                  <div className="alphira-catalog-program-visual">
-                    <div className="alphira-catalog-image-wrap"><img src={meta.image} alt={title} loading="lazy" decoding="async" /></div>
-                    <span className="alphira-catalog-program-number">PROGRAM <span>{String(index + 1).padStart(2, "0")}</span></span>
-                  </div>
-                  <div className="alphira-catalog-program-content">
-                    <span className="alphira-catalog-status"><i aria-hidden="true" />{meta.badge}</span>
-                    <h2>{title}</h2>
-                    <p className="alphira-catalog-description">{description}</p>
-                    {meta.features.length > 0 && <ul className="alphira-catalog-features">{meta.features.map((feature) => <li key={feature}><Check size={14} strokeWidth={1.8} aria-hidden="true" /><span>{feature}</span></li>)}</ul>}
-                  </div>
-                  <div className="alphira-catalog-enrollment">
-                    {meta.duration && <div className="alphira-catalog-duration"><Clock size={18} strokeWidth={1.5} aria-hidden="true" /><div><span>Duration</span><strong>{meta.duration}</strong></div></div>}
-                    <button type="button" className="alphira-catalog-apply" onClick={() => navigate("/admission")}>Apply for Admission <ArrowUpRight size={18} aria-hidden="true" /></button>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
-
-            {isFallback && (
-              <motion.aside {...reveal()} className="alphira-catalog-upcoming">
-                <span className="alphira-catalog-monitor" aria-hidden="true"><Monitor size={28} strokeWidth={1.4} /></span>
-                <div><p className="alphira-catalog-eyebrow">Launching Soon</p><h2>Online Courses <span>Coming Soon</span></h2><p className="alphira-catalog-description">We're building a premium online learning experience featuring recorded video lessons, live webinars, quizzes, downloadable study materials and mentor support so you can learn from anywhere.</p></div>
-              </motion.aside>
-            )}
-          </>
-        )}
-
-        <motion.section {...reveal()} className="alphira-catalog-cta" aria-labelledby="alphira-catalog-cta-title">
-          <div><h2 id="alphira-catalog-cta-title">Ready to start your<br /><span>trading journey?</span></h2><p>Join Alphira Capital and learn professional trading through structured mentorship, practical strategies and premium market education.</p></div>
-          <div className="alphira-catalog-cta-actions"><Link to="/admission" className="alphira-catalog-primary">Join Alphira Capital Today <ArrowUpRight size={18} aria-hidden="true" /></Link><Link to="/login" className="alphira-catalog-login">Student Login <ArrowRight size={16} aria-hidden="true" /></Link></div>
-        </motion.section>
+        <div className="ac-programs-principles"><span><b>01</b> Learn the concepts</span><span><b>02</b> Read the market</span><span><b>03</b> Develop discipline</span></div>
+        <section id="academy-programs" className="ac-programs-selection" aria-labelledby="ac-programs-title">
+          <div className="ac-programs-section-head"><div><p className="ac-programs-kicker">FIND YOUR FOCUS</p><h2 id="ac-programs-title">Your next chapter<br />starts here.</h2></div><p>Choose a focused market program or go deeper with advanced order flow education.</p></div>
+          {loading ? <div className="ac-programs-loading" role="status"><span />Loading programs...</div> : <div className="ac-programs-grid">
+            {programs.map(({ key, title, description, meta }, index) => {
+              const advanced = isOrderFlow(title);
+              return <motion.article {...reveal(index * 0.06)} key={key} className={`ac-programs-card${advanced ? " ac-programs-card-advanced" : ""}`}>
+                <div className="ac-programs-card-top"><span>PROGRAM / {String(index + 1).padStart(2, "0")}</span><span>{advanced ? "ADVANCED" : "CLASSROOM"}</span></div>
+                <div className="ac-programs-cover"><img src={meta.image} alt="" loading="lazy" decoding="async" /><span className="ac-programs-cover-label">{advanced ? "Read beyond the chart." : title.includes("Indian") ? "Two markets. A wider perspective." : "Build your market foundation."}</span></div>
+                <div className="ac-programs-card-body">
+                  <p className="ac-programs-availability"><span />{meta.badge}</p>
+                  <h3>{title}</h3><p className="ac-programs-description">{description}</p>
+                  {meta.features.length > 0 && <ul>{meta.features.map(feature => <li key={feature}><Check size={14} aria-hidden="true" />{feature}</li>)}</ul>}
+                  <div className="ac-programs-card-end"><div className="ac-programs-duration"><Clock size={15} aria-hidden="true" /><span>{meta.duration || "Ask us about the schedule"}</span></div><button type="button" onClick={() => navigate(`/admission?course=${encodeURIComponent(title)}`)}>Apply for admission <ArrowUpRight size={19} aria-hidden="true" /></button></div>
+                </div>
+              </motion.article>;
+            })}
+          </div>}
+        </section>
+        <motion.section {...reveal()} className="ac-programs-approach" aria-labelledby="ac-programs-approach-title"><p className="ac-programs-kicker">THE ALPHIRA APPROACH</p><div><h2 id="ac-programs-approach-title">Less noise.<br />More understanding.</h2><p>Trading education goes beyond finding a setup. Our classroom programs bring market analysis, risk awareness and trading psychology into the same conversation.</p></div><div className="ac-programs-values"><span>Practical learning <ArrowUpRight size={18} /></span><span>Mentor guidance <ArrowUpRight size={18} /></span><span>Disciplined thinking <ArrowUpRight size={18} /></span></div></motion.section>
+        {isFallback && <aside className="ac-programs-upcoming"><Monitor size={22} aria-hidden="true" /><div><strong>Online learning is on the horizon.</strong><p>Online courses are coming soon. Explore our classroom programs above.</p></div><span>COMING SOON</span></aside>}
+        <motion.section {...reveal()} className="ac-programs-contact"><div><p className="ac-programs-kicker">TAKE THE NEXT STEP</p><h2>Make room for<br /><em>what comes next.</em></h2></div><div><p>Start your admission journey with Alphira Capital.</p><Link className="ac-programs-button" to="/admission">Apply for admission <ArrowUpRight size={18} /></Link><Link className="ac-programs-login" to="/login">Already a student? Sign in <ArrowRight size={15} /></Link></div></motion.section>
       </div>
     </main>
   );
 }
-
-

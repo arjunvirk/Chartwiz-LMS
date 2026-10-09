@@ -1,3 +1,4 @@
+import orderFlowImage from "../../assets/images/order-flow-art.svg";
 import forexImage from "../../assets/images/forex-art.png";
 import indianMarketImage from "../../assets/images/indian-market-art.png";
 import "./MyCourses.css";
@@ -69,7 +70,7 @@ const MyCourses = () => {
               <div className="alphira-my-course-image">
                 <img className="alphira-my-course-fallback" src="/alphira-ac-logo.svg" alt="" aria-hidden="true" />
                 <img
-                  src={/indian|india/i.test(course.title || "") ? indianMarketImage : /forex/i.test(course.title || "") ? forexImage : course.thumbnail}
+                  src={/order[\s-]*flow/i.test(course.title || "") ? orderFlowImage : /indian|india/i.test(course.title || "") ? indianMarketImage : /forex/i.test(course.title || "") ? forexImage : course.thumbnail}
                   alt={`${course.title} program`} key={course.thumbnail}
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
