@@ -1,6 +1,7 @@
-import orderFlowImage from "../../assets/images/order-flow-art.svg";
-import forexImage from "../../assets/images/forex-art.png";
-import indianMarketImage from "../../assets/images/indian-market-art.png";
+import cryptoImage from "../../assets/images/crypto-cover-v3.png";
+import orderFlowImage from "../../assets/images/orderflow-cover-v2.png";
+import forexImage from "../../assets/images/forex-cover-v2.png";
+import indianMarketImage from "../../assets/images/indian-cover-v2.png";
 import "./MyCourses.css";
 import { BookOpen } from "lucide-react";
 import { useEffect } from "react";
@@ -70,7 +71,7 @@ const MyCourses = () => {
               <div className="alphira-my-course-image">
                 <img className="alphira-my-course-fallback" src="/alphira-ac-logo.svg" alt="" aria-hidden="true" />
                 <img
-                  src={/order[\s-]*flow/i.test(course.title || "") ? orderFlowImage : /indian|india/i.test(course.title || "") ? indianMarketImage : /forex/i.test(course.title || "") ? forexImage : course.thumbnail}
+                  src={/crypto/i.test(course.title || "") ? cryptoImage : /order[\s-]*flow/i.test(course.title || "") ? orderFlowImage : /indian|india/i.test(course.title || "") ? indianMarketImage : /forex/i.test(course.title || "") ? forexImage : course.thumbnail}
                   alt={`${course.title} program`} key={course.thumbnail}
                   onError={(e) => {
                     e.currentTarget.style.display = "none";

@@ -1,8 +1,9 @@
-import orderFlowImage from "../../assets/images/order-flow-art.svg";
+import cryptoImage from "../../assets/images/crypto-cover-v3.png";
+import orderFlowImage from "../../assets/images/orderflow-cover-v2.png";
 import LiveSessionList from "../../components/LiveSessionList";
 import "./StudentDashboard.css";
-import forexImage from "../../assets/images/forex-art.png";
-import indianMarketImage from "../../assets/images/indian-market-art.png";
+import forexImage from "../../assets/images/forex-cover-v2.png";
+import indianMarketImage from "../../assets/images/indian-cover-v2.png";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -116,10 +117,7 @@ const StudentDashboard = () => {
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link
-            to="/dashboard/courses"
-            className="alphira-student-primary"
-          >
+          <Link to="/dashboard/courses" className="alphira-student-primary">
             My Courses
           </Link>
           <Link
@@ -135,10 +133,7 @@ const StudentDashboard = () => {
       <div className="alphira-student-section">
         <div className="alphira-student-section-heading">
           <h2 className="text-xl font-semibold text-graphite">My Courses</h2>
-          <Link
-            to="/dashboard/courses"
-            className="alphira-student-view"
-          >
+          <Link to="/dashboard/courses" className="alphira-student-view">
             View All
           </Link>
         </div>
@@ -150,12 +145,19 @@ const StudentDashboard = () => {
         ) : (
           <div className="alphira-student-card-grid">
             {courses.slice(0, 3).map((course) => (
-              <div
-                key={course._id}
-                className="alphira-student-card"
-              >
+              <div key={course._id} className="alphira-student-card">
                 <img
-                  src={/order[\s-]*flow/i.test(course.title || "") ? orderFlowImage : /indian|india/i.test(course.title || "") ? indianMarketImage : /forex/i.test(course.title || "") ? forexImage : course.thumbnail}
+                  src={
+                    /crypto/i.test(course.title || "")
+                      ? cryptoImage
+                      : /order[\s-]*flow/i.test(course.title || "")
+                        ? orderFlowImage
+                        : /indian|india/i.test(course.title || "")
+                          ? indianMarketImage
+                          : /forex/i.test(course.title || "")
+                            ? forexImage
+                            : course.thumbnail
+                  }
                   alt={course.title}
                   className="h-40 w-full object-cover"
                   onError={(e) => {
@@ -209,10 +211,7 @@ const StudentDashboard = () => {
                 className="alphira-student-card"
               >
                 <img
-                  src={
-                    analysis.image ||
-                    "/alphira-ac-logo.svg"
-                  }
+                  src={analysis.image || "/alphira-ac-logo.svg"}
                   alt={analysis.title}
                   className="h-40 w-full object-cover"
                 />
@@ -258,10 +257,7 @@ const StudentDashboard = () => {
       <div className="alphira-student-section">
         <div className="alphira-student-section-heading">
           <h2 className="text-xl font-semibold text-graphite">Live Classes</h2>
-          <Link
-            to="/dashboard/live-courses"
-            className="alphira-student-view"
-          >
+          <Link to="/dashboard/live-courses" className="alphira-student-view">
             View All
           </Link>
         </div>
@@ -273,15 +269,13 @@ const StudentDashboard = () => {
         ) : (
           <div className="space-y-3">
             {liveCourses.slice(0, 3).map((course) => (
-              <div
-                key={course._id}
-                className="alphira-student-session"
-              >
+              <div key={course._id} className="alphira-student-session">
                 <div>
                   <h3 className="text-sm font-semibold text-graphite">
                     {course.title}
                   </h3>
-                  <p className="mt-1 text-sm text-slate">{course.instructor}</p><LiveSessionList sessions={course.sessions} />
+                  <p className="mt-1 text-sm text-slate">{course.instructor}</p>
+                  <LiveSessionList sessions={course.sessions} />
                 </div>
                 <div className="mt-3 md:mt-0">
                   <span className="rounded-pill bg-obsidian px-4 py-2 font-mono text-[11px] font-medium text-vellum">
@@ -314,10 +308,7 @@ const StudentDashboard = () => {
               const status = getWebinarStatus(webinar);
 
               return (
-                <div
-                  key={webinar._id}
-                  className="alphira-student-session"
-                >
+                <div key={webinar._id} className="alphira-student-session">
                   <div>
                     <h3 className="text-sm font-semibold text-graphite">
                       {webinar.title}
@@ -359,4 +350,3 @@ const StudentDashboard = () => {
 };
 
 export default StudentDashboard;
-

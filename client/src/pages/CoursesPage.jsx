@@ -1,12 +1,13 @@
+import cryptoImage from "../assets/images/crypto-cover-v3.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Check, Clock, Monitor, ArrowRight, GraduationCap } from "lucide-react";
 import { API_URL } from "../config/api";
-import forexImage from "../assets/images/forex-art.png";
-import indianMarketImage from "../assets/images/indian-market-art.png";
-import orderFlowImage from "../assets/images/order-flow-art.svg";
+import forexImage from "../assets/images/forex-cover-v2.png";
+import indianMarketImage from "../assets/images/indian-cover-v2.png";
+import orderFlowImage from "../assets/images/orderflow-cover-v2.png";
 import "./CoursesPage.css";
 const COURSE_META = {
   "The Forex Program": {
@@ -47,6 +48,20 @@ const ORDER_FLOW_PROGRAM = {
   },
 };
 const isOrderFlow = (title = "") => /order[\s-]*flow/i.test(title);
+
+const CRYPTO_PROGRAM = {
+  key: "crypto-futures-spot",
+  title: "Crypto Futures & Spot Trading Program",
+  description: "A three-month curriculum covering crypto market foundations, spot trading, futures mechanics, execution, risk management and practical assessment.",
+  meta: { image: cryptoImage, duration: "3 Months", badge: "Spot + Futures", features: ["Spot & Futures Markets", "Margin & Liquidation Risk", "Trading Psychology", "Journaling & Practical Assessment"] },
+};
+const isCrypto = (title = "") => /crypto/i.test(title);
+const curriculumFor = (title) => {
+  if (isOrderFlow(title)) return { file: "Alphira_Capital_Advanced_Order_Flow_Course.pdf", label: "View curriculum" };
+  if (isCrypto(title)) return { file: "Alphira_Capital_Crypto_Futures_and_Spot_Trading_Course.pdf", label: "View curriculum" };
+  if (/forex/i.test(title)) return { file: "Alphira_Capital_60_Days_Forex_Course.pdf", label: /indian/i.test(title) ? "View Forex curriculum" : "View curriculum" };
+  return null;
+};
 
 const DEFAULT_META = {
   image: forexImage,
@@ -94,11 +109,13 @@ export default function CoursesPage() {
           ? "A complete classroom-based Forex trading program covering technical analysis, market structure, risk management, psychology and live market execution."
           : "Master both Forex and the Indian Stock Market with comprehensive classroom training, live trading sessions and professional mentorship.",
       }))
-    : courses.map((course) => ({ key: course._id, title: course.title, description: course.description, meta: isOrderFlow(course.title) ? ORDER_FLOW_PROGRAM.meta : COURSE_META[course.title] || DEFAULT_META }));
+    : courses.map((course) => ({ key: course._id, title: course.title, description: course.description, meta: isOrderFlow(course.title) ? ORDER_FLOW_PROGRAM.meta : isCrypto(course.title) ? CRYPTO_PROGRAM.meta : COURSE_META[course.title] || DEFAULT_META }));
 
   if (!programs.some((program) => isOrderFlow(program.title))) {
     programs.push(ORDER_FLOW_PROGRAM);
   }
+
+  if (!programs.some((program) => isCrypto(program.title))) programs.push(CRYPTO_PROGRAM);
 
   return (
     <main className="ac-programs">
@@ -129,14 +146,15 @@ export default function CoursesPage() {
           {loading ? <div className="ac-programs-loading" role="status"><span />Loading programs...</div> : <div className="ac-programs-grid">
             {programs.map(({ key, title, description, meta }, index) => {
               const advanced = isOrderFlow(title);
+              const curriculum = curriculumFor(title);
               return <motion.article {...reveal(index * 0.06)} key={key} className={`ac-programs-card${advanced ? " ac-programs-card-advanced" : ""}`}>
                 <div className="ac-programs-card-top"><span>PROGRAM / {String(index + 1).padStart(2, "0")}</span><span>{advanced ? "ADVANCED" : "CLASSROOM"}</span></div>
-                <div className="ac-programs-cover"><img src={meta.image} alt="" loading="lazy" decoding="async" /><span className="ac-programs-cover-label">{advanced ? "Read beyond the chart." : title.includes("Indian") ? "Two markets. A wider perspective." : "Build your market foundation."}</span></div>
+                <div className="ac-programs-cover ac-programs-cover-photo"><img src={meta.image} alt="" loading="lazy" decoding="async" /><span className="ac-programs-cover-label">{advanced ? "Read beyond the chart." : isCrypto(title) ? "Spot. Futures. Market perspective." : title.includes("Indian") ? "Two markets. A wider perspective." : "Build your market foundation."}</span></div>
                 <div className="ac-programs-card-body">
                   <p className="ac-programs-availability"><span />{meta.badge}</p>
                   <h3>{title}</h3><p className="ac-programs-description">{description}</p>
                   {meta.features.length > 0 && <ul>{meta.features.map(feature => <li key={feature}><Check size={14} aria-hidden="true" />{feature}</li>)}</ul>}
-                  <div className="ac-programs-card-end"><div className="ac-programs-duration"><Clock size={15} aria-hidden="true" /><span>{meta.duration || "Ask us about the schedule"}</span></div><button type="button" onClick={() => navigate(`/admission?course=${encodeURIComponent(title)}`)}>Apply for admission <ArrowUpRight size={19} aria-hidden="true" /></button></div>
+                  <div className="ac-programs-card-end">{curriculum && <a className="ac-programs-curriculum" href={`/curricula/${curriculum.file}`} target="_blank" rel="noopener noreferrer" aria-label={`${curriculum.label} for ${title} (PDF, opens in a new tab)`}>{curriculum.label}<span>PDF &nearr;</span></a>}<div className="ac-programs-duration"><Clock size={15} aria-hidden="true" /><span>{meta.duration || "Ask us about the schedule"}</span></div><button type="button" onClick={() => navigate(`/admission?course=${encodeURIComponent(title)}`)}>Apply for admission <ArrowUpRight size={19} aria-hidden="true" /></button></div>
                 </div>
               </motion.article>;
             })}

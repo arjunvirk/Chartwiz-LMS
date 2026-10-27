@@ -24,7 +24,7 @@ const AdmissionScreen = () => {
   const [searchParams] = useSearchParams();
   const [course, setCourse] = useState(() => {
     const selected = searchParams.get("course");
-    return ["The Forex Program", "The Forex Program with Indian Market", "Advanced Order Flow Program"].includes(selected) ? selected : "The Forex Program";
+    return ["The Forex Program", "The Forex Program with Indian Market", "Advanced Order Flow Program", "Crypto Futures & Spot Trading Program"].includes(selected) ? selected : "The Forex Program";
   });
   const [city, setCity] = useState("");
   const [occupation, setOccupation] = useState("");
@@ -89,7 +89,7 @@ const AdmissionScreen = () => {
             <div className="alphira-admission-full"><label htmlFor="admission-occupation">Occupation <small>Optional</small></label><input id="admission-occupation" name="occupation" type="text" value={occupation} onChange={(e) => setOccupation(e.target.value)} className={inputClass} /></div>
           </div></fieldset>
           <fieldset disabled={!!loading}><legend><span>02</span> Your learning preferences</legend><div className="alphira-admission-fields">
-            <div className="alphira-admission-full"><label htmlFor="admission-course">Course</label><select id="admission-course" name="course" value={course} onChange={(e) => setCourse(e.target.value)} className={inputClass}><option>The Forex Program</option><option>The Forex Program with Indian Market</option><option>Advanced Order Flow Program</option></select></div>
+            <div className="alphira-admission-full"><label htmlFor="admission-course">Course</label><select id="admission-course" name="course" value={course} onChange={(e) => setCourse(e.target.value)} className={inputClass}><option>The Forex Program</option><option>The Forex Program with Indian Market</option><option>Advanced Order Flow Program</option><option>Crypto Futures &amp; Spot Trading Program</option></select></div>
             <div><label htmlFor="admission-experience">Trading Experience</label><select id="admission-experience" name="experience" value={experience} onChange={(e) => setExperience(e.target.value)} className={inputClass}><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></div>
             <div><label htmlFor="admission-batch">Preferred Batch <small>Optional</small></label><input id="admission-batch" name="preferredBatch" type="text" placeholder="Morning / Evening" value={preferredBatch} onChange={(e) => setPreferredBatch(e.target.value)} className={inputClass} /></div>
             <div className="alphira-admission-full"><label htmlFor="admission-message">Message <small>Optional</small></label><textarea id="admission-message" name="message" rows={4} value={message} onChange={(e) => setMessage(e.target.value)} className={inputClass} /></div>
