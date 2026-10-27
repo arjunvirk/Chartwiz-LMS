@@ -159,7 +159,7 @@ const StudentDashboard = () => {
                             : course.thumbnail
                   }
                   alt={course.title}
-                  className="h-40 w-full object-cover"
+                  className="alphira-student-course-photo"
                   onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = "/alphira-ac-logo.svg";

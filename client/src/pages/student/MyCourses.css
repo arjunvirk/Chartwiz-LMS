@@ -28,3 +28,8 @@
 
 .alphira-my-course-academy { margin-top: 24px; padding: 16px; background: #20251f; color: white; font-size: 12px; font-weight: 500; }
 .alphira-my-course-academy span { display: block; margin-top: 6px; font-size: 10px; color: #c2cfb4; }
+
+@media(max-width:1100px) {
+  .alphira-my-course-image { aspect-ratio:3 / 2; background:#10271c; }
+  .alphira-my-course-image > img:not(.alphira-my-course-fallback) { object-fit:contain; }
+}

@@ -35,3 +35,7 @@
 .alphira-student-home a:focus-visible { outline: 2px solid #829b6e; outline-offset: 4px; }
 @media(min-width:1600px) { .alphira-student-card-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
 @media(max-width:700px) { .alphira-student-hero, .alphira-student-section { padding: 22px; } .alphira-student-card-grid { grid-template-columns: minmax(0,1fr); } .alphira-student-session { flex-direction: column; align-items: flex-start; gap: 10px; } .alphira-student-section-heading h2 { font-size: 17px; } }
+
+@media(max-width:1100px) {
+  .alphira-student-card > img.alphira-student-course-photo { display:block; width:100%; height:auto; aspect-ratio:3 / 2; object-fit:contain; background:#10271c; }
+}
