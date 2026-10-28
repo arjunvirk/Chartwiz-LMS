@@ -31,10 +31,9 @@ export default function HeroSection() {
   const reducedMotion = useReducedMotion();
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [hovering, setHovering] = useState(false);
   const [docHidden, setDocHidden] = useState(false);
   const timer = useRef(0);
-  const autoplay = !reducedMotion && !paused && !hovering && !docHidden;
+  const autoplay = !reducedMotion && !paused && !docHidden;
 
   const [leaving, setLeaving] = useState(-1);
   const imgRefs = useRef([]);
@@ -74,7 +73,7 @@ export default function HeroSection() {
   const fade = (delay) => reducedMotion ? {} : { initial: { opacity: 0, y: 14 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] } };
 
   return <>
-    <section className={`ah-stage${reducedMotion ? " is-static" : ""}`} aria-labelledby="ah-title" onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
+    <section className={`ah-stage${reducedMotion ? " is-static" : ""}`} aria-labelledby="ah-title">
       <div className="ah-media" aria-hidden="true">
         {SLIDES.map((item, index) => (
           <img
@@ -116,7 +115,7 @@ export default function HeroSection() {
         </div>
         <div className="ah-switcher-list" role="group" aria-label="Choose a market">
           {SLIDES.map((item, index) => (
-            <button key={item.key} type="button" className={`ah-switch${index === active ? " is-active" : ""}`} aria-pressed={index === active} onClick={() => { go(index); setPaused(true); }}>
+            <button key={item.key} type="button" className={`ah-switch${index === active ? " is-active" : ""}`} aria-pressed={index === active} onClick={() => go(index)}>
               <span className="ah-switch-market">{item.market}</span>
               <span className="ah-switch-program">{item.program}</span>
               <span className="ah-switch-bar" aria-hidden="true">{index === active && <i key={`${active}-${autoplay}`} className={autoplay ? "is-running" : ""} style={{ animationDuration: `${SLIDE_MS}ms` }} />}</span>
