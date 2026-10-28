@@ -1,94 +1,136 @@
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useReducedMotion } from "framer-motion";
-import CountUpImport from "react-countup";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import MarqueeImport from "react-fast-marquee";
-import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { ArrowUpRight, ArrowRight, Pause, Play } from "lucide-react";
 import { useMarketTicker } from "../hooks/useMarketTicker";
-import { useSectionPin } from "../hooks/useSectionPin";
+import forex1600 from "../assets/images/home/forex-1600.webp";
+import forex800 from "../assets/images/home/forex-800.webp";
+import indian1600 from "../assets/images/home/indian-1600.webp";
+import indian800 from "../assets/images/home/indian-800.webp";
+import orderflow1600 from "../assets/images/home/orderflow-1600.webp";
+import orderflow800 from "../assets/images/home/orderflow-800.webp";
+import crypto1600 from "../assets/images/home/crypto-1600.webp";
+import crypto800 from "../assets/images/home/crypto-800.webp";
 import "./HeroSection.css";
 
-const CountUp = CountUpImport.default ?? CountUpImport;
 const Marquee = MarqueeImport.default ?? MarqueeImport;
-// Deterministic, illustrative OHLC series (seeded walk with an upward drift).
-const SERIES = (() => {
-  let seed = 7, price = 100;
-  const rand = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-  return Array.from({ length: 30 }, (_, i) => {
-    const open = price;
-    const drift = 0.8 + Math.sin(i / 3.6 + 1) * 1.7;
-    const close = open + drift + (rand() - 0.5) * 4.2;
-    const high = Math.max(open, close) + rand() * 1.8;
-    const low = Math.min(open, close) - rand() * 1.8;
-    price = close;
-    return { open, close, high, low };
-  });
-})();
+const SLIDE_MS = 6500;
+const SLIDES = [
+  { key: "forex", market: "Forex", program: "The Forex Program", detail: "2 months · classroom", large: forex1600, small: forex800, focus: "50% 55%" },
+  { key: "indian", market: "Indian markets", program: "Forex with Indian Market", detail: "3 months · classroom", large: indian1600, small: indian800, focus: "60% 40%" },
+  { key: "orderflow", market: "Order flow", program: "Advanced Order Flow Program", detail: "Advanced course", large: orderflow1600, small: orderflow800, focus: "50% 45%" },
+  { key: "crypto", market: "Crypto", program: "Crypto Futures & Spot", detail: "3 months · spot + futures", large: crypto1600, small: crypto800, focus: "45% 50%" },
+];
+const HEADLINE = ["Trade the markets", "like a professional."];
 
-function CandleChart({ animate }) {
-  const W = 480, H = 170, PAD = 6;
-  const max = Math.max(...SERIES.map((c) => c.high)), min = Math.min(...SERIES.map((c) => c.low));
-  const y = (v) => PAD + (1 - (v - min) / (max - min)) * (H - PAD * 2);
-  const step = W / SERIES.length, body = step * 0.56;
-  const ma = SERIES.map((_, i) => { const w = SERIES.slice(Math.max(0, i - 4), i + 1); return w.reduce((a, c) => a + c.close, 0) / w.length; });
-  const path = ma.map((v, i) => `${i ? "L" : "M"}${(i * step + step / 2).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
-  const last = SERIES[SERIES.length - 1];
-  return (
-    <svg className={`ah-svg-chart${animate ? " is-animated" : ""}`} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true" focusable="false">
-      {[0.25, 0.5, 0.75].map((g) => <line key={g} x1="0" x2={W} y1={H * g} y2={H * g} className="ah-grid-line" />)}
-      {SERIES.map((c, i) => {
-        const up = c.close >= c.open, x = i * step + step / 2;
-        return (
-          <g key={i} className={`ah-c ${up ? "ah-c-up" : "ah-c-down"}${i === SERIES.length - 1 ? " ah-c-last" : ""}`} style={{ "--i": i, transformOrigin: `${x}px ${y((c.open + c.close) / 2)}px` }}>
-            <line x1={x} x2={x} y1={y(c.high)} y2={y(c.low)} />
-            <rect x={x - body / 2} width={body} y={y(Math.max(c.open, c.close))} height={Math.max(1.5, Math.abs(y(c.open) - y(c.close)))} />
-          </g>
-        );
-      })}
-      <path d={path} className="ah-ma" pathLength="1" />
-      <line x1="0" x2={W} y1={y(last.close)} y2={y(last.close)} className="ah-last-line" />
-    </svg>
-  );
-}
 const changeClass = (change) => String(change ?? "").startsWith("+") ? "ah-positive" : String(change ?? "").startsWith("-") ? "ah-negative" : "ah-muted";
 
 export default function HeroSection() {
   const tickerData = useMarketTicker();
-  const heroRef = useSectionPin();
   const reducedMotion = useReducedMotion();
-  const goldTicker = tickerData.find((item) => item.pair?.toUpperCase().includes("XAU"));
-  const reveal = (delay = 0) => ({
-    initial: reducedMotion ? false : { opacity: 0, y: 18 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: reducedMotion ? 0 : 0.65, delay: reducedMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] },
-  });
-  const number = (end) => reducedMotion ? end : <CountUp end={end} duration={2.5} enableScrollSpy scrollSpyOnce />;
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  const [docHidden, setDocHidden] = useState(false);
+  const timer = useRef(0);
+  const autoplay = !reducedMotion && !paused && !hovering && !docHidden;
+
+  const [leaving, setLeaving] = useState(-1);
+  const imgRefs = useRef([]);
+  const activeRef = useRef(0);
+  const leaveTimer = useRef(0);
+  // Switch only once the next image is fully decoded, and keep the outgoing
+  // image drifting while it fades so neither layer ever jumps.
+  const go = useCallback(async (index) => {
+    const next = (index + SLIDES.length) % SLIDES.length;
+    const current = activeRef.current;
+    if (next === current) return;
+    const img = imgRefs.current[next];
+    try { if (img && !img.complete) await new Promise((resolve) => { img.addEventListener("load", resolve, { once: true }); img.addEventListener("error", resolve, { once: true }); }); await img?.decode?.(); } catch { /* show it anyway */ }
+    activeRef.current = next;
+    window.clearTimeout(leaveTimer.current);
+    setLeaving(current);
+    setActive(next);
+    leaveTimer.current = window.setTimeout(() => setLeaving(-1), 1800);
+  }, []);
+  useEffect(() => () => window.clearTimeout(leaveTimer.current), []);
+  useEffect(() => {
+    if (!autoplay) return undefined;
+    timer.current = window.setTimeout(() => go(active + 1), SLIDE_MS);
+    return () => window.clearTimeout(timer.current);
+  }, [active, autoplay, go]);
+  useEffect(() => {
+    const onVisibility = () => setDocHidden(document.hidden);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+  // Warm the cache for the other slides once the first image is on screen.
+  // Decode every slide in the background right after the first paint.
+  useEffect(() => { const id = window.setTimeout(() => imgRefs.current.forEach((img) => img?.decode?.().catch(() => {})), 1200); return () => window.clearTimeout(id); }, []);
+
+  const slide = SLIDES[active];
+  const rise = (delay) => reducedMotion ? {} : { initial: { y: "105%" }, animate: { y: "0%" }, transition: { duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] } };
+  const fade = (delay) => reducedMotion ? {} : { initial: { opacity: 0, y: 14 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] } };
 
   return <>
-    <section ref={heroRef} className="ah-hero" aria-labelledby="ah-title">
-      <div className="ah-layout">
+    <section className={`ah-stage${reducedMotion ? " is-static" : ""}`} aria-labelledby="ah-title" onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
+      <div className="ah-media" aria-hidden="true">
+        {SLIDES.map((item, index) => (
+          <img
+            key={item.key}
+            ref={(node) => { imgRefs.current[index] = node; }}
+            className={`ah-media-img${index === active ? " is-active" : index === leaving ? " is-leaving" : ""}`}
+            src={item.large}
+            srcSet={`${item.small} 800w, ${item.large} 1600w`}
+            sizes="100vw"
+            alt=""
+            style={{ objectPosition: item.focus }}
+            loading="eager"
+            fetchPriority={index === 0 ? "high" : "low"}
+            decoding="async"
+          />
+        ))}
+        <div className="ah-scrim" />
+        <div className="ah-grain" />
+      </div>
+
+      <div className="ah-stage-inner">
         <div className="ah-copy">
-          <motion.div {...reveal()} className="ah-eyebrow"><span aria-hidden="true" />Delhi NCR · Professional Offline Trading Academy</motion.div>
-          <motion.h1 {...reveal(0.08)} id="ah-title" className="ah-title">Trade the Markets<span>Like a<br className="ah-desktop-break" /> Professional.</span></motion.h1>
-          <motion.p {...reveal(0.16)} className="ah-description">Structured offline education in technical analysis, risk management and trading psychology — taught by mentors, not YouTube tutorials.</motion.p>
-          <motion.div {...reveal(0.24)} className="ah-actions">
-            <Link to="/admission" className="ah-primary">Enroll in Next Batch <ArrowUpRight size={18} aria-hidden="true" /></Link>
-            <Link to="/courses" className="ah-secondary">Explore Courses <ArrowRight size={17} aria-hidden="true" /></Link>
+          <motion.p {...fade(0.35)} className="ah-eyebrow"><span aria-hidden="true" />Offline trading academy · Delhi NCR</motion.p>
+          <h1 id="ah-title" className="ah-title">
+            {HEADLINE.map((line, i) => <span key={line} className="ah-line"><motion.span {...rise(0.45 + i * 0.12)}>{line}</motion.span></span>)}
+          </h1>
+          <motion.p {...fade(0.75)} className="ah-description">Structured classroom education in technical analysis, risk management and trading psychology, taught in person by mentors who trade.</motion.p>
+          <motion.div {...fade(0.85)} className="ah-actions">
+            <Link to="/admission" className="ah-primary">Enroll in the next batch <ArrowUpRight size={18} aria-hidden="true" /></Link>
+            <Link to="/courses" className="ah-secondary">Explore courses <ArrowRight size={17} aria-hidden="true" /></Link>
           </motion.div>
         </div>
-        <motion.div {...reveal(0.2)} className="ah-visual">
-          <div className="ah-visual-label"><span>THE MARKET, IN FOCUS</span><span aria-hidden="true">01 / XAU</span></div>
-          <div className="ah-market-card">
-            <div className="ah-card-top"><div className="ah-instrument"><span className="ah-instrument-mark" aria-hidden="true">Au</span><div><strong>Gold / US Dollar</strong><span>XAU / USD</span></div></div><span className="ah-live"><i aria-hidden="true" />{goldTicker ? "Live" : "Connecting"}</span></div>
-            <div className="ah-quote"><span className="ah-small-label">MARKET PRICE</span><div className="ah-price">{goldTicker?.price ?? "—"}</div>{/^[+-]/.test(String(goldTicker?.change ?? "")) ? <span className={`ah-change ${changeClass(goldTicker.change)}`}>{goldTicker.change}<span className="ah-change-period"> / 24h</span></span> : <span className="ah-change ah-muted">{goldTicker ? "Spot price · USD per ounce" : "Fetching live quote…"}</span>}</div>
-            <div className="ah-chart" aria-hidden="true"><CandleChart animate={!reducedMotion} /></div>
-            <div className="ah-chart-caption"><span><i className="ah-key-ma" aria-hidden="true" />5-period average</span><span>Illustrative chart</span></div>
-            <dl className="ah-market-details"><div><dt>Price</dt><dd>{goldTicker?.price ?? "—"}</dd></div><div><dt>24h Change</dt><dd className={changeClass(goldTicker?.change)}>{goldTicker?.change ?? "—"}</dd></div><div><dt>Pair</dt><dd>XAU/USD</dd></div></dl>
-          </div>
-          <div className="ah-study-note"><span className="ah-note-icon" aria-hidden="true">↗</span><p>Technical analysis. Risk management.<br /><strong>A structured approach to the markets.</strong></p></div>
-        </motion.div>
       </div>
+
+      <motion.div {...fade(1.1)} className="ah-switcher">
+        <div className="ah-switcher-head">
+          <p>Programs</p>
+          {!reducedMotion && <button type="button" className="ah-switcher-pause" onClick={() => setPaused((value) => !value)} aria-label={paused ? "Play slideshow" : "Pause slideshow"}>{paused ? <Play size={14} aria-hidden="true" /> : <Pause size={14} aria-hidden="true" />}</button>}
+        </div>
+        <div className="ah-switcher-list" role="group" aria-label="Choose a market">
+          {SLIDES.map((item, index) => (
+            <button key={item.key} type="button" className={`ah-switch${index === active ? " is-active" : ""}`} aria-pressed={index === active} onClick={() => { go(index); setPaused(true); }}>
+              <span className="ah-switch-market">{item.market}</span>
+              <span className="ah-switch-program">{item.program}</span>
+              <span className="ah-switch-bar" aria-hidden="true">{index === active && <i key={`${active}-${autoplay}`} className={autoplay ? "is-running" : ""} style={{ animationDuration: `${SLIDE_MS}ms` }} />}</span>
+            </button>
+          ))}
+        </div>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.p key={slide.key} className="ah-switch-caption" aria-live="polite" initial={reducedMotion ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={reducedMotion ? undefined : { opacity: 0, y: -6 }} transition={{ duration: 0.3 }}>
+            <strong>{slide.program}</strong> · {slide.detail}<Link to="/courses">View curriculum <ArrowUpRight size={14} aria-hidden="true" /></Link>
+          </motion.p>
+        </AnimatePresence>
+      </motion.div>
     </section>
-    {/* Remains outside the pinned section so the next section cannot cover it. */}
+
     <div className="ah-ticker" role="region" aria-label="Market quotes">
       <Marquee gradient={false} speed={35} pauseOnHover pauseOnClick play={!reducedMotion}>
         {tickerData.map((item, index) => <div key={`${item.pair}-${index}`} className="ah-ticker-item"><span className="ah-ticker-pair">{item.pair}</span><span className="ah-ticker-price">{item.price}</span><span className={changeClass(item.change)}>{item.change}</span><span className="ah-ticker-divider" aria-hidden="true" /></div>)}

@@ -67,7 +67,7 @@ export default function Navbar() {
   </>;
 
   return (
-    <header className={`ac-header${scrolled ? " is-scrolled" : ""}${mobileMenuOpen ? " is-open" : ""}`}>
+    <header className={`ac-header${scrolled ? " is-scrolled" : ""}${mobileMenuOpen ? " is-open" : ""}${location.pathname === "/" && !userInfo && !scrolled && !mobileMenuOpen ? " is-over-hero" : ""}`}>
       <nav className="ac-navbar" aria-label="Main navigation">
         <Link to={userInfo ? dashboardPath : "/"} onClick={closeMenu} className="ac-brand" aria-label="Alphira Capital home">
           <img className="alphira-ac-logo" src="/alphira-ac-logo.svg" alt="" aria-hidden="true" />

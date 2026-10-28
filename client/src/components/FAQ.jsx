@@ -41,7 +41,7 @@ export default function FAQ() {
   const reducedMotion = useReducedMotion();
   const sectionId = useId();
   const reveal = (delay = 0) => ({
-    initial: reducedMotion ? false : { opacity: 0, y: 16 },
+    initial: false,
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, amount: 0.1 },
     transition: { duration: reducedMotion ? 0 : 0.55, delay: reducedMotion ? 0 : delay },

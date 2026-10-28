@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, ChartNoAxesCombined, Video, ArrowUpRight } from "lucide-react";
-import { useSectionPin } from "../hooks/useSectionPin";
 import "./ChooseUs.css";
 
 const CHECKLIST = [
@@ -11,17 +10,16 @@ const CHECKLIST = [
 ];
 
 export default function ChooseUs() {
-  const chooseUsRef = useSectionPin();
   const reducedMotion = useReducedMotion();
   const reveal = (delay = 0) => ({
-    initial: reducedMotion ? false : { opacity: 0, y: 20 },
+    initial: false,
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, amount: 0.12 },
     transition: { duration: reducedMotion ? 0 : 0.6, delay: reducedMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] },
   });
 
   return (
-    <section ref={chooseUsRef} className="au-section" aria-labelledby="au-title">
+    <section className="au-section" aria-labelledby="au-title">
       <div className="au-container">
         <motion.div {...reveal()} className="au-heading">
           <div>
@@ -65,3 +63,4 @@ export default function ChooseUs() {
     </section>
   );
 }
+

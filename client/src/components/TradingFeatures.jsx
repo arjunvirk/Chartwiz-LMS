@@ -13,17 +13,13 @@ const FEATURES = [
 
 export default function TradingFeatures() {
   const reducedMotion = useReducedMotion();
-  const cardVariant = {
-    hidden: { opacity: 0, y: 18 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
-  };
 
   return (
     <section className="af-section" aria-labelledby="af-title">
       <div className="af-container">
         <motion.div
           className="af-heading"
-          initial={reducedMotion ? false : { opacity: 0, y: 18 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: reducedMotion ? 0 : 0.6 }}
@@ -38,12 +34,12 @@ export default function TradingFeatures() {
         <motion.div
           className="af-grid"
           variants={{ hidden: {}, show: { transition: { staggerChildren: reducedMotion ? 0 : 0.07 } } }}
-          initial={reducedMotion ? false : "hidden"}
+          initial={false}
           whileInView="show"
           viewport={{ once: true, amount: 0.1 }}
         >
           {FEATURES.map(({ id, icon: Icon, title, description }) => (
-            <motion.article className="af-topic" key={id} variants={reducedMotion ? undefined : cardVariant}>
+            <motion.article className="af-topic" key={id} >
               <div className="af-topic-top"><span className="af-icon" aria-hidden="true"><Icon size={26} strokeWidth={1.5} /></span><span className="af-number" aria-hidden="true">0{id}</span></div>
               <h3>{title}</h3>
               <p className="af-description">{description}</p>
@@ -55,3 +51,4 @@ export default function TradingFeatures() {
     </section>
   );
 }
+

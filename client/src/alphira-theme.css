@@ -89,3 +89,18 @@ body { margin: 0; background: var(--ac-background); color: var(--ac-ink); font-f
 .ac-menu-toggle:hover { background: var(--ac-moss-150); }
 @media (prefers-reduced-motion: reduce) { .ac-live-dot::after { animation: none; } .ac-button:hover svg { transform: none; } }
 
+/* Transparent header floating over the homepage hero image */
+.ac-header.is-over-hero { background: linear-gradient(180deg, rgb(22 26 21 / .55), rgb(22 26 21 / 0)); border-bottom-color: transparent; box-shadow: none; backdrop-filter: none; color: #fff; }
+.ac-header.is-over-hero .ac-brand { color: #fff; }
+.ac-header.is-over-hero .alphira-ac-logo { filter: brightness(0) invert(1); }
+.ac-header.is-over-hero .ac-nav-link { color: rgb(255 255 255 / .78); }
+.ac-header.is-over-hero .ac-nav-link:hover, .ac-header.is-over-hero .ac-nav-link.is-active { color: #fff; }
+.ac-header.is-over-hero .ac-nav-underline { background: #fff; }
+.ac-header.is-over-hero .ac-button-primary { background: var(--ac-sage-200); color: var(--ac-moss-950); }
+.ac-header.is-over-hero .ac-button-primary:hover { background: #fff; }
+.ac-header.is-over-hero .ac-button-secondary { color: #fff; border-color: rgb(255 255 255 / .35); background: transparent; }
+.ac-header.is-over-hero .ac-button-secondary:hover { background: rgb(255 255 255 / .12); }
+.ac-header.is-over-hero .ac-menu-toggle { color: #fff; border-color: rgb(255 255 255 / .35); }
+.ac-header.is-over-hero .ac-live-dot { background: var(--ac-sage-300); }
+.ac-header.is-over-hero .ac-live-dot::after { border-color: var(--ac-sage-300); }
+

@@ -27,21 +27,13 @@ const TRUST_CARDS = [
 
 export default function TrustSection() {
   const reducedMotion = useReducedMotion();
-  const cardVariant = {
-    hidden: { opacity: 0, y: 18 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-    },
-  };
 
   return (
     <section className="at-section" aria-labelledby="at-title">
       <div className="at-container">
         <motion.div
           className="at-heading"
-          initial={reducedMotion ? false : { opacity: 0, y: 18 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: reducedMotion ? 0 : 0.6 }}
@@ -56,12 +48,12 @@ export default function TrustSection() {
         <motion.div
           className="at-grid"
           variants={{ hidden: {}, show: { transition: { staggerChildren: reducedMotion ? 0 : 0.08 } } }}
-          initial={reducedMotion ? false : "hidden"}
+          initial={false}
           whileInView="show"
           viewport={{ once: true, amount: 0.1 }}
         >
           {TRUST_CARDS.map(({ icon: Icon, title, desc }, index) => (
-            <motion.article key={title} className="at-card" variants={reducedMotion ? undefined : cardVariant}>
+            <motion.article key={title} className="at-card" >
               <div className="at-card-top">
                 <span className="at-icon" aria-hidden="true"><Icon size={25} strokeWidth={1.5} /></span>
                 <span className="at-number" aria-hidden="true">0{index + 1}</span>
@@ -76,3 +68,4 @@ export default function TrustSection() {
     </section>
   );
 }
+

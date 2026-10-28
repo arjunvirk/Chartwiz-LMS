@@ -9,15 +9,12 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Provider } from "react-redux";
 import store from "./store.js";
 import { Toaster } from "react-hot-toast";
-import SmoothScroll from "./components/SmoothScroll.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Provider store={store}>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-        <SmoothScroll>
-          <App />
-        </SmoothScroll>
+        <App />
         <Toaster
           position="top-center"
           reverseOrder={false}

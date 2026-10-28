@@ -16,7 +16,7 @@ export default function Footer() {
   const reducedMotion = useReducedMotion();
   const { pathname } = useLocation();
   const reveal = (delay = 0) => ({
-    initial: reducedMotion ? false : { opacity: 0, y: 14 },
+    initial: false,
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, amount: 0.1 },
     transition: { duration: reducedMotion ? 0 : 0.55, delay: reducedMotion ? 0 : delay },
