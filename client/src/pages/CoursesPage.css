@@ -99,3 +99,7 @@
   .ac-programs-cover-photo .ac-programs-cover-label { display:block; position:static; padding:12px 16px; line-height:1.6; }
 }
 
+/* Photography sits inside the dark-green theme: a light, static green wash over each program photo. */
+.ac-programs-cover-photo::before { content:""; position:absolute; inset:0; z-index:1; background:rgb(32 50 28 / .18); pointer-events:none; }
+.ac-programs-cover-photo .ac-programs-cover-label { z-index:2; }
+

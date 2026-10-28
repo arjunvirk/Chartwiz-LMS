@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Check, Clock, Monitor, ArrowRight, GraduationCap } from "lucide-react";
 import { API_URL } from "../config/api";
+import { photoProps, programPhotoKey } from "../config/photos";
 import forexImage from "../assets/images/forex-cover-v2.png";
 import indianMarketImage from "../assets/images/indian-cover-v2.png";
 import orderFlowImage from "../assets/images/orderflow-cover-v2.png";
@@ -149,7 +150,7 @@ export default function CoursesPage() {
               const curriculum = curriculumFor(title);
               return <motion.article {...reveal(index * 0.06)} key={key} className={`ac-programs-card${advanced ? " ac-programs-card-advanced" : ""}`}>
                 <div className="ac-programs-card-top"><span>PROGRAM / {String(index + 1).padStart(2, "0")}</span><span>{advanced ? "ADVANCED" : "CLASSROOM"}</span></div>
-                <div className="ac-programs-cover ac-programs-cover-photo"><img src={meta.image} alt="" loading="lazy" decoding="async" /><span className="ac-programs-cover-label">{advanced ? "Read beyond the chart." : isCrypto(title) ? "Spot. Futures. Market perspective." : title.includes("Indian") ? "Two markets. A wider perspective." : "Build your market foundation."}</span></div>
+                <div className="ac-programs-cover ac-programs-cover-photo"><img {...photoProps(programPhotoKey(title), "card")} alt="" loading={index < 2 ? "eager" : "lazy"} decoding="async" /><span className="ac-programs-cover-label">{advanced ? "Read beyond the chart." : isCrypto(title) ? "Spot. Futures. Market perspective." : title.includes("Indian") ? "Two markets. A wider perspective." : "Build your market foundation."}</span></div>
                 <div className="ac-programs-card-body">
                   <p className="ac-programs-availability"><span />{meta.badge}</p>
                   <h3>{title}</h3><p className="ac-programs-description">{description}</p>

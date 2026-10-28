@@ -4,23 +4,16 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import MarqueeImport from "react-fast-marquee";
 import { ArrowUpRight, ArrowRight, Pause, Play } from "lucide-react";
 import { useMarketTicker } from "../hooks/useMarketTicker";
-import forex1600 from "../assets/images/home/forex-1600.webp";
-import forex800 from "../assets/images/home/forex-800.webp";
-import indian1600 from "../assets/images/home/indian-1600.webp";
-import indian800 from "../assets/images/home/indian-800.webp";
-import orderflow1600 from "../assets/images/home/orderflow-1600.webp";
-import orderflow800 from "../assets/images/home/orderflow-800.webp";
-import crypto1600 from "../assets/images/home/crypto-1600.webp";
-import crypto800 from "../assets/images/home/crypto-800.webp";
+import { photoProps } from "../config/photos";
 import "./HeroSection.css";
 
 const Marquee = MarqueeImport.default ?? MarqueeImport;
 const SLIDE_MS = 6500;
 const SLIDES = [
-  { key: "forex", market: "Forex", program: "The Forex Program", detail: "2 months · classroom", large: forex1600, small: forex800, focus: "50% 55%" },
-  { key: "indian", market: "Indian markets", program: "Forex with Indian Market", detail: "3 months · classroom", large: indian1600, small: indian800, focus: "60% 40%" },
-  { key: "orderflow", market: "Order flow", program: "Advanced Order Flow Program", detail: "Advanced course", large: orderflow1600, small: orderflow800, focus: "50% 45%" },
-  { key: "crypto", market: "Crypto", program: "Crypto Futures & Spot", detail: "3 months · spot + futures", large: crypto1600, small: crypto800, focus: "45% 50%" },
+  { key: "forex", market: "Forex", program: "The Forex Program", detail: "2 months · classroom" },
+  { key: "indian", market: "Indian markets", program: "Forex with Indian Market", detail: "3 months · classroom" },
+  { key: "orderflow", market: "Order flow", program: "Advanced Order Flow Program", detail: "Advanced course" },
+  { key: "crypto", market: "Crypto", program: "Crypto Futures & Spot", detail: "3 months · spot + futures" },
 ];
 const HEADLINE = ["Trade the markets", "like a professional."];
 
@@ -80,11 +73,8 @@ export default function HeroSection() {
             key={item.key}
             ref={(node) => { imgRefs.current[index] = node; }}
             className={`ah-media-img${index === active ? " is-active" : index === leaving ? " is-leaving" : ""}`}
-            src={item.large}
-            srcSet={`${item.small} 800w, ${item.large} 1600w`}
-            sizes="100vw"
+            {...photoProps(item.key, "hero")}
             alt=""
-            style={{ objectPosition: item.focus }}
             loading="eager"
             fetchPriority={index === 0 ? "high" : "low"}
             decoding="async"
