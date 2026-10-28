@@ -221,7 +221,7 @@ const AdmissionDetailsScreen = () => {
               <div>
                 <p className="text-xs text-slate">Applied On</p>
                 <p className="text-sm font-semibold text-graphite">
-                  {admission.createdAt ? new Date(admission.createdAt).toLocaleDateString() : "-"}
+                  {admission.createdAt ? new Date(admission.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "-"}
                 </p>
               </div>
             </div>
@@ -342,7 +342,7 @@ const AdmissionDetailsScreen = () => {
               </h3>
               <p className="mt-1 text-xs text-slate">
                 {admission.createdAt
-                  ? new Date(admission.createdAt).toLocaleDateString()
+                  ? new Date(admission.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
                   : "-"}
               </p>
             </div>
@@ -426,3 +426,4 @@ const AdmissionDetailsScreen = () => {
 };
 
 export default AdmissionDetailsScreen;
+

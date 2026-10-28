@@ -3,26 +3,26 @@
 
 @theme {
   /* Semantic light-theme utilities for redesigned components. */
-  --color-canvas: #f8f7f3;
-  --color-surface: #ffffff;
-  --color-ink: #20251f;
-  --color-muted: #656a61;
-  --color-line: #e2e4dc;
-  --color-sage: #dce8be;
-  --color-positive: #35734d;
-  --color-negative: #b64040;
+  --color-canvas: var(--ac-moss-50);
+  --color-surface: var(--ac-white);
+  --color-ink: var(--ac-moss-900);
+  --color-muted: var(--ac-moss-600);
+  --color-line: var(--ac-moss-200);
+  --color-sage: var(--ac-sage-200);
+  --color-positive: var(--ac-positive);
+  --color-negative: var(--ac-red-600);
 
   /* Retained until each original component is migrated. These names mix
      backgrounds, text and accents, so globally inverting them breaks contrast. */
   --color-ember-orange: #ff7817;
-  --color-vellum: #ffffff;
-  --color-obsidian: #18181b;
+  --color-vellum: var(--ac-white);
+  --color-obsidian: var(--ac-moss-950);
   --color-onyx: #09090b;
   --color-graphite: #000000;
-  --color-pebble: #e5e7eb;
-  --color-bone: #ebebeb;
-  --color-slate: #71717a;
-  --color-mist: #a1a1aa;
+  --color-pebble: var(--ac-moss-150);
+  --color-bone: var(--ac-moss-150);
+  --color-slate: var(--ac-moss-600);
+  --color-mist: var(--ac-moss-400);
 
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -60,7 +60,7 @@
   }
   button, input, textarea, select { font: inherit; }
   a, button, input, textarea, select, summary, [tabindex] {
-    &:focus-visible { outline: 2px solid #53734d; outline-offset: 4px; }
+    &:focus-visible { outline: 2px solid var(--ac-sage-600); outline-offset: 4px; }
   }
   ::selection { background-color: var(--color-sage); color: var(--color-ink); }
 }
@@ -75,3 +75,4 @@
     transition-duration: 0.01ms !important;
   }
 }
+

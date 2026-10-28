@@ -2,7 +2,8 @@ import "./AdminDashboard.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { GraduationCap, Trash2, Crown, UserPlus, Video } from "lucide-react";
+import { Link } from "react-router-dom";
+import { GraduationCap, Trash2, Crown, UserPlus, Video, Users, BookOpen, ArrowUpRight, ClipboardList, CreditCard, Receipt, Search } from "lucide-react";
 
 import {
   ResponsiveContainer,
@@ -12,7 +13,6 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
-  Legend,
 } from "recharts";
 
 import {
@@ -59,6 +59,8 @@ const AdminDashboard = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("student");
+  const [userQuery, setUserQuery] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
 
   const [webinarTitle, setWebinarTitle] = useState("");
   const [webinarDescription, setWebinarDescription] = useState("");
@@ -180,318 +182,183 @@ const AdminDashboard = () => {
   };
 
 
+  const query = userQuery.trim().toLowerCase();
+  const visibleUsers = users.filter((user) => (roleFilter === "all" || user.role === roleFilter) && (!query || `${user.name} ${user.email}`.toLowerCase().includes(query)));
+  const roleCounts = users.reduce((acc, user) => ({ ...acc, [user.role]: (acc[user.role] || 0) + 1 }), {});
+  const kpis = [
+    { label: "Students", value: stats?.totalStudents, icon: GraduationCap, hint: "Active learner accounts" },
+    { label: "Mentors", value: stats?.totalTeachers, icon: Users, hint: "Teachers on the platform" },
+    { label: "Courses", value: stats?.totalCourses, icon: BookOpen, hint: "Published programs" },
+    { label: "Leads", value: stats?.totalLeads, icon: UserPlus, hint: "Open the lead pipeline", to: "/admin/dashboard/leads" },
+  ];
+  const series = [
+    { key: "students", label: "Students", color: "var(--ac-moss-900)", width: 2.5 },
+    { key: "leads", label: "Leads", color: "var(--ac-sage-500)", width: 2 },
+    { key: "teachers", label: "Teachers", color: "var(--ac-gold-600)", width: 2, dash: "5 4" },
+    { key: "courses", label: "Courses", color: "var(--ac-moss-400)", width: 2, dash: "2 4" },
+  ];
+  const quickLinks = [
+    { to: "/admin/dashboard/admissions", label: "Review admissions", hint: "Approve new applications", icon: ClipboardList },
+    { to: "/admin/dashboard/leads", label: "Follow up leads", hint: "Calls and demo bookings", icon: Users },
+    { to: "/admin/dashboard/payments", label: "Record a payment", hint: "Offline fees and receipts", icon: CreditCard },
+    { to: "/admin/dashboard/invoices", label: "Invoices", hint: "Download billing records", icon: Receipt },
+  ];
+  const today = new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" });
+  const initials = (value = "") => value.split(" ").filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "?";
+
   return (
     <div className="alphira-admin">
-      {/* HEADER */}
-      <div className="alphira-admin-heading">
+      <header className="alphira-admin-heading">
         <div>
-          <h1 className="alphira-admin-title">
-            Platform overview
-          </h1>
-          <p className="mt-2 text-sm text-slate">
-            Manage users, teachers and platform analytics from one place.
-          </p>
+          <p className="alphira-admin-date">{today}</p>
+          <h1 className="alphira-admin-title">Platform overview</h1>
+          <p className="alphira-admin-lede">Students, mentors, enquiries and sessions across Alphira Capital.</p>
         </div>
-
-        <div className="alphira-admin-status">
-          <p className="font-mono text-xs uppercase text-mist">
-            LMS Platform Status
-          </p>
-          <h2 className="mt-1 text-xl font-semibold text-ember-orange">
-            Active
-          </h2>
-        </div>
-      </div>
+        <span className="alphira-admin-status"><i aria-hidden="true" />Platform active</span>
+      </header>
 
       {loading ? (
-        <div className="alphira-admin-loading" role="status">
-          <span>Loading platform overview…</span>
-          <div className="h-10 w-10 animate-spin rounded-full border-2 border-obsidian border-t-transparent" />
+        <div className="alphira-admin-kpis" role="status" aria-label="Loading platform overview">
+          {[0, 1, 2, 3].map((i) => <div key={i} className="alphira-admin-kpi"><span className="ac-skeleton" style={{ width: "40%" }} /><span className="ac-skeleton" style={{ width: "55%", height: 34, marginTop: 18 }} /></div>)}
         </div>
       ) : (
         <>
-          {/* PLATFORM OVERVIEW */}
+          <section className="alphira-admin-kpis" aria-label="Key figures">
+            {kpis.map(({ label, value, icon: Icon, hint, to }) => {
+              const body = <><div className="alphira-admin-kpi-top"><span>{label}</span><Icon size={17} aria-hidden="true" /></div><strong className="ac-metric">{(value ?? 0).toLocaleString("en-IN")}</strong><small>{hint}{to && <ArrowUpRight size={13} aria-hidden="true" />}</small></>;
+              return to ? <Link key={label} to={to} className="alphira-admin-kpi is-link">{body}</Link> : <div key={label} className="alphira-admin-kpi">{body}</div>;
+            })}
+          </section>
+
           <div className="alphira-admin-overview">
-            <div className="alphira-admin-panel">
-              <h2 className="text-xl font-semibold text-graphite">
-                Platform Growth Analytics
-              </h2>
-              <p className="mt-1 text-sm text-slate">
-                Students, teachers, leads and courses — month by month.
-              </p>
-
-              {analytics.length === 0 && <p className="alphira-admin-empty">No growth data available yet.</p>}
-              <div className="alphira-admin-chart">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={analytics}>
-                    <CartesianGrid stroke="#e5e7eb" strokeDasharray="3 3" />
-                    <XAxis dataKey="month" stroke="#8a7964" fontSize={12} />
-                    <YAxis stroke="#8a7964" fontSize={12} />
-                    <Tooltip contentStyle={{ background: "#fff", border: "1px solid #dce1d4", borderRadius: 0, fontSize: 12 }} />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="students"
-                      stroke="#20251f"
-                      strokeWidth={2.5}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="teachers"
-                      stroke="#66745b" strokeDasharray="6 3"
-                      strokeWidth={2.5}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="leads"
-                      stroke="#8a7964"
-                      strokeWidth={2}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="courses"
-                      stroke="#899b94" strokeDasharray="2 3"
-                      strokeWidth={2}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+            <section className="alphira-admin-panel" aria-labelledby="admin-growth-title">
+              <div className="alphira-admin-panel-head">
+                <div><h2 id="admin-growth-title">Growth</h2><p>New sign-ups and enquiries, month by month.</p></div>
+                <ul className="alphira-admin-legend" aria-label="Chart legend">{series.map((s) => <li key={s.key}><i style={{ borderTopColor: s.color, borderTopStyle: s.dash ? "dashed" : "solid" }} aria-hidden="true" />{s.label}</li>)}</ul>
               </div>
-            </div>
+              {analytics.length === 0 ? <p className="alphira-admin-empty">Growth data appears here once students and leads start coming in.</p> : (
+                <div className="alphira-admin-chart">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={analytics} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
+                      <CartesianGrid stroke="var(--ac-moss-200)" vertical={false} />
+                      <XAxis dataKey="month" stroke="var(--ac-moss-500)" fontSize={12} tickLine={false} axisLine={false} dy={8} />
+                      <YAxis stroke="var(--ac-moss-500)" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
+                      <Tooltip cursor={{ stroke: "var(--ac-moss-300)" }} content={({ active, payload, label }) => active && payload?.length ? (
+                        <div className="alphira-admin-tooltip"><strong>{label}</strong>{payload.map((item) => <span key={item.dataKey}><i style={{ background: item.stroke }} aria-hidden="true" />{series.find((s) => s.key === item.dataKey)?.label}<b>{item.value}</b></span>)}</div>
+                      ) : null} />
+                      {series.map((s) => <Line key={s.key} type="monotone" dataKey={s.key} stroke={s.color} strokeWidth={s.width} strokeDasharray={s.dash} dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />)}
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+            </section>
 
-            <div className="alphira-admin-summary">
-              <h2 className="font-serif text-2xl leading-tight">
-                Alphira LMS
-              </h2>
-              <p className="mt-4 text-sm leading-relaxed text-mist">
-                Professional stock market learning management platform with
-                mentorship, trading education and live market analytics.
-              </p>
-
-              <div className="alphira-admin-summary-grid">
-                <div className="alphira-admin-summary-item">
-                  <h3 className="font-mono text-2xl font-medium">
-                    {stats?.totalStudents || 0}
-                  </h3>
-                  <p className="mt-2 text-xs text-mist">Active Students</p>
-                </div>
-                <div className="alphira-admin-summary-item">
-                  <h3 className="font-mono text-2xl font-medium">
-                    {stats?.totalTeachers || 0}
-                  </h3>
-                  <p className="mt-2 text-xs text-mist">Mentors</p>
-                </div>
-                <div className="alphira-admin-summary-item">
-                  <h3 className="font-mono text-2xl font-medium">
-                    {stats?.totalCourses || 0}
-                  </h3>
-                  <p className="mt-2 text-xs text-mist">Published Courses</p>
-                </div>
-                <div className="alphira-admin-summary-item">
-                  <h3 className="font-mono text-2xl font-medium">
-                    {stats?.totalLeads || 0}
-                  </h3>
-                  <p className="mt-2 text-xs text-mist">Total Leads</p>
-                </div>
-              </div>
-            </div>
+            <nav className="alphira-admin-quick" aria-label="Quick actions">
+              <h2>Today’s work</h2>
+              {quickLinks.map(({ to, label, hint, icon: Icon }) => (
+                <Link key={to} to={to} className="alphira-admin-quick-link"><Icon size={18} aria-hidden="true" /><span><strong>{label}</strong><small>{hint}</small></span><ArrowUpRight size={16} aria-hidden="true" /></Link>
+              ))}
+            </nav>
           </div>
 
-          <div className="alphira-admin-users">
-            {/* USERS TABLE */}
-            <div className="alphira-admin-panel">
-              <h2 className="text-lg font-semibold text-graphite">
-                Platform Users
-              </h2>
-              <p className="mt-1 text-sm text-slate">
-                Manage teachers, students and admins.
-              </p>
+          <section className="alphira-admin-panel alphira-admin-users" aria-labelledby="admin-users-title">
+            <div className="alphira-admin-panel-head">
+              <div><h2 id="admin-users-title">People</h2><p>Change roles or remove accounts. {users.length} total.</p></div>
+              <div className="alphira-admin-filters">
+                <label className="alphira-admin-search"><Search size={16} aria-hidden="true" /><span className="sr-only">Search people</span><input type="search" placeholder="Search name or email" value={userQuery} onChange={(event) => setUserQuery(event.target.value)} /></label>
+                <div className="alphira-admin-segments" role="group" aria-label="Filter by role">
+                  {["all", "student", "teacher", "admin"].map((value) => <button key={value} type="button" aria-pressed={roleFilter === value} onClick={() => setRoleFilter(value)}>{value === "all" ? "All" : `${value[0].toUpperCase()}${value.slice(1)}s`}<span>{value === "all" ? users.length : roleCounts[value] || 0}</span></button>)}
+                </div>
+              </div>
+            </div>
 
-              <div className="mt-6 space-y-3">
-                {users.length === 0 && <p className="alphira-admin-empty">No platform users to display.</p>}
-                {users.map((user) => (
-                  <div
-                    key={user._id}
-                    className="alphira-admin-user-row"
-                  >
+            {users.length === 0 ? <p className="alphira-admin-empty">No platform users to display yet.</p> : visibleUsers.length === 0 ? <p className="alphira-admin-empty">No one matches “{userQuery}”. Try a different name or clear the filter.</p> : (
+              <ul className="alphira-admin-user-list">
+                {visibleUsers.map((user) => (
+                  <li key={user._id} className="alphira-admin-user-row">
                     <div className="alphira-admin-user-info">
-                      <img
-                        src={user.profilePic}
-                        alt="profile"
-                        className="h-14 w-14 rounded-full border border-pebble object-cover"
-                      />
+                      <span className="alphira-admin-avatar" aria-hidden="true">{user.profilePic ? <img src={user.profilePic} alt="" onError={(event) => { event.currentTarget.remove(); }} /> : null}{initials(user.name)}</span>
                       <div>
-                        <h3 className="text-base font-semibold text-graphite">
-                          {user.name}
-                        </h3>
-                        <p className="mt-1 text-sm text-slate">{user.email}</p>
-
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          <span className="inline-block rounded-[600px] bg-obsidian px-3 py-1 font-mono text-[11px] uppercase text-vellum">
-                            {user.role}
-                          </span>
-
-                          {user.status === "pending" ? (
-                            <span className="inline-block rounded-[600px] border border-pebble px-3 py-1 font-mono text-[11px] uppercase text-slate">
-                              Pending Verification
-                            </span>
-                          ) : (
-                            <span className="inline-block rounded-[600px] bg-ember-orange/15 px-3 py-1 font-mono text-[11px] uppercase text-ember-orange">
-                              Verified
-                            </span>
-                          )}
-                        </div>
+                        <h3>{user.name}</h3>
+                        <p>{user.email}</p>
                       </div>
                     </div>
-
+                    <div className="alphira-admin-user-tags">
+                      <span className={`ac-badge alphira-role-${user.role}`}>{user.role}</span>
+                      {user.status === "pending" ? <span className="ac-badge ac-badge-warning">Pending verification</span> : <span className="ac-badge ac-badge-positive">Verified</span>}
+                    </div>
                     <div className="alphira-admin-actions">
                       {user.status === "pending" ? (
-                        <>
-                          <div className="rounded-xl border border-pebble px-4 py-2.5 text-sm text-slate">
-                            Waiting For Verification
-                          </div>
-                          <button
-                            onClick={() => deleteHandler(user._id, user.status)}
-                            className="flex items-center gap-2 rounded-xl border border-red-300 px-4 py-2.5 text-sm font-medium text-red-500 transition hover:bg-red-500 hover:text-white"
-                          >
-                            <Trash2 size={15} />
-                            Delete Invite
-                          </button>
-                        </>
+                        <button type="button" onClick={() => deleteHandler(user._id, user.status)} className="ac-btn ac-btn-danger"><Trash2 size={15} aria-hidden="true" />Delete invite</button>
                       ) : (
                         <>
-                          {user.role !== "teacher" && (
-                            <button
-                              onClick={() => roleHandler(user._id, "teacher")}
-                              className="flex items-center gap-2 rounded-xl border border-pebble px-4 py-2.5 text-sm font-medium text-graphite transition hover:bg-obsidian hover:text-vellum"
-                            >
-                              <GraduationCap size={15} />
-                              Make Teacher
-                            </button>
-                          )}
-
-                          {user.role !== "admin" && (
-                            <button
-                              onClick={() => roleHandler(user._id, "admin")}
-                              className="flex items-center gap-2 rounded-xl border border-pebble px-4 py-2.5 text-sm font-medium text-graphite transition hover:bg-ember-orange hover:text-black"
-                            >
-                              <Crown size={15} />
-                              Make Admin
-                            </button>
-                          )}
-
-                          <button
-                            onClick={() => deleteHandler(user._id, user.status)}
-                            className="flex items-center gap-2 rounded-xl border border-red-300 px-4 py-2.5 text-sm font-medium text-red-500 transition hover:bg-red-500 hover:text-white"
-                          >
-                            <Trash2 size={15} />
-                            Delete
-                          </button>
+                          {user.role !== "teacher" && <button type="button" onClick={() => roleHandler(user._id, "teacher")} className="ac-btn ac-btn-secondary"><GraduationCap size={15} aria-hidden="true" />Make teacher</button>}
+                          {user.role !== "admin" && <button type="button" onClick={() => roleHandler(user._id, "admin")} className="ac-btn ac-btn-secondary"><Crown size={15} aria-hidden="true" />Make admin</button>}
+                          <button type="button" onClick={() => deleteHandler(user._id, user.status)} className="ac-btn ac-btn-danger" aria-label={`Delete ${user.name}`}><Trash2 size={15} aria-hidden="true" /><span className="alphira-admin-action-label">Delete</span></button>
                         </>
                       )}
                     </div>
-                  </div>
+                  </li>
                 ))}
-              </div>
-            </div>
-          </div>
+              </ul>
+            )}
+          </section>
 
-          {/* WEBINARS */}
           <div className="alphira-admin-webinars">
-            <div className="alphira-admin-panel">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-obsidian text-vellum">
-                  <Video size={22} />
-                </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-graphite">
-                    Create Webinar
-                  </h2>
-                  <p className="text-sm text-slate">
-                    Schedule a Google Meet session
-                  </p>
-                </div>
+            <section className="alphira-admin-panel" aria-labelledby="admin-webinar-create-title">
+              <div className="alphira-admin-panel-head">
+                <div><h2 id="admin-webinar-create-title">Schedule a webinar</h2><p>Creates a Google Meet session for students.</p></div>
+                <Video size={20} aria-hidden="true" className="alphira-admin-head-icon" />
               </div>
 
               <form onSubmit={webinarSubmitHandler} className="alphira-admin-form" aria-busy={!!webinarCreating}>
-                {webinarError && <p role="alert" className="alphira-admin-empty">Could not create webinar: {webinarError}</p>}
+                {webinarError && <p role="alert" className="alphira-admin-error">Could not create webinar: {webinarError}</p>}
                 <label htmlFor="admin-webinar-title">Session title</label>
-                <input
-                  type="text"
-                  id="admin-webinar-title" placeholder="Webinar Title"
-                  value={webinarTitle}
-                  onChange={(e) => setWebinarTitle(e.target.value)}
-                  className={inputClass}
-                />
-                <label htmlFor="admin-webinar-description">Description</label>
-                <textarea
-                  id="admin-webinar-description" placeholder="Description"
-                  value={webinarDescription}
-                  onChange={(e) => setWebinarDescription(e.target.value)}
-                  className={inputClass}
-                />
+                <input type="text" id="admin-webinar-title" placeholder="e.g. Weekly market outlook" value={webinarTitle} onChange={(e) => setWebinarTitle(e.target.value)} className={inputClass} />
+                <label htmlFor="admin-webinar-description">Description <span className="alphira-admin-optional">Optional</span></label>
+                <textarea id="admin-webinar-description" placeholder="What will students learn in this session?" value={webinarDescription} onChange={(e) => setWebinarDescription(e.target.value)} className={inputClass} />
                 <fieldset className="alphira-webinar-schedule">
-                  <legend>Session schedule</legend>
-                  <div className="alphira-webinar-zone"><span>PLAN YOUR SESSION</span><span>IST · UTC +05:30</span></div>
+                  <legend>Schedule</legend>
+                  <div className="alphira-webinar-zone"><span>Times are in India Standard Time</span><span>UTC +05:30</span></div>
                   <div className="alphira-webinar-date-time">
                     <div><label htmlFor="admin-webinar-date">Date</label><input id="admin-webinar-date" type="date" value={webinarDate} onChange={(event) => setWebinarDate(event.target.value)} required /></div>
-                    <div><label htmlFor="admin-webinar-time">Start time</label><input id="admin-webinar-time" type="time" value={webinarTime} onChange={(event) => setWebinarTime(event.target.value)} required /><small>India Standard Time</small></div>
+                    <div><label htmlFor="admin-webinar-time">Start time</label><input id="admin-webinar-time" type="time" value={webinarTime} onChange={(event) => setWebinarTime(event.target.value)} required /></div>
                   </div>
-                  <div className="alphira-webinar-duration-heading"><label htmlFor="admin-webinar-duration">Session length</label><span>Choose a preset or enter minutes</span></div>
+                  <div className="alphira-webinar-duration-heading"><label htmlFor="admin-webinar-duration">Length</label><span>Pick a preset or type minutes</span></div>
                   <div className="alphira-webinar-duration-presets" role="group" aria-label="Duration presets">{[30, 45, 60, 90].map((minutes) => <button key={minutes} type="button" aria-pressed={Number(duration) === minutes} onClick={() => setDuration(minutes)}>{minutes}<span>min</span></button>)}</div>
                   <div className="alphira-webinar-duration-input"><input id="admin-webinar-duration" type="number" min="1" step="1" required value={duration} onChange={(event) => setDuration(event.target.value)} /><span aria-hidden="true">minutes</span></div>
                 </fieldset>
-                <button
-                  type="submit"
-                  className="alphira-admin-create-webinar"
-                  disabled={webinarCreating}
-                >
-                  {webinarCreating ? "Creating webinar…" : "Create Webinar"}
+                <button type="submit" className="alphira-admin-create-webinar" disabled={webinarCreating}>
+                  {webinarCreating ? <><span className="ac-spinner" aria-hidden="true" />Scheduling…</> : "Schedule webinar"}
                 </button>
               </form>
-            </div>
+            </section>
 
-            <div className="alphira-admin-panel">
-              <h2 className="text-lg font-semibold text-graphite">
-                Scheduled Webinars
-              </h2>
-
-              <div className="mt-6 space-y-3">
-                {webinars.length === 0 && <p className="alphira-admin-empty">No webinars scheduled yet. Create a session to get started.</p>}
-                {webinars.map((webinar) => (
-                  <div
-                    key={webinar._id}
-                    className="alphira-admin-webinar-row"
-                  >
-                    <h3 className="text-base font-semibold text-graphite">
-                      {webinar.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-slate">
-                      {webinar.description}
-                    </p>
-                    <p className="mt-3 text-xs text-slate">
-                      {new Date(webinar.startTime).toLocaleString()}
-                    </p>
-
-                    <div className="alphira-admin-actions">
-                      <a
-                        href={webinar.meetLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-block rounded-[600px] bg-obsidian px-5 py-2.5 font-mono text-xs font-medium text-vellum"
-                      >
-                        Open Meet Link
-                      </a>
-                      <button
-                        onClick={() => deleteWebinarHandler(webinar._id)}
-                        className="rounded-[600px] border border-red-300 px-5 py-2.5 text-xs font-medium text-red-500 transition hover:bg-red-500 hover:text-white"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <section className="alphira-admin-panel" aria-labelledby="admin-webinar-list-title">
+              <div className="alphira-admin-panel-head"><div><h2 id="admin-webinar-list-title">Scheduled webinars</h2><p>{webinars.length ? `${webinars.length} session${webinars.length === 1 ? "" : "s"}` : "Nothing scheduled"}</p></div></div>
+              {webinars.length === 0 ? <p className="alphira-admin-empty">No webinars yet. Sessions you schedule appear here with their Meet link.</p> : (
+                <ul className="alphira-admin-webinar-list">
+                  {webinars.map((webinar) => {
+                    const start = new Date(webinar.startTime);
+                    const past = start.getTime() + (webinar.duration || 60) * 60000 < Date.now();
+                    return (
+                      <li key={webinar._id} className={`alphira-admin-webinar-row${past ? " is-past" : ""}`}>
+                        <time dateTime={webinar.startTime} className="alphira-admin-webinar-date"><b>{start.toLocaleDateString("en-IN", { day: "numeric" })}</b>{start.toLocaleDateString("en-IN", { month: "short" })}</time>
+                        <div className="alphira-admin-webinar-body">
+                          <h3>{webinar.title}</h3>
+                          {webinar.description && <p>{webinar.description}</p>}
+                          <small>{start.toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" })} IST · {webinar.duration} min{past ? " · Ended" : ""}</small>
+                        </div>
+                        <div className="alphira-admin-actions">
+                          {webinar.meetLink && <a href={webinar.meetLink} target="_blank" rel="noreferrer" className="ac-btn ac-btn-secondary">Open Meet<ArrowUpRight size={14} aria-hidden="true" /></a>}
+                          <button type="button" onClick={() => deleteWebinarHandler(webinar._id)} className="ac-btn ac-btn-danger" aria-label={`Delete ${webinar.title}`}><Trash2 size={15} aria-hidden="true" /></button>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </section>
           </div>
         </>
       )}
@@ -500,5 +367,6 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
 
 

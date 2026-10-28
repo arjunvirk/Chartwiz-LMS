@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { Star, Quote, ArrowUpRight } from "lucide-react";
+import { Star, Quote } from "lucide-react";
 import anandMalhotra from "../assets/anand_malhotra.jpeg";
 import varunMalhotra from "../assets/varun_malhotra.jpeg";
 import lalitKumar from "../assets/lalit_kumar.jpeg";
@@ -50,15 +49,8 @@ export default function Testimonials() {
           ))}
         </div>
 
-        <motion.div {...reveal()} className="ar-community">
-          <div className="ar-community-copy">
-            <p className="ar-eyebrow"><span aria-hidden="true" />Join The Community</p>
-            <h2>Become a confident<br />&amp; disciplined trader.</h2>
-            <p className="ar-community-description">Learn professional market strategies, trading psychology and structured mentorship from Alphira Capital.</p>
-          </div>
-          <Link to="/admission" className="ar-join">Start Your Journey <ArrowUpRight size={19} aria-hidden="true" /></Link>
-        </motion.div>
       </div>
     </section>
   );
 }
+

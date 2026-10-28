@@ -1,6 +1,7 @@
 import cryptoImage from "../../assets/images/crypto-cover-v3.png";
 import orderFlowImage from "../../assets/images/orderflow-cover-v2.png";
-import LiveSessionList from "../../components/LiveSessionList";
+import MarketCover from "../../components/MarketCover";
+import { ArrowUpRight, BookOpen, CalendarClock, LineChart, Radio, Video } from "lucide-react";
 import "./StudentDashboard.css";
 import forexImage from "../../assets/images/forex-cover-v2.png";
 import indianMarketImage from "../../assets/images/indian-cover-v2.png";
@@ -98,255 +99,197 @@ const StudentDashboard = () => {
     dispatch(getAnalyses());
   }, [dispatch, userInfo]);
 
+  const courseImage = (course) => /crypto/i.test(course.title || "") ? cryptoImage
+    : /order[\s-]*flow/i.test(course.title || "") ? orderFlowImage
+      : /indian|india/i.test(course.title || "") ? indianMarketImage
+        : /forex/i.test(course.title || "") ? forexImage
+          : course.thumbnail;
+
+  // Soonest upcoming class or webinar across everything the student is enrolled in.
+  const nowMs = Date.now();
+  const upcoming = [
+    ...liveCourses.flatMap((course) => (course.sessions || [])
+      .filter((session) => session.status !== "cancelled" && new Date(session.endTime || session.startTime).getTime() > nowMs)
+      .map((session) => ({ kind: "Live class", title: session.title, context: course.title, start: new Date(session.startTime), duration: session.duration, link: session.meetLink, to: "/dashboard/live-courses" }))),
+    ...webinars
+      .filter((webinar) => new Date(webinar.startTime).getTime() + (webinar.duration || 60) * 60000 > nowMs)
+      .map((webinar) => ({ kind: "Webinar", title: webinar.title, context: webinar.description, start: new Date(webinar.startTime), duration: webinar.duration, link: webinar.meetLink })),
+  ].sort((x, y) => x.start - y.start);
+  const next = upcoming[0];
+  const nextCanJoin = next && next.link && nowMs >= next.start.getTime() - 15 * 60000;
+  const relative = (date) => {
+    const mins = Math.round((date.getTime() - nowMs) / 60000);
+    if (mins <= 0) return "Happening now";
+    if (mins < 60) return `In ${mins} min`;
+    const hours = Math.round(mins / 60);
+    if (hours < 24) return `In ${hours} hour${hours === 1 ? "" : "s"}`;
+    const days = Math.round(hours / 24);
+    return `In ${days} day${days === 1 ? "" : "s"}`;
+  };
+  const firstName = userInfo?.user?.name?.split(" ")[0];
+  const greeting = (() => { const h = new Date().getHours(); return h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening"; })();
+  const upcomingWebinars = webinars.filter((webinar) => new Date(webinar.startTime).getTime() + (webinar.duration || 60) * 60000 > nowMs);
+
   return (
     <div className="alphira-student-home">
-      {/* HERO */}
-      <motion.div
-        initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+      <motion.section
+        initial={reducedMotion ? false : { opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="alphira-student-hero"
+        aria-labelledby="student-hero-title"
       >
-        <h1 className="font-serif text-3xl leading-tight md:text-4xl">
-          Your academy, {userInfo?.user?.name?.split(" ")[0] || "your space"}
-        </h1>
-
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-mist">
-          Your academy programs, mentor insights and scheduled sessions,
-          together in one place.
-        </p>
-
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link to="/dashboard/courses" className="alphira-student-primary">
-            My Courses
-          </Link>
-          <Link
-            to="/dashboard/live-courses"
-            className="alphira-student-secondary"
-          >
-            Live Classes
-          </Link>
-        </div>
-      </motion.div>
-
-      {/* RECENT COURSES */}
-      <div className="alphira-student-section">
-        <div className="alphira-student-section-heading">
-          <h2 className="text-xl font-semibold text-graphite">My Courses</h2>
-          <Link to="/dashboard/courses" className="alphira-student-view">
-            View All
-          </Link>
-        </div>
-
-        {courses.length === 0 ? (
-          <div className="alphira-student-empty">
-            <p className="text-sm text-slate">No enrolled courses yet.</p>
+        <div className="alphira-student-hero-copy">
+          <p className="alphira-student-hero-kicker">{greeting}{firstName ? `, ${firstName}` : ""}</p>
+          <h1 id="student-hero-title">Your academy, in one place.</h1>
+          <p>Programs you’re enrolled in, mentor insights and every scheduled session.</p>
+          <div className="alphira-student-hero-actions">
+            <Link to="/dashboard/courses" className="alphira-student-primary">My courses <ArrowUpRight size={16} aria-hidden="true" /></Link>
+            <Link to="/dashboard/market-analysis" className="alphira-student-secondary">Market analysis</Link>
           </div>
-        ) : (
-          <div className="alphira-student-card-grid">
-            {courses.slice(0, 3).map((course) => (
-              <div key={course._id} className="alphira-student-card">
-                <img
-                  src={
-                    /crypto/i.test(course.title || "")
-                      ? cryptoImage
-                      : /order[\s-]*flow/i.test(course.title || "")
-                        ? orderFlowImage
-                        : /indian|india/i.test(course.title || "")
-                          ? indianMarketImage
-                          : /forex/i.test(course.title || "")
-                            ? forexImage
-                            : course.thumbnail
-                  }
-                  alt={course.title}
-                  className="alphira-student-course-photo"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = "/alphira-ac-logo.svg";
-                  }}
-                />
-                <div className="p-5">
-                  <h3 className="line-clamp-2 text-base font-semibold text-graphite">
-                    {course.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-slate">{course.instructor}</p>
-                  <p className="mt-1 font-mono text-xs uppercase text-slate">
-                    Offline course
-                  </p>
-                </div>
+        </div>
+        <div className="alphira-student-next" aria-live="polite">
+          <p className="alphira-student-next-label"><CalendarClock size={15} aria-hidden="true" />Next up</p>
+          {next ? (
+            <>
+              <span className="alphira-student-next-when">{relative(next.start)}</span>
+              <strong>{next.title}</strong>
+              <small>{next.kind}{next.context ? ` · ${next.context}` : ""}</small>
+              <time dateTime={next.start.toISOString()}>{next.start.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })} IST{next.duration ? ` · ${next.duration} min` : ""}</time>
+              {nextCanJoin ? <a className="alphira-student-next-join" href={next.link} target="_blank" rel="noreferrer">Join now <ArrowUpRight size={15} aria-hidden="true" /></a>
+                : <span className="alphira-student-next-note">{next.link ? "Join opens 15 minutes before start" : "Meeting link will appear here"}</span>}
+            </>
+          ) : (
+            <>
+              <strong>Nothing scheduled yet</strong>
+              <small>New classes and webinars from your mentors will show up here.</small>
+            </>
+          )}
+        </div>
+      </motion.section>
+
+      <div className="alphira-student-columns">
+        <div className="alphira-student-main">
+          <section className="alphira-student-section" aria-labelledby="student-courses-title">
+            <div className="alphira-student-section-heading">
+              <h2 id="student-courses-title">My courses <span>{courses.length}</span></h2>
+              <Link to="/dashboard/courses" className="alphira-student-view">View all <ArrowUpRight size={14} aria-hidden="true" /></Link>
+            </div>
+            {courses.length === 0 ? (
+              <div className="alphira-student-empty">
+                <BookOpen size={22} aria-hidden="true" />
+                <p>You’re not enrolled in a course yet.</p>
+                <Link to="/courses" className="alphira-student-view">Browse programs <ArrowUpRight size={14} aria-hidden="true" /></Link>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+            ) : (
+              <div className="alphira-student-course-list">
+                {courses.slice(0, 3).map((course) => {
+                  const image = courseImage(course);
+                  return (
+                    <Link key={course._id} to="/dashboard/courses" className="alphira-student-course">
+                      {image ? <img src={image} alt="" className="alphira-student-course-photo" loading="lazy" /> : <MarketCover seed={course._id} className="alphira-student-course-photo" />}
+                      <div>
+                        <h3>{course.title}</h3>
+                        <p>{course.instructor ? `With ${course.instructor}` : "Alphira Capital"}</p>
+                      </div>
+                      <span className="alphira-student-pill">Offline course</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </section>
 
-      {/* MARKET ANALYSIS */}
-      <div className="alphira-student-section">
-        <div className="alphira-student-section-heading">
-          <h2 className="text-xl font-semibold text-graphite">
-            Latest Market Analysis
-          </h2>
-          <Link
-            to="/dashboard/market-analysis"
-            className="alphira-student-view"
-          >
-            View All
-          </Link>
-        </div>
-
-        {analyses.length === 0 ? (
-          <div className="alphira-student-empty">
-            <p className="text-sm text-slate">No market analysis available.</p>
-          </div>
-        ) : (
-          <div className="alphira-student-card-grid">
-            {analyses.slice(0, 3).map((analysis, i) => (
-              <motion.div
-                key={analysis._id}
-                variants={fadeUp}
-                initial={reducedMotion ? false : "hidden"}
-                whileInView="show"
-                viewport={{ once: true }}
-                custom={i}
-                className="alphira-student-card"
-              >
-                <img
-                  src={analysis.image || "/alphira-ac-logo.svg"}
-                  alt={analysis.title}
-                  className="h-40 w-full object-cover"
-                />
-
-                <div className="p-5">
-                  <div className="flex items-center justify-between">
-                    <span className="alphira-student-badge">
-                      {analysis.market}
-                    </span>
-                    {analysis.featured && (
-                      <span className="rounded-pill border border-pebble px-3 py-1 font-mono text-[11px] font-medium text-slate">
-                        Featured
-                      </span>
-                    )}
-                  </div>
-
-                  <h3 className="mt-4 line-clamp-2 text-base font-semibold text-graphite">
-                    {analysis.title}
-                  </h3>
-
-                  <p className="mt-2 line-clamp-3 text-sm text-slate">
-                    {analysis.content}
-                  </p>
-
-                  <p className="mt-3 text-xs text-slate">
-                    By {analysis.author?.name || "Alphira Capital"}
-                  </p>
-
-                  <Link
-                    to={`/dashboard/market-analysis/${analysis._id}`}
-                    className="alphira-student-read"
+          <section className="alphira-student-section" aria-labelledby="student-analysis-title">
+            <div className="alphira-student-section-heading">
+              <h2 id="student-analysis-title">Latest market analysis</h2>
+              <Link to="/dashboard/market-analysis" className="alphira-student-view">View all <ArrowUpRight size={14} aria-hidden="true" /></Link>
+            </div>
+            {analyses.length === 0 ? (
+              <div className="alphira-student-empty"><LineChart size={22} aria-hidden="true" /><p>Your mentors haven’t published analysis yet. New posts appear here.</p></div>
+            ) : (
+              <div className="alphira-student-card-grid">
+                {analyses.slice(0, 3).map((analysis, i) => (
+                  <motion.article
+                    key={analysis._id}
+                    variants={fadeUp}
+                    initial={reducedMotion ? false : "hidden"}
+                    whileInView="show"
+                    viewport={{ once: true }}
+                    custom={i}
+                    className="alphira-student-card"
                   >
-                    Read Analysis
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* LIVE COURSES */}
-      <div className="alphira-student-section">
-        <div className="alphira-student-section-heading">
-          <h2 className="text-xl font-semibold text-graphite">Live Classes</h2>
-          <Link to="/dashboard/live-courses" className="alphira-student-view">
-            View All
-          </Link>
-        </div>
-
-        {liveCourses.length === 0 ? (
-          <div className="alphira-student-empty">
-            <p className="text-sm text-slate">No live courses enrolled yet.</p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {liveCourses.slice(0, 3).map((course) => (
-              <div key={course._id} className="alphira-student-session">
-                <div>
-                  <h3 className="text-sm font-semibold text-graphite">
-                    {course.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-slate">{course.instructor}</p>
-                  <LiveSessionList sessions={course.sessions} />
-                </div>
-                <div className="mt-3 md:mt-0">
-                  <span className="rounded-pill bg-obsidian px-4 py-2 font-mono text-[11px] font-medium text-vellum">
-                    {course.status}
-                  </span>
-                </div>
+                    <Link to={`/dashboard/market-analysis/${analysis._id}`} className="alphira-student-card-link" aria-label={`Read: ${analysis.title}`} />
+                    {analysis.image ? <img src={analysis.image} alt="" className="alphira-student-card-media" loading="lazy" /> : <MarketCover seed={analysis._id} label={analysis.market} className="alphira-student-card-media" />}
+                    <div className="alphira-student-card-body">
+                      <div className="alphira-student-card-tags">
+                        {analysis.image && <span className="alphira-student-badge">{analysis.market}</span>}
+                        {analysis.featured && <span className="alphira-student-badge is-featured">Featured</span>}
+                      </div>
+                      <h3>{analysis.title}</h3>
+                      <p>{analysis.content}</p>
+                      <small>{analysis.author?.name || "Alphira Capital"}{analysis.createdAt ? ` · ${new Date(analysis.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}` : ""}</small>
+                    </div>
+                  </motion.article>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* UPCOMING WEBINARS */}
-      <div className="alphira-student-section">
-        <div className="alphira-student-section-heading">
-          <h2 className="text-xl font-semibold text-graphite">
-            Upcoming Webinars
-          </h2>
+            )}
+          </section>
         </div>
 
-        {webinars.length === 0 ? (
-          <div className="alphira-student-empty">
-            <p className="text-sm text-slate">
-              No upcoming webinars available.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {webinars.slice(0, 5).map((webinar) => {
-              const status = getWebinarStatus(webinar);
+        <aside className="alphira-student-side">
+          <section className="alphira-student-section" aria-labelledby="student-live-title">
+            <div className="alphira-student-section-heading">
+              <h2 id="student-live-title">Live classes</h2>
+              <Link to="/dashboard/live-courses" className="alphira-student-view">View all <ArrowUpRight size={14} aria-hidden="true" /></Link>
+            </div>
+            {liveCourses.length === 0 ? (
+              <div className="alphira-student-empty"><Radio size={22} aria-hidden="true" /><p>No live batches yet. When you’re added to one, its classes appear here.</p></div>
+            ) : (
+              <ul className="alphira-student-list">
+                {liveCourses.slice(0, 3).map((course) => {
+                  const nextSession = (course.sessions || []).filter((session) => session.status !== "cancelled" && new Date(session.endTime || session.startTime).getTime() > nowMs).sort((x, y) => new Date(x.startTime) - new Date(y.startTime))[0];
+                  return (
+                    <li key={course._id} className="alphira-student-session">
+                      <div>
+                        <h3>{course.title}</h3>
+                        <p>{nextSession ? `Next: ${nextSession.title} · ${new Date(nextSession.startTime).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}` : course.instructor || "No upcoming classes"}</p>
+                      </div>
+                      <span className={`alphira-student-status is-cap is-${course.status}`}>{course.status}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
 
-              return (
-                <div key={webinar._id} className="alphira-student-session">
-                  <div>
-                    <h3 className="text-sm font-semibold text-graphite">
-                      {webinar.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-slate">
-                      {webinar.description}
-                    </p>
-                    <p className="mt-2 text-xs text-slate">
-                      {new Date(webinar.startTime).toLocaleString()}
-                    </p>
-                  </div>
-
-                  <div className="mt-4 md:mt-0">
-                    {status.canJoin ? (
-                      <a
-                        href={webinar.meetLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="alphira-student-join"
-                      >
-                        Join Webinar
-                      </a>
-                    ) : (
-                      <span
-                        className={`rounded-pill px-5 py-2.5 font-mono text-xs font-semibold ${status.color}`}
-                      >
-                        {status.label}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
+          <section className="alphira-student-section" aria-labelledby="student-webinar-title">
+            <div className="alphira-student-section-heading"><h2 id="student-webinar-title">Webinars</h2></div>
+            {upcomingWebinars.length === 0 ? (
+              <div className="alphira-student-empty"><Video size={22} aria-hidden="true" /><p>No upcoming webinars right now.</p></div>
+            ) : (
+              <ul className="alphira-student-list">
+                {upcomingWebinars.slice(0, 5).map((webinar) => {
+                  const status = getWebinarStatus(webinar);
+                  return (
+                    <li key={webinar._id} className="alphira-student-session">
+                      <div>
+                        <h3>{webinar.title}</h3>
+                        <p>{new Date(webinar.startTime).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })} IST</p>
+                      </div>
+                      {status.canJoin ? <a href={webinar.meetLink} target="_blank" rel="noreferrer" className="alphira-student-join">Join <ArrowUpRight size={14} aria-hidden="true" /></a>
+                        : <span className={`alphira-student-status ${status.color}`}>{status.label}</span>}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+        </aside>
       </div>
     </div>
   );
 };
 
 export default StudentDashboard;
+

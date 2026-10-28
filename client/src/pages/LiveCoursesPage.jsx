@@ -53,12 +53,13 @@ export default function LiveCoursesPage() {
           </div>
           <div className="alphira-live-schedule">
             <span className="alphira-live-schedule-label"><CalendarDays size={17} aria-hidden="true" />Class schedule</span>
-            <dl><div><dt>Start Date</dt><dd>{new Date(course.startDate).toLocaleDateString()}</dd></div><div><dt>Class Time</dt><dd>{course.classTime}</dd></div><div><dt>Duration</dt><dd>{course.durationMonths} Months</dd></div></dl>
+            <dl><div><dt>Start Date</dt><dd>{new Date(course.startDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</dd></div><div><dt>Class Time</dt><dd>{course.classTime}</dd></div><div><dt>Duration</dt><dd>{course.durationMonths} Months</dd></div></dl>
           </div>
-          <div className="alphira-live-enroll"><div><span>Course Fee</span><p>₹{course.price}</p></div><button type="button" onClick={() => enrollHandler(course._id)}>Enroll in Mentorship <ArrowUpRight size={18} aria-hidden="true" /></button></div>
+          <div className="alphira-live-enroll"><div><span>Course Fee</span><p>₹{Number(course.price || 0).toLocaleString("en-IN")}</p></div><button type="button" onClick={() => enrollHandler(course._id)}>Enroll in Mentorship <ArrowUpRight size={18} aria-hidden="true" /></button></div>
         </motion.article>
       ))}</div>}
     </div>
   </main>;
 }
+
 

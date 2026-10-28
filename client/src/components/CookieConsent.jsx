@@ -48,7 +48,7 @@ export default function CookieConsent() {
       <div className="ac-consent-top"><span>YOUR PRIVACY</span><button type="button" onClick={close} aria-label="Close cookie settings">&times;</button></div>
       <h2 id="ac-consent-title" ref={heading} tabIndex={-1}>Your visit. Your choice.</h2>
       <p>We use essential cookies to keep your account working. With your permission, Meta Pixel helps us measure our ads and understand visits. Optional tracking is off until you accept.</p>
-      <Link to="/privacy-policy">Read our privacy policy &nearr;</Link>
+      <Link to="/privacy-policy">Read our privacy policy ↗</Link>
       {customize && <div className="ac-consent-options" id="ac-consent-options">
         <div><span><strong>Essential</strong><small>Sign-in, security and remembering this choice.</small></span><span className="ac-consent-status">Always on</span></div>
         <label><span><strong>Marketing</strong><small>Meta Pixel: advertising measurement and activity tracking.</small></span><input type="checkbox" checked={marketing} onChange={(event) => setMarketing(event.target.checked)} /></label>
@@ -61,3 +61,4 @@ export default function CookieConsent() {
     </section>
   ) : null, document.body);
 }
+

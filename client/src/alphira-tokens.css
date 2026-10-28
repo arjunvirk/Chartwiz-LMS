@@ -1,0 +1,277 @@
+/* =====================================================================
+   Alphira Capital design tokens
+   One source of truth for colour, type, spacing, elevation and motion.
+   Every page stylesheet references these variables; change a value here
+   and the whole application follows.
+   ===================================================================== */
+
+:root {
+  /* ---- Moss neutrals: green-tinted greys, from paper to ink ---- */
+  --ac-white: #ffffff;
+  --ac-moss-25: #fbfbf8;
+  --ac-moss-50: #f8f7f3;
+  --ac-moss-100: #f1f3ec;
+  --ac-moss-150: #e9ede2;
+  --ac-moss-200: #e0e4d8;
+  --ac-moss-300: #ccd3c2;
+  --ac-moss-400: #a9b39d;
+  --ac-moss-500: #7d8872;
+  --ac-moss-600: #5d6656;   /* muted text: 5.6:1 on canvas */
+  --ac-moss-700: #4a5443;
+  --ac-moss-800: #333c2e;
+  --ac-moss-900: #20251f;   /* ink */
+  --ac-moss-950: #161a15;
+
+  /* ---- Sage: the brand accent ---- */
+  --ac-sage-100: #edf2e3;
+  --ac-sage-200: #dce8cc;
+  --ac-sage-300: #c3d4ae;
+  --ac-sage-400: #a0b88a;
+  --ac-sage-500: #7f9a6a;
+  --ac-sage-600: #56703f;   /* accent text: 5.3:1 on white */
+  --ac-sage-700: #47603a;
+  --ac-sage-800: #33452a;
+
+  /* ---- Semantic ---- */
+  --ac-positive: #2f6d47;
+  --ac-positive-bg: #e6f0e4;
+  --ac-red-50: #fbf0ed;
+  --ac-red-200: #ebd3cd;
+  --ac-red-600: #a8443c;
+  --ac-red-700: #8c3a33;
+  --ac-amber-50: #f8f1e1;
+  --ac-amber-700: #7c5a1c;
+  --ac-gold-600: #8a6a3a;
+  --ac-info-50: #eaf0f2;
+  --ac-info-700: #355863;
+
+  /* ---- Semantic roles (use these in new code) ---- */
+  --ac-bg: var(--ac-moss-50);
+  --ac-bg-sunken: var(--ac-moss-100);
+  --ac-surface-1: var(--ac-white);
+  --ac-surface-2: var(--ac-moss-25);
+  --ac-surface-inverse: var(--ac-moss-900);
+  --ac-text: var(--ac-moss-900);
+  --ac-text-muted: var(--ac-moss-600);
+  --ac-text-subtle: var(--ac-moss-500);
+  --ac-text-inverse: var(--ac-white);
+  --ac-text-inverse-muted: #c3cfb7;
+  --ac-line: var(--ac-moss-200);
+  --ac-line-strong: var(--ac-moss-300);
+  --ac-focus: var(--ac-sage-600);
+
+  /* Legacy aliases kept for older selectors */
+  --ac-background: var(--ac-bg);
+  --ac-surface: var(--ac-surface-1);
+  --ac-ink: var(--ac-text);
+  --ac-muted: var(--ac-text-muted);
+  --ac-border: var(--ac-line);
+  --ac-accent: var(--ac-sage-200);
+
+  /* ---- Typography ---- */
+  --ac-font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ac-font-heading: "Manrope", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --ac-font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* Major-third scale anchored at 15px body */
+  --ac-text-xs: 12px;
+  --ac-text-sm: 13px;
+  --ac-text-base: 15px;
+  --ac-text-md: 17px;
+  --ac-text-lg: 20px;
+  --ac-text-xl: clamp(22px, 1.6vw + 14px, 26px);
+  --ac-text-2xl: clamp(26px, 2.2vw + 14px, 34px);
+  --ac-text-3xl: clamp(32px, 3vw + 16px, 48px);
+  --ac-text-display: clamp(42px, 5vw + 12px, 76px);
+
+  /* ---- Spacing: 4px base ---- */
+  --ac-space-1: 4px;
+  --ac-space-2: 8px;
+  --ac-space-3: 12px;
+  --ac-space-4: 16px;
+  --ac-space-5: 20px;
+  --ac-space-6: 24px;
+  --ac-space-8: 32px;
+  --ac-space-10: 40px;
+  --ac-space-12: 48px;
+  --ac-space-16: 64px;
+  --ac-space-20: 80px;
+
+  /* ---- Elevation: borders do most of the work; shadows are reserved for floating layers ---- */
+  --ac-shadow-sm: 0 1px 2px rgb(32 37 31 / 0.05);
+  --ac-shadow-md: 0 1px 2px rgb(32 37 31 / 0.04), 0 8px 24px -12px rgb(32 37 31 / 0.16);
+  --ac-shadow-lg: 0 2px 4px rgb(32 37 31 / 0.04), 0 24px 48px -20px rgb(32 37 31 / 0.28);
+
+  /* ---- Motion ---- */
+  --ac-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ac-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ac-dur-fast: 140ms;
+  --ac-dur-base: 220ms;
+  --ac-dur-slow: 420ms;
+
+  --ac-nav-height: 80px;
+  color-scheme: light;
+}
+
+/* ---------------------------------------------------------------------
+   Base refinements
+   --------------------------------------------------------------------- */
+html { text-rendering: optimizeLegibility; font-feature-settings: "cv11", "ss01"; }
+body { font-size: var(--ac-text-base); }
+.ac-app :where(p, li) { text-wrap: pretty; }
+.ac-app :where(h1, h2, h3) { text-wrap: balance; }
+.ac-app :where(table, .ac-metric, time) { font-variant-numeric: tabular-nums; }
+img { max-width: 100%; }
+
+/* Unified, visible focus ring for every interactive element */
+.ac-app :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--ac-focus);
+  outline-offset: 3px;
+}
+.ac-app :where(input, select, textarea):focus-visible { outline-offset: 0; }
+
+/* Interactive transitions shared by every control */
+.ac-app :where(a, button, input, select, textarea) {
+  transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+  transition-duration: var(--ac-dur-fast);
+  transition-timing-function: var(--ac-ease-out);
+}
+.ac-app :where(button, [role="button"], a[class*="button"], a[class*="btn"], a[class*="primary"], a[class*="secondary"]):not(:disabled):active {
+  transform: translateY(1px);
+}
+.ac-app :where(button, input, select, textarea):disabled { cursor: not-allowed; opacity: 0.55; }
+.ac-app :where(button[aria-busy="true"]) { cursor: progress; }
+
+/* Form fields everywhere: consistent hover and focus feedback */
+.ac-app :where(input:not([type="checkbox"], [type="radio"], [type="range"], [type="file"]), select, textarea):hover:not(:disabled, :focus) {
+  border-color: var(--ac-moss-400);
+}
+.ac-app :where(input:not([type="checkbox"], [type="radio"], [type="range"], [type="file"]), select, textarea):focus {
+  border-color: var(--ac-moss-900);
+  box-shadow: 0 0 0 3px rgb(127 154 106 / 0.22);
+  outline: none;
+}
+.ac-app :where(input, textarea)::placeholder { color: var(--ac-moss-500); opacity: 1; }
+.ac-app :where(input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"]) { border-color: var(--ac-red-600); }
+.ac-app :where(input[type="checkbox"], input[type="radio"]) { accent-color: var(--ac-moss-900); }
+
+/* Thin, quiet scrollbars for scroll containers (tables, drawers) */
+.ac-app :where(*) { scrollbar-width: thin; scrollbar-color: var(--ac-moss-300) transparent; }
+
+/* ---------------------------------------------------------------------
+   Shared primitives (opt-in classes)
+   --------------------------------------------------------------------- */
+.ac-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 44px; padding: 0 18px; border: 1px solid transparent;
+  font: 600 var(--ac-text-sm)/1 var(--ac-font-body); text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.ac-btn-primary { background: var(--ac-moss-900); color: var(--ac-white); }
+.ac-btn-primary:hover { background: var(--ac-moss-700); }
+.ac-btn-secondary { background: var(--ac-surface-1); color: var(--ac-text); border-color: var(--ac-line-strong); }
+.ac-btn-secondary:hover { background: var(--ac-moss-100); border-color: var(--ac-moss-400); }
+.ac-btn-ghost { background: transparent; color: var(--ac-text); }
+.ac-btn-ghost:hover { background: var(--ac-moss-150); }
+.ac-btn-danger { background: var(--ac-surface-1); color: var(--ac-red-700); border-color: var(--ac-red-200); }
+.ac-btn-danger:hover { background: var(--ac-red-50); border-color: var(--ac-red-600); }
+
+.ac-badge {
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px;
+  font: 600 var(--ac-text-xs)/1.2 var(--ac-font-body); letter-spacing: 0.01em; white-space: nowrap;
+  background: var(--ac-moss-150); color: var(--ac-moss-700);
+}
+.ac-badge-positive { background: var(--ac-positive-bg); color: var(--ac-positive); }
+.ac-badge-negative { background: var(--ac-red-50); color: var(--ac-red-700); }
+.ac-badge-warning { background: var(--ac-amber-50); color: var(--ac-amber-700); }
+
+/* Skeleton shimmer for loading states */
+.ac-skeleton {
+  display: block; min-height: 14px;
+  background: linear-gradient(90deg, var(--ac-moss-150) 0%, var(--ac-moss-100) 50%, var(--ac-moss-150) 100%);
+  background-size: 200% 100%;
+  animation: ac-shimmer 1.4s var(--ac-ease-in-out) infinite;
+}
+@keyframes ac-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+
+/* Spinner used by in-button loading states */
+.ac-spinner {
+  width: 16px; height: 16px; flex: none; border-radius: 50% !important;
+  border: 2px solid currentColor; border-right-color: transparent;
+  animation: ac-spin 0.7s linear infinite;
+}
+@keyframes ac-spin { to { transform: rotate(360deg); } }
+
+/* Full-area loader for route guards */
+.ac-route-loader { min-height: calc(100dvh - var(--ac-nav-height)); margin-top: var(--ac-nav-height); display: grid; place-items: center; color: var(--ac-moss-600); }
+.ac-route-loader-inner { display: grid; justify-items: center; gap: 14px; font-size: var(--ac-text-sm); }
+.ac-route-loader-bars { display: flex; align-items: flex-end; gap: 4px; height: 28px; }
+.ac-route-loader-bars span { width: 6px; background: var(--ac-moss-900); animation: ac-bars 0.9s var(--ac-ease-in-out) infinite alternate; }
+.ac-route-loader-bars span:nth-child(2) { animation-delay: 0.15s; background: var(--ac-sage-500); }
+.ac-route-loader-bars span:nth-child(3) { animation-delay: 0.3s; }
+.ac-route-loader-bars span:nth-child(4) { animation-delay: 0.45s; background: var(--ac-sage-500); }
+@keyframes ac-bars { from { height: 30%; } to { height: 100%; } }
+
+/* Route content entrance: one quiet fade when the page changes */
+.ac-route-enter { animation: ac-route-in var(--ac-dur-slow) var(--ac-ease-out) both; }
+@keyframes ac-route-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* Popovers, dialogs and drawers share one entrance */
+.ac-app dialog[open] { animation: ac-pop-in var(--ac-dur-base) var(--ac-ease-out); }
+.ac-app dialog::backdrop { background: rgb(22 26 21 / 0.48); backdrop-filter: blur(4px); animation: ac-fade-in var(--ac-dur-base) var(--ac-ease-out); }
+@keyframes ac-pop-in { from { opacity: 0; transform: translateY(8px) scale(0.985); } to { opacity: 1; transform: none; } }
+@keyframes ac-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* Tables: consistent density and scan lines everywhere */
+.ac-app :where(table) { border-collapse: collapse; }
+.ac-app :where(tbody tr) { transition: background-color var(--ac-dur-fast) var(--ac-ease-out); }
+.ac-app :where(tbody tr:hover) { background-color: var(--ac-moss-25); }
+
+/* Legacy Tailwind colour names now resolve to tokens */
+@layer theme {
+  :root {
+    --color-ember-orange: var(--ac-sage-600);
+    --color-vellum: var(--ac-white);
+    --color-obsidian: var(--ac-moss-900);
+    --color-onyx: var(--ac-moss-950);
+    --color-graphite: var(--ac-moss-900);
+    --color-pebble: var(--ac-moss-200);
+    --color-bone: var(--ac-moss-150);
+    --color-slate: var(--ac-moss-600);
+    --color-mist: var(--ac-text-inverse-muted);
+    --color-canvas: var(--ac-moss-50);
+    --color-ink: var(--ac-moss-900);
+    --color-muted: var(--ac-moss-600);
+    --color-line: var(--ac-moss-200);
+    --color-sage: var(--ac-sage-200);
+    --color-positive: var(--ac-positive);
+    --color-negative: var(--ac-red-600);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-route-enter, .ac-app dialog[open], .ac-app dialog::backdrop { animation: none; }
+  .ac-skeleton, .ac-spinner, .ac-route-loader-bars span { animation-duration: 2.4s; }
+  .ac-app :where(button, a):active { transform: none; }
+}
+
+/* Skip link for keyboard users */
+.ac-skip-link { position: fixed; left: 16px; top: 12px; z-index: 100; padding: 10px 14px; background: var(--ac-moss-900); color: var(--ac-white); font-size: var(--ac-text-sm); font-weight: 600; text-decoration: none; transform: translateY(-160%); transition: transform var(--ac-dur-base) var(--ac-ease-out); }
+.ac-skip-link:focus { transform: none; }
+
+/* Data tables become stacked cards on phones (labels come from useTableLabels) */
+@media (max-width: 720px) {
+  .ac-app table.ac-stackable { min-width: 0 !important; width: 100%; border: 0; }
+  .ac-app table.ac-stackable thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .ac-app table.ac-stackable, .ac-app table.ac-stackable tbody, .ac-app table.ac-stackable tr, .ac-app table.ac-stackable td { display: block; }
+  .ac-app table.ac-stackable tr { padding: 14px 16px; border: 1px solid var(--ac-line); background: var(--ac-surface-1); }
+  .ac-app table.ac-stackable tr + tr { margin-top: 10px; }
+  .ac-app table.ac-stackable tbody tr:hover { background: var(--ac-surface-1); }
+  .ac-app table.ac-stackable td { position: relative; padding: 7px 0 7px 112px !important; border: 0 !important; text-align: left !important; white-space: normal !important; min-width: 0; min-height: 34px; }
+  .ac-app table.ac-stackable td::before { content: attr(data-label); position: absolute; left: 0; top: 9px; width: 100px; color: var(--ac-moss-600); font-size: var(--ac-text-xs); font-weight: 500; line-height: 1.4; }
+  .ac-app table.ac-stackable td[data-label=""] { padding-left: 0 !important; }
+  .ac-app table.ac-stackable td[data-label=""]::before { display: none; }
+  .ac-app table.ac-stackable td { max-width: none !important; width: auto !important; }
+  .ac-app table.ac-stackable td :where(a, span, div, p) { max-width: 100%; }
+  .ac-app table.ac-stackable td :where(a[href^="tel:"]) { white-space: nowrap; min-height: 0; }
+  .ac-app :has(> table.ac-stackable) { overflow: visible !important; border: 0 !important; background: transparent !important; }
+}
+.ac-main-target:focus { outline: none; }

@@ -11,6 +11,8 @@ import LeadPopup from "./components/LeadPopup";
 
 import { checkAuth } from "./actions/userActions";
 import { ScrollTrigger } from "./lib/gsap";
+import { useTableLabels } from "./hooks/useTableLabels";
+import { usePageTitle } from "./hooks/usePageTitle";
 
 import Login from "./pages/Login";
 
@@ -67,10 +69,14 @@ import AdmissionManagementScreen from "./pages/admin/AdmissionManagementScreen";
 import AdmissionDetailsScreen from "./pages/admin/AdmissionDetailsScreen";
 import ChangePasswordScreen from "./pages/ChangePasswordScreen";
 import AdmissionSuccessScreen from "./pages/AdmissionSuccessScreen";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+
+  useTableLabels(location.pathname);
+  usePageTitle(location.pathname);
 
   // ================= CHECK AUTH ON APP LOAD =================
 
@@ -87,6 +93,7 @@ const App = () => {
 
   return (
     <div className="ac-app">
+      <a href="#main-content" className="ac-skip-link">Skip to content</a>
       {/* NAVBAR */}
 
       <Navbar />
@@ -97,6 +104,7 @@ const App = () => {
 
       {/* ROUTES */}
 
+      <div id="main-content" tabIndex={-1} className="ac-main-target">
       <Routes>
         {/* HOME */}
 
@@ -223,10 +231,14 @@ const App = () => {
         <Route path="/terms-conditions" element={<TermsConditions />} />
 
         <Route path="/support" element={<Support />} />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
+      </div>
     </div>
   );
 };
 
 export default App;
+
 

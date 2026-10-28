@@ -1,3 +1,4 @@
+import MarketCover from "../../components/MarketCover";
 import cryptoImage from "../../assets/images/crypto-cover-v3.png";
 import orderFlowImage from "../../assets/images/orderflow-cover-v2.png";
 import forexImage from "../../assets/images/forex-cover-v2.png";
@@ -69,7 +70,7 @@ const MyCourses = () => {
             >
               {/* THUMBNAIL */}
               <div className="alphira-my-course-image">
-                <img className="alphira-my-course-fallback" src="/alphira-ac-logo.svg" alt="" aria-hidden="true" />
+                <MarketCover seed={course._id} className="alphira-my-course-fallback" />
                 <img
                   src={/crypto/i.test(course.title || "") ? cryptoImage : /order[\s-]*flow/i.test(course.title || "") ? orderFlowImage : /indian|india/i.test(course.title || "") ? indianMarketImage : /forex/i.test(course.title || "") ? forexImage : course.thumbnail}
                   alt={`${course.title} program`} key={course.thumbnail}
@@ -109,3 +110,4 @@ const MyCourses = () => {
 };
 
 export default MyCourses;
+

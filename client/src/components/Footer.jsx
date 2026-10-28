@@ -56,7 +56,7 @@ export default function Footer() {
         </div>
 
         <div className="az-bottom">
-          <p>Ã‚Â© {new Date().getFullYear()} Alphira Capital. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Alphira Capital. All rights reserved.</p>
           <nav aria-label="Legal and account links" className="az-legal">
             <Link to="/privacy-policy">Privacy Policy</Link>
             {pathname === "/" && <button type="button" className="ac-cookie-link" onClick={openCookieSettings}>Cookie settings</button>}
@@ -69,3 +69,4 @@ export default function Footer() {
     </footer>
   );
 }
+

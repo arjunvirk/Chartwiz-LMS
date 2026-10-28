@@ -76,7 +76,7 @@ const AdmissionScreen = () => {
           <p className="alphira-admission-eyebrow">ALPHIRA CAPITAL / ADMISSIONS</p>
           <h1>Your next chapter.<br /><span>Starts with you.</span></h1>
           <p className="alphira-admission-description">Apply for the next Alphira Capital batch. Our admission counselor will contact you shortly.</p>
-          <div className="alphira-admission-guide"><p>WHAT HAPPENS NEXT</p><ol><li><span>01</span><div><strong>Tell us about yourself</strong><small>Share your details and learning interests.</small></div></li><li><span>02</span><div><strong>Connect with our team</strong><small>Discuss the program and batch options.</small></div></li><li><span>03</span><div><strong>Plan your learning journey</strong><small>Get guidance on the admission process.</small></div></li></ol><a href="tel:+919217222356">Have a question? +91 92172 22356 &nearr;</a></div>
+          <div className="alphira-admission-guide"><p>WHAT HAPPENS NEXT</p><ol><li><span>01</span><div><strong>Tell us about yourself</strong><small>Share your details and learning interests.</small></div></li><li><span>02</span><div><strong>Connect with our team</strong><small>Discuss the program and batch options.</small></div></li><li><span>03</span><div><strong>Plan your learning journey</strong><small>Get guidance on the admission process.</small></div></li></ol><a href="tel:+919217222356">Have a question? +91 92172 22356 ↗</a></div>
           <div className="alphira-admission-note"><span aria-hidden="true">↗</span><p>Already a student?<br /><Link to="/login">Login here</Link></p></div>
         </header>
         <form onSubmit={submitHandler} className="alphira-admission-form" aria-busy={!!loading}>
@@ -101,3 +101,4 @@ const AdmissionScreen = () => {
   );
 };
 export default AdmissionScreen;
+

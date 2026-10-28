@@ -10,8 +10,11 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-black border-t-transparent"></div>
+      <div className="ac-route-loader" role="status" aria-live="polite">
+        <div className="ac-route-loader-inner">
+          <div className="ac-route-loader-bars" aria-hidden="true"><span /><span /><span /><span /></div>
+          <span>Loading your workspace…</span>
+        </div>
       </div>
     );
   }
@@ -30,3 +33,4 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default ProtectedRoute;
+

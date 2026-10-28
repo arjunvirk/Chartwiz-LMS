@@ -254,7 +254,7 @@ const LeadManagementScreen = () => {
                       {lead.followUpDate ? (
                         <div className="flex items-center gap-2 text-sm text-graphite">
                           <CalendarDays size={14} className="text-slate" />
-                          {new Date(lead.followUpDate).toLocaleDateString()}
+                          {new Date(lead.followUpDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                         </div>
                       ) : (
                         <span className="text-sm text-mist">Not Set</span>
@@ -290,3 +290,4 @@ const LeadManagementScreen = () => {
 };
 
 export default LeadManagementScreen;
+

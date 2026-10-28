@@ -101,9 +101,9 @@ const Login = () => {
         <section className="alphira-signin-panel" aria-labelledby="alphira-signin-title">
           <header><p className="alphira-signin-eyebrow">Your account</p><h2 id="alphira-signin-title">Login</h2></header>
           <form onSubmit={submitHandler} autoComplete="off" className="alphira-signin-form" aria-busy={!!loading}>
-            <div><label htmlFor="alphira-signin-email">Email</label><input id="alphira-signin-email" name="email" type="email" placeholder="Enter email" value={email} autoComplete="email" onChange={(e) => setEmail(e.target.value)} className="alphira-signin-input" /></div>
-            <div><label htmlFor="alphira-signin-password">Password</label><div className="alphira-signin-password"><input id="alphira-signin-password" name="password" type={showPassword ? "text" : "password"} placeholder="Enter password" value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} className="alphira-signin-input" /><button type="button" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? "Hide password" : "Show password"} aria-pressed={showPassword}>{showPassword ? <FiEyeOff size={18} aria-hidden="true" /> : <FiEye size={18} aria-hidden="true" />}</button></div></div>
-            <button type="submit" className="alphira-signin-submit">{loading ? "Loading..." : "Login"}<span aria-hidden="true">↗</span></button>
+            <div><label htmlFor="alphira-signin-email">Email</label><input id="alphira-signin-email" name="email" type="email" placeholder="you@example.com" required value={email} autoComplete="email" onChange={(e) => setEmail(e.target.value)} className="alphira-signin-input" /></div>
+            <div><label htmlFor="alphira-signin-password">Password</label><div className="alphira-signin-password"><input id="alphira-signin-password" name="password" type={showPassword ? "text" : "password"} placeholder="Enter password" required value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} className="alphira-signin-input" /><button type="button" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? "Hide password" : "Show password"} aria-pressed={showPassword}>{showPassword ? <FiEyeOff size={18} aria-hidden="true" /> : <FiEye size={18} aria-hidden="true" />}</button></div></div>
+            <button type="submit" className="alphira-signin-submit" disabled={!!loading} aria-busy={!!loading}>{loading ? <>Signing you in…<span className="ac-spinner" aria-hidden="true" /></> : <>Login<span aria-hidden="true">↗</span></>}</button>
           </form>
           {/* Google sign-in remains disabled, matching the original page. */}
         </section>
@@ -112,3 +112,4 @@ const Login = () => {
   );
 };
 export default Login;
+

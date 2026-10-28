@@ -1,5 +1,4 @@
 import { useId, useState } from "react";
-import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { Plus, ArrowUpRight } from "lucide-react";
 import "./FAQ.css";
@@ -88,9 +87,9 @@ export default function FAQ() {
         <motion.div {...reveal()} className="aq-invitation">
           <div>
             <h2>Still have questions?</h2>
-            <p>Join Alphira Capital and start your journey towards professional trading with structured mentorship.</p>
+            <p>Talk to our admissions team about batches, timings or fees.</p>
           </div>
-          <Link to="/admission" className="aq-join">Join Alphira Today <ArrowUpRight size={18} aria-hidden="true" /></Link>
+          <a href="tel:+919217222356" className="aq-join">Call +91 92172 22356 <ArrowUpRight size={18} aria-hidden="true" /></a>
         </motion.div>
       </div>
     </section>

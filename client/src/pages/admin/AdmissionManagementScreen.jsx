@@ -186,7 +186,7 @@ const AdmissionManagementScreen = () => {
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-2 text-sm text-graphite">
                         <CalendarDays size={14} className="text-slate" />
-                        {new Date(admission.createdAt).toLocaleDateString()}
+                        {new Date(admission.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                       </div>
                     </td>
 
@@ -222,3 +222,4 @@ const AdmissionManagementScreen = () => {
 };
 
 export default AdmissionManagementScreen;
+

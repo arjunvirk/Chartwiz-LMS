@@ -1,3 +1,4 @@
+import MarketCover from "../../components/MarketCover";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,7 +43,7 @@ const StudentMarketAnalysisScreen = () => {
           {filteredAnalyses.map((analysis, index) => (
             <motion.article key={analysis._id} className="alphira-analysis-card" initial={reducedMotion ? false : { opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1 }} transition={{ duration: 0.45, delay: Math.min(index, 4) * 0.05 }}>
               <div className="alphira-analysis-image">
-                <div className="alphira-analysis-image-fallback" aria-hidden="true"><img src="/alphira-ac-logo.svg" alt="" /><span>ALPHIRA / MARKET NOTES</span></div>
+                <MarketCover seed={analysis._id} className="alphira-analysis-image-fallback" />
                 {analysis.image && <img className="alphira-analysis-cover" src={analysis.image} alt={analysis.title} loading="lazy" onError={(event) => { event.currentTarget.style.display = "none"; }} />}
                 {analysis.featured && <span className="alphira-analysis-featured">Featured insight</span>}
               </div>
@@ -61,3 +62,4 @@ const StudentMarketAnalysisScreen = () => {
 };
 
 export default StudentMarketAnalysisScreen;
+

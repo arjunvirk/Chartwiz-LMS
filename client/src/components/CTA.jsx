@@ -1,35 +1,17 @@
-import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import CountUpImport from "react-countup";
-import { Check, TrendingUp, ArrowUpRight, ArrowRight } from "lucide-react";
+import { Check, ArrowUpRight, ArrowRight, Phone } from "lucide-react";
 import "./CTA.css";
 
-const CountUp = CountUpImport.default ?? CountUpImport;
 const TRUST_ITEMS = ["Lifetime Access", "Premium Lessons", "Structured Mentorship"];
-const MINI_STATS = [
-  { value: 500, suffix: "+", label: "Active Students" },
-  { value: 120, suffix: "+", label: "Premium Lessons" },
+const STEPS = [
+  { title: "Apply online", detail: "Share your details and the program you’re interested in." },
+  { title: "Speak with our team", detail: "We call you to discuss batches, timings and fees." },
+  { title: "Start your batch", detail: "Join classroom sessions with your mentor in Delhi NCR." },
 ];
 
 export default function CTA() {
   const reducedMotion = useReducedMotion();
-  const progressRef = useRef(null);
-  const [progressVisible, setProgressVisible] = useState(false);
-
-  useEffect(() => {
-    const target = progressRef.current;
-    if (!target) return;
-    if (!("IntersectionObserver" in window)) {
-      setProgressVisible(true);
-      return;
-    }
-    const observer = new IntersectionObserver(([entry]) => {
-      setProgressVisible(entry.isIntersecting);
-    }, { threshold: 0 });
-    observer.observe(target);
-    return () => observer.disconnect();
-  }, []);
   const reveal = (delay = 0) => ({
     initial: reducedMotion ? false : { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
@@ -55,25 +37,19 @@ export default function CTA() {
           </motion.div>
 
           <motion.div {...reveal(0.15)} className="aj-card">
-            <div className="aj-card-heading">
-              <div><p>Student Growth</p><strong>+95%</strong></div>
-              <span className="aj-growth-icon" aria-hidden="true"><TrendingUp size={26} strokeWidth={1.5} /></span>
-            </div>
-            <div className="aj-progress-label"><span id="aj-progress-label">Learning Progress</span><span>85%</span></div>
-            <div ref={progressRef} className={`aj-progress${progressVisible ? " aj-progress-visible" : ""}`} role="progressbar" aria-labelledby="aj-progress-label" aria-valuemin={0} aria-valuemax={100} aria-valuenow={85}>
-              <div className="aj-progress-fill" />
-            </div>
-            <div className="aj-stats">
-              {/* {MINI_STATS.map((stat) => <div key={stat.label}>
-                <strong>{reducedMotion ? stat.value : <CountUp end={stat.value} duration={2} enableScrollSpy scrollSpyOnce />}{stat.suffix}</strong>
-                <span>{stat.label}</span>
-              </div>)} */}
-            </div>
+            <p className="aj-card-kicker">How admission works</p>
+            <ol className="aj-steps">
+              {STEPS.map(({ title, detail }, index) => (
+                <li key={title}><span className="aj-step-index" aria-hidden="true">{index + 1}</span><div><strong>{title}</strong><small>{detail}</small></div></li>
+              ))}
+            </ol>
+            <a className="aj-call" href="tel:+919217222356"><Phone size={17} aria-hidden="true" /><span><small>Prefer to talk first?</small>+91 92172 22356</span><ArrowUpRight size={16} aria-hidden="true" /></a>
           </motion.div>
         </div>
-        <motion.div {...reveal()} className="aj-footer"><span aria-hidden="true" /><p>Trusted by several students across <strong>DELHI NCR</strong></p><span aria-hidden="true" /></motion.div>
+        <motion.div {...reveal()} className="aj-footer"><span aria-hidden="true" /><p>Classroom batches across <strong>Delhi NCR</strong></p><span aria-hidden="true" /></motion.div>
       </div>
     </section>
   );
 }
+
 

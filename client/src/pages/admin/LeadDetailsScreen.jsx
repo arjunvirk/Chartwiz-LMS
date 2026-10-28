@@ -194,7 +194,7 @@ const LeadDetailsScreen = () => {
               <div>
                 <p className="text-xs text-slate">Created</p>
                 <p className="text-sm font-semibold text-graphite">
-                  {new Date(lead.createdAt).toLocaleDateString()}
+                  {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "—"}
                 </p>
               </div>
             </div>
@@ -203,7 +203,7 @@ const LeadDetailsScreen = () => {
               <div>
                 <p className="text-xs text-slate">Last Updated</p>
                 <p className="text-sm font-semibold text-graphite">
-                  {new Date(lead.updatedAt).toLocaleDateString()}
+                  {lead.updatedAt ? new Date(lead.updatedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "—"}
                 </p>
               </div>
             </div>
@@ -332,3 +332,4 @@ const LeadDetailsScreen = () => {
 };
 
 export default LeadDetailsScreen;
+

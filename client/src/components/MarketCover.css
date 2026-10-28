@@ -1,0 +1,6 @@
+.ac-market-cover { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: var(--ac-moss-900); color: var(--ac-sage-400); }
+.ac-market-cover svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ac-market-cover-grid { stroke: var(--ac-moss-800); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ac-market-cover-line { fill: none; stroke: var(--ac-sage-300); stroke-width: 2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.ac-market-cover-dot { fill: var(--ac-sage-200); }
+.ac-market-cover-label { position: absolute; left: 16px; bottom: 14px; color: var(--ac-white); font: 700 var(--ac-text-md)/1 var(--ac-font-heading); letter-spacing: -0.02em; }

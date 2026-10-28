@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
+import "./alphira-tokens.css";
 import "./alphira-theme.css";
 import "./alphira-boxy.css";
 import App from "./App.jsx";
@@ -21,21 +22,27 @@ createRoot(document.getElementById("root")).render(
           position="top-center"
           reverseOrder={false}
           toastOptions={{
+            duration: 4000,
+            className: "ac-toast",
             style: {
-              background: "#ffffff",
-              color: "#20251f",
-              border: "1px solid #e2e4dc",
-              borderRadius: "12px",
-              padding: "14px 18px",
+              background: "var(--ac-moss-900)",
+              color: "var(--ac-white)",
+              border: "1px solid var(--ac-moss-800)",
+              borderRadius: 0,
+              padding: "12px 16px",
               fontFamily: "var(--ac-font-body)",
               fontSize: "14px",
-              boxShadow: "0 8px 32px rgba(32,37,31,0.08)",
+              fontWeight: 500,
+              lineHeight: 1.45,
+              maxWidth: "min(420px, calc(100vw - 32px))",
+              boxShadow: "var(--ac-shadow-lg)",
             },
-            success: { iconTheme: { primary: "#35734d", secondary: "#ffffff" } },
-            error: { iconTheme: { primary: "#b64040", secondary: "#ffffff" } },
+            success: { iconTheme: { primary: "#a0b88a", secondary: "#20251f" } },
+            error: { iconTheme: { primary: "#e08a7f", secondary: "#20251f" } },
           }}
         />
       </GoogleOAuthProvider>
     </Provider>
   </BrowserRouter>,
 );
+

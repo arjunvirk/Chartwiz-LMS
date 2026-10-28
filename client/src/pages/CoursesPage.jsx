@@ -154,7 +154,7 @@ export default function CoursesPage() {
                   <p className="ac-programs-availability"><span />{meta.badge}</p>
                   <h3>{title}</h3><p className="ac-programs-description">{description}</p>
                   {meta.features.length > 0 && <ul>{meta.features.map(feature => <li key={feature}><Check size={14} aria-hidden="true" />{feature}</li>)}</ul>}
-                  <div className="ac-programs-card-end">{curriculum && <a className="ac-programs-curriculum" href={`/curricula/${curriculum.file}`} target="_blank" rel="noopener noreferrer" aria-label={`${curriculum.label} for ${title} (PDF, opens in a new tab)`}>{curriculum.label}<span>PDF &nearr;</span></a>}<div className="ac-programs-duration"><Clock size={15} aria-hidden="true" /><span>{meta.duration || "Ask us about the schedule"}</span></div><button type="button" onClick={() => navigate(`/admission?course=${encodeURIComponent(title)}`)}>Apply for admission <ArrowUpRight size={19} aria-hidden="true" /></button></div>
+                  <div className="ac-programs-card-end">{curriculum && <a className="ac-programs-curriculum" href={`/curricula/${curriculum.file}`} target="_blank" rel="noopener noreferrer" aria-label={`${curriculum.label} for ${title} (PDF, opens in a new tab)`}>{curriculum.label}<span>PDF ↗</span></a>}<div className="ac-programs-duration"><Clock size={15} aria-hidden="true" /><span>{meta.duration || "Ask us about the schedule"}</span></div><button type="button" onClick={() => navigate(`/admission?course=${encodeURIComponent(title)}`)}>Apply for admission <ArrowUpRight size={19} aria-hidden="true" /></button></div>
                 </div>
               </motion.article>;
             })}
@@ -167,3 +167,4 @@ export default function CoursesPage() {
     </main>
   );
 }
+

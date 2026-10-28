@@ -1,81 +1,150 @@
-.alphira-admin { color: #20251f; font-family: var(--ac-font-body,'Inter',sans-serif); min-width: 0; }
+.alphira-admin { color: var(--ac-text); font-family: var(--ac-font-body); min-width: 0; display: grid; gap: 20px; }
 .alphira-admin *, .alphira-admin *::before, .alphira-admin *::after { box-sizing: border-box; }
-.alphira-admin-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #dce1d4; }
-.alphira-admin-title { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: 27px; font-weight: 750; letter-spacing: -.045em; line-height: 1.2; }
-.alphira-admin-status { flex-shrink: 0; border-left: 2px solid #66745b; padding: 4px 0 4px 16px; }
-.alphira-admin-status p { font: inherit; font-size: 9px; letter-spacing: .1em; color: #707968; }
-.alphira-admin-status h2 { font-size: 13px; color: #536c43; }
-.alphira-admin-metrics { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); border-top: 1px solid #dce1d4; border-left: 1px solid #dce1d4; }
-.alphira-admin-metric { padding: 24px; background: #fff; border-right: 1px solid #dce1d4; border-bottom: 1px solid #dce1d4; }
-.alphira-admin-metric:first-child { background: #e8eddf; }
-.alphira-admin-metric p { font-size: 11px; color: #697260; }
-.alphira-admin-metric h2 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: 38px; font-weight: 650; letter-spacing: -.055em; line-height: 1.1; }
-.alphira-admin-overview { display: grid; grid-template-columns: minmax(0,1.65fr) minmax(0,1fr); gap: 18px; margin-top: 24px; }
-.alphira-admin-panel { min-width: 0; padding: 28px; background: white; border: 1px solid #dce1d4; }
-.alphira-admin-panel > h2 { font-size: 18px; font-weight: 650; letter-spacing: -.03em; }
-.alphira-admin-panel p { line-height: 1.7; }
-.alphira-admin-chart { height: 300px; margin-top: 26px; width: 100%; min-width: 0; }
-.alphira-admin-summary { background: #171b16; border: 1px solid #171b16; padding: 28px; color: #ffffff; }
-.alphira-admin-summary h2 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: 25px; font-weight: 700; letter-spacing: -.04em; }
-.alphira-admin-summary p { color: #c5cfbb; font-size: 12px; line-height: 1.8; }
-.alphira-admin-summary-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px 14px; margin-top: 32px; }
-.alphira-admin-summary-item { padding-top: 16px; border-top: 1px solid #46503e; }
-.alphira-admin-summary-item h3 { font-family: inherit; font-size: 25px; }
-.alphira-admin-summary-item p { font-size: 10px; }
-.alphira-admin-users { margin-top: 24px; }
-.alphira-admin-user-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 0; border-top: 1px solid #e1e5da; }
-.alphira-admin-user-info { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.alphira-admin :where(h1, h2, h3, p, ul) { margin: 0; }
+.alphira-admin ul { list-style: none; padding: 0; }
+
+/* Header */
+.alphira-admin-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding-bottom: 4px; }
+.alphira-admin-date { color: var(--ac-moss-600); font-size: var(--ac-text-sm); margin-bottom: 6px !important; }
+.alphira-admin-title { font-family: var(--ac-font-heading); font-size: var(--ac-text-2xl); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; }
+.alphira-admin-lede { margin-top: 8px !important; color: var(--ac-moss-600); font-size: var(--ac-text-base); }
+.alphira-admin-status { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; padding: 8px 12px; background: var(--ac-positive-bg); color: var(--ac-positive); font-size: var(--ac-text-sm); font-weight: 600; }
+.alphira-admin-status i { width: 7px; height: 7px; border-radius: 50% !important; background: currentColor; box-shadow: 0 0 0 0 currentColor; animation: alphira-admin-pulse 2.4s var(--ac-ease-out) infinite; }
+@keyframes alphira-admin-pulse { 0% { box-shadow: 0 0 0 0 rgb(47 109 71 / .45); } 70%, 100% { box-shadow: 0 0 0 7px rgb(47 109 71 / 0); } }
+
+/* KPI row */
+.alphira-admin-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--ac-surface-1); border: 1px solid var(--ac-line); }
+.alphira-admin-kpi { display: flex; flex-direction: column; min-width: 0; padding: 20px 22px; color: inherit; text-decoration: none; }
+.alphira-admin-kpi + .alphira-admin-kpi { border-left: 1px solid var(--ac-line); }
+.alphira-admin-kpi-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: var(--ac-moss-600); font-size: var(--ac-text-sm); font-weight: 500; }
+.alphira-admin-kpi-top svg { color: var(--ac-moss-500); }
+.alphira-admin-kpi strong { margin-top: 14px; font-family: var(--ac-font-heading); font-size: clamp(28px, 2.4vw, 36px); font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+.alphira-admin-kpi small { display: inline-flex; align-items: center; gap: 4px; margin-top: 10px; color: var(--ac-moss-600); font-size: var(--ac-text-xs); }
+.alphira-admin-kpi.is-link:hover { background: var(--ac-moss-25); }
+.alphira-admin-kpi.is-link:hover small { color: var(--ac-text); }
+
+/* Panels */
+.alphira-admin-overview { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; }
+.alphira-admin-panel { min-width: 0; padding: 24px; background: var(--ac-surface-1); border: 1px solid var(--ac-line); }
+.alphira-admin-panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px 24px; flex-wrap: wrap; margin-bottom: 20px; }
+.alphira-admin-panel-head h2 { font-family: var(--ac-font-heading); font-size: var(--ac-text-lg); font-weight: 700; letter-spacing: -0.025em; }
+.alphira-admin-panel-head p { margin-top: 4px !important; color: var(--ac-moss-600); font-size: var(--ac-text-sm); }
+.alphira-admin-head-icon { color: var(--ac-moss-500); }
+.alphira-admin-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: var(--ac-text-xs); color: var(--ac-moss-700); }
+.alphira-admin-legend li { display: inline-flex; align-items: center; gap: 6px; }
+.alphira-admin-legend i { width: 16px; border-top: 2px solid; }
+.alphira-admin-chart { height: 300px; width: 100%; min-width: 0; }
+.alphira-admin-tooltip { display: grid; gap: 6px; min-width: 150px; padding: 12px 14px; background: var(--ac-moss-900); color: var(--ac-white); font-size: var(--ac-text-xs); box-shadow: var(--ac-shadow-lg); }
+.alphira-admin-tooltip strong { font-size: var(--ac-text-sm); margin-bottom: 2px; }
+.alphira-admin-tooltip span { display: flex; align-items: center; gap: 8px; color: var(--ac-moss-300); }
+.alphira-admin-tooltip i { width: 8px; height: 8px; border: 1px solid var(--ac-moss-700); }
+.alphira-admin-tooltip b { margin-left: auto; color: var(--ac-white); font-variant-numeric: tabular-nums; }
+
+/* Quick actions */
+.alphira-admin-quick { display: flex; flex-direction: column; background: var(--ac-moss-900); color: var(--ac-white); padding: 20px 8px 8px; }
+.alphira-admin-quick h2 { padding: 0 12px 12px; font-family: var(--ac-font-heading); font-size: var(--ac-text-md); font-weight: 700; letter-spacing: -0.02em; color: var(--ac-white); }
+.alphira-admin-quick-link { display: flex; align-items: center; gap: 14px; padding: 14px 12px; color: var(--ac-white); text-decoration: none; border-top: 1px solid var(--ac-moss-800); }
+.alphira-admin-quick-link > svg:first-child { color: var(--ac-sage-300); flex-shrink: 0; }
+.alphira-admin-quick-link > svg:last-child { margin-left: auto; color: var(--ac-moss-500); flex-shrink: 0; transition: transform var(--ac-dur-fast) var(--ac-ease-out), color var(--ac-dur-fast); }
+.alphira-admin-quick-link span { display: grid; gap: 2px; min-width: 0; }
+.alphira-admin-quick-link strong { font-size: var(--ac-text-sm); font-weight: 600; }
+.alphira-admin-quick-link small { color: var(--ac-moss-400); font-size: var(--ac-text-xs); }
+.alphira-admin-quick-link:hover { background: var(--ac-moss-800); }
+.alphira-admin-quick-link:hover > svg:last-child { color: var(--ac-white); transform: translate(2px, -2px); }
+
+/* People */
+.alphira-admin-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.alphira-admin-search { position: relative; display: flex; align-items: center; }
+.alphira-admin-search svg { position: absolute; left: 12px; color: var(--ac-moss-500); pointer-events: none; }
+.alphira-admin-search input { width: 240px; max-width: 100%; min-height: 40px; padding: 8px 12px 8px 36px; border: 1px solid var(--ac-line-strong); background: var(--ac-surface-1); color: var(--ac-text); font: inherit; font-size: var(--ac-text-sm); }
+.alphira-admin-segments { display: inline-flex; border: 1px solid var(--ac-line-strong); background: var(--ac-moss-100); padding: 2px; }
+.alphira-admin-segments button { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 12px; border: 0; background: transparent; color: var(--ac-moss-700); font: inherit; font-size: var(--ac-text-sm); font-weight: 500; cursor: pointer; }
+.alphira-admin-segments button span { color: var(--ac-moss-500); font-size: var(--ac-text-xs); font-variant-numeric: tabular-nums; }
+.alphira-admin-segments button:hover { color: var(--ac-text); }
+.alphira-admin-segments button[aria-pressed="true"] { background: var(--ac-surface-1); color: var(--ac-text); box-shadow: var(--ac-shadow-sm); }
+.alphira-admin-user-list { border-top: 1px solid var(--ac-line); }
+.alphira-admin-user-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 340px; align-items: center; gap: 16px; padding: 14px 4px; border-bottom: 1px solid var(--ac-line); }
+.alphira-admin-user-row:hover { background: var(--ac-moss-25); }
+.alphira-admin-user-info { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .alphira-admin-user-info > div { min-width: 0; }
-.alphira-admin-user-info p { overflow-wrap: anywhere; font-size: 12px; }
-.alphira-admin-user-info h3 { font-size: 13px; }
-.alphira-admin-user-info img { width: 40px; height: 40px; flex-shrink: 0; background: #edf1e5; }
-.alphira-admin-user-info span { font-family: inherit; font-size: 9px; letter-spacing: .04em; padding: 4px 7px; }
-.alphira-admin-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.alphira-admin-actions button, .alphira-admin-actions a { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 10px 12px; font-family: inherit; font-size: 11px; }
+.alphira-admin-user-info h3 { font-size: var(--ac-text-sm); font-weight: 600; font-family: var(--ac-font-body); letter-spacing: 0; }
+.alphira-admin-user-info p { margin-top: 2px !important; color: var(--ac-moss-600); font-size: var(--ac-text-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.alphira-admin-avatar { position: relative; display: grid; place-items: center; flex-shrink: 0; width: 36px; height: 36px; border-radius: 50% !important; overflow: hidden; background: var(--ac-sage-100); color: var(--ac-sage-700); font-size: 13px; font-weight: 700; }
+.alphira-admin-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50% !important; }
+.alphira-admin-user-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.alphira-admin-user-tags .ac-badge { text-transform: capitalize; }
+.alphira-role-admin { background: var(--ac-moss-900); color: var(--ac-white); }
+.alphira-role-teacher { background: var(--ac-amber-50); color: var(--ac-amber-700); }
+.alphira-admin-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.alphira-admin-actions .ac-btn { min-height: 36px; padding: 0 12px; font-size: var(--ac-text-xs); gap: 6px; }
+
+/* Webinars */
+.alphira-admin-webinars { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 20px; align-items: start; }
+.alphira-admin-form { display: grid; gap: 8px; }
+.alphira-admin-form > label { font-size: var(--ac-text-sm); font-weight: 500; color: var(--ac-moss-700); margin-top: 8px; }
+.alphira-admin-optional { margin-left: 6px; color: var(--ac-moss-500); font-weight: 400; font-size: var(--ac-text-xs); }
+.alphira-admin-input { width: 100%; min-width: 0; min-height: 44px; background: var(--ac-surface-1); color: var(--ac-text); border: 1px solid var(--ac-line-strong); padding: 10px 12px; font: inherit; font-size: var(--ac-text-base); }
+.alphira-admin textarea { min-height: 96px; resize: vertical; }
 .alphira-admin button { cursor: pointer; }
-.alphira-admin-actions button:not([class*="red"]):hover { background: #e8eddf; color: #20251f; }
-.alphira-admin [class*="text-ember-orange"] { color: #536c43; }
-.alphira-admin [class*="bg-ember-orange"] { background-color: #e7edde; }
-.alphira-admin-webinars { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.4fr); gap: 18px; margin-top: 24px; }
-.alphira-admin-form { margin-top: 26px; display: grid; gap: 10px; }
-.alphira-admin-form label { font-size: 11px; color: #5c6753; margin-top: 6px; }
-.alphira-admin-input { width: 100%; min-width: 0; background: #fafbf7; color: #20251f; border: 1px solid #dce1d4; padding: 12px; font: inherit; font-size: 16px; }
-.alphira-admin-input::placeholder { font-size: 12px; color: #7a826f; }
-.alphira-admin-input:focus { outline: 2px solid #bdcdae; outline-offset: 1px; }
-.alphira-admin textarea { min-height: 90px; resize: vertical; }
-.alphira-admin-form button { margin-top: 12px; background: #20251f; color: white; font: inherit; font-size: 12px; min-height: 46px; }
-.alphira-admin-form button:hover { background: #48583b; color: white; }
-.alphira-admin-webinar-row { padding: 20px 0; border-top: 1px solid #e1e5da; }
-.alphira-admin-webinar-row h3 { font-size: 14px; }
-.alphira-admin-webinar-row p { font-size: 12px; overflow-wrap: anywhere; }
-.alphira-admin-empty { padding: 18px; background: #f5f7ef; color: #68725c; font-size: 12px; }
-.alphira-admin-loading { min-height: 220px; display: grid; place-content: center; gap: 18px; color: #66745b; font-size: 13px; }
-.alphira-admin :is(a,button):focus-visible { outline: 2px solid #66745b; outline-offset: 3px; }
-@media(max-width:1200px) { .alphira-admin-overview { grid-template-columns: minmax(0,1fr); } .alphira-admin-summary-grid { grid-template-columns: repeat(4,minmax(0,1fr)); } .alphira-admin-user-row { align-items: flex-start; flex-direction: column; } }
-@media(max-width:760px) { .alphira-admin-webinars { grid-template-columns: minmax(0,1fr); } .alphira-admin-panel, .alphira-admin-summary { padding: 20px; } .alphira-admin-metric { padding: 18px; } .alphira-admin-metric h2 { font-size: 30px; } .alphira-admin-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); } .alphira-admin-heading { align-items: flex-start; flex-direction: column; gap: 18px; } .alphira-admin-chart { height: 260px; } .alphira-admin-summary-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+.alphira-admin-webinar-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 16px; align-items: start; padding: 16px 0; border-top: 1px solid var(--ac-line); }
+.alphira-admin-webinar-row.is-past { opacity: .62; }
+.alphira-admin-webinar-date { display: grid; justify-items: center; padding: 8px 0; border: 1px solid var(--ac-line); color: var(--ac-moss-600); font-size: var(--ac-text-xs); text-transform: uppercase; letter-spacing: .04em; }
+.alphira-admin-webinar-date b { font-family: var(--ac-font-heading); font-size: 20px; color: var(--ac-text); letter-spacing: -0.02em; line-height: 1.1; }
+.alphira-admin-webinar-body { min-width: 0; }
+.alphira-admin-webinar-body h3 { font-size: var(--ac-text-base); font-weight: 600; font-family: var(--ac-font-body); letter-spacing: -0.01em; }
+.alphira-admin-webinar-body p { margin-top: 4px !important; color: var(--ac-moss-600); font-size: var(--ac-text-sm); overflow-wrap: anywhere; }
+.alphira-admin-webinar-body small { display: block; margin-top: 8px; color: var(--ac-moss-600); font-size: var(--ac-text-xs); }
+.alphira-admin-empty { padding: 20px; background: var(--ac-moss-50); border: 1px dashed var(--ac-line-strong); color: var(--ac-moss-600); font-size: var(--ac-text-sm); }
+.alphira-admin-error { padding: 12px 14px; background: var(--ac-red-50); color: var(--ac-red-700); font-size: var(--ac-text-sm); }
+.alphira-admin .alphira-admin-create-webinar { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 48px; margin-top: 12px; padding: 0 18px; background: var(--ac-moss-900); color: var(--ac-white); border: 0; font: inherit; font-size: var(--ac-text-sm); font-weight: 600; }
+.alphira-admin .alphira-admin-create-webinar:hover:not(:disabled) { background: var(--ac-moss-700); }
 
-.alphira-admin .alphira-admin-create-webinar { width: 100%; padding: 14px 18px; background: #20251f; color: #fff; border: 0; font-weight: 600; }
-.alphira-admin .alphira-admin-create-webinar:hover { background: #48583b; color: #fff; }
-.alphira-admin-summary h2, .alphira-admin-summary h3 { color: #fff; }
+@media (max-width: 1200px) {
+  .alphira-admin-overview { grid-template-columns: minmax(0, 1fr); }
+  .alphira-admin-quick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 8px; }
+  .alphira-admin-quick h2 { grid-column: 1 / -1; padding: 12px 12px 8px; }
+  .alphira-admin-user-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .alphira-admin-user-tags { grid-column: 1; grid-row: 2; padding-left: 48px; }
+  .alphira-admin-actions { grid-row: 1 / span 2; grid-column: 2; }
+}
+@media (max-width: 900px) { .alphira-admin-webinars { grid-template-columns: minmax(0, 1fr); } .alphira-admin-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .alphira-admin-kpi:nth-child(3) { border-left: 0; } .alphira-admin-kpi:nth-child(n+3) { border-top: 1px solid var(--ac-line); } }
+@media (max-width: 640px) {
+  .alphira-admin-heading { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .alphira-admin-panel { padding: 18px; }
+  .alphira-admin-kpi { padding: 16px; }
+  .alphira-admin-quick { grid-template-columns: minmax(0, 1fr); }
+  .alphira-admin-chart { height: 240px; }
+  .alphira-admin-filters, .alphira-admin-search, .alphira-admin-search input { width: 100%; }
+  .alphira-admin-segments { width: 100%; overflow-x: auto; }
+  .alphira-admin-segments button { flex: 1 0 auto; justify-content: center; }
+  .alphira-admin-user-row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .alphira-admin-user-tags { grid-column: 1; grid-row: auto; padding-left: 48px; }
+  .alphira-admin-actions { grid-column: 1; grid-row: auto; justify-content: flex-start; padding-left: 48px; }
+  .alphira-admin-webinar-row { grid-template-columns: 48px minmax(0, 1fr); }
+  .alphira-admin-webinar-row .alphira-admin-actions { grid-column: 2; padding-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .alphira-admin-status i { animation: none; } }
 
-.alphira-admin .alphira-webinar-schedule { min-width: 0; margin: 12px 0 4px; padding: 20px; border: 1px solid #dce3d3; background: #f7f9f2; }
-.alphira-webinar-schedule legend { padding: 0 8px; font-size: 12px; font-weight: 600; color: #293722; }
-.alphira-webinar-zone { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-bottom: 22px; font-size: 8px; letter-spacing: .08em; color: #788b67; }
-.alphira-webinar-zone span:last-child { color: #526c42; letter-spacing: 0; }
+.alphira-admin .alphira-webinar-schedule { min-width: 0; margin: 12px 0 4px; padding: 20px; border: 1px solid var(--ac-moss-200); background: var(--ac-moss-50); }
+.alphira-webinar-schedule legend { padding: 0 8px; font-size: 13px; font-weight: 600; color: var(--ac-moss-800); }
+.alphira-webinar-zone { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-bottom: 22px; font-size: 11px; letter-spacing: .08em; color: var(--ac-moss-600); }
+.alphira-webinar-zone span:last-child { color: var(--ac-positive); letter-spacing: 0; }
 .alphira-webinar-date-time { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap: 14px; }
 .alphira-webinar-date-time > div { min-width: 0; }
-.alphira-admin .alphira-webinar-schedule label { display: block; color: #425438; margin-bottom: 9px; font-size: 11px; }
-.alphira-admin .alphira-webinar-schedule input { display: block; width: 100%; min-width: 0; max-width: 100%; min-height: 48px; padding: 12px; border: 1px solid #d6dfcc; background: white; color: #20251f; font-family: inherit; font-size: 13px; border-radius: 0; outline: none; color-scheme: light; }
-.alphira-admin .alphira-webinar-schedule input:focus { border-color: #7c9767; box-shadow: 0 0 0 3px #71846018; }
-.alphira-webinar-date-time small { display: block; margin-top: 7px; color: #829475; font-size: 9px; }
+.alphira-admin .alphira-webinar-schedule label { display: block; color: var(--ac-moss-700); margin-bottom: 9px; font-size: 12px; }
+.alphira-admin .alphira-webinar-schedule input { display: block; width: 100%; min-width: 0; max-width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--ac-moss-200); background: white; color: var(--ac-moss-900); font-family: inherit; font-size: 14px; border-radius: 0; outline: none; color-scheme: light; }
+.alphira-admin .alphira-webinar-schedule input:focus { border-color: var(--ac-sage-500); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac-moss-500) 9%, transparent); }
+.alphira-webinar-date-time small { display: block; margin-top: 7px; color: var(--ac-sage-600); font-size: 11px; }
 .alphira-webinar-duration-heading { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
-.alphira-webinar-duration-heading > span { font-size: 9px; color: #829475; }
+.alphira-webinar-duration-heading > span { font-size: 11px; color: var(--ac-sage-600); }
 .alphira-webinar-duration-presets { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 7px; margin: 4px 0 12px; }
-.alphira-admin .alphira-webinar-duration-presets button { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px; min-height: 44px; padding: 10px 5px; border: 1px solid #d5dfca; background: #fff; color: #536d42; font-size: 13px; cursor: pointer; transition: background .15s,color .15s; }
-.alphira-webinar-duration-presets button span { font-size: 9px; }
-.alphira-admin .alphira-webinar-duration-presets button[aria-pressed="true"] { background: #20251f; border-color: #20251f; color: #fff; }
+.alphira-admin .alphira-webinar-duration-presets button { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px; min-height: 44px; padding: 10px 5px; border: 1px solid var(--ac-sage-200); background: var(--ac-white); color: var(--ac-positive); font-size: 14px; cursor: pointer; transition: background .15s,color .15s; }
+.alphira-webinar-duration-presets button span { font-size: 11px; }
+.alphira-admin .alphira-webinar-duration-presets button[aria-pressed="true"] { background: var(--ac-moss-900); border-color: var(--ac-moss-900); color: var(--ac-white); }
 .alphira-webinar-duration-input { position: relative; }
 .alphira-admin .alphira-webinar-duration-input input { padding-right: 78px; }
-.alphira-webinar-duration-input > span { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 10px; color: #819371; }
+.alphira-webinar-duration-input > span { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 12px; color: var(--ac-sage-600); }
 @media(max-width:500px) { .alphira-webinar-date-time { grid-template-columns: minmax(0,1fr); } .alphira-admin .alphira-webinar-schedule { padding: 16px; } }
 @media(prefers-reduced-motion:reduce) { .alphira-admin .alphira-webinar-duration-presets button { transition: none; } }
+@media (max-width: 640px) { .alphira-admin-action-label { display: none; } }
+
