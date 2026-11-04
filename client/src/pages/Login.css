@@ -1,41 +1,103 @@
-/* Place beside Login.jsx. */
-.alphira-signin-page { min-height: 100vh; display: grid; align-items: center; background: var(--ac-moss-50); color: var(--ac-moss-900); padding: 128px 36px 64px; font-family: var(--ac-font-body,'Inter',sans-serif); }
-.alphira-signin-page *, .alphira-signin-page *::before, .alphira-signin-page *::after { box-sizing: border-box; }
-.alphira-signin-layout { width: 100%; max-width: 1040px; margin-inline: auto; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 80px; align-items: center; }
-.alphira-signin-eyebrow { font-size: 12px; font-weight: 500; letter-spacing: .14em; line-height: 1.6; text-transform: uppercase; color: var(--ac-moss-600); margin: 0 0 20px; }
-.alphira-signin-page h1 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: clamp(56px,7vw,88px); line-height: 1.02; font-weight: 800; letter-spacing: -.065em; margin: 0; }
-.alphira-signin-page h1 span { color: var(--ac-moss-600); }
-.alphira-signin-portal { color: var(--ac-moss-600); font-size: 14px; margin: 22px 0 0; line-height: 1.8; }
-.alphira-signin-art { display: flex; align-items: flex-end; gap: 10px; height: 100px; padding-top: 20px; margin: 22px 0 28px; max-width: 260px; border-bottom: 1px solid var(--ac-moss-200); }
-.alphira-signin-art span { flex: 1; height: 32%; background: var(--ac-moss-200); border-radius: 3px 3px 0 0; }
-.alphira-signin-art span:nth-child(2) { height: 60%; background: var(--ac-moss-300); }
-.alphira-signin-art span:nth-child(3) { height: 46%; }
-.alphira-signin-art span:nth-child(4) { height: 78%; background: var(--ac-sage-400); }
-.alphira-signin-art span:nth-child(5) { height: 100%; background: var(--ac-sage-500); }
-.alphira-signin-admission { border-top: 1px solid var(--ac-moss-200); padding-top: 24px; max-width: 370px; }
-.alphira-signin-admission p { font-size: 14px; color: var(--ac-moss-600); line-height: 1.85; margin: 0 0 12px; }
-.alphira-signin-admission a { display: inline-flex; align-items: center; gap: 20px; min-height: 44px; font-size: 13px; font-weight: 600; color: var(--ac-moss-900); text-decoration: none; }
-.alphira-signin-admission a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.alphira-signin-admission a span { font-size: 20px; }
-.alphira-signin-panel { padding: 40px; background: var(--ac-white); border: 1px solid var(--ac-moss-200); border-radius: 14px; min-width: 0; }
-.alphira-signin-panel header { margin-bottom: 30px; padding-bottom: 26px; border-bottom: 1px solid var(--ac-moss-150); }
-.alphira-signin-panel .alphira-signin-eyebrow { margin-bottom: 12px; }
-.alphira-signin-page h2 { font-family: var(--ac-font-heading,'Manrope',sans-serif); font-size: 36px; line-height: 1.15; font-weight: 700; letter-spacing: -.045em; margin: 0; }
-.alphira-signin-form { display: grid; gap: 24px; }
-.alphira-signin-form label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 10px; }
-.alphira-signin-input { display: block; width: 100%; min-height: 50px; padding: 13px 14px; color: var(--ac-moss-900); background: var(--ac-moss-25); border: 1px solid var(--ac-moss-200); border-radius: 6px; font-family: inherit; font-size: 16px; line-height: 1.5; transition: border-color .2s, box-shadow .2s; }
-.alphira-signin-input::placeholder { color: var(--ac-moss-600); font-size: 14px; }
-.alphira-signin-input:focus { outline: none; border-color: var(--ac-sage-500); box-shadow: 0 0 0 3px var(--ac-sage-100); background: var(--ac-white); }
-.alphira-signin-password { position: relative; }
-.alphira-signin-password input { padding-right: 52px; }
-.alphira-signin-password button { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; display: grid; place-items: center; background: transparent; border: 0; color: var(--ac-moss-600); cursor: pointer; border-radius: 5px; }
-.alphira-signin-password button:hover { color: var(--ac-moss-900); background: var(--ac-sage-100); }
-.alphira-signin-submit { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 52px; padding: 13px 18px; margin-top: 8px; border: 1px solid var(--ac-moss-900); border-radius: 7px; background: var(--ac-moss-900); color: var(--ac-white); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .2s; }
-.alphira-signin-submit:hover { background: var(--ac-sage-800); }
-.alphira-signin-submit > span { font-size: 20px; }
-.alphira-signin-page:where(a,button):focus-visible { outline: 2px solid var(--ac-sage-600); outline-offset: 3px; }
-@media(max-width:900px) { .alphira-signin-layout { gap: 36px; } .alphira-signin-panel { padding: 30px; } }
-@media(max-width:700px) { .alphira-signin-page { padding: 112px 24px 48px; } .alphira-signin-layout { grid-template-columns: 1fr; max-width: 480px; gap: 32px; } .alphira-signin-page h1 { font-size: 54px; } .alphira-signin-art { display: none; } .alphira-signin-admission { margin-top: 22px; max-width: none; } }
-@media(max-width:420px) { .alphira-signin-page { padding-inline: 20px; } .alphira-signin-panel { padding: 28px 24px; } }
-@media(prefers-reduced-motion:reduce) { .alphira-signin-input, .alphira-signin-submit { transition: none; } }
+/* =====================================================================
+   Login — split screen: dark brand panel with an animated rising-market
+   chart, and a focused sign-in card. Fits one screen on desktop and
+   large/ultrawide displays (heights divided by --ac-zoom).
+   ===================================================================== */
+.als { --als-ink: var(--ac-moss-950); --als-light: #eef0e8; --als-muted-d: rgb(238 240 232 / .62); --als-faint-d: rgb(238 240 232 / .36); --als-line-d: rgb(238 240 232 / .1); --als-accent: var(--ac-sage-300);
+  padding-top: var(--ac-nav-height, 80px); background: var(--ac-moss-50); color: var(--ac-moss-900); font-family: var(--ac-font-body); }
+.als *, .als *::before, .als *::after { box-sizing: border-box; }
+.als :where(h1, h2, p) { margin: 0; }
+.als :where(a) { color: inherit; text-decoration: none; }
+.als-frame { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); min-height: calc(100svh / var(--ac-zoom, 1) - var(--ac-nav-height, 80px)); }
 
+.als-kicker { display: flex; align-items: center; gap: 10px; color: var(--als-accent); font-size: var(--ac-text-xs); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+.als-kicker > span { width: 20px; height: 1px; background: currentColor; }
+.als-kicker-dark { color: var(--ac-moss-600); }
+
+/* ---------------- Brand panel ---------------- */
+.als-brand { position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: clamp(28px, 3.6vw, 52px) clamp(28px, 5vw, 80px); background: var(--als-ink); color: var(--als-light); }
+.als-brand::before { content: ""; position: absolute; inset: 0; z-index: -1; background-image: linear-gradient(var(--als-line-d) 1px, transparent 1px), linear-gradient(90deg, var(--als-line-d) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse 80% 70% at 30% 30%, #000 10%, transparent 75%); }
+.als-brand::after { content: ""; position: absolute; z-index: -1; right: -20%; bottom: -30%; width: 760px; height: 760px; border-radius: 50%; background: radial-gradient(circle, rgb(160 184 138 / .2), transparent 62%); animation: als-drift 12s ease-in-out infinite alternate; }
+@keyframes als-drift { to { transform: translate(-60px, -40px) scale(1.08); } }
+.als-brand-copy > * { animation: als-rise .9s var(--ac-ease-out) both; }
+.als-brand-copy > :nth-child(2) { animation-delay: .1s; }
+.als-brand-copy > :nth-child(3) { animation-delay: .2s; }
+@keyframes als-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.als-brand h1 { display: grid; margin-top: 18px; font-family: var(--ac-font-heading); font-size: clamp(48px, 6.2vw, 92px); font-weight: 800; line-height: .96; letter-spacing: -.065em; }
+.als-accent { color: var(--als-accent); }
+.als-portal { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px !important; padding: 8px 12px; border: 1px solid rgb(238 240 232 / .2); color: var(--als-muted-d); font-size: var(--ac-text-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+
+/* Chart */
+.als-chart { width: 100%; max-height: calc(26svh / var(--ac-zoom, 1)); overflow: visible; }
+.als-grid { stroke: var(--als-line-d); stroke-dasharray: 3 6; }
+.als-candle line { stroke-width: 2; }
+.als-candle.up line, .als-candle.up rect { stroke: #9fd4a8; fill: rgb(159 212 168 / .75); }
+.als-candle.dn line, .als-candle.dn rect { stroke: #d68c82; fill: rgb(214 140 130 / .55); }
+.als-candle { opacity: 0; transform: translateY(14px); animation: als-candle .55s var(--ac-ease-out) forwards; animation-delay: calc(.35s + var(--i) * 60ms); }
+@keyframes als-candle { to { opacity: 1; transform: none; } }
+.als-line { fill: none; stroke: var(--als-accent); stroke-width: 2.5; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 6px rgb(195 212 174 / .5)); animation: als-draw 2s .6s cubic-bezier(.6, 0, .2, 1) forwards; }
+@keyframes als-draw { to { stroke-dashoffset: 0; } }
+.als-area { opacity: 0; animation: als-fade 1s 1.8s ease forwards; }
+@keyframes als-fade { to { opacity: 1; } }
+.als-tag circle { fill: var(--als-accent); opacity: 0; animation: als-fade .4s 2.5s forwards; }
+.als-tag .als-ping { fill: none; stroke: var(--als-accent); transform-box: fill-box; transform-origin: center; animation: als-fade .4s 2.5s forwards, als-ping 1.8s 2.6s ease-out infinite; }
+@keyframes als-ping { from { transform: scale(1); opacity: .9; } to { transform: scale(4); opacity: 0; } }
+
+.als-admission { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 6px 14px; max-width: 520px; padding: 18px 20px; border: 1px solid var(--als-line-d); background: rgb(255 255 255 / .04); animation: als-rise .9s .3s var(--ac-ease-out) both; }
+.als-admission > svg { grid-row: 1 / span 2; color: var(--als-accent); margin-top: 2px; }
+.als-admission p { color: var(--als-muted-d); font-size: var(--ac-text-sm); line-height: 1.6; }
+.als-admission a { display: inline-flex; align-items: center; gap: 6px; justify-self: start; color: var(--als-accent); font-size: var(--ac-text-sm); font-weight: 700; }
+.als-admission a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------------- Form panel ---------------- */
+.als-panel { display: grid; place-items: center; padding: clamp(32px, 5vw, 72px) clamp(20px, 4vw, 64px); }
+.als-card { width: min(100%, 440px); animation: als-rise .9s .15s var(--ac-ease-out) both; }
+.als-card h2 { margin-top: 14px; font-family: var(--ac-font-heading); font-size: clamp(36px, 3.6vw, 48px); font-weight: 800; line-height: 1; letter-spacing: -.055em; }
+.als-sub { margin-top: 10px !important; color: var(--ac-moss-600); font-size: var(--ac-text-base); }
+.als-form { display: grid; gap: 18px; margin-top: 32px; }
+.als-field label { display: block; margin-bottom: 8px; color: var(--ac-moss-800); font-size: var(--ac-text-sm); font-weight: 600; }
+.als-input-wrap { position: relative; display: flex; align-items: center; }
+.als-input-wrap > svg { position: absolute; left: 15px; color: var(--ac-moss-500); pointer-events: none; transition: color var(--ac-dur-base); }
+.als-input { width: 100%; min-height: 54px; padding: 0 48px 0 46px; border: 1px solid var(--ac-moss-300); background: var(--ac-white); color: var(--ac-moss-900); font: inherit; font-size: var(--ac-text-base); transition: border-color var(--ac-dur-base), box-shadow var(--ac-dur-base); }
+.als-input::placeholder { color: var(--ac-moss-400); }
+.als-input:hover { border-color: var(--ac-moss-500); }
+.als-input:focus { outline: none; border-color: var(--ac-moss-900); box-shadow: 0 0 0 4px rgb(127 154 106 / .18); }
+.als-input-wrap:focus-within > svg { color: var(--ac-moss-900); }
+.als-eye { position: absolute; right: 6px; display: grid; place-items: center; width: 42px; height: 42px; border: 0; background: transparent; color: var(--ac-moss-600); cursor: pointer; }
+.als-eye:hover { color: var(--ac-moss-900); background: var(--ac-moss-50); }
+.als-submit { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; margin-top: 6px; padding: 0 22px; border: 0; background: var(--ac-moss-900); color: var(--ac-white); font: inherit; font-size: var(--ac-text-base); font-weight: 700; cursor: pointer; transition: background-color var(--ac-dur-base); }
+.als-submit:hover { background: var(--ac-sage-700); }
+.als-submit svg { transition: transform var(--ac-dur-base) var(--ac-ease-out); }
+.als-submit:hover svg { transform: translate(3px, -3px); }
+.als-submit:disabled { cursor: progress; opacity: .8; }
+.als-help { display: grid; gap: 8px; margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--ac-moss-200); color: var(--ac-moss-600); font-size: var(--ac-text-sm); }
+.als-help a { color: var(--ac-moss-900); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+.als :where(a, button):focus-visible { outline: 2px solid var(--ac-focus) !important; outline-offset: 3px; }
+.als-brand :where(a, button):focus-visible { outline-color: var(--als-accent) !important; }
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 960px) {
+  .als-frame { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .als-brand { gap: 24px; padding: 36px 24px 28px; }
+  .als-brand h1 { font-size: clamp(44px, 11vw, 72px); }
+  .als-chart { max-height: 180px; }
+  .als-admission { display: none; }
+  .als-panel { padding: 36px 24px 56px; }
+}
+@media (max-width: 480px) {
+  .als-brand { padding: 28px 20px 20px; }
+  .als-chart { max-height: 130px; }
+  .als-panel { padding: 28px 20px 48px; }
+  .als-card { width: 100%; }
+}
+/* Large / ultrawide screens: keep the split full-bleed, but align both sides to the
+   centred content column instead of the far screen edges. */
+html.ac-uw .als-brand { padding-left: max(clamp(28px, 5vw, 80px), calc((100vw / var(--ac-zoom, 1) - var(--ac-shell, 1248px)) / 2)); }
+html.ac-uw .als-panel { justify-items: start; padding-left: clamp(48px, 5vw, 96px); padding-right: max(clamp(20px, 4vw, 64px), calc((100vw / var(--ac-zoom, 1) - var(--ac-shell, 1248px)) / 2)); }
+html.ac-uw .als-frame { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+@media (prefers-reduced-motion: reduce) {
+  .als *, .als *::before, .als *::after { animation: none !important; transition: none !important; }
+  .als-candle, .als-area, .als-tag circle { opacity: 1; transform: none; }
+  .als-line { stroke-dashoffset: 0; }
+}
