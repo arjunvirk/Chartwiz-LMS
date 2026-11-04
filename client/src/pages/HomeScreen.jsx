@@ -11,10 +11,12 @@ import FAQ from "../components/FAQ";
 import CTA from "../components/CTA";
 import Footer from "../components/Footer";
 import HomeOffer from "../components/HomeOffer";
+import useUltrawideCanvas from "../hooks/useUltrawideCanvas";
 
 const HomeScreen = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
   const role = userInfo?.user?.role;
+  useUltrawideCanvas();
 
   if (role === "admin") return <Navigate to="/admin/dashboard" replace />;
   if (role === "teacher") return <Navigate to="/teacher/dashboard" replace />;

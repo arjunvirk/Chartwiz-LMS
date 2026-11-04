@@ -22,7 +22,7 @@ body { margin: 0; background: var(--ac-background); color: var(--ac-ink); font-f
 .ac-header { position: fixed; inset: 0 0 auto; z-index: 50; background: rgba(248,247,243,.97); border-bottom: 1px solid var(--ac-border); backdrop-filter: blur(18px); color: var(--ac-ink); font-family: var(--ac-font-body); }
 .ac-header *, .ac-header *::before, .ac-header *::after { box-sizing: border-box; }
 .ac-header a { text-decoration: none; }
-.ac-navbar { max-width: 1320px; height: var(--ac-nav-height); margin: 0 auto; padding: 0 36px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+.ac-navbar { max-width: calc(var(--ac-shell, 1248px) + 72px); height: var(--ac-nav-height); margin: 0 auto; padding: 0 36px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
 .ac-brand { display: inline-flex; align-items: center; gap: 11px; flex-shrink: 0; color: var(--ac-ink); }
 .ac-brand-mark { width: 40px; height: 44px; background: var(--ac-ink); color: var(--ac-moss-50); display: grid; place-items: center; border-radius: 10px 10px 3px 10px; }
 .ac-brand-mark svg { width: 30px; height: 30px; }
@@ -104,3 +104,6 @@ body { margin: 0; background: var(--ac-background); color: var(--ac-ink); font-f
 .ac-header.is-over-hero .ac-live-dot { background: var(--ac-sage-300); }
 .ac-header.is-over-hero .ac-live-dot::after { border-color: var(--ac-sage-300); }
 
+/* Large / ultrawide screens (see hooks/useUltrawideCanvas.js): the homepage scales
+   with the screen height. Only active while html has .ac-uw. */
+html.ac-uw .ac-app { zoom: var(--ac-zoom, 1); }

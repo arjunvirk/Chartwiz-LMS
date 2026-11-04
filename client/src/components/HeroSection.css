@@ -5,7 +5,7 @@
    ===================================================================== */
 .ah-stage {
   position: relative; isolation: isolate; overflow: hidden;
-  min-height: min(980px, 100svh);
+  min-height: min(980px, calc(100svh / var(--ac-zoom, 1)));
   padding-top: var(--ac-nav-height);
   display: grid; grid-template-rows: 1fr auto; grid-template-columns: minmax(0, 1fr);
   background: var(--ac-moss-950); color: var(--ac-white);
@@ -39,7 +39,7 @@
 
 /* ---- Content ---- */
 .ah-stage-inner {
-  width: min(100% - 72px, 1248px); margin-inline: auto;
+  width: min(100% - 72px, var(--ac-shell, 1248px)); margin-inline: auto;
   display: grid; grid-template-columns: minmax(0, 1fr); align-items: end;
   padding: clamp(56px, 9vh, 112px) 0 40px;
 }
@@ -62,7 +62,7 @@
 .ah-actions a:focus-visible, .ah-switch:focus-visible, .ah-switcher-pause:focus-visible { outline: 2px solid var(--ac-sage-200) !important; outline-offset: 3px; }
 
 /* ---- Program switcher ---- */
-.ah-switcher { width: min(100% - 72px, 1248px); margin: 0 auto; padding: 0 0 28px; }
+.ah-switcher { width: min(100% - 72px, var(--ac-shell, 1248px)); margin: 0 auto; padding: 0 0 28px; }
 .ah-switcher-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgb(255 255 255 / .14); }
 .ah-switcher-head p { margin: 0; color: rgb(255 255 255 / .6); font-size: var(--ac-text-xs); font-weight: 600; letter-spacing: .02em; }
 .ah-switcher-pause { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid rgb(255 255 255 / .2); background: transparent; color: var(--ac-white); cursor: pointer; }
@@ -98,9 +98,9 @@
 /* ---- Responsive ---- */
 @media (max-width: 900px) {
   .ah-stage { min-height: 0; }
-  .ah-stage-inner { grid-template-columns: minmax(0, 1fr); width: min(100% - 48px, 1248px); padding-top: 64px; gap: 32px; }
+  .ah-stage-inner { grid-template-columns: minmax(0, 1fr); width: min(100% - 48px, var(--ac-shell, 1248px)); padding-top: 64px; gap: 32px; }
   .ah-scrim { background: linear-gradient(180deg, rgb(22 26 21 / .72) 0%, rgb(22 26 21 / .82) 45%, rgb(22 26 21 / .96) 100%); }
-  .ah-switcher { width: min(100% - 48px, 1248px); }
+  .ah-switcher { width: min(100% - 48px, var(--ac-shell, 1248px)); }
   .ah-switcher-list { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: -24px; padding-inline: 24px; scroll-padding-inline: 24px; }
   .ah-switcher-list::-webkit-scrollbar { display: none; }
   .ah-switch { flex: 0 0 auto; min-width: 150px; scroll-snap-align: start; }
@@ -121,4 +121,3 @@
   .ah-media-img { transition: opacity .3s linear; transform: none !important; }
 }
 .is-static .ah-media, .is-static .ah-media-img.is-active, .is-static .ah-media-img.is-leaving { animation: none; }
-
