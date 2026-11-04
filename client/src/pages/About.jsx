@@ -1,56 +1,179 @@
-import { motion, useReducedMotion } from "framer-motion";
-import CountUpImport from "react-countup";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowUpRight, BookOpen, Users, LineChart, Infinity as InfinityIcon, Quote } from "lucide-react";
 import founderImg from "../assets/founder.jpeg";
+import useUltrawideCanvas from "../hooks/useUltrawideCanvas";
 import "./About.css";
-const CountUp = CountUpImport.default ?? CountUpImport;
-const FEATURES = [
-  { n: "01", title: "Structured Learning", desc: "Step-by-step lessons designed for every level of trader." },
-  { n: "02", title: "Expert Mentorship", desc: "Learn directly from experienced market professionals." },
-  { n: "03", title: "Practical Strategies", desc: "Real-world trading concepts you can apply immediately." },
-  { n: "04", title: "Lifetime Growth", desc: "Continuous learning and improvement through market cycles." },
+
+const PRINCIPLES = [
+  { n: "01", icon: BookOpen, title: "Structured Learning", desc: "Step-by-step lessons designed for every level of trader." },
+  { n: "02", icon: Users, title: "Expert Mentorship", desc: "Learn directly from experienced market professionals." },
+  { n: "03", icon: LineChart, title: "Practical Strategies", desc: "Real-world trading concepts you can apply immediately." },
+  { n: "04", icon: InfinityIcon, title: "Lifetime Growth", desc: "Continuous learning and improvement through market cycles." },
 ];
-const STATS = [
-  { value: 500, suffix: "+", label: "Students" },
-  { value: 120, suffix: "+", label: "Premium Lessons" },
-  { value: 15, suffix: "+", label: "Strategies" },
-  { value: 24, suffix: "/7", label: "Access" },
+const NUMBERS = [
+  { value: 500, suffix: "+", label: "Students guided" },
+  { value: 5, suffix: "+", label: "Years of market experience" },
+  { value: 4, suffix: "", label: "Classroom programs" },
 ];
+const TOPICS = ["Price action", "Market structure", "Risk management", "Trading psychology", "Options", "Order flow", "Swing trading", "Scalping", "Discipline"];
+
+/* Sets .is-in once an element reaches the screen (never tied to scroll position). */
+function useInView(threshold = 0.2) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !("IntersectionObserver" in window)) { setInView(true); return undefined; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setInView(true); io.disconnect(); } }, { threshold });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [threshold]);
+  return [ref, inView];
+}
+
+function Reveal({ as: Tag = "div", className = "", children, ...rest }) {
+  const [ref, inView] = useInView(0.15);
+  return <Tag ref={ref} className={`aab-reveal${inView ? " is-in" : ""}${className ? ` ${className}` : ""}`} {...rest}>{children}</Tag>;
+}
+
+/* Counts from 0 to `end` once started. */
+function Counter({ end, start }) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!start) return undefined;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) { setValue(end); return undefined; }
+    let frame; const t0 = performance.now(); const dur = 1600;
+    const tick = (t) => { const p = Math.min(1, (t - t0) / dur); setValue(Math.round(end * (1 - (1 - p) ** 3))); if (p < 1) frame = requestAnimationFrame(tick); };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [end, start]);
+  return <>{value}</>;
+}
+
 export default function About() {
-  const reduced = useReducedMotion();
-  const reveal = (delay = 0) => ({ initial: reduced ? false : { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.1 }, transition: { duration: reduced ? 0 : 0.7, delay: reduced ? 0 : delay } });
-  const count = (value) => reduced ? value : <CountUp end={value} duration={2} enableScrollSpy scrollSpyOnce />;
-  return <main className="alphira-story">
-    <div className="alphira-story-container">
-      <motion.header {...reveal()} className="alphira-story-hero">
-        <p className="alphira-story-label">About Alphira Capital <span>EDUCATION / DISCIPLINE / GROWTH</span></p>
-        <h1>Empowering traders<br />with <span>professional<br />education.</span></h1>
-        <div className="alphira-story-intro">
-          <span className="alphira-story-symbol" aria-hidden="true">↗</span>
-          <p>Alphira Capital is a modern trading education platform designed to help beginners and experienced traders build confidence, develop profitable trading habits, and understand the financial markets through structured mentorship and practical learning.</p>
+  useUltrawideCanvas();
+  const [numbersRef, numbersIn] = useInView(0.4);
+  const [founderRef, founderIn] = useInView(0.25);
+  const [pathRef, pathIn] = useInView(0.3);
+
+  return (
+    <main className="aab">
+      {/* ---------- Hero ---------- */}
+      <header className="aab-hero">
+        <div className="aab-hero-glow" aria-hidden="true" />
+        <div className="aab-shell aab-hero-inner">
+          <p className="aab-kicker"><span aria-hidden="true" />About Alphira Capital</p>
+          <h1 className="aab-title">
+            <span className="aab-line"><span>Empowering traders</span></span>
+            <span className="aab-line"><span>with <em>professional</em></span></span>
+            <span className="aab-line"><span><em>education.</em></span></span>
+          </h1>
+          <div className="aab-hero-foot">
+            <p className="aab-lede">Alphira Capital is a modern trading education platform designed to help beginners and experienced traders build confidence, develop profitable trading habits, and understand the financial markets through structured mentorship and practical learning.</p>
+            <ul className="aab-tags" aria-label="What we stand for">
+              <li>Education</li><li>Discipline</li><li>Growth</li>
+            </ul>
+          </div>
         </div>
-      </motion.header>
-      <section className="alphira-story-founder" aria-labelledby="founder-heading">
-        <motion.figure {...reveal()} className="alphira-story-portrait">
-          <img src={founderImg} alt="Rohit Kumar, founder and mentor at Alphira Capital" />
-          <figcaption><span>ROHIT KUMAR</span><span>Founder &amp; Mentor</span></figcaption>
-        </motion.figure>
-        <motion.div {...reveal(0.12)} className="alphira-story-founder-copy">
-          <p className="alphira-story-eyebrow">01 / The person behind Alphira</p>
-          <h2 id="founder-heading">Meet your<br /><span>trading mentor.</span></h2>
-          <p className="alphira-story-name">Rohit Kumar</p>
-          <p>With years of market experience and a passion for teaching, our mission is to help traders understand the market with confidence, discipline, and proper risk management.</p>
-          <p>At Alphira Capital, we focus on practical learning, real-world trading concepts, and developing a professional trader mindset rather than chasing shortcuts.</p>
-          <div className="alphira-story-founder-stats"><div><strong>{count(500)}+</strong><span>Students Guided</span></div><div><strong>{count(5)}+</strong><span>Years Experience</span></div></div>
-        </motion.div>
+        <div className="aab-marquee" aria-hidden="true">
+          <div className="aab-marquee-track">
+            {[0, 1].map((k) => (
+              <div key={k} className="aab-marquee-set">
+                {TOPICS.map((t) => <span key={t}>{t}<i /></span>)}
+              </div>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* ---------- Numbers ---------- */}
+      <section ref={numbersRef} className={`aab-numbers${numbersIn ? " is-in" : ""}`} aria-label="Alphira Capital in numbers">
+        <div className="aab-shell aab-numbers-grid">
+          {NUMBERS.map((n, i) => (
+            <div key={n.label} className="aab-number" style={{ "--i": i }}>
+              <strong><Counter end={n.value} start={numbersIn} />{n.suffix}</strong>
+              <span>{n.label}</span>
+            </div>
+          ))}
+          <div className="aab-number aab-number-place" style={{ "--i": 3 }}>
+            <strong>Delhi NCR</strong>
+            <span>In-person classroom batches</span>
+          </div>
+        </div>
       </section>
-      <section className="alphira-story-beliefs" aria-label="Mission and vision">
-        <motion.article {...reveal()}><p className="alphira-story-eyebrow">01 — Mission</p><h2>Our Mission</h2><p>Our mission is to simplify trading education and provide high-quality mentorship that helps students avoid common mistakes, manage risk effectively, and build a sustainable approach to trading.</p></motion.article>
-        <motion.article {...reveal(0.1)}><p className="alphira-story-eyebrow">02 — Vision</p><h2>Our Vision</h2><p>We envision a community of disciplined traders who understand market psychology, risk management, and strategy execution rather than relying on speculation or shortcuts.</p></motion.article>
+
+      {/* ---------- Founder ---------- */}
+      <section ref={founderRef} className={`aab-section aab-founder${founderIn ? " is-in" : ""}`} aria-labelledby="founder-heading">
+        <div className="aab-shell aab-founder-grid">
+          <figure className="aab-portrait">
+            <div className="aab-portrait-frame">
+              <img src={founderImg} alt="Rohit Kumar, founder and mentor at Alphira Capital" width="1590" height="989" />
+            </div>
+            <figcaption>
+              <span className="aab-portrait-name">Rohit Kumar</span>
+              <span className="aab-portrait-role">Founder &amp; Mentor</span>
+            </figcaption>
+          </figure>
+          <div className="aab-founder-copy">
+            <p className="aab-kicker aab-kicker-dark"><span aria-hidden="true" />The person behind Alphira</p>
+            <h2 id="founder-heading">Meet your<br /><span>trading mentor.</span></h2>
+            <p>With years of market experience and a passion for teaching, our mission is to help traders understand the market with confidence, discipline, and proper risk management.</p>
+            <blockquote className="aab-quote">
+              <Quote size={22} aria-hidden="true" />
+              <p>We focus on practical learning, real-world trading concepts, and developing a professional trader mindset rather than chasing shortcuts.</p>
+            </blockquote>
+            <div className="aab-founder-stats">
+              <div><strong><Counter end={500} start={founderIn} />+</strong><span>Students guided</span></div>
+              <div><strong><Counter end={5} start={founderIn} />+</strong><span>Years experience</span></div>
+            </div>
+          </div>
+        </div>
       </section>
-      <section className="alphira-story-method" aria-labelledby="method-heading">
-        <motion.div {...reveal()}><p className="alphira-story-eyebrow">02 / Our approach</p><h2 id="method-heading">Why choose<br /><span>Alphira Capital?</span></h2></motion.div>
-        <div className="alphira-story-principles">{FEATURES.map((feature, i) => <motion.article {...reveal(i * .05)} key={feature.n}><span>{feature.n}</span><div><h3>{feature.title}</h3><p>{feature.desc}</p></div></motion.article>)}</div>
+
+      {/* ---------- Mission & vision ---------- */}
+      <section className="aab-section aab-beliefs" aria-label="Mission and vision">
+        <div className="aab-shell aab-beliefs-grid">
+          <Reveal as="article" className="aab-belief aab-belief-dark">
+            <span className="aab-belief-n" aria-hidden="true">01</span>
+            <p className="aab-kicker"><span aria-hidden="true" />Mission</p>
+            <h2>Our Mission</h2>
+            <p>Our mission is to simplify trading education and provide high-quality mentorship that helps students avoid common mistakes, manage risk effectively, and build a sustainable approach to trading.</p>
+          </Reveal>
+          <Reveal as="article" className="aab-belief">
+            <span className="aab-belief-n" aria-hidden="true">02</span>
+            <p className="aab-kicker aab-kicker-dark"><span aria-hidden="true" />Vision</p>
+            <h2>Our Vision</h2>
+            <p>We envision a community of disciplined traders who understand market psychology, risk management, and strategy execution rather than relying on speculation or shortcuts.</p>
+          </Reveal>
+        </div>
       </section>
-    </div>
-  </main>;
+
+      {/* ---------- Why Alphira ---------- */}
+      <section ref={pathRef} className={`aab-section aab-path${pathIn ? " is-in" : ""}`} aria-labelledby="method-heading">
+        <div className="aab-shell">
+          <div className="aab-head">
+            <div>
+              <p className="aab-kicker aab-kicker-dark"><span aria-hidden="true" />Our approach</p>
+              <h2 id="method-heading">Why choose<br /><span>Alphira Capital?</span></h2>
+            </div>
+            <Link to="/courses" className="aab-link">Explore the programs <ArrowUpRight size={17} aria-hidden="true" /></Link>
+          </div>
+          <div className="aab-steps-wrap">
+          <span className="aab-steps-line" aria-hidden="true"><i /></span>
+          <ol className="aab-steps">
+            {PRINCIPLES.map(({ n, icon: Icon, title, desc }, i) => (
+              <li key={n} className="aab-step" style={{ "--i": i }}>
+                <span className="aab-step-dot" aria-hidden="true"><Icon size={20} strokeWidth={1.8} /></span>
+                <span className="aab-step-n">{n}</span>
+                <h3>{title}</h3>
+                <p>{desc}</p>
+              </li>
+            ))}
+          </ol>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }

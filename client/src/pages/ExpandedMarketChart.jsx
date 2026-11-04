@@ -28,7 +28,7 @@ export default function ExpandedMarketChart({ chart, onClose }) {
       <motion.div className="alphira-chart-expanded" initial={{ opacity: 0, scale: reduced ? 1 : .93, y: reduced ? 0 : 30 }} animate={closing ? { opacity: 0, scale: reduced ? 1 : .96, y: reduced ? 0 : 16 } : { opacity: 1, scale: 1, y: 0 }} transition={reduced ? { duration: 0 } : closing ? { duration: .2, ease: 'easeIn' } : { type: 'spring', stiffness: 260, damping: 28 }} onAnimationComplete={() => { if (closing) onClose(); else setReady(true); }}>
         <header className="alphira-chart-expanded-header"><div><span className="alphira-markets-tag">{chart.tag}</span><h2 id="alphira-expanded-title">{chart.title}</h2><span className="alphira-chart-expanded-label">Expanded chart</span></div><button ref={closeRef} type="button" onClick={() => setClosing(true)} aria-label="Close expanded chart"><X size={21} /><span>Close</span></button></header>
         <div className="alphira-chart-expanded-body">
-          {ready ? <AdvancedRealTimeChart theme="light" backgroundColor="#f8f7f3" toolbar_bg="#f8f7f3" symbol={chart.symbol} autosize /> : <p className="alphira-chart-preparing" role="status">Opening chart…</p>}
+          {ready ? <AdvancedRealTimeChart theme="dark" backgroundColor="#161a15" toolbar_bg="#161a15" symbol={chart.symbol} autosize /> : <p className="alphira-chart-preparing" role="status">Opening chart…</p>}
         </div>
       </motion.div>
     </dialog>, document.body,
