@@ -4,6 +4,8 @@ import { Star, ArrowLeft, ArrowRight } from "lucide-react";
 import anandMalhotra from "../assets/anand_malhotra.jpeg";
 import varunMalhotra from "../assets/varun_malhotra.jpeg";
 import lalitKumar from "../assets/lalit_kumar.jpeg";
+import ronakDabas from "../assets/ronak_dabas.jpeg";
+import prathamDabas from "../assets/pratham_dabas.jpeg";
 import "./Testimonials.css";
 
 const CYCLE_MS = 8000;
@@ -12,6 +14,8 @@ const TESTIMONIALS = [
   { id: "anand", name: "Anand Malhotra", role: "Options trader", image: anandMalhotra, focus: "45% 28%", highlight: "Far more disciplined", review: "Alphira completely changed the way I understand the market. The structured mentorship and psychology lessons helped me become far more disciplined in trading." },
   { id: "varun", name: "Varun Malhotra", role: "Swing trader", image: varunMalhotra, focus: "50% 30%", highlight: "Practical and beginner friendly", review: "The price action course is extremely practical and beginner friendly. I finally understand market structure and risk management properly." },
   { id: "lalit", name: "Lalit Kumar", role: "Swing trader", image: lalitKumar, focus: "64% 30%", highlight: "Learn from scratch", review: "Alphira Capital is one of the best institutes for anyone looking to learn stock market trading and investing from scratch." },
+  { id: "ronak", name: "Ronak Dabas", role: "Classroom student", image: ronakDabas, focus: "50% 28%", highlight: "Price action made simple", review: "I joined with zero idea about charts. The classroom sessions made price action simple, and I now plan every trade with a clear stop-loss." },
+  { id: "pratham", name: "Pratham Dabas", role: "Classroom student", image: prathamDabas, focus: "38% 26%", highlight: "Discipline over shortcuts", review: "What I liked most is the focus on discipline. The mentors don’t sell shortcuts; they teach you to manage risk and stay consistent." },
 ];
 
 const Stars = () => (
