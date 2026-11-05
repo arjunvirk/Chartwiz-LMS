@@ -1,24 +1,96 @@
-.alphira-enquiry-dialog { margin: auto; padding: 0; width: min(460px,calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px); overflow-y: auto; border: 1px solid var(--ac-moss-200); border-radius: 0; background: var(--ac-moss-50); color: var(--ac-moss-900); font-family: var(--ac-font-body,'Inter',sans-serif); }
-.alphira-enquiry-dialog::backdrop { background: color-mix(in srgb, var(--ac-moss-900) 60%, transparent); backdrop-filter: blur(4px); }
-.alphira-enquiry-dialog[open] { animation: alphira-enquiry-enter .25s ease-out; }
-.alphira-enquiry-panel { position: relative; padding: 30px; }
-.alphira-enquiry-panel *, .alphira-enquiry-panel *::before, .alphira-enquiry-panel *::after { box-sizing: border-box; border-radius: 0; }
-.alphira-enquiry-close { position: absolute; right: 10px; top: 10px; display: grid; place-items: center; width: 44px; height: 44px; border: 0; color: var(--ac-sage-600); background: transparent; cursor: pointer; }
-.alphira-enquiry-close:hover { background: var(--ac-moss-150); }
-.alphira-enquiry-logo { width: 42px; height: 38px; object-fit: contain; margin-bottom: 18px; }
-.alphira-enquiry-eyebrow { color: var(--ac-moss-600); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 12px; }
-.alphira-enquiry-heading h2 { font-family: var(--ac-font-heading,'Manrope',sans-serif); margin: 0; font-size: 29px; font-weight: 800; line-height: 1.15; letter-spacing: -.045em; }
-.alphira-enquiry-heading h2 span { color: var(--ac-moss-600); }
-.alphira-enquiry-heading > p:last-child { margin: 14px 0 22px; font-size: 13px; line-height: 1.8; color: var(--ac-moss-600); }
-.alphira-enquiry-form { display: grid; gap: 14px; }
-.alphira-enquiry-form label { display: block; font-size: 12px; color: var(--ac-moss-600); margin-bottom: 7px; }
-.alphira-enquiry-form input, .alphira-enquiry-form select { width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid var(--ac-moss-200); background: white; color: var(--ac-moss-900); font: inherit; font-size: 16px; }
-.alphira-enquiry-form input::placeholder { color: var(--ac-moss-600); font-size: 13px; }
-.alphira-enquiry-form input:focus, .alphira-enquiry-form select:focus { outline: 2px solid var(--ac-sage-300); outline-offset: 1px; border-color: var(--ac-moss-600); }
-.alphira-enquiry-submit { display: flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; min-height: 48px; padding: 13px 16px; margin-top: 6px; border: 0; background: var(--ac-moss-900); color: var(--ac-white); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
-.alphira-enquiry-submit:hover { background: var(--ac-sage-700); }
-.alphira-enquiry-panel button:focus-visible { outline: 2px solid var(--ac-sage-500); outline-offset: 3px; }
-@keyframes alphira-enquiry-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-@media(max-width:600px) { .alphira-enquiry-dialog { width: min(380px,calc(100vw - 24px)); max-height: calc(100dvh - 24px); } .alphira-enquiry-panel { padding: 24px; } .alphira-enquiry-heading h2 { font-size: 25px; } .alphira-enquiry-logo { width: 36px; height: 32px; margin-bottom: 14px; } }
-@media(prefers-reduced-motion:reduce) { .alphira-enquiry-dialog[open] { animation: none; } }
+/* =====================================================================
+   Enquiry dialog — split card: program artwork + benefits on the left,
+   form on the right. Becomes a single column (bottom sheet) on phones.
+   ===================================================================== */
+.alphira-enquiry-dialog {
+  margin: auto; padding: 0; width: min(860px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px);
+  overflow: hidden auto; border: 0; background: var(--ac-moss-50); color: var(--ac-moss-900); font-family: var(--ac-font-body);
+  box-shadow: 0 40px 100px -30px rgb(0 0 0 / .6);
+}
+/* Inside the zoomed .ac-app on large screens, so heights divide by the zoom. */
+html.ac-uw .alphira-enquiry-dialog { max-height: calc((100dvh - 32px) / var(--ac-zoom, 1)); }
+.alphira-enquiry-dialog::backdrop { background: rgb(14 17 13 / .66); backdrop-filter: blur(6px); }
+.alphira-enquiry-dialog[open] { animation: alp-enter .5s var(--ac-ease-out, cubic-bezier(.22, 1, .36, 1)) both; }
+.alphira-enquiry-dialog[open]::backdrop { animation: alp-fade .4s ease both; }
+@keyframes alp-enter { from { opacity: 0; transform: translateY(24px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes alp-fade { from { opacity: 0; } }
+.alp, .alp *, .alp *::before, .alp *::after { box-sizing: border-box; }
+.alp :where(h2, p, ul, fieldset) { margin: 0; }
+.alp ul { list-style: none; padding: 0; }
+.alp { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1fr); min-height: 520px; }
 
+/* Visual side */
+.alp-visual { position: relative; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; background: var(--ac-moss-950); color: #eef0e8; }
+.alp-art { position: absolute; inset: 0; }
+.alp-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity .6s ease, transform 4s ease-out; }
+.alp-art img.is-on { opacity: 1; transform: scale(1); }
+.alp-visual::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(22 26 21 / .1) 20%, rgb(22 26 21 / .92) 72%); }
+.alp-visual-copy { position: relative; z-index: 1; padding: 28px; }
+.alp-logo { width: 40px; height: 36px; object-fit: contain; filter: brightness(0) invert(1); }
+.alp-visual ul { display: grid; gap: 10px; margin-top: 18px; }
+.alp-visual li { display: flex; align-items: center; gap: 10px; color: rgb(238 240 232 / .82); font-size: 13px; font-weight: 600; opacity: 0; transform: translateX(-10px); animation: alp-in .5s var(--ac-ease-out, ease) forwards; }
+.alp-visual li:nth-child(1) { animation-delay: .35s; }
+.alp-visual li:nth-child(2) { animation-delay: .47s; }
+.alp-visual li:nth-child(3) { animation-delay: .59s; }
+.alp-visual li svg { flex: none; color: var(--ac-sage-300); }
+@keyframes alp-in { to { opacity: 1; transform: none; } }
+
+/* Form side */
+.alp-body { position: relative; padding: 32px 32px 26px; background: var(--ac-moss-50); }
+.alp-close { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--ac-moss-200); background: var(--ac-white); color: var(--ac-moss-700); cursor: pointer; transition: background-color .2s, color .2s, border-color .2s; }
+.alp-close:hover { background: var(--ac-moss-900); border-color: var(--ac-moss-900); color: #fff; }
+.alp-eyebrow { color: var(--ac-sage-700); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.alp h2 { margin-top: 12px; padding-right: 36px; font-family: var(--ac-font-heading); font-size: 28px; font-weight: 800; line-height: 1.1; letter-spacing: -.045em; }
+.alp h2 span { color: var(--ac-moss-600); }
+.alp-sub { margin-top: 10px; color: var(--ac-moss-600); font-size: 13.5px; line-height: 1.65; }
+
+.alp-form { display: grid; gap: 14px; margin-top: 22px; }
+.alp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.alp-form label, .alp-courses legend { display: block; margin-bottom: 7px; padding: 0; color: var(--ac-moss-700); font-size: 12px; font-weight: 600; }
+.alp-form input:not([type=radio]) { display: block; width: 100%; min-width: 0; min-height: 46px; padding: 10px 13px; border: 1px solid var(--ac-moss-300); background: var(--ac-white); color: var(--ac-moss-900); font: inherit; font-size: 14px; transition: border-color .2s, box-shadow .2s; }
+.alp-form input::placeholder { color: var(--ac-moss-400); }
+.alp-form input:focus { outline: none; border-color: var(--ac-moss-900); box-shadow: 0 0 0 3px rgb(160 184 138 / .35); }
+
+.alp-courses { min-width: 0; padding: 0; border: 0; }
+.alp-courses > div { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.alp-courses label { position: relative; display: flex; align-items: center; min-height: 42px; margin: 0; padding: 0 30px 0 12px; border: 1px solid var(--ac-moss-300); background: var(--ac-white); color: var(--ac-moss-800); font-size: 13px; font-weight: 600; cursor: pointer; transition: border-color .2s, background-color .2s, color .2s; }
+.alp-courses label:hover { border-color: var(--ac-moss-900); }
+.alp-courses input { position: absolute; opacity: 0; pointer-events: none; }
+.alp-courses i { position: absolute; right: 10px; display: grid; place-items: center; width: 16px; height: 16px; border: 1px solid var(--ac-moss-300); color: transparent; }
+.alp-courses label.is-on { border-color: var(--ac-moss-900); background: var(--ac-moss-900); color: #fff; }
+.alp-courses label.is-on i { border-color: var(--ac-sage-300); background: var(--ac-sage-300); color: var(--ac-moss-950); }
+.alp-courses label:has(input:focus-visible) { outline: 2px solid var(--ac-sage-500); outline-offset: 2px; }
+
+.alp-submit { display: flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; min-height: 52px; margin-top: 4px; padding: 0 18px; border: 0; background: var(--ac-moss-900); color: #fff; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: background-color .2s; }
+.alp-submit:hover { background: var(--ac-sage-700); }
+.alp-submit:disabled { cursor: progress; opacity: .8; }
+.alp-submit svg { transition: transform .2s; }
+.alp-submit:hover svg { transform: translateX(3px); }
+.alp-note { color: var(--ac-moss-500); font-size: 11.5px; text-align: center; }
+.alp :where(button):focus-visible { outline: 2px solid var(--ac-sage-500); outline-offset: 3px; }
+
+/* Tablets: art becomes a short banner */
+@media (max-width: 760px) {
+  .alphira-enquiry-dialog { width: min(520px, calc(100vw - 24px)); }
+  .alp { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .alp-visual { min-height: 150px; }
+  .alp-visual ul { display: none; }
+  .alp-visual-copy { padding: 18px 22px; }
+  .alp-body { padding: 24px 22px 20px; }
+  .alp-close { top: -136px; right: 12px; border-color: rgb(238 240 232 / .25); background: rgb(22 26 21 / .55); color: #fff; }
+}
+/* Phones: bottom sheet */
+@media (max-width: 520px) {
+  .alphira-enquiry-dialog { width: 100%; max-height: 94dvh; margin: auto 0 0; }
+  .alphira-enquiry-dialog[open] { animation-name: alp-sheet; }
+  .alp-visual { min-height: 110px; }
+  .alp-close { top: -96px; }
+  .alp h2 { font-size: 24px; }
+  .alp-row { grid-template-columns: 1fr; }
+  .alp-body { padding-bottom: max(20px, env(safe-area-inset-bottom)); }
+}
+@keyframes alp-sheet { from { transform: translateY(100%); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .alphira-enquiry-dialog[open], .alphira-enquiry-dialog[open]::backdrop, .alp *, .alp-art img { animation: none !important; transition: none !important; }
+  .alp-visual li { opacity: 1; transform: none; }
+}

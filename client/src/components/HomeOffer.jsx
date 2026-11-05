@@ -1,105 +1,117 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, X } from "lucide-react";
+import { Phone, X, Volume2, VolumeX, BadgePercent } from "lucide-react";
+import { POPUP_SCHEDULE, popupState, savePopupState } from "../config/popupSchedule";
+import { trackContact } from "../utils/metaPixel";
 import "./HomeOffer.css";
-import dropSound from "./offer-drop.wav";
 
-const NEXT_SHOW_KEY = "alphira-home-offer-next-show";
-const REPEAT_DELAY = 10 * 60 * 1000;
+const KEY = "alphira-offer-v2";
+const MUTE_KEY = "alphira-offer-muted";
+const CFG = POPUP_SCHEDULE.offer;
+
+/* A short, soft two-note chime synthesised with Web Audio (no file to load). */
+function playChime(ctx, volume) {
+  const now = ctx.currentTime;
+  const master = ctx.createGain();
+  master.gain.value = volume;
+  master.connect(ctx.destination);
+  [[880, 0], [1318.5, 0.11]].forEach(([freq, at]) => {
+    [["sine", 1], ["triangle", 0.25]].forEach(([type, level]) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now + at);
+      g.gain.setValueAtTime(0.0001, now + at);
+      g.gain.exponentialRampToValueAtTime(level, now + at + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + at + 0.9);
+      osc.connect(g);
+      g.connect(master);
+      osc.start(now + at);
+      osc.stop(now + at + 0.95);
+    });
+  });
+  window.setTimeout(() => master.disconnect(), 1300);
+}
+
+const leadDialogOpen = () => Boolean(document.querySelector(".alphira-enquiry-dialog[open]"));
 
 export default function HomeOffer() {
   const [visible, setVisible] = useState(false);
+  const [muted, setMuted] = useState(() => { try { return localStorage.getItem(MUTE_KEY) === "1"; } catch { return false; } });
   const reducedMotion = useReducedMotion();
+  const ctxRef = useRef(null);
   const timerRef = useRef(null);
-  const showRef = useRef(null);
+  const mutedRef = useRef(muted);
+  mutedRef.current = muted;
 
+  // Browsers only allow sound after the visitor has interacted with the page,
+  // so the audio engine is unlocked on the first click, tap or key press.
   useEffect(() => {
-    let disposed = false;
-    let context;
-    let buffer;
-    let decoding;
-    let activeSource;
-    const audio = new Audio(dropSound);
-    audio.preload = "auto";
-    audio.volume = 0.7;
-    const report = (stage, error) => {
-      if (disposed || error?.name === "AbortError") return;
-      console.warn(`[Alphira offer] ${stage}`, error?.name, error?.message);
-    };
-    const unlockAudio = (event) => {
-      if (!event.isTrusted) return;
-      if (navigator.userActivation && !navigator.userActivation.isActive) return;
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return;
+    const unlock = () => {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
       try {
-        context ??= new AudioContext();
-        // Resume synchronously inside the click, before fetching or decoding.
-        void context.resume().catch((error) => report("Audio unlock failed:", error));
-        decoding ??= fetch(dropSound)
-          .then((response) => {
-            if (!response.ok) throw new Error(`Sound request failed: ${response.status}`);
-            return response.arrayBuffer();
-          })
-          .then((bytes) => disposed ? null : context.decodeAudioData(bytes))
-          .then((decoded) => { if (!disposed) buffer = decoded; })
-          .catch((error) => {
-            decoding = null;
-            report("Sound loading failed:", error);
-          });
-      } catch (error) {
-        report("Audio initialization failed:", error);
-      }
+        ctxRef.current ??= new AC();
+        if (ctxRef.current.state === "suspended") void ctxRef.current.resume().catch(() => {});
+      } catch { /* sound is optional */ }
     };
-    // Capture also catches ordinary clicks inside components that stop bubbling.
-    window.addEventListener("click", unlockAudio, true);
-    const show = () => {
-      setVisible(true);
-      if (context?.state === "running" && buffer) {
-        const source = context.createBufferSource();
-        const gain = context.createGain();
-        source.buffer = buffer;
-        gain.gain.value = 0.7;
-        source.connect(gain);
-        gain.connect(context.destination);
-        activeSource = source;
-        source.onended = () => { source.disconnect(); gain.disconnect(); };
-        source.start();
-      } else {
-        // Still attempt autoplay when the browser already permits media audio.
-        audio.currentTime = 0;
-        void audio.play().catch((error) => report("Popup sound playback failed:", error));
-      }
-    };
-    showRef.current = show;
-    let delay = 5000;
-    try {
-      const nextShow = Number(sessionStorage.getItem(NEXT_SHOW_KEY));
-      if (Number.isFinite(nextShow) && nextShow > Date.now()) {
-        delay = nextShow - Date.now();
-      }
-    } catch { /* Timers still work without storage. */ }
-    timerRef.current = window.setTimeout(show, delay);
-
+    const opts = { capture: true, passive: true };
+    ["pointerdown", "keydown", "touchstart"].forEach((t) => window.addEventListener(t, unlock, opts));
     return () => {
-      disposed = true;
-      window.removeEventListener("click", unlockAudio, true);
-      window.clearTimeout(timerRef.current);
-      showRef.current = null;
-      audio.pause();
-      audio.removeAttribute("src");
-      audio.load();
-      activeSource?.stop();
-      if (context) void context.close().catch(() => {});
+      ["pointerdown", "keydown", "touchstart"].forEach((t) => window.removeEventListener(t, unlock, opts));
+      if (ctxRef.current) void ctxRef.current.close().catch(() => {});
     };
   }, []);
 
-  const dismiss = () => {
-    setVisible(false);
-    try {
-      sessionStorage.setItem(NEXT_SHOW_KEY, String(Date.now() + REPEAT_DELAY));
-    } catch { /* Optional persistence across page reloads. */ }
+  const show = useCallback(() => {
+    // Wait politely if the tab is hidden or the enquiry dialog is open.
+    if (document.hidden || leadDialogOpen()) { timerRef.current = window.setTimeout(show, 2000); return; }
+    const state = popupState(KEY);
+    const now = Date.now();
+    state.shows = [...state.shows.filter((t) => now - t < 86400000), now];
+    savePopupState(KEY, state);
+    setVisible(true);
+    const ctx = ctxRef.current;
+    if (!mutedRef.current && ctx?.state === "running") {
+      try { playChime(ctx, CFG.soundVolume); } catch { /* ignore */ }
+    }
+  }, []);
+
+  const schedule = useCallback((delay) => {
     window.clearTimeout(timerRef.current);
-    timerRef.current = window.setTimeout(() => showRef.current?.(), REPEAT_DELAY);
+    timerRef.current = window.setTimeout(show, Math.max(0, delay));
+  }, [show]);
+
+  useEffect(() => {
+    const { nextAt } = popupState(KEY);
+    schedule(Math.max(CFG.firstDelay, nextAt - Date.now()));
+    return () => window.clearTimeout(timerRef.current);
+  }, [schedule]);
+
+  const hide = (snooze) => {
+    setVisible(false);
+    const state = popupState(KEY);
+    const recent = state.shows.filter((t) => Date.now() - t < 86400000);
+    const wait = snooze ?? (recent.length >= CFG.maxPerDay ? CFG.afterMax : CFG.afterClose);
+    savePopupState(KEY, { ...state, shows: recent, nextAt: Date.now() + wait });
+    schedule(wait);
+  };
+
+  // Let the browser open the phone dialer (or the "choose an app" prompt on
+  // desktop) first; only remember the call and tuck the card away afterwards.
+  const onCall = () => {
+    trackContact();
+    const state = popupState(KEY);
+    savePopupState(KEY, { ...state, nextAt: Date.now() + CFG.afterCall });
+    window.clearTimeout(timerRef.current);
+    timerRef.current = window.setTimeout(() => setVisible(false), 4000);
+  };
+
+  const toggleSound = () => {
+    const next = !muted;
+    setMuted(next);
+    try { localStorage.setItem(MUTE_KEY, next ? "1" : "0"); } catch { /* ignore */ }
+    if (!next && ctxRef.current?.state === "running") playChime(ctxRef.current, CFG.soundVolume);
   };
 
   return (
@@ -107,18 +119,37 @@ export default function HomeOffer() {
       <AnimatePresence>
         {visible && (
           <motion.aside
-            className="alphira-home-offer"
+            className="aho"
             aria-label="Course admission offer"
-            initial={{ opacity: 0, x: reducedMotion ? 0 : 60, y: reducedMotion ? 0 : 12 }}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            exit={{ opacity: 0, x: reducedMotion ? 0 : 40 }}
-            transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 210, damping: 25 }}
+            initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 40, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.97 }}
+            transition={reducedMotion ? { duration: 0.15 } : { type: "spring", stiffness: 240, damping: 24 }}
           >
-            <button type="button" className="alphira-home-offer-close" onClick={dismiss} aria-label="Close course offer"><X size={18} /></button>
-            <p className="alphira-home-offer-label">A little head start</p>
-            <h2>Learn more.<br /><span>Pay 20% less.</span></h2>
-            <p className="alphira-home-offer-copy">Get 20% off courses. Call our team to ask about the offer and enroll.</p>
-            <a href="tel:+919217222356" className="alphira-home-offer-call"><span><small>Contact Us</small>+91 92172 22356</span><ArrowUpRight size={22} aria-hidden="true" /></a>
+            <span className="aho-shine" aria-hidden="true" />
+            <div className="aho-top">
+              <span className="aho-badge"><BadgePercent size={14} aria-hidden="true" />Special offer</span>
+              <div className="aho-tools">
+                <button type="button" onClick={toggleSound} aria-pressed={!muted} aria-label={muted ? "Turn offer sound on" : "Turn offer sound off"} title={muted ? "Sound off" : "Sound on"}>
+                  {muted ? <VolumeX size={16} aria-hidden="true" /> : <Volume2 size={16} aria-hidden="true" />}
+                </button>
+                <button type="button" onClick={() => hide()} aria-label="Close course offer"><X size={17} aria-hidden="true" /></button>
+              </div>
+            </div>
+
+            <div className="aho-main">
+              <div className="aho-big" aria-hidden="true"><strong>20</strong><span>%<small>OFF</small></span></div>
+              <div>
+                <h2>Learn more.<br /><span>Pay 20% less.</span></h2>
+                <p>Get 20% off courses. Call our team to ask about the offer and enroll.</p>
+              </div>
+            </div>
+
+            <a href="tel:+919217222356" className="aho-call" onClick={onCall}>
+              <span className="aho-call-icon" aria-hidden="true"><Phone size={17} /></span>
+              <span className="aho-call-text"><small>Call to claim</small>+91 92172 22356</span>
+              <span className="aho-call-ping" aria-hidden="true" />
+            </a>
           </motion.aside>
         )}
       </AnimatePresence>

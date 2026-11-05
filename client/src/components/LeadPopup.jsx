@@ -1,12 +1,29 @@
 import "./LeadPopup.css";
-import { X, ArrowRight } from "lucide-react";
+import { X, ArrowRight, Check, Users, LineChart, ShieldCheck } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { API_URL } from "../config/api";
 import { trackLead } from "../utils/metaPixel";
+import { courseArtProps } from "../config/courseArt";
+import { POPUP_SCHEDULE, popupState, savePopupState } from "../config/popupSchedule";
+
+const KEY = "alphira-lead-v2";
+const CFG = POPUP_SCHEDULE.lead;
+const COURSES = [
+  { name: "The Forex Program", short: "Forex" },
+  { name: "The Forex Program with Indian Market", short: "Forex + Indian" },
+  { name: "Advanced Order Flow Program", short: "Order flow" },
+  { name: "Crypto Futures & Spot Trading Program", short: "Crypto" },
+];
+const POINTS = [
+  { icon: Users, text: "Classroom mentorship in Delhi NCR" },
+  { icon: LineChart, text: "Practical, chart-first lessons" },
+  { icon: ShieldCheck, text: "Risk management from day one" },
+];
 
 const LeadPopup = () => {
   const [open, setOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const dialogRef = useRef(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -20,29 +37,26 @@ const LeadPopup = () => {
   const utmContent = params.get("utm_content") || "";
   const referrer = document.referrer || "";
 
-  // OPEN AFTER 4 SECONDS
+  // Show once the first delay has passed and the visitor isn't snoozed
+  // (timing rules live in config/popupSchedule.js).
   useEffect(() => {
-    const popupShown = localStorage.getItem("leadPopupShown");
-    if (popupShown) return;
-
-    const timer = setTimeout(() => {
-      setOpen(true);
-      localStorage.setItem("leadPopupShown", "true");
-
-      setTimeout(
-        () => {
-          localStorage.removeItem("leadPopupShown");
-        },
-        24 * 60 * 60 * 1000,
-      );
-    }, 4000);
-
+    const { nextAt } = popupState(KEY);
+    const delay = Math.max(CFG.firstDelay, nextAt - Date.now());
+    if (delay > 2 ** 31 - 1) return undefined;
+    const timer = setTimeout(() => setOpen(true), delay);
     return () => clearTimeout(timer);
   }, []);
+
+  const close = (wait = CFG.afterClose) => {
+    savePopupState(KEY, { ...popupState(KEY), nextAt: Date.now() + wait });
+    setOpen(false);
+  };
 
   // SUBMIT
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
 
     try {
       const response = await fetch(`${API_URL}/api/leads`, {
@@ -72,12 +86,14 @@ const LeadPopup = () => {
 
       trackLead();
 
-      setOpen(false);
+      close(CFG.afterSubmit);
       setName("");
       setEmail("");
       setPhone("");
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -96,22 +112,58 @@ const LeadPopup = () => {
   }, [open]);
 
   return (
-    <dialog ref={dialogRef} className="alphira-enquiry-dialog" aria-labelledby="alphira-enquiry-title" onCancel={(event) => { event.preventDefault(); setOpen(false); }}>
-      <div className="alphira-enquiry-panel">
-        <button type="button" autoFocus onClick={() => setOpen(false)} className="alphira-enquiry-close" aria-label="Close enquiry form"><X size={18} /></button>
-        <header className="alphira-enquiry-heading">
-          <img src="/alphira-ac-logo.svg" alt="Alphira Capital" className="alphira-enquiry-logo" />
-          <p className="alphira-enquiry-eyebrow">Your next chapter</p>
-          <h2 id="alphira-enquiry-title">Build your knowledge.<br /><span>Find your direction.</span></h2>
-          <p>Learn Forex, stock markets, risk management and trading strategies with expert mentors.</p>
-        </header>
-        <form onSubmit={submitHandler} className="alphira-enquiry-form">
-          <div><label htmlFor="enquiry-name">Your name</label><input id="enquiry-name" name="name" type="text" autoComplete="name" placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} /></div>
-          <div><label htmlFor="enquiry-email">Email address</label><input id="enquiry-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
-          <div><label htmlFor="enquiry-phone">Mobile number</label><input id="enquiry-phone" name="phone" type="tel" autoComplete="tel" placeholder="Enter mobile number" value={phone} onChange={(e) => setPhone(e.target.value)} /></div>
-          <div><label htmlFor="enquiry-course">Interested in</label><select id="enquiry-course" value={course} onChange={(e) => setCourse(e.target.value)}><option>The Forex Program</option><option>The Forex Program with Indian Market</option><option>Advanced Order Flow Program</option><option>Crypto Futures &amp; Spot Trading Program</option></select></div>
-          <button type="submit" className="alphira-enquiry-submit">Yes, I Want To Learn<ArrowRight size={17} aria-hidden="true" /></button>
-        </form>
+    <dialog
+      ref={dialogRef}
+      className="alphira-enquiry-dialog"
+      aria-labelledby="alphira-enquiry-title"
+      onCancel={(event) => { event.preventDefault(); close(); }}
+      onClick={(event) => { if (event.target === event.currentTarget) close(); }}
+    >
+      <div className="alp">
+        {/* Visual side */}
+        <div className="alp-visual" aria-hidden="true">
+          <div className="alp-art">
+            {COURSES.map((c) => <img key={c.name} {...courseArtProps(c.name, "320px")} alt="" className={c.name === course ? "is-on" : ""} loading="lazy" />)}
+          </div>
+          <div className="alp-visual-copy">
+            <img src="/alphira-ac-logo.svg" alt="" className="alp-logo" />
+            <ul>{POINTS.map(({ icon: Icon, text }) => <li key={text}><Icon size={15} />{text}</li>)}</ul>
+          </div>
+        </div>
+
+        {/* Form side */}
+        <div className="alp-body">
+          <button type="button" autoFocus onClick={() => close()} className="alp-close" aria-label="Close enquiry form"><X size={18} /></button>
+          <header>
+            <p className="alp-eyebrow">Your next chapter</p>
+            <h2 id="alphira-enquiry-title">Build your knowledge.<br /><span>Find your direction.</span></h2>
+            <p className="alp-sub">Learn Forex, stock markets, risk management and trading strategies with expert mentors.</p>
+          </header>
+          <form onSubmit={submitHandler} className="alp-form" aria-busy={submitting}>
+            <div className="alp-row">
+              <div><label htmlFor="enquiry-name">Your name</label><input id="enquiry-name" name="name" type="text" autoComplete="name" placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} /></div>
+              <div><label htmlFor="enquiry-phone">Mobile number</label><input id="enquiry-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="Enter mobile number" value={phone} onChange={(e) => setPhone(e.target.value)} /></div>
+            </div>
+            <div><label htmlFor="enquiry-email">Email address</label><input id="enquiry-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
+            <fieldset className="alp-courses">
+              <legend>Interested in</legend>
+              <div>
+                {COURSES.map((c) => (
+                  <label key={c.name} className={course === c.name ? "is-on" : ""}>
+                    <input type="radio" name="enquiry-course" value={c.name} checked={course === c.name} onChange={(e) => setCourse(e.target.value)} />
+                    <span>{c.short}</span>
+                    <i aria-hidden="true"><Check size={11} strokeWidth={3} /></i>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <button type="submit" className="alp-submit" disabled={submitting}>
+              <span>{submitting ? "Sending…" : "Yes, I Want To Learn"}</span>
+              {submitting ? <span className="ac-spinner" aria-hidden="true" /> : <ArrowRight size={17} aria-hidden="true" />}
+            </button>
+            <p className="alp-note">Our team will call you about batches and fees. No spam.</p>
+          </form>
+        </div>
       </div>
     </dialog>
   );
